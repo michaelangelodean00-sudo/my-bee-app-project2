@@ -11,16 +11,15 @@ import {
   Settings,
   LogOut,
   Building2,
-  ShoppingBag,
-  Store
+  ShoppingBag
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const menuItems = [
   { icon: Home, label: "Home", path: "/" },
-  { icon: Building2, label: "Businesses", path: "/businesses" },
+  { icon: Building2, label: "Business", path: "/businesses" },
   { icon: Calendar, label: "Events", path: "/events" },
-  { icon: ShoppingBag, label: "Shop", path: "/ecommerce" },
+  { icon: ShoppingBag, label: "E-commerce", path: "/ecommerce" },
   { icon: Users, label: "Friends", path: "/friends" },
   { icon: MessageSquare, label: "Messages", path: "/messages" },
   { icon: Bell, label: "Notifications", path: "/notifications" },
