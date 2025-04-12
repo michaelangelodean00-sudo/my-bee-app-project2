@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
+import AdSplash from "../components/AdSplash";
 import CreatePost from "../components/CreatePost";
 import Post, { PostProps } from "../components/Post";
 import RightSidebar from "../components/RightSidebar";
@@ -68,6 +69,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header toggleMobileSidebar={toggleMobileSidebar} />
+      <AdSplash />
       
       <div className="flex">
         {/* Mobile Sidebar Overlay */}

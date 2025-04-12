@@ -9,18 +9,23 @@ import {
   Image, 
   Calendar, 
   Settings,
-  LogOut
+  LogOut,
+  Building2,
+  ShoppingBag,
+  Store
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const menuItems = [
   { icon: Home, label: "Home", path: "/" },
+  { icon: Building2, label: "Businesses", path: "/businesses" },
+  { icon: Calendar, label: "Events", path: "/events" },
+  { icon: ShoppingBag, label: "Shop", path: "/ecommerce" },
   { icon: Users, label: "Friends", path: "/friends" },
   { icon: MessageSquare, label: "Messages", path: "/messages" },
   { icon: Bell, label: "Notifications", path: "/notifications" },
   { icon: Bookmark, label: "Saved", path: "/saved" },
   { icon: Image, label: "Photos", path: "/photos" },
-  { icon: Calendar, label: "Events", path: "/events" },
 ];
 
 const Sidebar = ({ className }: { className?: string }) => {
