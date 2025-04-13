@@ -1,25 +1,20 @@
 
 import { Link } from "react-router-dom";
-import { cn } from "@/lib/utils";
-import { SidebarEventIcon } from "./icons/EventIcons";
 import { 
-  EventSvgIcon as HomeIcon, 
-  SettingsIcon,
-  LogOutIcon,
-  Building2Icon,
-  ShoppingBagIcon
-} from "./icons/EventIcons";
+  Home, 
+  Settings,
+  LogOut,
+  Building2,
+  ShoppingBag,
+  Drum
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const menuItems = [
-  { icon: HomeIcon, label: "Home", path: "/" },
-  { icon: Building2Icon, label: "Business", path: "/businesses" },
-  { 
-    iconType: "event", 
-    eventIcon: "crowd", // Changed to our new crowd icon
-    label: "Events", 
-    path: "/events" 
-  },
-  { icon: ShoppingBagIcon, label: "E-commerce", path: "/ecommerce" },
+  { icon: Home, label: "Home", path: "/" },
+  { icon: Building2, label: "Business", path: "/businesses" },
+  { icon: Drum, label: "Events", path: "/events" },
+  { icon: ShoppingBag, label: "E-commerce", path: "/ecommerce" },
 ];
 
 const Sidebar = ({ className }: { className?: string }) => {
@@ -33,11 +28,7 @@ const Sidebar = ({ className }: { className?: string }) => {
               to={item.path}
               className="flex items-center gap-3 p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
             >
-              {item.iconType === "event" ? (
-                <SidebarEventIcon type={item.eventIcon as any} />
-              ) : (
-                <item.icon size={20} className="text-bee-blue" />
-              )}
+              <item.icon size={20} className="text-bee-blue" />
               <span className="font-medium">{item.label}</span>
             </Link>
           ))}
@@ -48,13 +39,13 @@ const Sidebar = ({ className }: { className?: string }) => {
             to="/settings"
             className="flex items-center gap-3 p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            <SettingsIcon size={20} className="text-gray-500" />
+            <Settings size={20} className="text-gray-500" />
             <span className="font-medium">Settings</span>
           </Link>
           <button
             className="flex items-center gap-3 p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors w-full text-left"
           >
-            <LogOutIcon size={20} className="text-gray-500" />
+            <LogOut size={20} className="text-gray-500" />
             <span className="font-medium">Logout</span>
           </button>
         </div>
