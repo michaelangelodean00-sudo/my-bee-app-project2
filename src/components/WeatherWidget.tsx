@@ -1,37 +1,32 @@
 
 import { useState, useEffect } from "react";
-import { Clock } from "lucide-react";
+import { Calendar } from "lucide-react";
+import { format } from "date-fns";
 
 const WeatherWidget = () => {
-  const [currentTime, setCurrentTime] = useState<string>("");
+  const [currentDateTime, setCurrentDateTime] = useState<string>("");
 
   useEffect(() => {
-    const updateTime = () => {
+    const updateDateTime = () => {
       const now = new Date();
-      // Format time to show hours:minutes AM/PM in Eastern Standard Time
-      const options: Intl.DateTimeFormatOptions = { 
-        hour: 'numeric', 
-        minute: '2-digit', 
-        hour12: true,
-        timeZone: 'America/New_York'
-      };
-      const formatter = new Intl.DateTimeFormat('en-US', options);
-      setCurrentTime(formatter.format(now) + ' EST');
+      const formattedDate = format(now, 'EEE, MMM d');
+      setCurrentDateTime(formattedDate);
     };
 
-    updateTime();
-    const interval = setInterval(updateTime, 60000); // Update every minute
+    updateDateTime();
+    const interval = setInterval(updateDateTime, 60000);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div className="flex items-center bg-white/80 backdrop-blur-sm rounded-full px-3 py-1 text-sm shadow-sm">
       <div className="flex items-center gap-2">
-        <Clock size={16} className="text-gray-600" />
-        <span className="font-medium">{currentTime}</span>
+        <Calendar size={16} className="text-gray-600" />
+        <span className="font-medium">{currentDateTime}</span>
       </div>
     </div>
   );
 };
 
 export default WeatherWidget;
+

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import {
   Carousel,
@@ -40,6 +41,7 @@ const ads: Ad[] = [
 ];
 
 const AdSplash = () => {
+  // Removed the dismissed state since ads should always show
   const [autoplay, setAutoplay] = useState(true);
   
   useEffect(() => {
@@ -62,7 +64,7 @@ const AdSplash = () => {
   }, [autoplay]);
   
   return (
-    <div className="relative bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white overflow-hidden mt-4 mb-6">
+    <div className="relative bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white overflow-hidden">
       <Carousel className="max-w-6xl mx-auto px-4 py-4" opts={{ loop: true }}>
         <CarouselContent>
           {ads.map((ad) => (
@@ -97,3 +99,4 @@ const AdSplash = () => {
 };
 
 export default AdSplash;
+
