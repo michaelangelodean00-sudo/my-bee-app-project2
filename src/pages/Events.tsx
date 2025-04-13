@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Dancing } from 'lucide-react';
+import { Music } from 'lucide-react';
 
 const Events = () => {
   return (
@@ -36,4 +36,3 @@ const Events = () => {
 };
 
 export default Events;
-
