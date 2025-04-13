@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import AdSplash from "../components/AdSplash";
 import CreatePost from "../components/CreatePost";
 import RightSidebar from "../components/RightSidebar";
+import Logo from "../components/Logo";
 
 const Index = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -22,6 +23,10 @@ const Index = () => {
     <div className="min-h-screen bg-gray-50">
       <Header toggleMobileSidebar={toggleMobileSidebar} />
       <AdSplash />
+      
+      <div className="flex justify-center mb-6">
+        <Logo className="md:scale-110" />
+      </div>
       
       <div className="flex">
         {/* Mobile Sidebar Overlay */}

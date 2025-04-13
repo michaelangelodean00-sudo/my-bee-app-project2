@@ -4,7 +4,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Bell, MessageSquare, ChevronDown, Menu } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import Logo from "./Logo";
 import SearchBar from "./SearchBar";
 import WeatherWidget from "./WeatherWidget";
 
@@ -27,8 +26,6 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
           >
             <Menu className="h-6 w-6" />
           </Button>
-          
-          <Logo />
         </div>
         
         <div className="hidden md:flex mx-4">
