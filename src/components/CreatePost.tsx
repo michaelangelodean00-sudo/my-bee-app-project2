@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Handshake, ShoppingCart } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -12,13 +11,13 @@ interface CreatePostProps {
 }
 
 const CreatePost = ({ onPostCreated }: CreatePostProps) => {
-  // You can change this to any of the event icon types and backgrounds
-  const [eventIconType, setEventIconType] = useState<"image" | "partyPopper" | "calendar" | "ticket" | "music" | "custom">("partyPopper");
+  // Updated to use our new creative icon
+  const [eventIconType, setEventIconType] = useState<"image" | "partyPopper" | "calendar" | "ticket" | "creative" | "custom">("creative");
   const [eventIconBg, setEventIconBg] = useState<"purple" | "blue" | "green" | "teal">("purple");
   
   // Optional: Add a function to cycle through different icons on click
   const cycleEventIcon = () => {
-    const iconTypes = ["image", "partyPopper", "calendar", "ticket", "music", "custom"] as const;
+    const iconTypes = ["image", "partyPopper", "calendar", "ticket", "creative", "custom"] as const;
     const backgrounds = ["purple", "blue", "green", "teal"] as const;
     
     const currentIndex = iconTypes.indexOf(eventIconType);

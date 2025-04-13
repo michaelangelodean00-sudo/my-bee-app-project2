@@ -1,4 +1,3 @@
-
 import React from "react";
 import { 
   Calendar, 
@@ -7,8 +6,8 @@ import {
   PartyPopper, 
   Music, 
   Ticket, 
-  Microphone, 
-  Theatre,
+  Mic,
+  Theater,
   Users,
   GlassWater
 } from "lucide-react";
@@ -38,6 +37,29 @@ export const EventSvgIcon: React.FC<{ className?: string, size?: number }> = ({ 
   </svg>
 );
 
+// Creative Events Icon - New addition
+export const CreativeEventIcon: React.FC<{ className?: string, size?: number }> = ({ className, size = 24 }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width={size} 
+    height={size}
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10z" />
+    <path d="M8 9a2 2 0 1 1 4 0c0 1.5-.5 2-2 3v1" />
+    <path d="M12 17h.01" />
+    <path d="M8 17l2-3h4l2 3" />
+    <path d="M16 9a2 2 0 1 0-4 0c0 1.5.5 2 2 3v1" />
+    <path d="M12 7v.01" />
+  </svg>
+);
+
 // Event Icon Type
 export type EventIconType = 
   | "calendar" 
@@ -46,12 +68,13 @@ export type EventIconType =
   | "partyPopper" 
   | "music" 
   | "ticket" 
-  | "microphone" 
-  | "theatre"
+  | "mic"
+  | "theater"
   | "users"
   | "glassWater"
   | "custom" 
-  | "image";
+  | "image"
+  | "creative";
 
 // Icon Map
 export const eventIconMap = {
@@ -61,11 +84,12 @@ export const eventIconMap = {
   partyPopper: PartyPopper,
   music: Music,
   ticket: Ticket,
-  microphone: Microphone,
-  theatre: Theatre,
+  mic: Mic,
+  theater: Theater,
   users: Users,
   glassWater: GlassWater,
-  custom: EventSvgIcon
+  custom: EventSvgIcon,
+  creative: CreativeEventIcon
 };
 
 // Icon colors/gradients

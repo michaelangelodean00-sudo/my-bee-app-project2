@@ -60,7 +60,7 @@ const Events = () => {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-8">
               {backgroundTypes.map((bgType) => (
                 <div key={bgType} className="flex flex-col items-center p-4 border rounded-lg hover:bg-gray-50">
-                  <EventIcon type="partyPopper" background={bgType} className="mb-2" />
+                  <EventIcon type="creative" background={bgType} className="mb-2" />
                   <span className="text-sm font-medium text-gray-700">{bgType}</span>
                 </div>
               ))}
