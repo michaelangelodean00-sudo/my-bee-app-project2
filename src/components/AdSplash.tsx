@@ -84,7 +84,7 @@ const AdSplash = () => {
                     href={ad.linkUrl} 
                     className="inline-block bg-bee-yellow text-bee-black px-4 py-2 rounded-md font-medium hover:bg-bee-yellow/90 transition-colors"
                   >
-                    Learn More
+                    Get More Info
                   </a>
                 </div>
               </div>
@@ -94,9 +94,9 @@ const AdSplash = () => {
         <CarouselPrevious className="left-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30" />
         <CarouselNext className="right-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30" data-carousel-next />
       </Carousel>
-      {/* Removed the close button */}
     </div>
   );
 };
 
 export default AdSplash;
+
