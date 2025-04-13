@@ -1,4 +1,3 @@
-
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -96,7 +95,7 @@ const Events = () => {
                     </div>
                     <div className="flex items-center gap-2">
                       <Clock size={16} className="text-gray-500" />
-                      <span><span className="font-medium">{event.day}</span> • {event.time}</span>
+                      <span><span className="font-medium">{event.day}</span> • {event.date} • {event.time}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <MapPin size={16} className="text-gray-500" />
