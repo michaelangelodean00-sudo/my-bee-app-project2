@@ -7,7 +7,6 @@ import Businesses from "./pages/Businesses";
 import Events from "./pages/Events";
 import Ecommerce from "./pages/Ecommerce";
 import NotFound from "./pages/NotFound";
-import AdWidget from "./components/AdWidget";
 
 const queryClient = new QueryClient();
 
@@ -15,7 +14,6 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
       <Toaster position="bottom-right" />
-      <AdWidget />
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/businesses" element={<Businesses />} />
