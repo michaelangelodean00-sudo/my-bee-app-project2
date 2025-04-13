@@ -44,7 +44,10 @@ const Index = () => {
         <div className="flex-1 max-w-2xl mx-auto py-6 px-4 sm:px-6 lg:px-4">
           <CreatePost onPostCreated={handleNewPost} />
           
-          {/* Removed sample posts */}
+          {/* Posts will appear here */}
+          {posts.map((post, index) => (
+            <div key={index} className="mt-4">{/* Post component */}</div>
+          ))}
         </div>
         
         {/* Right Sidebar */}

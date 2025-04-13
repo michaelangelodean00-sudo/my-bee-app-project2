@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import Logo from "./Logo";
 import SearchBar from "./SearchBar";
+import WeatherWidget from "./WeatherWidget";
 
 interface HeaderProps {
   toggleMobileSidebar: () => void;
@@ -34,7 +35,9 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
           <SearchBar />
         </div>
         
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <WeatherWidget />
+          
           <div className="md:flex items-center gap-1 hidden">
             <Button variant="ghost" size="icon" className="text-gray-600">
               <Bell size={20} />
