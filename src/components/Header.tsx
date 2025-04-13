@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import SearchBar from "./SearchBar";
 import WeatherWidget from "./WeatherWidget";
+import Logo from "./Logo";
 
 interface HeaderProps {
   toggleMobileSidebar: () => void;
@@ -26,6 +27,8 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
           >
             <Menu className="h-6 w-6" />
           </Button>
+          
+          <Logo className="scale-75 md:scale-90" />
         </div>
         
         <div className="hidden md:flex mx-4">
