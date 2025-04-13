@@ -27,10 +27,10 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
         <Link to="/businesses" className="w-full">
           <Button 
             variant="outline" 
-            className="w-full h-20 flex flex-col items-center justify-center gap-2 text-sm font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
+            className="w-full h-24 flex flex-col items-center justify-center gap-3 text-base font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10 py-4"
           >
-            <div className="rounded-full bg-gradient-to-br from-blue-400 to-blue-600 p-2 mb-1">
-              <Handshake size={24} className="text-white" />
+            <div className="rounded-full bg-gradient-to-br from-blue-400 to-blue-600 p-3 mb-2">
+              <Handshake size={32} className="text-white" />
             </div>
             Business
           </Button>
@@ -38,10 +38,10 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
         <Link to="/events" className="w-full">
           <Button 
             variant="outline" 
-            className="w-full h-20 flex flex-col items-center justify-center gap-2 text-sm font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
+            className="w-full h-24 flex flex-col items-center justify-center gap-3 text-base font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10 py-4"
           >
-            <div className="rounded-full bg-gradient-to-br from-purple-400 to-purple-600 p-2 mb-1">
-              <Drum size={24} className="text-white" />
+            <div className="rounded-full bg-gradient-to-br from-purple-400 to-purple-600 p-3 mb-2">
+              <Drum size={32} className="text-white" />
             </div>
             Events
           </Button>
@@ -49,10 +49,10 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
         <Link to="/ecommerce" className="w-full">
           <Button 
             variant="outline" 
-            className="w-full h-20 flex flex-col items-center justify-center gap-2 text-sm font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
+            className="w-full h-24 flex flex-col items-center justify-center gap-3 text-base font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10 py-4"
           >
-            <div className="rounded-full bg-gradient-to-br from-green-400 to-green-600 p-2 mb-1">
-              <ShoppingCart size={24} className="text-white" />
+            <div className="rounded-full bg-gradient-to-br from-green-400 to-green-600 p-3 mb-2">
+              <ShoppingCart size={32} className="text-white" />
             </div>
             E-commerce
           </Button>
@@ -63,3 +63,4 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
 };
 
 export default CreatePost;
+
