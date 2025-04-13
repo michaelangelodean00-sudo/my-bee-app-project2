@@ -7,18 +7,18 @@ import {
   Bell, 
   Bookmark, 
   Image, 
-  Calendar, 
   Settings,
   LogOut,
   Building2,
-  ShoppingBag
+  ShoppingBag,
+  Drum
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const menuItems = [
   { icon: Home, label: "Home", path: "/" },
   { icon: Building2, label: "Business", path: "/businesses" },
-  { icon: Calendar, label: "Events", path: "/events" },
+  { icon: Drum, label: "Events", path: "/events" },
   { icon: ShoppingBag, label: "E-commerce", path: "/ecommerce" },
   { icon: Users, label: "Friends", path: "/friends" },
   { icon: MessageSquare, label: "Messages", path: "/messages" },
