@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Handshake, Drum, ShoppingCart } from "lucide-react";
+import { Handshake, ShoppingCart } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -41,7 +41,11 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
             className="w-full h-36 flex flex-col items-center justify-center gap-4 text-lg font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10 py-6"
           >
             <div className="rounded-full bg-gradient-to-br from-purple-400 to-purple-600 p-4 mb-2">
-              <Drum size={48} className="text-white" />
+              <img 
+                src="/lovable-uploads/fec52d62-5fad-43bf-8596-51b7b6eb49b8.png" 
+                alt="Events icon" 
+                className="w-12 h-12 object-contain" 
+              />
             </div>
             Events
           </Button>

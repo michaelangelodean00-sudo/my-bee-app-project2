@@ -5,15 +5,19 @@ import {
   Settings,
   LogOut,
   Building2,
-  ShoppingBag,
-  Drum
+  ShoppingBag
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const menuItems = [
   { icon: Home, label: "Home", path: "/" },
   { icon: Building2, label: "Business", path: "/businesses" },
-  { icon: Drum, label: "Events", path: "/events" },
+  { 
+    iconType: "image", 
+    iconPath: "/lovable-uploads/fec52d62-5fad-43bf-8596-51b7b6eb49b8.png", 
+    label: "Events", 
+    path: "/events" 
+  },
   { icon: ShoppingBag, label: "E-commerce", path: "/ecommerce" },
 ];
 
@@ -28,7 +32,13 @@ const Sidebar = ({ className }: { className?: string }) => {
               to={item.path}
               className="flex items-center gap-3 p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
             >
-              <item.icon size={20} className="text-bee-blue" />
+              {item.iconType === "image" ? (
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <img src={item.iconPath} alt={`${item.label} icon`} className="w-5 h-5 object-contain" />
+                </div>
+              ) : (
+                <item.icon size={20} className="text-bee-blue" />
+              )}
               <span className="font-medium">{item.label}</span>
             </Link>
           ))}
