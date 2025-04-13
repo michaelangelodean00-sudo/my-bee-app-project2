@@ -8,13 +8,14 @@ import {
   ShoppingBag
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SidebarEventIcon } from "./icons/EventIcons";
 
 const menuItems = [
   { icon: Home, label: "Home", path: "/" },
   { icon: Building2, label: "Business", path: "/businesses" },
   { 
-    iconType: "image", 
-    iconPath: "/lovable-uploads/fec52d62-5fad-43bf-8596-51b7b6eb49b8.png", 
+    iconType: "event", 
+    eventIcon: "partyPopper", // You can change this to any of the event icon types
     label: "Events", 
     path: "/events" 
   },
@@ -32,10 +33,8 @@ const Sidebar = ({ className }: { className?: string }) => {
               to={item.path}
               className="flex items-center gap-3 p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
             >
-              {item.iconType === "image" ? (
-                <div className="w-5 h-5 flex items-center justify-center">
-                  <img src={item.iconPath} alt={`${item.label} icon`} className="w-5 h-5 object-contain" />
-                </div>
+              {item.iconType === "event" ? (
+                <SidebarEventIcon type={item.eventIcon as any} />
               ) : (
                 <item.icon size={20} className="text-bee-blue" />
               )}
