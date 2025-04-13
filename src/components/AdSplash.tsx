@@ -1,6 +1,13 @@
 
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 interface Ad {
   id: string;
@@ -35,50 +42,70 @@ const ads: Ad[] = [
 ];
 
 const AdSplash = () => {
-  const [currentAd, setCurrentAd] = useState<Ad | null>(null);
   const [dismissed, setDismissed] = useState(false);
+  const [autoplay, setAutoplay] = useState(true);
   
   useEffect(() => {
-    // Randomly select an ad to display
-    const randomAd = ads[Math.floor(Math.random() * ads.length)];
-    setCurrentAd(randomAd);
+    let interval: number;
     
-    // Reset dismissed state when ad changes
-    setDismissed(false);
-  }, []);
+    if (autoplay && !dismissed) {
+      interval = window.setInterval(() => {
+        const carouselNext = document.querySelector('[data-carousel-next]');
+        if (carouselNext) {
+          (carouselNext as HTMLButtonElement).click();
+        }
+      }, 5000); // Auto rotate every 5 seconds
+    }
+    
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [autoplay, dismissed]);
   
-  if (!currentAd || dismissed) {
+  if (dismissed) {
     return null;
   }
   
   return (
     <div className="relative bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white overflow-hidden">
-      <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center">
-        <div className="w-full md:w-1/3 mb-4 md:mb-0 md:mr-6">
-          <img 
-            src={currentAd.imageUrl} 
-            alt={currentAd.title} 
-            className="rounded-lg w-full h-32 md:h-40 object-cover shadow-md"
-          />
-        </div>
-        <div className="w-full md:w-2/3">
-          <h3 className="text-xl font-bold mb-2">{currentAd.title}</h3>
-          <p className="mb-4">{currentAd.description}</p>
-          <a 
-            href={currentAd.linkUrl} 
-            className="inline-block bg-bee-yellow text-bee-black px-4 py-2 rounded-md font-medium hover:bg-bee-yellow/90 transition-colors"
-          >
-            Learn More
-          </a>
-        </div>
-        <button 
-          onClick={() => setDismissed(true)}
-          className="absolute top-2 right-2 text-white/80 hover:text-white"
-          aria-label="Close advertisement"
-        >
-          <X size={20} />
-        </button>
-      </div>
+      <Carousel className="max-w-6xl mx-auto px-4 py-4" opts={{ loop: true }}>
+        <CarouselContent>
+          {ads.map((ad) => (
+            <CarouselItem key={ad.id}>
+              <div className="flex flex-col md:flex-row items-center">
+                <div className="w-full md:w-1/3 mb-4 md:mb-0 md:mr-6">
+                  <img 
+                    src={ad.imageUrl} 
+                    alt={ad.title} 
+                    className="rounded-lg w-full h-32 md:h-40 object-cover shadow-md"
+                  />
+                </div>
+                <div className="w-full md:w-2/3">
+                  <h3 className="text-xl font-bold mb-2">{ad.title}</h3>
+                  <p className="mb-4">{ad.description}</p>
+                  <a 
+                    href={ad.linkUrl} 
+                    className="inline-block bg-bee-yellow text-bee-black px-4 py-2 rounded-md font-medium hover:bg-bee-yellow/90 transition-colors"
+                  >
+                    Learn More
+                  </a>
+                </div>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className="left-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30" />
+        <CarouselNext className="right-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30" data-carousel-next />
+      </Carousel>
+      <button 
+        onClick={() => setDismissed(true)}
+        className="absolute top-2 right-2 text-white/80 hover:text-white"
+        aria-label="Close advertisement"
+      >
+        <X size={20} />
+      </button>
     </div>
   );
 };

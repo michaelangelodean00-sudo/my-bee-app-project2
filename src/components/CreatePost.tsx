@@ -27,7 +27,7 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
         <Link to="/businesses" className="w-full">
           <Button 
             variant="outline" 
-            className="w-full h-20 flex flex-col items-center justify-center gap-2 text-lg font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
+            className="w-full h-20 flex flex-col items-center justify-center gap-2 text-sm font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
           >
             <Building2 size={32} className="text-bee-blue" />
             Business
@@ -36,7 +36,7 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
         <Link to="/events" className="w-full">
           <Button 
             variant="outline" 
-            className="w-full h-20 flex flex-col items-center justify-center gap-2 text-lg font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
+            className="w-full h-20 flex flex-col items-center justify-center gap-2 text-sm font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
           >
             <Calendar size={32} className="text-bee-blue" />
             Events
@@ -45,7 +45,7 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
         <Link to="/ecommerce" className="w-full">
           <Button 
             variant="outline" 
-            className="w-full h-20 flex flex-col items-center justify-center gap-2 text-lg font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
+            className="w-full h-20 flex flex-col items-center justify-center gap-2 text-sm font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
           >
             <ShoppingBag size={32} className="text-bee-blue" />
             E-commerce
