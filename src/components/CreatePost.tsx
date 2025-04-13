@@ -29,7 +29,9 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
             variant="outline" 
             className="w-full h-20 flex flex-col items-center justify-center gap-2 text-sm font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
           >
-            <Building2 size={32} className="text-bee-blue" />
+            <div className="rounded-full bg-gradient-to-br from-blue-400 to-blue-600 p-2 mb-1">
+              <Building2 size={24} className="text-white" />
+            </div>
             Business
           </Button>
         </Link>
@@ -38,7 +40,9 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
             variant="outline" 
             className="w-full h-20 flex flex-col items-center justify-center gap-2 text-sm font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
           >
-            <Calendar size={32} className="text-bee-blue" />
+            <div className="rounded-full bg-gradient-to-br from-amber-400 to-amber-600 p-2 mb-1">
+              <Calendar size={24} className="text-white" />
+            </div>
             Events
           </Button>
         </Link>
@@ -47,7 +51,9 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
             variant="outline" 
             className="w-full h-20 flex flex-col items-center justify-center gap-2 text-sm font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
           >
-            <ShoppingBag size={32} className="text-bee-blue" />
+            <div className="rounded-full bg-gradient-to-br from-green-400 to-green-600 p-2 mb-1">
+              <ShoppingBag size={24} className="text-white" />
+            </div>
             E-commerce
           </Button>
         </Link>
