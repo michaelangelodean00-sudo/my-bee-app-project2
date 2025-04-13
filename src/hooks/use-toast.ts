@@ -1,11 +1,12 @@
 
 import * as React from "react";
-import { toast as sonnerToast, type Toast } from "sonner";
+import { toast as sonnerToast } from "sonner";
 
-type ToastProps = Toast & {
+type ToastProps = {
   title?: React.ReactNode;
   description?: React.ReactNode;
   action?: React.ReactNode;
+  [key: string]: any;
 };
 
 const useToast = () => {
