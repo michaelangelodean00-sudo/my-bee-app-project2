@@ -41,7 +41,7 @@ const Index = () => {
         <Sidebar className="hidden md:block" />
         
         {/* Main Content */}
-        <div className="flex-1 max-w-2xl mx-auto py-6 px-4 sm:px-6 lg:px-4">
+        <div className="flex-1 w-full max-w-5xl mx-auto py-6 px-4">
           <CreatePost onPostCreated={handleNewPost} />
           
           {/* Posts will appear here */}

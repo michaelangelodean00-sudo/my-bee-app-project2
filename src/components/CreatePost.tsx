@@ -12,8 +12,8 @@ interface CreatePostProps {
 
 const CreatePost = ({ onPostCreated }: CreatePostProps) => {
   return (
-    <div className="bee-card p-4 mb-4">
-      <div className="flex gap-3 items-center mb-3">
+    <div className="bee-card p-4 mb-4 max-w-4xl mx-auto">
+      <div className="flex gap-3 items-center mb-3 justify-center">
         <Avatar className="w-16 h-16">
           <AvatarImage src="/lovable-uploads/d5511939-48e5-44cf-9f2b-d8f9e829b842.png" />
           <AvatarFallback>BEE</AvatarFallback>
@@ -21,9 +21,9 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
         <span className="text-3xl font-bold text-bee-blue font-bebas-neue tracking-wider">B.E.E App</span>
       </div>
       
-      <Separator className="my-3" />
+      <Separator className="my-4" />
       
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-2 sm:px-4">
         <Link to="/businesses" className="w-full">
           <Button 
             variant="outline" 
