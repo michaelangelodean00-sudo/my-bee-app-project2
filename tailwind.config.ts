@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -110,7 +109,7 @@ export default {
 			},
 			fontFamily: {
 				'sans': ['Inter', 'system-ui', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
-				'sf-pro': ['SF Pro', 'system-ui', 'sans-serif'],
+				'bebas-neue': ['Bebas Neue', 'system-ui', 'sans-serif'],
 			}
 		}
 	},
