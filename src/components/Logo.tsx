@@ -9,7 +9,7 @@ const Logo = ({ className }: LogoProps) => {
   return (
     <Link to="/" className={`flex items-center gap-2 ${className}`}>
       <img 
-        src="/lovable-uploads/new-logo.png" 
+        src="/lovable-uploads/f4a4e8e5-574a-4d93-88f9-155b1f4b2e32.png" 
         alt="B.E.E App Bahamas Logo" 
         className="h-20 sm:h-24 w-auto"
       />

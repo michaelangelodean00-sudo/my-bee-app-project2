@@ -35,7 +35,7 @@ const WeatherWidget = () => {
       try {
         setIsLoading(true);
         const response = await fetch(
-          "https://api.openweathermap.org/data/2.5/weather?q=Nassau,BS&units=metric&appid=9de243494c0b295cca9337e1e96b00e2"
+          "https://api.openweathermap.org/data/2.5/weather?q=Nassau,BS&units=imperial&appid=9de243494c0b295cca9337e1e96b00e2"
         );
         const data = await response.json();
         
@@ -46,7 +46,7 @@ const WeatherWidget = () => {
         });
       } catch (error) {
         console.error("Failed to fetch weather data:", error);
-        setWeather({ temp: 28, condition: "Sunny" }); // Fallback weather
+        setWeather({ temp: 82, condition: "Sunny" }); // Fallback weather in Fahrenheit
       } finally {
         setIsLoading(false);
       }
@@ -89,7 +89,7 @@ const WeatherWidget = () => {
           <span className="animate-pulse">Loading...</span>
         ) : (
           <span>
-            <span className="font-medium">{weather.temp}°C</span>
+            <span className="font-medium">{weather.temp}°F</span>
             <span className="text-gray-600 ml-1 hidden sm:inline">Nassau, BS</span>
           </span>
         )}
