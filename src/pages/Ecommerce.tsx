@@ -17,63 +17,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
-const productsData = [
-  {
-    id: "prod1",
-    name: "Bahamian Straw Beach Bag",
-    price: 45.99,
-    rating: 4.8,
-    image: "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?q=80&w=1000",
-    category: "Accessories",
-    isFeatured: true
-  },
-  {
-    id: "prod2",
-    name: "Handcrafted Shell Necklace",
-    price: 22.50,
-    rating: 4.6,
-    image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=1000",
-    category: "Jewelry",
-    isFeatured: true
-  },
-  {
-    id: "prod3",
-    name: "Island Spice Blend Set",
-    price: 18.99,
-    rating: 4.9,
-    image: "https://images.unsplash.com/photo-1532336414038-cf19250c5757?q=80&w=1000",
-    category: "Food",
-    isFeatured: true
-  },
-  {
-    id: "prod4",
-    name: "Traditional Junkanoo Art Print",
-    price: 35.00,
-    rating: 4.7,
-    image: "https://images.unsplash.com/photo-1577083288073-40892c0860a4?q=80&w=1000",
-    category: "Home Decor",
-    isFeatured: false
-  },
-  {
-    id: "prod5",
-    name: "Bahamian Rum Cake",
-    price: 29.99,
-    rating: 5.0,
-    image: "https://images.unsplash.com/photo-1557925923-cd4648e211a0?q=80&w=1000",
-    category: "Food",
-    isFeatured: false
-  },
-  {
-    id: "prod6",
-    name: "Tropical Print Summer Shirt",
-    price: 38.50,
-    rating: 4.5,
-    image: "https://images.unsplash.com/photo-1517940310602-26535839fe84?q=80&w=1000",
-    category: "Clothing",
-    isFeatured: false
-  }
-];
-
 // Define the categories
 const categories = [
   { id: "vehicles", name: "Vehicles", icon: <Car size={16} /> },
@@ -312,22 +255,58 @@ const Ecommerce = () => {
             </TabsList>
             
             <TabsContent value="all">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                {[...productsData, ...userProducts].map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
+              {userProducts.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                  {userProducts.map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12 px-4">
+                  <div className="bg-gray-100 rounded-xl p-8 max-w-lg mx-auto">
+                    <Upload className="mx-auto h-12 w-12 text-gray-400" />
+                    <h3 className="mt-4 text-lg font-medium text-gray-900">No products listed yet</h3>
+                    <p className="mt-2 text-sm text-gray-500">
+                      Get started by listing your first item on the marketplace.
+                    </p>
+                    <Button 
+                      className="mt-6 bg-bee-blue hover:bg-bee-blue/90"
+                      onClick={() => setOpenDialog(true)}
+                    >
+                      List an Item
+                    </Button>
+                  </div>
+                </div>
+              )}
             </TabsContent>
             
             {categories.map((category) => (
               <TabsContent key={category.id} value={category.id}>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                  {[...productsData, ...userProducts]
-                    .filter(p => p.category === category.id)
-                    .map((product) => (
-                      <ProductCard key={product.id} product={product} />
-                    ))}
-                </div>
+                {userProducts.filter(p => p.category === category.id).length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                    {userProducts
+                      .filter(p => p.category === category.id)
+                      .map((product) => (
+                        <ProductCard key={product.id} product={product} />
+                      ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12 px-4">
+                    <div className="bg-gray-100 rounded-xl p-8 max-w-lg mx-auto">
+                      {category.icon && React.cloneElement(category.icon, { className: "mx-auto h-12 w-12 text-gray-400" })}
+                      <h3 className="mt-4 text-lg font-medium text-gray-900">No {category.name} listed yet</h3>
+                      <p className="mt-2 text-sm text-gray-500">
+                        Be the first to list a {category.name.toLowerCase()} item on the marketplace.
+                      </p>
+                      <Button 
+                        className="mt-6 bg-bee-blue hover:bg-bee-blue/90"
+                        onClick={() => setOpenDialog(true)}
+                      >
+                        List an Item
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </TabsContent>
             ))}
           </Tabs>
