@@ -11,6 +11,7 @@ const eventsData = [
     id: "event1",
     title: "Junkanoo Festival",
     date: "December 26, 2025",
+    day: "Friday",
     time: "2:00 AM - 10:00 AM",
     location: "Bay Street, Nassau",
     attendees: 1250,
@@ -22,6 +23,7 @@ const eventsData = [
     id: "event2",
     title: "Island Food & Wine Festival",
     date: "October 15, 2025",
+    day: "Wednesday",
     time: "12:00 PM - 8:00 PM",
     location: "Arawak Cay, Nassau",
     attendees: 850,
@@ -33,6 +35,7 @@ const eventsData = [
     id: "event3",
     title: "Bahamas International Film Festival",
     date: "November 5-12, 2025",
+    day: "Wed-Wed",
     time: "Various Times",
     location: "Multiple Venues, Nassau",
     attendees: 620,
@@ -44,6 +47,7 @@ const eventsData = [
     id: "event4",
     title: "Regatta Weekend",
     date: "September 3-5, 2025",
+    day: "Fri-Sun",
     time: "9:00 AM - 6:00 PM",
     location: "Montagu Bay, Nassau",
     attendees: 1500,
@@ -92,7 +96,7 @@ const Events = () => {
                     </div>
                     <div className="flex items-center gap-2">
                       <Clock size={16} className="text-gray-500" />
-                      <span>{event.time}</span>
+                      <span><span className="font-medium">{event.day}</span> • {event.time}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <MapPin size={16} className="text-gray-500" />

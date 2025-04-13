@@ -1,5 +1,6 @@
+
 import { useState } from "react";
-import { Handshake, Tickets, ShoppingCart } from "lucide-react";
+import { Handshake, Drum, ShoppingCart } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -40,7 +41,7 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
             className="w-full h-20 flex flex-col items-center justify-center gap-2 text-sm font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
           >
             <div className="rounded-full bg-gradient-to-br from-purple-400 to-purple-600 p-2 mb-1">
-              <Tickets size={24} className="text-white" />
+              <Drum size={24} className="text-white" />
             </div>
             Events
           </Button>
