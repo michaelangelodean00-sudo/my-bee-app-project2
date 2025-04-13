@@ -60,6 +60,31 @@ export const CreativeEventIcon: React.FC<{ className?: string, size?: number }> 
   </svg>
 );
 
+// Concert Icon - New addition
+export const ConcertIcon: React.FC<{ className?: string, size?: number }> = ({ className, size = 24 }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width={size} 
+    height={size}
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M12 3v10" />
+    <path d="M8 6v7" />
+    <path d="M16 6v7" />
+    <path d="M3 16a2 2 0 1 0 4 0 2 2 0 1 0-4 0z" />
+    <path d="M7 16a2 2 0 1 0 4 0 2 2 0 1 0-4 0z" />
+    <path d="M11 16a2 2 0 1 0 4 0 2 2 0 1 0-4 0z" />
+    <path d="M15 16a2 2 0 1 0 4 0 2 2 0 1 0-4 0z" />
+    <rect x="2" y="18" width="20" height="2" rx="1" />
+  </svg>
+);
+
 // Event Icon Type
 export type EventIconType = 
   | "calendar" 
@@ -74,7 +99,8 @@ export type EventIconType =
   | "glassWater"
   | "custom" 
   | "image"
-  | "creative";
+  | "creative"
+  | "concert";
 
 // Icon Map
 export const eventIconMap = {
@@ -89,7 +115,8 @@ export const eventIconMap = {
   users: Users,
   glassWater: GlassWater,
   custom: EventSvgIcon,
-  creative: CreativeEventIcon
+  creative: CreativeEventIcon,
+  concert: ConcertIcon
 };
 
 // Icon colors/gradients

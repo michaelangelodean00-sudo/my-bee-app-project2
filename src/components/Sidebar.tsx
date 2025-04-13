@@ -15,7 +15,7 @@ const menuItems = [
   { icon: Building2, label: "Business", path: "/businesses" },
   { 
     iconType: "event", 
-    eventIcon: "creative", // Changed to our new creative icon
+    eventIcon: "concert", // Changed to our new concert icon
     label: "Events", 
     path: "/events" 
   },
