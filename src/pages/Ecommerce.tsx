@@ -1,9 +1,8 @@
-
 import React, { useState } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Cpu, Armchair, Shirt, Quote, Baby } from "lucide-react";
+import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Smartphone, Armchair, Shirt, Quote, Baby } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,18 +16,16 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
-// Define the categories
 const categories = [
   { id: "vehicles", name: "Vehicles", icon: <Car size={16} /> },
   { id: "rentals", name: "Rentals", icon: <Home size={16} /> },
-  { id: "electronics", name: "Electronics", icon: <Cpu size={16} /> },
+  { id: "electronics", name: "Electronics", icon: <Smartphone size={16} /> },
   { id: "furniture", name: "Furniture", icon: <Armchair size={16} /> },
   { id: "menswear", name: "Menswear", icon: <Shirt size={16} /> },
   { id: "womenswear", name: "Womenswear", icon: <Quote size={16} /> },
   { id: "babyclothing", name: "Baby Clothing", icon: <Baby size={16} /> }
 ];
 
-// Form schema
 const formSchema = z.object({
   name: z.string().min(3, { message: "Product name must be at least 3 characters" }),
   price: z.coerce.number().min(0.01, { message: "Price must be greater than 0" }),
@@ -73,7 +70,7 @@ const Ecommerce = () => {
       id: `user-${Date.now()}`,
       name: data.name,
       price: data.price,
-      rating: 5.0, // Default rating for new products
+      rating: 5.0,
       image: imagePreview || "https://images.unsplash.com/photo-1493962853295-0fd70327578a?w=1000",
       category: data.category,
       description: data.description,
@@ -96,7 +93,6 @@ const Ecommerce = () => {
       <div className="flex">
         <Sidebar className="hidden md:block" />
         
-        {/* Main Content */}
         <div className="flex-1 max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-2xl font-bold text-bee-black">Marketplace</h1>
