@@ -30,9 +30,9 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
             <img 
               src="/lovable-uploads/d5511939-48e5-44cf-9f2b-d8f9e829b842.png" 
               alt="B.E.E App Bahamas Logo" 
-              className="h-12 sm:h-14" // Increased logo size
+              className="h-20 sm:h-24 w-auto" // Increased logo size
             />
-            <span className="text-xl font-bold text-bee-blue hidden sm:inline">B.E.E App</span>
+            <span className="text-2xl font-bold text-bee-blue hidden sm:inline">B.E.E App</span>
           </Link>
         </div>
         

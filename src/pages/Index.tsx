@@ -4,65 +4,17 @@ import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import AdSplash from "../components/AdSplash";
 import CreatePost from "../components/CreatePost";
-import Post, { PostProps } from "../components/Post";
 import RightSidebar from "../components/RightSidebar";
-
-const initialPosts: PostProps[] = [
-  {
-    id: "post1",
-    author: {
-      id: "user9",
-      name: "Maria Rodriguez",
-      avatarUrl: "https://i.pravatar.cc/100?img=47",
-      avatarFallback: "MR",
-    },
-    content: "Just arrived in Nassau! The beaches here are absolutely stunning. Anyone have recommendations for local restaurants? #BahamasVacation #Paradise",
-    imageUrl: "https://images.unsplash.com/photo-1548574505-5e239809ee19?q=80&w=1000",
-    timestamp: "2 hours ago",
-    likes: 24,
-    comments: 5,
-    shares: 2,
-  },
-  {
-    id: "post2",
-    author: {
-      id: "user6",
-      name: "Emily Clark",
-      avatarUrl: "https://i.pravatar.cc/100?img=23",
-      avatarFallback: "EC",
-    },
-    content: "Had an amazing time at the Fish Fry last night. The conch salad was incredible and the live music made the evening perfect! #BahamasCulture",
-    imageUrl: "https://images.unsplash.com/photo-1574158622682-e40e69881006?q=80&w=1000",
-    timestamp: "5 hours ago",
-    likes: 45,
-    comments: 12,
-    shares: 8,
-  },
-  {
-    id: "post3",
-    author: {
-      id: "user4",
-      name: "Jessica Davis",
-      avatarUrl: "https://i.pravatar.cc/100?img=9",
-      avatarFallback: "JD",
-    },
-    content: "Our community cleanup this weekend was a huge success! Thank you to everyone who participated. Together, we can keep our beautiful islands clean. #CommunitySpirit #CleanBahamas",
-    timestamp: "Yesterday",
-    likes: 87,
-    comments: 32,
-    shares: 15,
-  },
-];
 
 const Index = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-  const [posts, setPosts] = useState<PostProps[]>(initialPosts);
+  const [posts, setPosts] = useState([]);
   
   const toggleMobileSidebar = () => {
     setMobileSidebarOpen(!mobileSidebarOpen);
   };
   
-  const handleNewPost = (newPost: PostProps) => {
+  const handleNewPost = (newPost) => {
     setPosts([newPost, ...posts]);
   };
   
@@ -92,11 +44,7 @@ const Index = () => {
         <div className="flex-1 max-w-2xl mx-auto py-6 px-4 sm:px-6 lg:px-4">
           <CreatePost onPostCreated={handleNewPost} />
           
-          <div className="space-y-4">
-            {posts.map((post) => (
-              <Post key={post.id} {...post} />
-            ))}
-          </div>
+          {/* Removed sample posts */}
         </div>
         
         {/* Right Sidebar */}
