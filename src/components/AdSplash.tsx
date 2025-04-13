@@ -63,7 +63,7 @@ const AdSplash = () => {
   }, [autoplay]);
   
   return (
-    <div className="relative bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white overflow-hidden">
+    <div className="relative bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white overflow-hidden h-48">
       <Carousel className="max-w-6xl mx-auto px-4 py-2" opts={{ loop: true }}>
         <CarouselContent>
           {ads.map((ad) => (
