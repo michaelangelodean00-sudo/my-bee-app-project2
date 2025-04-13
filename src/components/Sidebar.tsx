@@ -2,8 +2,6 @@
 import { Link } from "react-router-dom";
 import { 
   Home, 
-  Bookmark, 
-  Image, 
   Settings,
   LogOut,
   Building2,
@@ -17,8 +15,6 @@ const menuItems = [
   { icon: Building2, label: "Business", path: "/businesses" },
   { icon: Drum, label: "Events", path: "/events" },
   { icon: ShoppingBag, label: "E-commerce", path: "/ecommerce" },
-  { icon: Bookmark, label: "Saved", path: "/saved" },
-  { icon: Image, label: "Photos", path: "/photos" },
 ];
 
 const Sidebar = ({ className }: { className?: string }) => {
