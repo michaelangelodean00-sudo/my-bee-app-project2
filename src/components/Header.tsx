@@ -1,11 +1,10 @@
 
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Bell, MessageSquare, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import Logo from "./Logo";
-import SearchBar from "./SearchBar";
 
 interface HeaderProps {
   toggleMobileSidebar: () => void;
@@ -21,20 +20,7 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
           <Logo />
         </div>
         
-        <div className="hidden md:flex mx-4">
-          <SearchBar />
-        </div>
-        
         <div className="flex items-center gap-3">
-          <div className="md:flex items-center gap-1 hidden">
-            <Button variant="ghost" size="icon" className="text-gray-600">
-              <Bell size={20} />
-            </Button>
-            <Button variant="ghost" size="icon" className="text-gray-600">
-              <MessageSquare size={20} />
-            </Button>
-          </div>
-          
           <div className="relative">
             <Button 
               variant="ghost" 

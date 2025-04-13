@@ -2,9 +2,6 @@
 import { Link } from "react-router-dom";
 import { 
   Home, 
-  Users, 
-  MessageSquare, 
-  Bell, 
   Bookmark, 
   Image, 
   Settings,
@@ -20,9 +17,6 @@ const menuItems = [
   { icon: Building2, label: "Business", path: "/businesses" },
   { icon: Drum, label: "Events", path: "/events" },
   { icon: ShoppingBag, label: "E-commerce", path: "/ecommerce" },
-  { icon: Users, label: "Friends", path: "/friends" },
-  { icon: MessageSquare, label: "Messages", path: "/messages" },
-  { icon: Bell, label: "Notifications", path: "/notifications" },
   { icon: Bookmark, label: "Saved", path: "/saved" },
   { icon: Image, label: "Photos", path: "/photos" },
 ];
