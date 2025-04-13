@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Smartphone, Armchair, Shirt, Quote, Baby } from "lucide-react";
+import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Phone, Armchair, Shirt, Quote, Baby } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -19,7 +19,7 @@ import { toast } from "sonner";
 const categories = [
   { id: "vehicles", name: "Vehicles", icon: <Car size={16} /> },
   { id: "rentals", name: "Rentals", icon: <Home size={16} /> },
-  { id: "electronics", name: "Electronics", icon: <Smartphone size={16} /> },
+  { id: "electronics", name: "Electronics", icon: <Phone size={16} /> },
   { id: "furniture", name: "Furniture", icon: <Armchair size={16} /> },
   { id: "menswear", name: "Menswear", icon: <Shirt size={16} /> },
   { id: "womenswear", name: "Womenswear", icon: <Quote size={16} /> },
