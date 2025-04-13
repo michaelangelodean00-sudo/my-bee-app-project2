@@ -1,24 +1,6 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-
-const friendRequests = [
-  {
-    id: "user2",
-    name: "Sarah Johnson",
-    avatarUrl: "https://i.pravatar.cc/100?img=5",
-    avatarFallback: "SJ",
-    mutualFriends: 5
-  },
-  {
-    id: "user3",
-    name: "Michael Brown",
-    avatarUrl: "https://i.pravatar.cc/100?img=12",
-    avatarFallback: "MB",
-    mutualFriends: 2
-  }
-];
 
 const contactList = [
   {
@@ -62,33 +44,7 @@ const RightSidebar = ({ className }: { className?: string }) => {
   return (
     <div className={`w-80 p-4 hidden lg:block ${className}`}>
       <div className="space-y-6">
-        <div>
-          <h3 className="font-semibold text-lg mb-4">Friend Requests</h3>
-          {friendRequests.map((request) => (
-            <div key={request.id} className="flex items-start gap-3 mb-4">
-              <Avatar>
-                <AvatarImage src={request.avatarUrl} alt={request.name} />
-                <AvatarFallback>{request.avatarFallback}</AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                <Link to={`/profile/${request.id}`} className="font-medium hover:underline">
-                  {request.name}
-                </Link>
-                <p className="text-sm text-gray-500">{request.mutualFriends} mutual friends</p>
-                <div className="flex gap-2 mt-2">
-                  <Button className="bg-bee-blue text-white hover:bg-bee-darkblue" size="sm">
-                    Accept
-                  </Button>
-                  <Button variant="outline" size="sm">
-                    Decline
-                  </Button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        
-        <div className="pt-4 border-t border-gray-200">
+        <div className="pt-0">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-semibold text-lg">Contacts</h3>
           </div>
