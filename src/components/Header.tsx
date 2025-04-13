@@ -1,10 +1,11 @@
 
-import { Link } from "react-router-dom";
-import { Search, Bell, MessageSquare, ChevronDown, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Bell, MessageSquare, ChevronDown, Menu } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useState } from "react";
+import Logo from "./Logo";
+import SearchBar from "./SearchBar";
 
 interface HeaderProps {
   toggleMobileSidebar: () => void;
@@ -26,23 +27,11 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
             <Menu className="h-6 w-6" />
           </Button>
           
-          <Link to="/" className="flex items-center gap-2">
-            <img 
-              src="/lovable-uploads/d5511939-48e5-44cf-9f2b-d8f9e829b842.png" 
-              alt="B.E.E App Bahamas Logo" 
-              className="h-20 sm:h-24 w-auto" // Increased logo size
-            />
-            <span className="text-2xl font-bold text-bee-blue hidden sm:inline">B.E.E App</span>
-          </Link>
+          <Logo />
         </div>
         
-        <div className="hidden md:flex relative max-w-md w-full mx-4">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-          <Input
-            type="search"
-            placeholder="Search B.E.E App..."
-            className="pl-10 bg-gray-100 border-none"
-          />
+        <div className="hidden md:flex mx-4">
+          <SearchBar />
         </div>
         
         <div className="flex items-center gap-2">
