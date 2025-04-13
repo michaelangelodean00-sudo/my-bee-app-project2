@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Bell, MessageSquare, ChevronDown, Menu } from "lucide-react";
+import { Bell, MessageSquare, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import SearchBar from "./SearchBar";
@@ -19,16 +19,7 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
     <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200 pb-2">
       <div className="container flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-4">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="md:hidden" 
-            onClick={toggleMobileSidebar}
-          >
-            <Menu className="h-6 w-6" />
-          </Button>
-          
-          <Logo className="scale-75 md:scale-90" />
+          <Logo className="scale-100 md:scale-125" />
         </div>
         
         <div className="hidden md:flex mx-4">
