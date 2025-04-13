@@ -1,11 +1,9 @@
-
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import Logo from "./Logo";
-import McdonaldsAdWidget from "./McdonaldsAdWidget";
 import BurgerAdWidget from "./BurgerAdWidget";
 
 interface HeaderProps {
@@ -23,7 +21,6 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
         </div>
         
         <div className="flex items-center gap-3">
-          <McdonaldsAdWidget />
           <BurgerAdWidget />
           <div className="relative">
             <Button 
