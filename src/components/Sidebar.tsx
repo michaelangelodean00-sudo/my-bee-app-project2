@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { SidebarEventIcon } from "./icons/EventIcons";
 import { 
-  HomeIcon, 
+  EventSvgIcon as HomeIcon, 
   SettingsIcon,
   LogOutIcon,
   Building2Icon,
