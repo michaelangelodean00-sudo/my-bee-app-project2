@@ -3,14 +3,15 @@ import React from 'react';
 
 interface LogoImageProps {
   className?: string;
-  size?: 'default' | 'large' | 'xlarge';
+  size?: 'default' | 'large' | 'xlarge' | 'xxlarge';
 }
 
 const LogoImage = ({ className, size = 'default' }: LogoImageProps) => {
   const sizeClasses = {
     default: 'h-32 w-auto max-h-32',
     large: 'h-40 w-auto max-h-40',
-    xlarge: 'h-48 w-auto max-h-48'
+    xlarge: 'h-48 w-auto max-h-48',
+    xxlarge: 'h-56 w-auto max-h-56'
   };
 
   return (
