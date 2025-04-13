@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from "react";
-import { X } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -42,13 +41,13 @@ const ads: Ad[] = [
 ];
 
 const AdSplash = () => {
-  const [dismissed, setDismissed] = useState(false);
+  // Removed the dismissed state since ads should always show
   const [autoplay, setAutoplay] = useState(true);
   
   useEffect(() => {
     let interval: number;
     
-    if (autoplay && !dismissed) {
+    if (autoplay) {
       interval = window.setInterval(() => {
         const carouselNext = document.querySelector('[data-carousel-next]');
         if (carouselNext) {
@@ -62,11 +61,7 @@ const AdSplash = () => {
         clearInterval(interval);
       }
     };
-  }, [autoplay, dismissed]);
-  
-  if (dismissed) {
-    return null;
-  }
+  }, [autoplay]);
   
   return (
     <div className="relative bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white overflow-hidden">
@@ -99,13 +94,7 @@ const AdSplash = () => {
         <CarouselPrevious className="left-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30" />
         <CarouselNext className="right-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30" data-carousel-next />
       </Carousel>
-      <button 
-        onClick={() => setDismissed(true)}
-        className="absolute top-2 right-2 text-white/80 hover:text-white"
-        aria-label="Close advertisement"
-      >
-        <X size={20} />
-      </button>
+      {/* Removed the close button */}
     </div>
   );
 };
