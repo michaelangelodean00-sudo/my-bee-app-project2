@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import SearchBar from "./SearchBar";
 import WeatherWidget from "./WeatherWidget";
-import Logo from "./Logo";
 
 interface HeaderProps {
   toggleMobileSidebar: () => void;
@@ -19,7 +18,8 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
     <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200 pb-2">
       <div className="container flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-4">
-          <Logo className="scale-100 md:scale-125" />
+          {/* Empty div to maintain spacing */}
+          <div className="w-8"></div>
         </div>
         
         <div className="hidden md:flex mx-4">

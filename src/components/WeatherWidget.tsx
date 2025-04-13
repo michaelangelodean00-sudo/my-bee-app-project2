@@ -8,15 +8,15 @@ const WeatherWidget = () => {
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      // Format time to show hours:minutes AM/PM in Eastern Standard Time
+      // Format time to show hours:minutes AM/PM in Bahamas Time
       const options: Intl.DateTimeFormatOptions = { 
         hour: 'numeric', 
         minute: '2-digit', 
         hour12: true,
-        timeZone: 'America/New_York'
+        timeZone: 'America/Nassau'
       };
       const formatter = new Intl.DateTimeFormat('en-US', options);
-      setCurrentTime(formatter.format(now) + ' EST');
+      setCurrentTime(formatter.format(now) + ' BST'); // Bahamas Standard Time
     };
 
     updateTime();
