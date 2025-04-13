@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Cpu, Armchair, Shirt, Quote } from "lucide-react";
+import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Cpu, Armchair, Shirt, Quote, Baby } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -24,7 +24,8 @@ const categories = [
   { id: "electronics", name: "Electronics", icon: <Cpu size={16} /> },
   { id: "furniture", name: "Furniture", icon: <Armchair size={16} /> },
   { id: "menswear", name: "Menswear", icon: <Shirt size={16} /> },
-  { id: "womenswear", name: "Womenswear", icon: <Quote size={16} /> }
+  { id: "womenswear", name: "Womenswear", icon: <Quote size={16} /> },
+  { id: "babyclothing", name: "Baby Clothing", icon: <Baby size={16} /> }
 ];
 
 // Form schema
