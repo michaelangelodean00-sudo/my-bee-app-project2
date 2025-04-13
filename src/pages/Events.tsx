@@ -1,6 +1,11 @@
 
 import React from 'react';
-import { Music, Calendar, MapPin, Users } from 'lucide-react';
+import { 
+  FaGuitar, 
+  FaUsers, 
+  FaCalendarAlt, 
+  FaMapMarkerAlt 
+} from 'react-icons/fa';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 const Events = () => {
@@ -51,13 +56,13 @@ const Events = () => {
                   <div className="uppercase tracking-wide text-sm text-bee-blue font-semibold">Music Festival</div>
                   <h2 className="mt-1 text-xl font-medium text-gray-900">Bahamas Summer Jam</h2>
                   <div className="mt-2 flex items-center text-sm text-gray-500">
-                    <Calendar className="mr-1 h-4 w-4"/> June 15, 2025 • 4:00 PM
+                    <FaCalendarAlt className="mr-1 h-4 w-4"/> June 15, 2025 • 4:00 PM
                   </div>
                   <div className="mt-2 flex items-center text-sm text-gray-500">
-                    <MapPin className="mr-1 h-4 w-4"/> Paradise Island, Nassau
+                    <FaMapMarkerAlt className="mr-1 h-4 w-4"/> Paradise Island, Nassau
                   </div>
                   <div className="mt-2 flex items-center text-sm text-gray-500">
-                    <Users className="mr-1 h-4 w-4"/> 350+ Attending
+                    <FaUsers className="mr-1 h-4 w-4"/> 350+ Attending
                   </div>
                   <button className="mt-4 bg-bee-blue text-white px-4 py-2 rounded hover:bg-bee-darkblue transition-colors">
                     View Details
@@ -78,13 +83,13 @@ const Events = () => {
                   <div className="uppercase tracking-wide text-sm text-bee-blue font-semibold">Cultural</div>
                   <h2 className="mt-1 text-xl font-medium text-gray-900">Junkanoo Celebration</h2>
                   <div className="mt-2 flex items-center text-sm text-gray-500">
-                    <Calendar className="mr-1 h-4 w-4"/> July 10, 2025 • 8:00 PM
+                    <FaCalendarAlt className="mr-1 h-4 w-4"/> July 10, 2025 • 8:00 PM
                   </div>
                   <div className="mt-2 flex items-center text-sm text-gray-500">
-                    <MapPin className="mr-1 h-4 w-4"/> Downtown Nassau
+                    <FaMapMarkerAlt className="mr-1 h-4 w-4"/> Downtown Nassau
                   </div>
                   <div className="mt-2 flex items-center text-sm text-gray-500">
-                    <Users className="mr-1 h-4 w-4"/> 500+ Attending
+                    <FaUsers className="mr-1 h-4 w-4"/> 500+ Attending
                   </div>
                   <button className="mt-4 bg-bee-blue text-white px-4 py-2 rounded hover:bg-bee-darkblue transition-colors">
                     View Details
@@ -106,13 +111,13 @@ const Events = () => {
                   <div className="uppercase tracking-wide text-sm text-bee-blue font-semibold">Festival</div>
                   <h2 className="mt-1 text-xl font-medium text-gray-900">Bahamas Carnival</h2>
                   <div className="mt-2 flex items-center text-sm text-gray-500">
-                    <Calendar className="mr-1 h-4 w-4"/> May 3, 2025 • 12:00 PM
+                    <FaCalendarAlt className="mr-1 h-4 w-4"/> May 3, 2025 • 12:00 PM
                   </div>
                   <div className="mt-2 flex items-center text-sm text-gray-500">
-                    <MapPin className="mr-1 h-4 w-4"/> Various Locations
+                    <FaMapMarkerAlt className="mr-1 h-4 w-4"/> Various Locations
                   </div>
                   <div className="mt-2 flex items-center text-sm text-gray-500">
-                    <Users className="mr-1 h-4 w-4"/> 2000+ Attending
+                    <FaUsers className="mr-1 h-4 w-4"/> 2000+ Attending
                   </div>
                   <button className="mt-4 bg-bee-blue text-white px-4 py-2 rounded hover:bg-bee-darkblue transition-colors">
                     View Details
