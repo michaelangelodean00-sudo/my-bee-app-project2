@@ -5,6 +5,7 @@ import { ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import Logo from "./Logo";
+import McdonaldsAdWidget from "./McdonaldsAdWidget";
 
 interface HeaderProps {
   toggleMobileSidebar: () => void;
@@ -21,6 +22,7 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
         </div>
         
         <div className="flex items-center gap-3">
+          <McdonaldsAdWidget />
           <div className="relative">
             <Button 
               variant="ghost" 
