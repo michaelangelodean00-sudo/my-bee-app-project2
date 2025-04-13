@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Building2, Calendar, ShoppingBag } from "lucide-react";
+import { Handshake, Calendar, ShoppingCart } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -30,7 +30,7 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
             className="w-full h-20 flex flex-col items-center justify-center gap-2 text-sm font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
           >
             <div className="rounded-full bg-gradient-to-br from-blue-400 to-blue-600 p-2 mb-1">
-              <Building2 size={24} className="text-white" />
+              <Handshake size={24} className="text-white" />
             </div>
             Business
           </Button>
@@ -52,7 +52,7 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
             className="w-full h-20 flex flex-col items-center justify-center gap-2 text-sm font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
           >
             <div className="rounded-full bg-gradient-to-br from-green-400 to-green-600 p-2 mb-1">
-              <ShoppingBag size={24} className="text-white" />
+              <ShoppingCart size={24} className="text-white" />
             </div>
             E-commerce
           </Button>
