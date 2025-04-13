@@ -14,36 +14,43 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
   return (
     <div className="bee-card p-4 mb-4">
       <div className="flex gap-3 items-center mb-3">
-        <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>JD</AvatarFallback>
+        <Avatar className="w-16 h-16">
+          <AvatarImage src="/lovable-uploads/d5511939-48e5-44cf-9f2b-d8f9e829b842.png" />
+          <AvatarFallback>BEE</AvatarFallback>
         </Avatar>
-        <span className="text-lg font-medium">Quick Access</span>
+        <span className="text-2xl font-bold text-bee-blue">B.E.E App</span>
       </div>
       
       <Separator className="my-3" />
       
-      <div className="flex justify-between items-center">
-        <div className="flex gap-2 w-full justify-between">
-          <Link to="/businesses" className="flex-1">
-            <Button variant="ghost" size="sm" className="text-gray-600 w-full">
-              <Building2 size={18} className="mr-2 text-bee-blue" />
-              Business
-            </Button>
-          </Link>
-          <Link to="/events" className="flex-1">
-            <Button variant="ghost" size="sm" className="text-gray-600 w-full">
-              <Calendar size={18} className="mr-2 text-bee-blue" />
-              Events
-            </Button>
-          </Link>
-          <Link to="/ecommerce" className="flex-1">
-            <Button variant="ghost" size="sm" className="text-gray-600 w-full">
-              <ShoppingBag size={18} className="mr-2 text-bee-blue" />
-              E-commerce
-            </Button>
-          </Link>
-        </div>
+      <div className="grid grid-cols-3 gap-4">
+        <Link to="/businesses" className="w-full">
+          <Button 
+            variant="outline" 
+            className="w-full h-20 flex flex-col items-center justify-center gap-2 text-lg font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
+          >
+            <Building2 size={32} className="text-bee-blue" />
+            Business
+          </Button>
+        </Link>
+        <Link to="/events" className="w-full">
+          <Button 
+            variant="outline" 
+            className="w-full h-20 flex flex-col items-center justify-center gap-2 text-lg font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
+          >
+            <Calendar size={32} className="text-bee-blue" />
+            Events
+          </Button>
+        </Link>
+        <Link to="/ecommerce" className="w-full">
+          <Button 
+            variant="outline" 
+            className="w-full h-20 flex flex-col items-center justify-center gap-2 text-lg font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
+          >
+            <ShoppingBag size={32} className="text-bee-blue" />
+            E-commerce
+          </Button>
+        </Link>
       </div>
     </div>
   );
