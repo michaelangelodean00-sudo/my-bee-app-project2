@@ -8,7 +8,7 @@ interface LogoImageProps {
 
 const LogoImage = ({ className, size = 'default' }: LogoImageProps) => {
   const sizeClasses = {
-    default: 'h-12 w-auto max-h-12',
+    default: 'h-16 w-auto max-h-16',
     large: 'h-24 w-auto max-h-24',
     xlarge: 'h-32 w-auto max-h-32'
   };
