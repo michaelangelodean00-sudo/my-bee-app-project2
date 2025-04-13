@@ -21,44 +21,42 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
         <span className="text-3xl font-bold text-bee-blue font-bebas-neue tracking-wider">B.E.E App</span>
       </div>
       
-      <Separator className="my-4" />
+      <Separator className="my-3" />
       
-      <div className="mt-6 mb-4">
-        <div className="grid grid-cols-3 gap-4">
-          <Link to="/businesses" className="w-full">
-            <Button 
-              variant="outline" 
-              className="w-full h-20 flex flex-col items-center justify-center gap-2 text-sm font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
-            >
-              <div className="rounded-full bg-gradient-to-br from-blue-400 to-blue-600 p-2 mb-1">
-                <Handshake size={24} className="text-white" />
-              </div>
-              Business
-            </Button>
-          </Link>
-          <Link to="/events" className="w-full">
-            <Button 
-              variant="outline" 
-              className="w-full h-20 flex flex-col items-center justify-center gap-2 text-sm font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
-            >
-              <div className="rounded-full bg-gradient-to-br from-purple-400 to-purple-600 p-2 mb-1">
-                <Drum size={24} className="text-white" />
-              </div>
-              Events
-            </Button>
-          </Link>
-          <Link to="/ecommerce" className="w-full">
-            <Button 
-              variant="outline" 
-              className="w-full h-20 flex flex-col items-center justify-center gap-2 text-sm font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
-            >
-              <div className="rounded-full bg-gradient-to-br from-green-400 to-green-600 p-2 mb-1">
-                <ShoppingCart size={24} className="text-white" />
-              </div>
-              E-commerce
-            </Button>
-          </Link>
-        </div>
+      <div className="grid grid-cols-3 gap-4">
+        <Link to="/businesses" className="w-full">
+          <Button 
+            variant="outline" 
+            className="w-full h-20 flex flex-col items-center justify-center gap-2 text-sm font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
+          >
+            <div className="rounded-full bg-gradient-to-br from-blue-400 to-blue-600 p-2 mb-1">
+              <Handshake size={24} className="text-white" />
+            </div>
+            Business
+          </Button>
+        </Link>
+        <Link to="/events" className="w-full">
+          <Button 
+            variant="outline" 
+            className="w-full h-20 flex flex-col items-center justify-center gap-2 text-sm font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
+          >
+            <div className="rounded-full bg-gradient-to-br from-purple-400 to-purple-600 p-2 mb-1">
+              <Drum size={24} className="text-white" />
+            </div>
+            Events
+          </Button>
+        </Link>
+        <Link to="/ecommerce" className="w-full">
+          <Button 
+            variant="outline" 
+            className="w-full h-20 flex flex-col items-center justify-center gap-2 text-sm font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10"
+          >
+            <div className="rounded-full bg-gradient-to-br from-green-400 to-green-600 p-2 mb-1">
+              <ShoppingCart size={24} className="text-white" />
+            </div>
+            E-commerce
+          </Button>
+        </Link>
       </div>
     </div>
   );
