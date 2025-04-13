@@ -10,7 +10,7 @@ interface LogoProps {
 const Logo = ({ className }: LogoProps) => {
   return (
     <Link to="/" className={`flex items-center gap-2 ${className ?? ''}`}>
-      <LogoImage size="xxxlarge" /> {/* Updated to use new xxxlarge size */}
+      <LogoImage size="xxlarge" /> {/* Reduced from xxxlarge to xxlarge */}
       <LogoText />
     </Link>
   );
