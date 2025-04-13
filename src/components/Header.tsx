@@ -16,7 +16,7 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
   
   return (
     <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200">
-      <div className="container flex h-32 items-center justify-between px-4"> {/* Reduced height to h-32 */}
+      <div className="container flex h-28 items-center justify-between px-4"> {/* Reduced height to h-28 to minimize logo size */}
         <div className="flex items-center gap-4">
           <Logo />
         </div>
@@ -66,3 +66,4 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
 };
 
 export default Header;
+
