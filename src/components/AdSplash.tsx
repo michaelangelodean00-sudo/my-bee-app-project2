@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import {
   Carousel,
@@ -21,7 +20,7 @@ const ads: Ad[] = [
     id: "ad1",
     title: "Summer Festival Weekend",
     description: "Join us for the biggest summer celebration with live music, food, and activities for the whole family.",
-    imageUrl: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&auto=format&fit=crop",
+    imageUrl: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7cab4?w=800&auto=format&fit=crop",
     linkUrl: "#summer-festival"
   },
   {
@@ -41,7 +40,6 @@ const ads: Ad[] = [
 ];
 
 const AdSplash = () => {
-  // Removed the dismissed state since ads should always show
   const [autoplay, setAutoplay] = useState(true);
   
   useEffect(() => {
@@ -65,24 +63,24 @@ const AdSplash = () => {
   
   return (
     <div className="relative bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white overflow-hidden">
-      <Carousel className="max-w-6xl mx-auto px-4 py-4" opts={{ loop: true }}>
+      <Carousel className="max-w-6xl mx-auto px-4 py-2" opts={{ loop: true }}>
         <CarouselContent>
           {ads.map((ad) => (
             <CarouselItem key={ad.id}>
               <div className="flex flex-col md:flex-row items-center">
-                <div className="w-full md:w-1/3 mb-4 md:mb-0 md:mr-6">
+                <div className="w-full md:w-1/3 mb-2 md:mb-0 md:mr-4">
                   <img 
                     src={ad.imageUrl} 
                     alt={ad.title} 
-                    className="rounded-lg w-full h-32 md:h-40 object-cover shadow-md"
+                    className="rounded-lg w-full h-24 md:h-32 object-cover shadow-md"
                   />
                 </div>
                 <div className="w-full md:w-2/3">
-                  <h3 className="text-xl font-bold mb-2">{ad.title}</h3>
-                  <p className="mb-4">{ad.description}</p>
+                  <h3 className="text-lg font-bold mb-1">{ad.title}</h3>
+                  <p className="mb-2 text-sm">{ad.description}</p>
                   <a 
                     href={ad.linkUrl} 
-                    className="inline-block bg-bee-yellow text-bee-black px-4 py-2 rounded-md font-medium hover:bg-bee-yellow/90 transition-colors"
+                    className="inline-block bg-bee-yellow text-bee-black px-3 py-1 rounded-md text-sm font-medium hover:bg-bee-yellow/90 transition-colors"
                   >
                     Get More Info
                   </a>
@@ -99,4 +97,3 @@ const AdSplash = () => {
 };
 
 export default AdSplash;
-
