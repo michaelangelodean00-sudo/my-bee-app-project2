@@ -10,7 +10,7 @@ const LogoImage = ({ className }: LogoImageProps) => {
     <img 
       src="/lovable-uploads/f4a4e8e5-574a-4d93-88f9-155b1f4b2e32.png" 
       alt="B.E.E App Bahamas Logo" 
-      className={`h-24 sm:h-32 w-auto max-h-32 ${className ?? ''}`}
+      className={`h-28 sm:h-40 w-auto max-h-40 ${className ?? ''}`}
     />
   );
 };
