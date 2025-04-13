@@ -18,7 +18,7 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
           <AvatarImage src="/lovable-uploads/d5511939-48e5-44cf-9f2b-d8f9e829b842.png" />
           <AvatarFallback>BEE</AvatarFallback>
         </Avatar>
-        <span className="text-2xl font-bold text-bee-blue font-bebas-neue">B.E.E App</span>
+        <span className="text-3xl font-bold text-bee-blue font-bebas-neue tracking-wider">B.E.E App</span>
       </div>
       
       <Separator className="my-3" />

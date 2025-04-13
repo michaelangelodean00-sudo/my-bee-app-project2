@@ -11,7 +11,7 @@ const Logo = ({ className }: LogoProps) => {
       <img 
         src="/lovable-uploads/f4a4e8e5-574a-4d93-88f9-155b1f4b2e32.png" 
         alt="B.E.E App Bahamas Logo" 
-        className="h-16 sm:h-20 w-auto" // Slightly reduced height to prevent spillover
+        className="h-20 sm:h-24 w-auto" // Increased size but still prevents spillover
       />
       <span className="text-2xl font-bold text-bee-blue hidden sm:inline font-bebas-neue">B.E.E App</span>
     </Link>
