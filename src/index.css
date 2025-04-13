@@ -3,6 +3,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* SF Pro Font */
+@font-face {
+  font-family: 'SF Pro';
+  src: url('https://fonts.cdnfonts.com/css/sf-pro-display');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF Pro';
+  src: url('https://fonts.cdnfonts.com/css/sf-pro-display');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   :root {
     --background: 0 0% 98%;
@@ -105,5 +122,11 @@
   
   .bee-link {
     @apply text-bee-blue hover:text-bee-darkblue transition-colors;
+  }
+}
+
+@layer utilities {
+  .font-sf-pro {
+    font-family: 'SF Pro', system-ui, sans-serif;
   }
 }
