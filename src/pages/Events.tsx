@@ -1,3 +1,4 @@
+
 import React from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
@@ -45,7 +46,7 @@ const Events = () => {
               Click on any icon to use it in your application. Each icon comes with multiple color options.
             </p>
             
-            <h2 className="text-xl font-semibold mb-4">Lucide React Icons</h2>
+            <h2 className="text-xl font-semibold mb-4">Custom SVG Icons</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-8">
               {iconTypes.map((iconType) => (
                 <div key={iconType} className="flex flex-col items-center p-4 border rounded-lg hover:bg-gray-50">
@@ -59,7 +60,7 @@ const Events = () => {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-8">
               {backgroundTypes.map((bgType) => (
                 <div key={bgType} className="flex flex-col items-center p-4 border rounded-lg hover:bg-gray-50">
-                  <EventIcon type="concert" background={bgType} className="mb-2" />
+                  <EventIcon type="crowd" background={bgType} className="mb-2" />
                   <span className="text-sm font-medium text-gray-700">{bgType}</span>
                 </div>
               ))}
