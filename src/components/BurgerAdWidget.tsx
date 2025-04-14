@@ -11,9 +11,9 @@ const BurgerAdWidget = () => {
           className="w-8 h-8 rounded-full object-cover mr-2 border-2 border-white/30"
         />
         <div>
-          <p className="text-xs font-bold whitespace-nowrap">
+          <p className="text-xs font-medium font-body tracking-wide whitespace-nowrap">
             Try the new<br />
-            <span className="text-yellow-300">Deluxe Burger</span>
+            <span className="text-yellow-300 font-semibold letter-spacing-tight">Deluxe Burger</span>
           </p>
         </div>
       </div>

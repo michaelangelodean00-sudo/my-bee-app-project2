@@ -97,8 +97,22 @@ export default {
         'button': '0.5rem'
       },
       fontFamily: {
-        'sans': ['Inter', 'SF Pro', 'system-ui', 'sans-serif'],
-        'display': ['Bebas Neue', 'system-ui', 'sans-serif']
+        'sans': ['Poppins', 'SF Pro', 'system-ui', 'sans-serif'],
+        'display': ['Montserrat', 'system-ui', 'sans-serif'],
+        'heading': ['Montserrat', 'system-ui', 'sans-serif'],
+        'body': ['Poppins', 'SF Pro', 'system-ui', 'sans-serif']
+      },
+      fontSize: {
+        'display-xl': ['3.815rem', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '800' }],
+        'display-lg': ['3.052rem', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '800' }],
+        'display-md': ['2.441rem', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '700' }],
+        'display-sm': ['1.953rem', { lineHeight: '1.2', letterSpacing: '-0.01em', fontWeight: '700' }]
+      },
+      lineHeight: {
+        'tight': '1.1',
+        'snug': '1.3',
+        'normal': '1.5',
+        'relaxed': '1.75'
       },
       transitionProperty: {
         'colors': 'color, background-color, border-color, text-decoration-color, fill, stroke',
