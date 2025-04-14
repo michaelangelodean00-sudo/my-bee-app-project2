@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -112,7 +113,7 @@
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display tracking-wide leading-tight;
+    @apply font-display tracking-wide;
   }
 }
 
@@ -159,21 +160,5 @@
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-  }
-  
-  .letter-spacing-tight {
-    letter-spacing: -0.025em;
-  }
-  
-  .letter-spacing-normal {
-    letter-spacing: 0;
-  }
-  
-  .letter-spacing-wide {
-    letter-spacing: 0.025em;
-  }
-  
-  .letter-spacing-wider {
-    letter-spacing: 0.05em;
   }
 }

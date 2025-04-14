@@ -7,7 +7,7 @@ interface LogoTextProps {
 
 const LogoText = ({ className }: LogoTextProps) => {
   return (
-    <span className={`text-4xl sm:text-5xl md:text-6xl font-bold text-bee-blue hidden sm:inline font-heading tracking-wider text-shadow-sm letter-spacing-wide ${className ?? ''}`}>
+    <span className={`text-4xl sm:text-5xl md:text-6xl font-bold text-bee-blue hidden sm:inline font-display tracking-wider text-shadow-sm ${className ?? ''}`}>
       B.E.E App
     </span>
   );
