@@ -6,11 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
 
-interface CreatePostProps {
-  onPostCreated?: (post: any) => void;
-}
-
-const CreatePost = ({ onPostCreated }: CreatePostProps) => {
+const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) => {
   const navigate = useNavigate();
   
   const navigateTo = (path: string) => {
@@ -33,32 +29,32 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
         <Button 
           onClick={() => navigateTo("/businesses")}
           variant="outline" 
-          className="w-full h-36 flex flex-col items-center justify-center gap-4 text-lg font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10 py-6"
+          className="w-full h-36 flex flex-col items-center justify-center gap-4 text-lg font-semibold border-bee-blue hover:bg-bee-blue/10 py-6"
         >
           <div className="rounded-full bg-gradient-to-br from-blue-400 to-blue-600 p-4 mb-2">
             <Handshake size={48} className="text-white" />
           </div>
-          Business
+          <span className="text-2xl font-extrabold text-[#8B5CF6] tracking-wide">Business</span>
         </Button>
         <Button 
           onClick={() => navigateTo("/events")}
           variant="outline" 
-          className="w-full h-36 flex flex-col items-center justify-center gap-4 text-lg font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10 py-6"
+          className="w-full h-36 flex flex-col items-center justify-center gap-4 text-lg font-semibold border-bee-blue hover:bg-bee-blue/10 py-6"
         >
           <div className="rounded-full bg-gradient-to-br from-purple-400 to-purple-600 p-4 mb-2">
             <Drum size={48} className="text-white" />
           </div>
-          Events
+          <span className="text-2xl font-extrabold text-[#F97316] tracking-wide">Events</span>
         </Button>
         <Button 
           onClick={() => navigateTo("/ecommerce")}
           variant="outline" 
-          className="w-full h-36 flex flex-col items-center justify-center gap-4 text-lg font-semibold text-bee-blue border-bee-blue hover:bg-bee-blue/10 py-6"
+          className="w-full h-36 flex flex-col items-center justify-center gap-4 text-lg font-semibold border-bee-blue hover:bg-bee-blue/10 py-6"
         >
           <div className="rounded-full bg-gradient-to-br from-green-400 to-green-600 p-4 mb-2">
             <ShoppingCart size={48} className="text-white" />
           </div>
-          E-commerce
+          <span className="text-2xl font-extrabold text-[#1EAEDB] tracking-wide">E-commerce</span>
         </Button>
       </div>
     </div>
@@ -66,3 +62,4 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
 };
 
 export default CreatePost;
+
