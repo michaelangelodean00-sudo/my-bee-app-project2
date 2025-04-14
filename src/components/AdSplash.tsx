@@ -41,7 +41,6 @@ const ads: Ad[] = [
 ];
 
 const AdSplash = () => {
-  // Removed the dismissed state since ads should always show
   const [autoplay, setAutoplay] = useState(true);
   
   useEffect(() => {
@@ -64,7 +63,7 @@ const AdSplash = () => {
   }, [autoplay]);
   
   return (
-    <div className="relative bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white overflow-hidden">
+    <div className="relative bg-bee-blue/90 text-white overflow-hidden">
       <Carousel className="max-w-6xl mx-auto px-4 py-4" opts={{ loop: true }}>
         <CarouselContent>
           {ads.map((ad) => (
@@ -74,7 +73,7 @@ const AdSplash = () => {
                   <img 
                     src={ad.imageUrl} 
                     alt={ad.title} 
-                    className="rounded-lg w-full h-32 md:h-40 object-cover shadow-md"
+                    className="rounded-lg w-full h-32 md:h-40 object-cover"
                   />
                 </div>
                 <div className="w-full md:w-2/3">
@@ -99,4 +98,3 @@ const AdSplash = () => {
 };
 
 export default AdSplash;
-
