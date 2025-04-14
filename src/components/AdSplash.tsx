@@ -41,7 +41,6 @@ const ads: Ad[] = [
 ];
 
 const AdSplash = () => {
-  // Removed the dismissed state since ads should always show
   const [autoplay, setAutoplay] = useState(true);
   
   useEffect(() => {
@@ -64,7 +63,7 @@ const AdSplash = () => {
   }, [autoplay]);
   
   return (
-    <div className="relative bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white overflow-hidden shine-effect">
+    <div className="bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white">
       <Carousel className="max-w-6xl mx-auto px-4 py-6" opts={{ loop: true }}>
         <CarouselContent>
           {ads.map((ad) => (
@@ -74,15 +73,15 @@ const AdSplash = () => {
                   <img 
                     src={ad.imageUrl} 
                     alt={ad.title} 
-                    className="rounded-professional w-full h-32 md:h-40 object-cover shadow-elevation-3"
+                    className="w-full h-32 md:h-40 object-cover"
                   />
                 </div>
                 <div className="w-full md:w-2/3">
-                  <h3 className="text-xl font-bold mb-2 text-shadow-sm">{ad.title}</h3>
-                  <p className="mb-4 text-balance">{ad.description}</p>
+                  <h3 className="text-xl font-bold mb-2">{ad.title}</h3>
+                  <p className="mb-4">{ad.description}</p>
                   <a 
                     href={ad.linkUrl} 
-                    className="inline-block bg-bee-yellow text-bee-black px-4 py-2 rounded-button font-medium shadow-elevation-1 hover:shadow-elevation-2 hover:bg-bee-yellow/90 transition-all duration-300"
+                    className="inline-block bg-bee-yellow text-bee-black px-4 py-2 rounded"
                   >
                     Get More Info
                   </a>
@@ -91,8 +90,8 @@ const AdSplash = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30 shadow-elevation-1" />
-        <CarouselNext className="right-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30 shadow-elevation-1" data-carousel-next />
+        <CarouselPrevious className="left-2 top-1/2 -translate-y-1/2" />
+        <CarouselNext className="right-2 top-1/2 -translate-y-1/2" data-carousel-next />
       </Carousel>
     </div>
   );
