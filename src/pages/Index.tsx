@@ -27,26 +27,26 @@ const Index = () => {
         {/* Mobile Sidebar Overlay */}
         {mobileSidebarOpen && (
           <div 
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
+            className="fixed inset-0 bg-black/50 z-40 md:hidden"
             onClick={toggleMobileSidebar}
           />
         )}
         
         {/* Mobile Sidebar */}
-        <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-elevation-3 transform ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out md:hidden`}>
+        <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white transform ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 ease-in-out md:hidden`}>
           <Sidebar />
         </div>
         
         {/* Desktop Sidebar */}
-        <Sidebar className="hidden md:block shadow-elevation-2" />
+        <Sidebar className="hidden md:block" />
         
         {/* Main Content */}
-        <div className="flex-1 w-full max-w-5xl mx-auto py-8 px-4 sm:px-6">
+        <div className="flex-1 w-full max-w-5xl mx-auto py-6 px-4">
           <CreatePost onPostCreated={handleNewPost} />
           
           {/* Posts will appear here */}
           {posts.map((post, index) => (
-            <div key={index} className="mt-6">{/* Post component */}</div>
+            <div key={index} className="mt-4">{/* Post component */}</div>
           ))}
         </div>
         

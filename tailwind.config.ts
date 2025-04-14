@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -67,34 +66,21 @@ export default {
           yellow: {
             DEFAULT: '#FFD500',
             soft: '#FFF4CC',
-            muted: '#FFF9E6'
           },
           blue: {
             DEFAULT: '#39D0EA',
             dark: '#2195B3',
             light: '#A5E8F3',
-            subtle: '#E6F6FA'
           },
           black: {
             DEFAULT: '#222222',
             soft: '#3A3A3A',
-            lightest: '#4A4A4A'
           }
         }
       },
       boxShadow: {
         'card': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
         'hover': '0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04)',
-        'professional': '0 12px 24px -6px rgba(0, 0, 0, 0.08), 0 8px 16px -4px rgba(0, 0, 0, 0.04)',
-        'elevation-1': '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
-        'elevation-2': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-        'elevation-3': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-        'elevation-4': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-        'inner-glow': 'inset 0 2px 4px 0 rgba(255, 255, 255, 0.15)',
-      },
-      borderRadius: {
-        'professional': '0.75rem',
-        'button': '0.5rem'
       },
       fontFamily: {
         'sans': ['Inter', 'SF Pro', 'system-ui', 'sans-serif'],
@@ -103,7 +89,6 @@ export default {
       transitionProperty: {
         'colors': 'color, background-color, border-color, text-decoration-color, fill, stroke',
         'all': 'all',
-        'professional': 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
       },
       keyframes: {
         'accordion-down': {
@@ -135,33 +120,13 @@ export default {
         'subtle-bounce': {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-3px)' },
-        },
-        'professional-hover': {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-3px)' }
-        },
-        'float': {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-5px)' }
-        },
-        'pulse-subtle': {
-          '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '0.8' }
-        },
-        'shine': {
-          '0%': { backgroundPosition: '200% 0' },
-          '100%': { backgroundPosition: '-200% 0' }
         }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'fade-in': 'fade-in 0.5s ease-out',
-        'subtle-hover': 'subtle-bounce 0.3s ease-in-out',
-        'professional-hover': 'professional-hover 0.3s ease-in-out',
-        'float': 'float 3s ease-in-out infinite',
-        'pulse-subtle': 'pulse-subtle 2s ease-in-out infinite',
-        'shine': 'shine 8s ease-in-out infinite'
+        'subtle-hover': 'subtle-bounce 0.3s ease-in-out'
       }
     }
   },
