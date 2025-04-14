@@ -64,8 +64,8 @@ const AdSplash = () => {
   }, [autoplay]);
   
   return (
-    <div className="relative bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white overflow-hidden">
-      <Carousel className="max-w-6xl mx-auto px-4 py-4" opts={{ loop: true }}>
+    <div className="relative bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white overflow-hidden shine-effect">
+      <Carousel className="max-w-6xl mx-auto px-4 py-6" opts={{ loop: true }}>
         <CarouselContent>
           {ads.map((ad) => (
             <CarouselItem key={ad.id}>
@@ -74,15 +74,15 @@ const AdSplash = () => {
                   <img 
                     src={ad.imageUrl} 
                     alt={ad.title} 
-                    className="rounded-lg w-full h-32 md:h-40 object-cover shadow-md"
+                    className="rounded-professional w-full h-32 md:h-40 object-cover shadow-elevation-3"
                   />
                 </div>
                 <div className="w-full md:w-2/3">
-                  <h3 className="text-xl font-bold mb-2">{ad.title}</h3>
-                  <p className="mb-4">{ad.description}</p>
+                  <h3 className="text-xl font-bold mb-2 text-shadow-sm">{ad.title}</h3>
+                  <p className="mb-4 text-balance">{ad.description}</p>
                   <a 
                     href={ad.linkUrl} 
-                    className="inline-block bg-bee-yellow text-bee-black px-4 py-2 rounded-md font-medium hover:bg-bee-yellow/90 transition-colors"
+                    className="inline-block bg-bee-yellow text-bee-black px-4 py-2 rounded-button font-medium shadow-elevation-1 hover:shadow-elevation-2 hover:bg-bee-yellow/90 transition-all duration-300"
                   >
                     Get More Info
                   </a>
@@ -91,12 +91,11 @@ const AdSplash = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30" />
-        <CarouselNext className="right-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30" data-carousel-next />
+        <CarouselPrevious className="left-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30 shadow-elevation-1" />
+        <CarouselNext className="right-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30 shadow-elevation-1" data-carousel-next />
       </Carousel>
     </div>
   );
 };
 
 export default AdSplash;
-

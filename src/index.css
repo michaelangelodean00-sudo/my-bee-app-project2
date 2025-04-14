@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -108,26 +109,56 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-wide;
   }
 }
 
 @layer components {
   .bee-btn {
-    @apply bg-bee-yellow text-bee-black font-medium hover:bg-bee-yellow/90 transition-colors;
+    @apply bg-bee-yellow text-bee-black font-medium hover:bg-bee-yellow/90 hover:shadow-md transition-all duration-300 rounded-button;
   }
   
   .bee-card {
-    @apply bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow;
+    @apply bg-white border border-gray-200 rounded-professional shadow-elevation-1 hover:shadow-elevation-2 transition-all duration-300;
   }
   
   .bee-link {
-    @apply text-bee-blue hover:text-bee-darkblue transition-colors;
+    @apply text-bee-blue hover:text-bee-darkblue transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-bee-blue hover:after:w-full after:transition-all after:duration-300;
+  }
+  
+  .professional-shadow {
+    @apply shadow-elevation-1 hover:shadow-elevation-2 transition-all duration-300;
+  }
+  
+  .shine-effect {
+    @apply relative overflow-hidden before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-all before:duration-1000 before:ease-in-out;
   }
 }
 
 @layer utilities {
   .font-sf-pro {
     font-family: 'SF Pro', system-ui, sans-serif;
+  }
+  
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .floating {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .text-shadow-sm {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .text-gradient {
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }
