@@ -20,7 +20,6 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
           <AvatarImage src="/lovable-uploads/d5511939-48e5-44cf-9f2b-d8f9e829b842.png" />
           <AvatarFallback>BEE</AvatarFallback>
         </Avatar>
-        <span className="text-3xl font-bold text-bee-blue font-bebas-neue tracking-wider">B.E.E App</span>
       </div>
       
       <Separator className="my-4" />
@@ -62,4 +61,3 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
 };
 
 export default CreatePost;
-
