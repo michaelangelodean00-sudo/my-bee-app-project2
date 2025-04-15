@@ -16,13 +16,11 @@ const LogoImage = ({ className, size = 'default' }: LogoImageProps) => {
   };
 
   return (
-    <div className={`overflow-hidden ${sizeClasses[size]} ${className ?? ''}`}>
-      <img 
-        src="/lovable-uploads/f4a4e8e5-574a-4d93-88f9-155b1f4b2e32.png" 
-        alt="B.E.E App Bahamas Logo" 
-        className="object-contain object-top w-full h-full"
-      />
-    </div>
+    <img 
+      src="/lovable-uploads/f4a4e8e5-574a-4d93-88f9-155b1f4b2e32.png" 
+      alt="B.E.E App Bahamas Logo" 
+      className={`object-contain ${sizeClasses[size]} ${className ?? ''}`}
+    />
   );
 };
 
