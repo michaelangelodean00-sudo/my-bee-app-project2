@@ -16,11 +16,17 @@ const LogoImage = ({ className, size = 'default' }: LogoImageProps) => {
   };
 
   return (
-    <img 
-      src="/lovable-uploads/f4a4e8e5-574a-4d93-88f9-155b1f4b2e32.png" 
-      alt="B.E.E App Bahamas Logo" 
-      className={`object-contain ${sizeClasses[size]} ${className ?? ''}`}
-    />
+    <div className={`${sizeClasses[size]} ${className ?? ''} relative`}>
+      <div className="absolute inset-0 overflow-hidden">
+        <img 
+          src="/lovable-uploads/f4a4e8e5-574a-4d93-88f9-155b1f4b2e32.png" 
+          alt="B.E.E App Bahamas Logo" 
+          className="object-contain object-top w-full h-full"
+        />
+      </div>
+      {/* This creates a soft clip mask at the bottom of the logo */}
+      <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-white to-transparent" />
+    </div>
   );
 };
 
