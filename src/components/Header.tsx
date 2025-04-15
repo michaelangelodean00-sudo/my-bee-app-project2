@@ -16,7 +16,7 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
   
   return (
     <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200">
-      <div className="container flex h-28 items-center justify-between px-4"> {/* Reduced back to h-28 */}
+      <div className="container flex h-24 items-center justify-between px-4"> {/* Reduced height to h-24 */}
         <div className="flex items-center gap-4">
           <Logo />
         </div>
