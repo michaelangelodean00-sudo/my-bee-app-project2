@@ -14,4 +14,3 @@ const LogoText = ({ className }: LogoTextProps) => {
 };
 
 export default LogoText;
-
