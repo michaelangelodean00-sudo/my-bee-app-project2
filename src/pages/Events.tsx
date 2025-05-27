@@ -7,8 +7,27 @@ import {
   FaMapMarkerAlt 
 } from 'react-icons/fa';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import VideoPlayer from "../components/VideoPlayer";
 
 const Events = () => {
+  // Mock approved videos for events
+  const eventVideos = [
+    {
+      id: "1",
+      platform: "youtube",
+      videoUrl: "https://youtube.com/watch?v=example1",
+      title: "Bahamas Summer Jam Highlights",
+      description: "Check out the best moments from last year's festival"
+    },
+    {
+      id: "2",
+      platform: "instagram",
+      videoUrl: "https://instagram.com/reel/example2",
+      title: "Junkanoo Behind the Scenes",
+      description: "See how the amazing costumes are made"
+    }
+  ];
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col items-center justify-center space-y-6">
@@ -37,9 +56,10 @@ const Events = () => {
         </div>
         
         <Tabs defaultValue="upcoming" className="w-full max-w-3xl">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="upcoming">Upcoming Events</TabsTrigger>
             <TabsTrigger value="popular">Popular</TabsTrigger>
+            <TabsTrigger value="videos">Event Videos</TabsTrigger>
             <TabsTrigger value="create">Create Event</TabsTrigger>
           </TabsList>
           
@@ -124,6 +144,20 @@ const Events = () => {
                   </button>
                 </div>
               </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="videos" className="mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {eventVideos.map((video) => (
+                <VideoPlayer
+                  key={video.id}
+                  platform={video.platform}
+                  videoUrl={video.videoUrl}
+                  title={video.title}
+                  description={video.description}
+                />
+              ))}
             </div>
           </TabsContent>
           
