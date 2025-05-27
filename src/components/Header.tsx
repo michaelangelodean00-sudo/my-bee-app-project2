@@ -4,7 +4,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import Logo from "./Logo";
 import BurgerAdWidget from "./BurgerAdWidget";
 
 interface HeaderProps {
@@ -18,7 +17,7 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
     <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200">
       <div className="container flex h-24 items-center justify-between px-4">
         <div className="flex items-center gap-4">
-          <Logo />
+          {/* Logo removed */}
         </div>
         
         <div className="flex items-center gap-3">
