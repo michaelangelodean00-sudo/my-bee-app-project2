@@ -17,7 +17,7 @@ const LogoImage = ({ className, size = 'default' }: LogoImageProps) => {
 
   return (
     <img 
-      src="/lovable-uploads/f4a4e8e5-574a-4d93-88f9-155b1f4b2e32.png" 
+      src="/lovable-uploads/2893898e-72bd-4b44-96ae-dba8462fe68c.png" 
       alt="B.E.E App Bahamas Logo" 
       className={`object-contain ${sizeClasses[size]} ${className ?? ''}`}
     />
