@@ -1,7 +1,6 @@
 
 import { useState } from "react";
 import { Handshake, Drum, ShoppingCart } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
@@ -15,13 +14,6 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
   
   return (
     <div className="bee-card p-4 mb-4 max-w-4xl mx-auto">
-      <div className="flex gap-3 items-center mb-3 justify-center">
-        <Avatar className="w-16 h-16">
-          <AvatarImage src="/lovable-uploads/d5511939-48e5-44cf-9f2b-d8f9e829b842.png" />
-          <AvatarFallback>BEE</AvatarFallback>
-        </Avatar>
-      </div>
-      
       <Separator className="my-4" />
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-2 sm:px-4">
