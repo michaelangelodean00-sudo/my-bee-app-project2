@@ -51,16 +51,16 @@ const BurgerAdWidget = () => {
 
   return (
     <div 
-      className={`${currentAd.bgColor} text-white px-3 py-2 rounded-lg flex items-center mr-2 transition-all duration-500 ${isRotating ? 'scale-95 opacity-80' : 'scale-100 opacity-100'}`}
+      className={`${currentAd.bgColor} text-white px-2 py-1.5 rounded-md flex items-center transition-all duration-500 ${isRotating ? 'scale-95 opacity-80' : 'scale-100 opacity-100'} max-w-[140px] sm:max-w-[160px]`}
     >
       <div className="flex items-center">
         <img 
           src={currentAd.imageSrc}
           alt={currentAd.altText} 
-          className="w-8 h-8 rounded-full object-cover mr-2"
+          className="w-6 h-6 rounded-full object-cover mr-1.5"
         />
-        <div>
-          <p className="text-xs font-bold whitespace-nowrap">
+        <div className="min-w-0 flex-1">
+          <p className="text-xs font-bold whitespace-nowrap overflow-hidden text-ellipsis">
             {currentAd.title}<br />
             <span className={currentAd.highlightColor}>{currentAd.highlight}</span>
           </p>
