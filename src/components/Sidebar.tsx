@@ -1,16 +1,11 @@
 
 import { Link } from "react-router-dom";
-import { 
-  Building2,
-  ShoppingBag,
-  Drum
-} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const menuItems = [
-  { icon: Building2, label: "Business", path: "/businesses" },
-  { icon: Drum, label: "Events", path: "/events" },
-  { icon: ShoppingBag, label: "E-commerce", path: "/ecommerce" },
+  { label: "Business", path: "/businesses" },
+  { label: "Events", path: "/events" },
+  { label: "E-commerce", path: "/ecommerce" },
 ];
 
 const Sidebar = ({ className }: { className?: string }) => {
@@ -24,7 +19,6 @@ const Sidebar = ({ className }: { className?: string }) => {
               to={item.path}
               className="flex items-center gap-3 p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
             >
-              <item.icon size={20} className="text-bee-blue" />
               <span className="font-medium">{item.label}</span>
             </Link>
           ))}
