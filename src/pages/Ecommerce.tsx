@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
@@ -19,6 +20,7 @@ import { toast } from "sonner";
 const categories = [
   { id: "vehicles", name: "Vehicles", icon: <Car size={16} /> },
   { id: "rentals", name: "Rentals", icon: <Home size={16} /> },
+  { id: "realestate", name: "Real Estate", icon: <Home size={16} /> },
   { id: "electronics", name: "Electronics", icon: <Tv size={16} /> },
   { id: "furniture", name: "Furniture", icon: <Armchair size={16} /> },
   { id: "menswear", name: "Menswear", icon: <Shirt size={16} /> },
