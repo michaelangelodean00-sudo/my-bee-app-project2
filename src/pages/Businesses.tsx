@@ -1,7 +1,9 @@
 
+import { useEffect } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import VideoPlayer from "../components/VideoPlayer";
+import { toast } from "sonner";
 
 // Mock approved videos for businesses
 const businessVideos = [
@@ -10,32 +12,47 @@ const businessVideos = [
     platform: "instagram",
     videoUrl: "https://instagram.com/reel/example1",
     title: "Ocean View Restaurant Tour",
-    description: "Take a virtual tour of our beautiful oceanfront dining experience with stunning sunset views"
+    description: "Take a virtual tour of our beautiful oceanfront dining experience with stunning sunset views",
+    isNew: true
   },
   {
     id: "2",
     platform: "youtube",
     videoUrl: "https://youtube.com/watch?v=example2",
     title: "Island Tours Adventure",
-    description: "See what makes our tours special and unforgettable. Join us for the adventure of a lifetime!"
+    description: "See what makes our tours special and unforgettable. Join us for the adventure of a lifetime!",
+    isNew: false
   },
   {
     id: "3",
     platform: "tiktok",
     videoUrl: "https://tiktok.com/@example",
     title: "Spa Relaxation Tips",
-    description: "Quick relaxation techniques you can try at home for instant stress relief"
+    description: "Quick relaxation techniques you can try at home for instant stress relief",
+    isNew: true
   },
   {
     id: "4",
     platform: "facebook",
     videoUrl: "https://facebook.com/video/example",
     title: "Local Craft Brewery",
-    description: "Behind the scenes at Nassau's finest craft brewery. Fresh beer, great vibes!"
+    description: "Behind the scenes at Nassau's finest craft brewery. Fresh beer, great vibes!",
+    isNew: false
   }
 ];
 
 const Businesses = () => {
+  useEffect(() => {
+    // Show notification for new videos when component mounts
+    const newVideos = businessVideos.filter(video => video.isNew);
+    if (newVideos.length > 0) {
+      toast.success(`${newVideos.length} new business video${newVideos.length > 1 ? 's' : ''} added!`, {
+        description: "Check out the latest content from local businesses",
+        duration: 4000,
+      });
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-black">
       <Header toggleMobileSidebar={() => {}} />
@@ -56,6 +73,7 @@ const Businesses = () => {
                   videoUrl={video.videoUrl}
                   title={video.title}
                   description={video.description}
+                  isNew={video.isNew}
                 />
               </div>
             ))}

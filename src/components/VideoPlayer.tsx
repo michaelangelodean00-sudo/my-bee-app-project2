@@ -10,9 +10,10 @@ interface VideoPlayerProps {
   videoUrl: string;
   title: string;
   description?: string;
+  isNew?: boolean;
 }
 
-const VideoPlayer = ({ platform, videoUrl, title, description }: VideoPlayerProps) => {
+const VideoPlayer = ({ platform, videoUrl, title, description, isNew = false }: VideoPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(Math.floor(Math.random() * 1000));
@@ -78,10 +79,17 @@ const VideoPlayer = ({ platform, videoUrl, title, description }: VideoPlayerProp
           </div>
         )}
 
-        {/* Platform Badge */}
-        <Badge className={`absolute top-4 left-4 z-20 ${getPlatformColor(platform)} font-semibold px-3 py-1`}>
-          {platform.toUpperCase()}
-        </Badge>
+        {/* Platform Badge and NEW badge */}
+        <div className="absolute top-4 left-4 z-20 flex gap-2">
+          <Badge className={`${getPlatformColor(platform)} font-semibold px-3 py-1`}>
+            {platform.toUpperCase()}
+          </Badge>
+          {isNew && (
+            <Badge className="bg-green-500 text-white font-semibold px-3 py-1 animate-pulse">
+              NEW
+            </Badge>
+          )}
+        </div>
 
         {/* Right Side Actions (TikTok style) */}
         <div className="absolute right-4 bottom-32 z-20 flex flex-col gap-6">
