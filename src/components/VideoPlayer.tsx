@@ -45,7 +45,7 @@ const VideoPlayer = ({ platform, videoUrl, title, description }: VideoPlayerProp
   };
 
   return (
-    <Card className="relative w-full h-[600px] bg-black rounded-xl overflow-hidden border-0 shadow-lg">
+    <div className="relative w-full h-full bg-black overflow-hidden snap-start">
       {/* Video Area */}
       <div className="relative w-full h-full">
         {embedUrl && isPlaying ? (
@@ -84,67 +84,67 @@ const VideoPlayer = ({ platform, videoUrl, title, description }: VideoPlayerProp
         </Badge>
 
         {/* Right Side Actions (TikTok style) */}
-        <div className="absolute right-4 bottom-20 z-20 flex flex-col gap-4">
+        <div className="absolute right-4 bottom-32 z-20 flex flex-col gap-6">
           <div className="flex flex-col items-center">
             <Button
               onClick={handleLike}
-              className={`w-12 h-12 rounded-full ${
+              className={`w-14 h-14 rounded-full ${
                 liked ? 'bg-red-500 hover:bg-red-600' : 'bg-white/20 hover:bg-white/30'
               } backdrop-blur-sm border-2 border-white/50`}
               size="icon"
             >
-              <Heart size={20} className={liked ? 'fill-white text-white' : 'text-white'} />
+              <Heart size={24} className={liked ? 'fill-white text-white' : 'text-white'} />
             </Button>
-            <span className="text-white text-xs font-semibold mt-1">{likeCount}</span>
+            <span className="text-white text-sm font-semibold mt-2">{likeCount}</span>
           </div>
 
           <div className="flex flex-col items-center">
             <Button
-              className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border-2 border-white/50"
+              className="w-14 h-14 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border-2 border-white/50"
               size="icon"
             >
-              <MessageCircle size={20} className="text-white" />
+              <MessageCircle size={24} className="text-white" />
             </Button>
-            <span className="text-white text-xs font-semibold mt-1">{Math.floor(Math.random() * 100)}</span>
+            <span className="text-white text-sm font-semibold mt-2">{Math.floor(Math.random() * 100)}</span>
           </div>
 
           <div className="flex flex-col items-center">
             <Button
-              className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border-2 border-white/50"
+              className="w-14 h-14 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border-2 border-white/50"
               size="icon"
             >
-              <Share size={20} className="text-white" />
+              <Share size={24} className="text-white" />
             </Button>
-            <span className="text-white text-xs font-semibold mt-1">{Math.floor(Math.random() * 50)}</span>
+            <span className="text-white text-sm font-semibold mt-2">{Math.floor(Math.random() * 50)}</span>
           </div>
 
           <Button
-            className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border-2 border-white/50"
+            className="w-14 h-14 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border-2 border-white/50"
             size="icon"
           >
-            <MoreHorizontal size={20} className="text-white" />
+            <MoreHorizontal size={24} className="text-white" />
           </Button>
         </div>
 
         {/* Bottom Content Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 z-20 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 pb-6">
+        <div className="absolute bottom-0 left-0 right-16 z-20 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 pb-8">
           <div className="text-white">
-            <h3 className="font-bold text-lg mb-1 leading-tight">{title}</h3>
+            <h3 className="font-bold text-xl mb-2 leading-tight">{title}</h3>
             {description && (
-              <p className="text-sm text-gray-200 mb-3 leading-relaxed opacity-90">{description}</p>
+              <p className="text-base text-gray-200 mb-4 leading-relaxed opacity-90">{description}</p>
             )}
             <Button 
               variant="outline" 
-              size="sm" 
+              size="default" 
               className="bg-white/20 border-white/30 text-white hover:bg-white/30 backdrop-blur-sm"
             >
-              <ExternalLink size={14} className="mr-2" />
+              <ExternalLink size={16} className="mr-2" />
               View Original
             </Button>
           </div>
         </div>
       </div>
-    </Card>
+    </div>
   );
 };
 
