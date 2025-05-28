@@ -53,31 +53,31 @@ const AdWidget = () => {
   const currentAd = ads[currentAdIndex];
   
   return (
-    <div className="bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white p-3 relative">
+    <div className="bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white p-6 relative">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center">
-        <div className="w-full md:w-1/4 mb-3 md:mb-0 md:mr-4">
+        <div className="w-full md:w-1/3 mb-4 md:mb-0 md:mr-6">
           <img 
             src={currentAd.imageUrl} 
             alt={currentAd.title} 
-            className="rounded-lg h-24 w-full object-cover shadow-md"
+            className="rounded-lg h-40 w-full object-cover shadow-md"
           />
         </div>
-        <div className="w-full md:w-3/4">
-          <h3 className="text-lg font-bold mb-1">{currentAd.title}</h3>
-          <p className="text-sm mb-2">{currentAd.description}</p>
+        <div className="w-full md:w-2/3">
+          <h3 className="text-xl font-bold mb-2">{currentAd.title}</h3>
+          <p className="text-base mb-3">{currentAd.description}</p>
           <a 
             href={currentAd.linkUrl} 
-            className="inline-block bg-bee-yellow text-bee-black px-3 py-1 rounded-md text-sm font-medium hover:bg-bee-yellow/90 transition-colors"
+            className="inline-block bg-bee-yellow text-bee-black px-4 py-2 rounded-md text-base font-medium hover:bg-bee-yellow/90 transition-colors"
           >
             Learn More
           </a>
         </div>
         <button 
           onClick={() => setDismissed(true)}
-          className="absolute top-2 right-2 text-white/80 hover:text-white"
+          className="absolute top-3 right-3 text-white/80 hover:text-white"
           aria-label="Dismiss ad"
         >
-          <X size={16} />
+          <X size={18} />
         </button>
       </div>
     </div>
