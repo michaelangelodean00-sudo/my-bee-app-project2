@@ -54,30 +54,30 @@ const AdWidget = () => {
   
   return (
     <div className="bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white min-h-screen flex items-center relative">
-      <div className="max-w-6xl mx-auto w-full px-12 py-16 flex flex-col md:flex-row items-center">
-        <div className="w-full md:w-1/2 mb-8 md:mb-0 md:mr-8">
+      <div className="max-w-full mx-auto w-full px-16 py-24 flex flex-col md:flex-row items-center">
+        <div className="w-full md:w-1/2 mb-12 md:mb-0 md:mr-16">
           <img 
             src={currentAd.imageUrl} 
             alt={currentAd.title} 
-            className="rounded-lg h-96 md:h-[500px] w-full object-cover shadow-md"
+            className="rounded-xl h-[500px] md:h-[700px] w-full object-cover shadow-2xl"
           />
         </div>
         <div className="w-full md:w-1/2">
-          <h3 className="text-3xl md:text-4xl font-bold mb-6">{currentAd.title}</h3>
-          <p className="text-lg md:text-xl mb-8 leading-relaxed">{currentAd.description}</p>
+          <h3 className="text-5xl md:text-7xl font-bold mb-12 leading-tight">{currentAd.title}</h3>
+          <p className="text-2xl md:text-3xl mb-16 leading-relaxed">{currentAd.description}</p>
           <a 
             href={currentAd.linkUrl} 
-            className="inline-block bg-bee-yellow text-bee-black px-8 py-4 rounded-md text-lg font-medium hover:bg-bee-yellow/90 transition-colors"
+            className="inline-block bg-bee-yellow text-bee-black px-12 py-6 rounded-xl text-2xl font-medium hover:bg-bee-yellow/90 transition-colors shadow-lg"
           >
             Learn More
           </a>
         </div>
         <button 
           onClick={() => setDismissed(true)}
-          className="absolute top-4 right-4 text-white/80 hover:text-white"
+          className="absolute top-8 right-8 text-white/80 hover:text-white"
           aria-label="Dismiss ad"
         >
-          <X size={24} />
+          <X size={32} />
         </button>
       </div>
     </div>
