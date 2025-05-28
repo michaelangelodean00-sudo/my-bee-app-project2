@@ -53,31 +53,31 @@ const AdWidget = () => {
   const currentAd = ads[currentAdIndex];
   
   return (
-    <div className="bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white p-12 relative">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center">
-        <div className="w-full md:w-1/3 mb-4 md:mb-0 md:mr-6">
+    <div className="bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white min-h-screen flex items-center relative">
+      <div className="max-w-6xl mx-auto w-full px-12 py-16 flex flex-col md:flex-row items-center">
+        <div className="w-full md:w-1/2 mb-8 md:mb-0 md:mr-8">
           <img 
             src={currentAd.imageUrl} 
             alt={currentAd.title} 
-            className="rounded-lg h-72 w-full object-cover shadow-md"
+            className="rounded-lg h-96 md:h-[500px] w-full object-cover shadow-md"
           />
         </div>
-        <div className="w-full md:w-2/3">
-          <h3 className="text-xl font-bold mb-2">{currentAd.title}</h3>
-          <p className="text-base mb-3">{currentAd.description}</p>
+        <div className="w-full md:w-1/2">
+          <h3 className="text-3xl md:text-4xl font-bold mb-6">{currentAd.title}</h3>
+          <p className="text-lg md:text-xl mb-8 leading-relaxed">{currentAd.description}</p>
           <a 
             href={currentAd.linkUrl} 
-            className="inline-block bg-bee-yellow text-bee-black px-4 py-2 rounded-md text-base font-medium hover:bg-bee-yellow/90 transition-colors"
+            className="inline-block bg-bee-yellow text-bee-black px-8 py-4 rounded-md text-lg font-medium hover:bg-bee-yellow/90 transition-colors"
           >
             Learn More
           </a>
         </div>
         <button 
           onClick={() => setDismissed(true)}
-          className="absolute top-3 right-3 text-white/80 hover:text-white"
+          className="absolute top-4 right-4 text-white/80 hover:text-white"
           aria-label="Dismiss ad"
         >
-          <X size={18} />
+          <X size={24} />
         </button>
       </div>
     </div>
