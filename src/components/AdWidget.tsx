@@ -53,13 +53,13 @@ const AdWidget = () => {
   const currentAd = ads[currentAdIndex];
   
   return (
-    <div className="bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white p-6 relative">
+    <div className="bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white p-8 relative">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center">
         <div className="w-full md:w-1/3 mb-4 md:mb-0 md:mr-6">
           <img 
             src={currentAd.imageUrl} 
             alt={currentAd.title} 
-            className="rounded-lg h-40 w-full object-cover shadow-md"
+            className="rounded-lg h-56 w-full object-cover shadow-md"
           />
         </div>
         <div className="w-full md:w-2/3">
