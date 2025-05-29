@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import AdSplash from "../components/AdSplash";
 import CreatePost from "../components/CreatePost";
 import RightSidebar from "../components/RightSidebar";
+import Post from "../components/Post";
 
 const Index = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -17,9 +18,42 @@ const Index = () => {
   const handleNewPost = (newPost) => {
     setPosts([newPost, ...posts]);
   };
+
+  // Sample posts for demonstration
+  const samplePosts = [
+    {
+      id: "1",
+      author: {
+        id: "user1",
+        name: "John Doe",
+        avatarUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&auto=format&fit=crop&crop=face",
+        avatarFallback: "JD"
+      },
+      content: "Just launched my new business! Check out our amazing products and services. Excited to be part of the B.E.E community! 🚀",
+      timestamp: "2 hours ago",
+      likes: 15,
+      comments: 3,
+      shares: 2
+    },
+    {
+      id: "2",
+      author: {
+        id: "user2",
+        name: "Sarah Wilson",
+        avatarUrl: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&auto=format&fit=crop&crop=face",
+        avatarFallback: "SW"
+      },
+      content: "Beautiful sunset from our event venue today! Can't wait to host more amazing events here. 🌅",
+      imageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&auto=format&fit=crop",
+      timestamp: "4 hours ago",
+      likes: 28,
+      comments: 7,
+      shares: 5
+    }
+  ];
   
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       <Header toggleMobileSidebar={toggleMobileSidebar} />
       <AdSplash />
       
@@ -33,7 +67,7 @@ const Index = () => {
         )}
         
         {/* Mobile Sidebar */}
-        <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white transform ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 ease-in-out md:hidden`}>
+        <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 transform ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 ease-in-out md:hidden`}>
           <Sidebar />
         </div>
         
@@ -44,9 +78,14 @@ const Index = () => {
         <div className="flex-1 w-full max-w-5xl mx-auto py-6 px-4">
           <CreatePost onPostCreated={handleNewPost} />
           
-          {/* Posts will appear here */}
+          {/* Sample Posts */}
+          {samplePosts.map((post) => (
+            <Post key={post.id} {...post} />
+          ))}
+          
+          {/* User Created Posts */}
           {posts.map((post, index) => (
-            <div key={index} className="mt-4">{/* Post component */}</div>
+            <Post key={`user-${index}`} {...post} />
           ))}
         </div>
         
