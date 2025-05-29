@@ -4,10 +4,13 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 interface NotificationContextType {
   hasNewBusinessVideos: boolean;
   hasNewEventsVideos: boolean;
+  hasNewEcommerceItems: boolean;
   setHasNewBusinessVideos: (hasNew: boolean) => void;
   setHasNewEventsVideos: (hasNew: boolean) => void;
+  setHasNewEcommerceItems: (hasNew: boolean) => void;
   markBusinessVideosAsViewed: () => void;
   markEventsVideosAsViewed: () => void;
+  markEcommerceItemsAsViewed: () => void;
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
@@ -27,6 +30,7 @@ interface NotificationProviderProps {
 export const NotificationProvider = ({ children }: NotificationProviderProps) => {
   const [hasNewBusinessVideos, setHasNewBusinessVideos] = useState(true); // Set to true initially to show badge
   const [hasNewEventsVideos, setHasNewEventsVideos] = useState(true); // Set to true initially to show badge
+  const [hasNewEcommerceItems, setHasNewEcommerceItems] = useState(true); // Set to true initially to show badge
 
   const markBusinessVideosAsViewed = () => {
     setHasNewBusinessVideos(false);
@@ -36,14 +40,21 @@ export const NotificationProvider = ({ children }: NotificationProviderProps) =>
     setHasNewEventsVideos(false);
   };
 
+  const markEcommerceItemsAsViewed = () => {
+    setHasNewEcommerceItems(false);
+  };
+
   return (
     <NotificationContext.Provider value={{
       hasNewBusinessVideos,
       hasNewEventsVideos,
+      hasNewEcommerceItems,
       setHasNewBusinessVideos,
       setHasNewEventsVideos,
+      setHasNewEcommerceItems,
       markBusinessVideosAsViewed,
-      markEventsVideosAsViewed
+      markEventsVideosAsViewed,
+      markEcommerceItemsAsViewed
     }}>
       {children}
     </NotificationContext.Provider>

@@ -13,8 +13,8 @@ interface HeaderProps {
 }
 
 const Header = ({ toggleMobileSidebar }: HeaderProps) => {
-  const { hasNewBusinessVideos, hasNewEventsVideos } = useNotifications();
-  const hasAnyNotifications = hasNewBusinessVideos || hasNewEventsVideos;
+  const { hasNewBusinessVideos, hasNewEventsVideos, hasNewEcommerceItems } = useNotifications();
+  const hasAnyNotifications = hasNewBusinessVideos || hasNewEventsVideos || hasNewEcommerceItems;
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200">

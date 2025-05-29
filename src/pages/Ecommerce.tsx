@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { useNotifications } from "../contexts/NotificationContext";
 
 const categories = [
   { id: "vehicles", name: "Vehicles", icon: <Car size={16} /> },
@@ -40,6 +40,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const Ecommerce = () => {
+  const { markEcommerceItemsAsViewed } = useNotifications();
   const [userProducts, setUserProducts] = useState<any[]>([]);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
@@ -54,6 +55,11 @@ const Ecommerce = () => {
       whatsapp: "",
     }
   });
+
+  // Mark ecommerce items as viewed when the component mounts
+  useEffect(() => {
+    markEcommerceItemsAsViewed();
+  }, [markEcommerceItemsAsViewed]);
   
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
