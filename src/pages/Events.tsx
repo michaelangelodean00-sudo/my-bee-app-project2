@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { 
   FaGuitar, 
   FaUsers, 
@@ -9,8 +9,16 @@ import {
 import VideoPlayer from "../components/VideoPlayer";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
+import { useNotifications } from "../contexts/NotificationContext";
 
 const Events = () => {
+  const { markEventsVideosAsViewed } = useNotifications();
+
+  // Mark events videos as viewed when the component mounts
+  useEffect(() => {
+    markEventsVideosAsViewed();
+  }, [markEventsVideosAsViewed]);
+
   // Mock approved videos for events
   const eventVideos = [
     {

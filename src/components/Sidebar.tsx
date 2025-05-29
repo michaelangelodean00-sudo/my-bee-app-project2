@@ -10,14 +10,15 @@ interface SidebarProps {
 
 const Sidebar = ({ className = "" }: SidebarProps) => {
   const location = useLocation();
-  const { hasNewBusinessVideos } = useNotifications();
+  const { hasNewBusinessVideos, hasNewEventsVideos } = useNotifications();
 
   console.log("Sidebar - hasNewBusinessVideos:", hasNewBusinessVideos); // Debug log
+  console.log("Sidebar - hasNewEventsVideos:", hasNewEventsVideos); // Debug log
 
   const navigationItems = [
     { icon: Home, label: "Home", path: "/" },
     { icon: Building2, label: "Business", path: "/businesses", hasNotification: hasNewBusinessVideos },
-    { icon: Calendar, label: "Events", path: "/events" },
+    { icon: Calendar, label: "Events", path: "/events", hasNotification: hasNewEventsVideos },
     { icon: ShoppingCart, label: "E-commerce", path: "/ecommerce" },
     { icon: Settings, label: "Settings", path: "/settings" },
     { icon: User, label: "Profile", path: "/profile" },
