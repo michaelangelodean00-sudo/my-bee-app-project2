@@ -1,10 +1,8 @@
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, ReactNode } from 'react';
 
 interface NotificationContextType {
-  hasNewBusinessVideos: boolean;
-  setHasNewBusinessVideos: (hasNew: boolean) => void;
-  markBusinessVideosAsViewed: () => void;
+  // Empty for now - can be extended for other notification types
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
@@ -22,18 +20,8 @@ interface NotificationProviderProps {
 }
 
 export const NotificationProvider = ({ children }: NotificationProviderProps) => {
-  const [hasNewBusinessVideos, setHasNewBusinessVideos] = useState(true); // Set to true initially to show badge
-
-  const markBusinessVideosAsViewed = () => {
-    setHasNewBusinessVideos(false);
-  };
-
   return (
-    <NotificationContext.Provider value={{
-      hasNewBusinessVideos,
-      setHasNewBusinessVideos,
-      markBusinessVideosAsViewed
-    }}>
+    <NotificationContext.Provider value={{}}>
       {children}
     </NotificationContext.Provider>
   );

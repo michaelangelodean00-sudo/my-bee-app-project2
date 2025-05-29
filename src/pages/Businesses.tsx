@@ -1,9 +1,7 @@
-import { useEffect } from "react";
+
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import VideoPlayer from "../components/VideoPlayer";
-import { toast } from "sonner";
-import { useNotifications } from "../contexts/NotificationContext";
 
 // Mock approved videos for businesses
 const businessVideos = [
@@ -42,22 +40,6 @@ const businessVideos = [
 ];
 
 const Businesses = () => {
-  const { markBusinessVideosAsViewed } = useNotifications();
-
-  useEffect(() => {
-    // Mark business videos as viewed when component mounts
-    markBusinessVideosAsViewed();
-
-    // Show notification for new videos when component mounts
-    const newVideos = businessVideos.filter(video => video.isNew);
-    if (newVideos.length > 0) {
-      toast.success(`${newVideos.length} new business video${newVideos.length > 1 ? 's' : ''} added!`, {
-        description: "Check out the latest content from local businesses",
-        duration: 4000,
-      });
-    }
-  }, [markBusinessVideosAsViewed]);
-
   return (
     <div className="min-h-screen bg-black">
       <Header toggleMobileSidebar={() => {}} />
