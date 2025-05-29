@@ -1,14 +1,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ChevronDown, Menu, Moon, Sun } from "lucide-react";
+import { ChevronDown, Menu } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import Logo from "./Logo";
 import BurgerAdWidget from "./BurgerAdWidget";
 import SearchBar from "./SearchBar";
 import { useNotifications } from "../contexts/NotificationContext";
-import { useTheme } from "../contexts/ThemeContext";
 
 interface HeaderProps {
   toggleMobileSidebar: () => void;
@@ -16,7 +15,6 @@ interface HeaderProps {
 
 const Header = ({ toggleMobileSidebar }: HeaderProps) => {
   const { hasNewBusinessVideos, hasNewEventsVideos, hasNewEcommerceItems } = useNotifications();
-  const { isDarkMode, toggleDarkMode } = useTheme();
   const hasAnyNotifications = hasNewBusinessVideos || hasNewEventsVideos || hasNewEcommerceItems;
 
   return (
@@ -33,16 +31,6 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
         </div>
         
         <div className="flex items-center gap-3">
-          {/* Dark mode toggle */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleDarkMode}
-            className="text-gray-600 dark:text-gray-300"
-          >
-            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-          </Button>
-
           {/* Mobile menu button with notification indicator */}
           <Button
             variant="ghost"
