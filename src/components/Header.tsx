@@ -20,7 +20,7 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
     <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200">
       <div className="container flex h-32 items-center justify-between px-4">
         <div className="flex items-center gap-6">
-          <Logo className="scale-110" />
+          <Logo className="scale-100" />
           <BurgerAdWidget />
         </div>
         
