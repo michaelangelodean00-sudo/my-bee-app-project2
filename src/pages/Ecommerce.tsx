@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
+import VideoPlayer from "../components/VideoPlayer";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Phone, Armchair, Shirt, Quote, Baby, Smartphone, Tv } from "lucide-react";
+import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Phone, Armchair, Shirt, Quote, Baby, Smartphone, Tv, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -16,6 +17,42 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useNotifications } from "../contexts/NotificationContext";
+
+// Mock e-commerce videos
+const ecommerceVideos = [
+  {
+    id: "1",
+    platform: "instagram",
+    videoUrl: "https://instagram.com/reel/example1",
+    title: "Vintage Watch Collection",
+    description: "Check out these amazing vintage watches! Perfect condition, great prices. DM for details!",
+    isNew: true
+  },
+  {
+    id: "2",
+    platform: "tiktok", 
+    videoUrl: "https://tiktok.com/@example2",
+    title: "Fashion Haul 2024",
+    description: "Latest fashion trends and styles. Get 20% off with code FASHION20!",
+    isNew: true
+  },
+  {
+    id: "3",
+    platform: "youtube",
+    videoUrl: "https://youtube.com/watch?v=example3",
+    title: "Electronics Review",
+    description: "Unboxing and reviewing the latest gadgets. Links in bio for best deals!",
+    isNew: false
+  },
+  {
+    id: "4",
+    platform: "facebook",
+    videoUrl: "https://facebook.com/video/example4",
+    title: "Home Decor Ideas",
+    description: "Transform your space with these affordable home decor pieces!",
+    isNew: true
+  }
+];
 
 const categories = [
   { id: "vehicles", name: "Vehicles", icon: <Car size={16} /> },
@@ -246,9 +283,15 @@ const Ecommerce = () => {
             </Dialog>
           </div>
           
-          <Tabs defaultValue="all" className="mb-6">
+          <Tabs defaultValue="videos" className="mb-6">
             <TabsList className="flex flex-wrap">
-              <TabsTrigger value="all">All Items</TabsTrigger>
+              <TabsTrigger value="videos">
+                <span className="flex items-center gap-2">
+                  <Video size={16} />
+                  Shopping Videos
+                </span>
+              </TabsTrigger>
+              <TabsTrigger value="products">Products</TabsTrigger>
               {categories.map((category) => (
                 <TabsTrigger key={category.id} value={category.id}>
                   <span className="flex items-center gap-2">
@@ -259,7 +302,28 @@ const Ecommerce = () => {
               ))}
             </TabsList>
             
-            <TabsContent value="all">
+            <TabsContent value="videos">
+              <div className="bg-black rounded-lg overflow-hidden">
+                <h2 className="text-xl font-bold py-4 px-4 text-white text-center bg-black">Shopping Videos</h2>
+                
+                {/* TikTok-style video feed */}
+                <div className="max-w-md mx-auto">
+                  {ecommerceVideos.map((video) => (
+                    <div key={video.id} className="h-screen snap-y snap-mandatory">
+                      <VideoPlayer
+                        platform={video.platform}
+                        videoUrl={video.videoUrl}
+                        title={video.title}
+                        description={video.description}
+                        isNew={video.isNew}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="products">
               {userProducts.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                   {userProducts.map((product) => (
