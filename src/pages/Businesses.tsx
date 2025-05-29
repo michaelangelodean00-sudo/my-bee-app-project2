@@ -1,7 +1,8 @@
-
+import { useEffect } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import VideoPlayer from "../components/VideoPlayer";
+import { useNotifications } from "../contexts/NotificationContext";
 
 // Mock approved videos for businesses
 const businessVideos = [
@@ -40,6 +41,13 @@ const businessVideos = [
 ];
 
 const Businesses = () => {
+  const { markBusinessVideosAsViewed } = useNotifications();
+
+  useEffect(() => {
+    // Mark business videos as viewed when component mounts
+    markBusinessVideosAsViewed();
+  }, [markBusinessVideosAsViewed]);
+
   return (
     <div className="min-h-screen bg-black">
       <Header toggleMobileSidebar={() => {}} />

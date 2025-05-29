@@ -1,6 +1,7 @@
 
 import { Building2, Calendar, ShoppingCart, Settings, User, Home, UserCircle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { useNotifications } from "../contexts/NotificationContext";
 
 interface SidebarProps {
   className?: string;
@@ -8,10 +9,11 @@ interface SidebarProps {
 
 const Sidebar = ({ className = "" }: SidebarProps) => {
   const location = useLocation();
+  const { hasNewBusinessVideos } = useNotifications();
 
   const navigationItems = [
     { icon: Home, label: "Home", path: "/" },
-    { icon: Building2, label: "Business", path: "/businesses" },
+    { icon: Building2, label: "Business", path: "/businesses", hasNotification: hasNewBusinessVideos },
     { icon: Calendar, label: "Events", path: "/events" },
     { icon: ShoppingCart, label: "E-commerce", path: "/ecommerce" },
     { icon: Settings, label: "Settings", path: "/settings" },
@@ -30,7 +32,7 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors relative ${
                   isActive
                     ? "bg-blue-50 text-blue-700 border border-blue-200"
                     : "text-gray-700 hover:bg-gray-50"
@@ -38,6 +40,9 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
               >
                 <Icon size={20} />
                 <span className="font-medium">{item.label}</span>
+                {item.hasNotification && (
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white animate-pulse" />
+                )}
               </Link>
             );
           })}
