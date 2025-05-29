@@ -1,3 +1,4 @@
+
 import { Building2, Music, ShoppingCart, Settings, User, Home, UserCircle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useNotifications } from "../contexts/NotificationContext";
@@ -43,7 +44,7 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
                 }`}
               >
                 <div className="flex items-center space-x-3">
-                  <Icon size={20} />
+                  <Icon size={24} />
                   <div className="flex items-center space-x-2">
                     <span className="font-medium">{item.label}</span>
                     {item.hasNotification && (
