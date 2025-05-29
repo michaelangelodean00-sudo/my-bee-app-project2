@@ -2,6 +2,7 @@
 import { Building2, Calendar, ShoppingCart, Settings, User, Home, UserCircle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useNotifications } from "../contexts/NotificationContext";
+import { Badge } from "./ui/badge";
 
 interface SidebarProps {
   className?: string;
@@ -42,7 +43,14 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
               >
                 <div className="flex items-center space-x-3">
                   <Icon size={20} />
-                  <span className="font-medium">{item.label}</span>
+                  <div className="flex items-center space-x-2">
+                    <span className="font-medium">{item.label}</span>
+                    {item.hasNotification && (
+                      <Badge variant="destructive" className="text-xs px-1.5 py-0.5 bg-red-500 text-white animate-pulse">
+                        NEW
+                      </Badge>
+                    )}
+                  </div>
                 </div>
                 {item.hasNotification && (
                   <div className="relative">
