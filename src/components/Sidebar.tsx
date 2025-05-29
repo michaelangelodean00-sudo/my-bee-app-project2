@@ -32,16 +32,18 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors relative ${
+                className={`flex items-center justify-between px-4 py-3 rounded-lg transition-colors relative ${
                   isActive
                     ? "bg-blue-50 text-blue-700 border border-blue-200"
                     : "text-gray-700 hover:bg-gray-50"
                 }`}
               >
-                <Icon size={20} />
-                <span className="font-medium">{item.label}</span>
+                <div className="flex items-center space-x-3">
+                  <Icon size={20} />
+                  <span className="font-medium">{item.label}</span>
+                </div>
                 {item.hasNotification && (
-                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white animate-pulse" />
+                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse flex-shrink-0" />
                 )}
               </Link>
             );
