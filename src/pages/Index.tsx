@@ -5,13 +5,10 @@ import Header from "../components/Header";
 import AdSplash from "../components/AdSplash";
 import CreatePost from "../components/CreatePost";
 import RightSidebar from "../components/RightSidebar";
-import { useNotifications } from "../contexts/NotificationContext";
-import { Badge } from "@/components/ui/badge";
 
 const Index = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [posts, setPosts] = useState([]);
-  const { hasNewBusinessVideos } = useNotifications();
   
   const toggleMobileSidebar = () => {
     setMobileSidebarOpen(!mobileSidebarOpen);
@@ -47,15 +44,10 @@ const Index = () => {
         <div className="flex-1 w-full max-w-5xl mx-auto py-6 px-4">
           <CreatePost onPostCreated={handleNewPost} />
           
-          {/* Local Businesses Section with NEW badge */}
+          {/* Local Businesses Directory */}
           <div className="mt-8 bg-white rounded-lg shadow-sm border p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold text-gray-900">Local Businesses Directory</h2>
-              {hasNewBusinessVideos && (
-                <Badge className="bg-red-500 text-white font-semibold px-3 py-1 animate-pulse">
-                  NEW VIDEOS
-                </Badge>
-              )}
             </div>
             <p className="text-gray-600 mb-4">Discover amazing local businesses in Nassau</p>
             
