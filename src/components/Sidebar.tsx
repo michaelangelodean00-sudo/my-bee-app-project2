@@ -1,28 +1,52 @@
 
-import { Link } from "react-router-dom";
-import { cn } from "@/lib/utils";
+import { Building2, Calendar, ShoppingCart, Settings, User, Home, UserCircle } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { useNotifications } from "../contexts/NotificationContext";
 
-const menuItems = [
-  { label: "Business", path: "/businesses" },
-  { label: "Events", path: "/events" },
-  { label: "E-commerce", path: "/ecommerce" },
-];
+interface SidebarProps {
+  className?: string;
+}
 
-const Sidebar = ({ className }: { className?: string }) => {
+const Sidebar = ({ className = "" }: SidebarProps) => {
+  const location = useLocation();
+  const { hasNewBusinessVideos } = useNotifications();
+
+  const navigationItems = [
+    { icon: Home, label: "Home", path: "/" },
+    { icon: Building2, label: "Business", path: "/businesses", hasNotification: hasNewBusinessVideos },
+    { icon: Calendar, label: "Events", path: "/events" },
+    { icon: ShoppingCart, label: "E-commerce", path: "/ecommerce" },
+    { icon: Settings, label: "Settings", path: "/settings" },
+    { icon: User, label: "Profile", path: "/profile" },
+  ];
+
   return (
-    <div className={cn("w-64 p-4 hidden md:block", className)}>
-      <div className="space-y-6">
-        <div className="flex flex-col gap-1">
-          {menuItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className="flex items-center gap-3 p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              <span className="font-medium">{item.label}</span>
-            </Link>
-          ))}
-        </div>
+    <div className={`w-64 bg-white border-r border-gray-200 min-h-screen ${className}`}>
+      <div className="p-4">
+        <nav className="space-y-2">
+          {navigationItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = location.pathname === item.path;
+            
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors relative ${
+                  isActive
+                    ? "bg-blue-50 text-blue-700 border border-blue-200"
+                    : "text-gray-700 hover:bg-gray-50"
+                }`}
+              >
+                <Icon size={20} />
+                <span className="font-medium">{item.label}</span>
+                {item.hasNotification && (
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white animate-pulse" />
+                )}
+              </Link>
+            );
+          })}
+        </nav>
       </div>
     </div>
   );
