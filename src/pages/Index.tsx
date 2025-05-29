@@ -44,44 +44,6 @@ const Index = () => {
         <div className="flex-1 w-full max-w-5xl mx-auto py-6 px-4">
           <CreatePost onPostCreated={handleNewPost} />
           
-          {/* Local Businesses Directory */}
-          <div className="mt-8 bg-white rounded-lg shadow-sm border p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-gray-900">Local Businesses Directory</h2>
-            </div>
-            <p className="text-gray-600 mb-4">Discover amazing local businesses in Nassau</p>
-            
-            {/* Business Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {/* Ocean View Restaurant */}
-              <div className="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-shadow">
-                <div className="w-full h-32 bg-blue-200 rounded-lg mb-3 flex items-center justify-center">
-                  <span className="text-blue-600 font-medium">Ocean View Restaurant</span>
-                </div>
-                <h3 className="font-semibold text-gray-900">Ocean View Restaurant</h3>
-                <p className="text-sm text-gray-600">Fine dining with stunning ocean views</p>
-              </div>
-              
-              {/* Island Tours */}
-              <div className="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-shadow">
-                <div className="w-full h-32 bg-green-200 rounded-lg mb-3 flex items-center justify-center">
-                  <span className="text-green-600 font-medium">Island Tours</span>
-                </div>
-                <h3 className="font-semibold text-gray-900">Island Tours Adventure</h3>
-                <p className="text-sm text-gray-600">Explore the beautiful Bahamas</p>
-              </div>
-              
-              {/* Spa & Wellness */}
-              <div className="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-shadow">
-                <div className="w-full h-32 bg-purple-200 rounded-lg mb-3 flex items-center justify-center">
-                  <span className="text-purple-600 font-medium">Relaxation Spa</span>
-                </div>
-                <h3 className="font-semibold text-gray-900">Paradise Spa & Wellness</h3>
-                <p className="text-sm text-gray-600">Rejuvenate your mind and body</p>
-              </div>
-            </div>
-          </div>
-          
           {/* Posts will appear here */}
           {posts.map((post, index) => (
             <div key={index} className="mt-4">{/* Post component */}</div>
