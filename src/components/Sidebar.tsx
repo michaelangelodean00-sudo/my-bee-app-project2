@@ -1,5 +1,4 @@
-
-import { Building2, Calendar, ShoppingCart, Settings, User, Home, UserCircle } from "lucide-react";
+import { Building2, Music, ShoppingCart, Settings, User, Home, UserCircle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useNotifications } from "../contexts/NotificationContext";
 import { Badge } from "./ui/badge";
@@ -19,7 +18,7 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
   const navigationItems = [
     { icon: Home, label: "Home", path: "/" },
     { icon: Building2, label: "Business", path: "/businesses", hasNotification: hasNewBusinessVideos },
-    { icon: Calendar, label: "Events", path: "/events", hasNotification: hasNewEventsVideos },
+    { icon: Music, label: "Events", path: "/events", hasNotification: hasNewEventsVideos },
     { icon: ShoppingCart, label: "E-commerce", path: "/ecommerce", hasNotification: hasNewEcommerceItems },
     { icon: Settings, label: "Settings", path: "/settings" },
     { icon: User, label: "Profile", path: "/profile" },
