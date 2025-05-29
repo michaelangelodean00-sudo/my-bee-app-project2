@@ -9,6 +9,7 @@ interface AdContent {
   highlight: string;
   bgColor: string;
   highlightColor: string;
+  linkUrl: string;
 }
 
 const ads: AdContent[] = [
@@ -18,7 +19,8 @@ const ads: AdContent[] = [
     title: "Try the new",
     highlight: "Deluxe Burger",
     bgColor: "bg-amber-600",
-    highlightColor: "text-yellow-300"
+    highlightColor: "text-yellow-300",
+    linkUrl: "https://www.mcdonalds.com"
   },
   {
     imageSrc: "https://images.unsplash.com/photo-1525328437458-0c4d4db7cab4?w=64&h=64&auto=format&fit=crop",
@@ -26,7 +28,8 @@ const ads: AdContent[] = [
     title: "New model",
     highlight: "Test drive today",
     bgColor: "bg-blue-600",
-    highlightColor: "text-sky-300"
+    highlightColor: "text-sky-300",
+    linkUrl: "https://www.toyota.com"
   }
 ];
 
@@ -49,9 +52,14 @@ const BurgerAdWidget = () => {
 
   const currentAd = ads[currentAdIndex];
 
+  const handleAdClick = () => {
+    window.open(currentAd.linkUrl, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <div 
-      className={`${currentAd.bgColor} text-white px-2 py-1.5 rounded-md flex items-center transition-all duration-500 ${isRotating ? 'scale-95 opacity-80' : 'scale-100 opacity-100'} max-w-[140px] sm:max-w-[160px]`}
+      className={`${currentAd.bgColor} text-white px-2 py-1.5 rounded-md flex items-center transition-all duration-500 ${isRotating ? 'scale-95 opacity-80' : 'scale-100 opacity-100'} max-w-[140px] sm:max-w-[160px] cursor-pointer hover:opacity-80`}
+      onClick={handleAdClick}
     >
       <div className="flex items-center">
         <img 
