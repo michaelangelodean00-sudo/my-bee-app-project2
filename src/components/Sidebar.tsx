@@ -11,6 +11,8 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
   const location = useLocation();
   const { hasNewBusinessVideos } = useNotifications();
 
+  console.log("Sidebar - hasNewBusinessVideos:", hasNewBusinessVideos); // Debug log
+
   const navigationItems = [
     { icon: Home, label: "Home", path: "/" },
     { icon: Building2, label: "Business", path: "/businesses", hasNotification: hasNewBusinessVideos },
@@ -43,7 +45,10 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
                   <span className="font-medium">{item.label}</span>
                 </div>
                 {item.hasNotification && (
-                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse flex-shrink-0" />
+                  <div className="relative">
+                    <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse flex-shrink-0" />
+                    <div className="absolute inset-0 w-3 h-3 bg-red-500 rounded-full animate-ping opacity-75" />
+                  </div>
                 )}
               </Link>
             );
