@@ -22,21 +22,21 @@ const ads: Ad[] = [
     title: "Summer Festival Weekend",
     description: "Join us for the biggest summer celebration with live music, food, and activities for the whole family.",
     imageUrl: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&auto=format&fit=crop",
-    linkUrl: "#summer-festival"
+    linkUrl: "https://www.facebook.com/summerfestival"
   },
   {
     id: "ad2",
     title: "Local Business Spotlight",
     description: "Discover the best local businesses and exclusive deals just for B.E.E App members.",
     imageUrl: "https://images.unsplash.com/photo-1525328437458-0c4d4db7cab4?w=800&auto=format&fit=crop",
-    linkUrl: "#business-spotlight"
+    linkUrl: "https://www.instagram.com/localbusiness"
   },
   {
     id: "ad3",
     title: "Island Tour Specials",
     description: "Explore the beauty of our islands with special discounts on tours and excursions.",
     imageUrl: "https://images.unsplash.com/photo-1548574505-5e239809ee19?w=800&auto=format&fit=crop",
-    linkUrl: "#island-tours"
+    linkUrl: "https://www.islandtours.com"
   }
 ];
 
@@ -61,6 +61,10 @@ const AdSplash = () => {
       }
     };
   }, [autoplay]);
+
+  const handleGetMoreInfo = (linkUrl: string) => {
+    window.open(linkUrl, '_blank', 'noopener,noreferrer');
+  };
   
   return (
     <div className="relative bg-bee-blue/90 text-white overflow-hidden">
@@ -79,12 +83,12 @@ const AdSplash = () => {
                 <div className="w-full md:w-2/3">
                   <h3 className="text-xl font-bold mb-2">{ad.title}</h3>
                   <p className="mb-4">{ad.description}</p>
-                  <a 
-                    href={ad.linkUrl} 
-                    className="inline-block bg-bee-yellow text-bee-black px-4 py-2 rounded-md font-medium hover:bg-bee-yellow/90 transition-colors"
+                  <button 
+                    onClick={() => handleGetMoreInfo(ad.linkUrl)}
+                    className="inline-block bg-bee-yellow text-bee-black px-4 py-2 rounded-md font-medium hover:bg-bee-yellow/90 transition-colors cursor-pointer"
                   >
                     Get More Info
-                  </a>
+                  </button>
                 </div>
               </div>
             </CarouselItem>
