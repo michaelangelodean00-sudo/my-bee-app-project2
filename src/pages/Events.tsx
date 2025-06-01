@@ -86,23 +86,22 @@ const Events = () => {
       <div className="flex">
         <Sidebar className="hidden md:block" />
         
-        {/* Main Content */}
-        <div className="flex-1 py-6 px-4">
-          <h1 className="text-2xl font-bold mb-6 text-white text-center">Bahamas Event Videos</h1>
+        {/* Main Content - TikTok Style Feed */}
+        <div className="flex-1 overflow-y-auto h-screen snap-y snap-mandatory">
+          <h1 className="text-2xl font-bold py-4 px-4 text-white text-center sticky top-0 bg-black z-10">Bahamas Event Videos</h1>
           
-          {/* TikTok-style grid - responsive */}
-          <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {eventVideos.map((video) => (
+          {/* Vertical TikTok-style feed */}
+          <div className="max-w-md mx-auto">
+            {eventVideos.map((video) => (
+              <div key={video.id} className="h-screen snap-start">
                 <VideoPlayer
-                  key={video.id}
                   platform={video.platform}
                   videoUrl={video.videoUrl}
                   title={video.title}
                   description={video.description}
                 />
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

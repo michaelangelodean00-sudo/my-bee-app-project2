@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
@@ -37,6 +38,22 @@ const businessVideos = [
     title: "Local Craft Brewery",
     description: "Behind the scenes at Nassau's finest craft brewery. Fresh beer, great vibes!",
     isNew: false
+  },
+  {
+    id: "5",
+    platform: "youtube",
+    videoUrl: "https://youtube.com/watch?v=example5",
+    title: "Conch Shell Art Workshop",
+    description: "Learn how local artisans create beautiful decorations from conch shells found on Bahamian beaches",
+    isNew: true
+  },
+  {
+    id: "6",
+    platform: "instagram",
+    videoUrl: "https://instagram.com/reel/example6",
+    title: "Nassau Fish Market Tour",
+    description: "Experience the vibrant fish market and see the fresh catch that makes Bahamian cuisine so special",
+    isNew: false
   }
 ];
 
@@ -56,13 +73,13 @@ const Businesses = () => {
         <Sidebar className="hidden md:block" />
         
         {/* Main Content - TikTok Style Feed */}
-        <div className="flex-1 overflow-y-auto h-screen">
+        <div className="flex-1 overflow-y-auto h-screen snap-y snap-mandatory">
           <h1 className="text-2xl font-bold py-4 px-4 text-white text-center sticky top-0 bg-black z-10">Business Videos</h1>
           
           {/* Vertical TikTok-style feed */}
           <div className="max-w-md mx-auto">
             {businessVideos.map((video) => (
-              <div key={video.id} className="h-screen snap-y snap-mandatory">
+              <div key={video.id} className="h-screen snap-start">
                 <VideoPlayer
                   platform={video.platform}
                   videoUrl={video.videoUrl}
