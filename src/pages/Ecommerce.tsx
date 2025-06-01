@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import VideoPlayer from "../components/VideoPlayer";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Phone, Armchair, Shirt, Quote, Baby, Smartphone, Tv, Video } from "lucide-react";
+import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Phone, Armchair, Shirt, Quote, Baby, Smartphone, Tv, Video, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -25,7 +25,7 @@ const ecommerceVideos = [
     platform: "instagram",
     videoUrl: "https://instagram.com/reel/example1",
     title: "Vintage Watch Collection",
-    description: "Check out these amazing vintage watches! Perfect condition, great prices. DM for details!",
+    description: "Check out these amazing vintage watches! Perfect condition, great prices. Message me for details!",
     isNew: true
   },
   {
@@ -41,7 +41,7 @@ const ecommerceVideos = [
     platform: "youtube",
     videoUrl: "https://youtube.com/watch?v=example3",
     title: "Electronics Review",
-    description: "Unboxing and reviewing the latest gadgets. Links in bio for best deals!",
+    description: "Unboxing and reviewing the latest gadgets. Contact me through BEE messenger for best deals!",
     isNew: false
   },
   {
@@ -70,7 +70,6 @@ const formSchema = z.object({
   price: z.coerce.number().min(0.01, { message: "Price must be greater than 0" }),
   description: z.string().min(10, { message: "Description must be at least 10 characters" }),
   category: z.string().min(1, { message: "Please select a category" }),
-  whatsapp: z.string().regex(/^\+?[0-9]{10,15}$/, { message: "Please enter a valid WhatsApp number" }),
   image: z.instanceof(File).optional()
 });
 
@@ -81,6 +80,9 @@ const Ecommerce = () => {
   const [userProducts, setUserProducts] = useState<any[]>([]);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [messageDialog, setMessageDialog] = useState(false);
+  const [selectedSeller, setSelectedSeller] = useState<string>("");
+  const [messageText, setMessageText] = useState("");
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -89,7 +91,6 @@ const Ecommerce = () => {
       price: 0,
       description: "",
       category: "",
-      whatsapp: "",
     }
   });
 
@@ -119,7 +120,7 @@ const Ecommerce = () => {
       image: imagePreview || "https://images.unsplash.com/photo-1493962853295-0fd70327578a?w=1000",
       category: data.category,
       description: data.description,
-      whatsapp: data.whatsapp,
+      seller: "You",
       isFeatured: false,
       isUserProduct: true
     };
@@ -129,6 +130,20 @@ const Ecommerce = () => {
     setImagePreview(null);
     form.reset();
     toast.success("Your product has been listed successfully!");
+  };
+
+  const handleMessageSeller = (sellerName: string) => {
+    setSelectedSeller(sellerName);
+    setMessageDialog(true);
+  };
+
+  const sendMessage = () => {
+    if (messageText.trim()) {
+      toast.success(`Message sent to ${selectedSeller} through BEE messenger!`);
+      setMessageDialog(false);
+      setMessageText("");
+      setSelectedSeller("");
+    }
   };
   
   return (
@@ -152,7 +167,7 @@ const Ecommerce = () => {
                 <DialogHeader>
                   <DialogTitle>List Your Item</DialogTitle>
                   <DialogDescription>
-                    Fill in the details to list your item on the marketplace.
+                    Fill in the details to list your item on the marketplace. Buyers will contact you through BEE messenger.
                   </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -231,23 +246,6 @@ const Ecommerce = () => {
                       )}
                     />
                     
-                    <FormField
-                      control={form.control}
-                      name="whatsapp"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>WhatsApp Contact</FormLabel>
-                          <FormControl>
-                            <Input placeholder="+1234567890" {...field} />
-                          </FormControl>
-                          <FormDescription>
-                            Enter your WhatsApp number with country code
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
                     <FormItem>
                       <FormLabel>Product Image</FormLabel>
                       <FormControl>
@@ -282,6 +280,35 @@ const Ecommerce = () => {
               </DialogContent>
             </Dialog>
           </div>
+
+          {/* Message Dialog */}
+          <Dialog open={messageDialog} onOpenChange={setMessageDialog}>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Send Message</DialogTitle>
+                <DialogDescription>
+                  Send a message to {selectedSeller} through BEE messenger
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <Textarea
+                  placeholder="Type your message here..."
+                  value={messageText}
+                  onChange={(e) => setMessageText(e.target.value)}
+                  className="min-h-[100px]"
+                />
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setMessageDialog(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={sendMessage} className="bg-bee-blue hover:bg-bee-blue/90">
+                  <MessageCircle size={16} className="mr-2" />
+                  Send Message
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
           
           <Tabs defaultValue="videos" className="mb-6">
             <TabsList className="flex flex-wrap">
@@ -327,7 +354,7 @@ const Ecommerce = () => {
               {userProducts.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                   {userProducts.map((product) => (
-                    <ProductCard key={product.id} product={product} />
+                    <ProductCard key={product.id} product={product} onMessageSeller={handleMessageSeller} />
                   ))}
                 </div>
               ) : (
@@ -356,7 +383,7 @@ const Ecommerce = () => {
                     {userProducts
                       .filter(p => p.category === category.id)
                       .map((product) => (
-                        <ProductCard key={product.id} product={product} />
+                        <ProductCard key={product.id} product={product} onMessageSeller={handleMessageSeller} />
                       ))}
                   </div>
                 ) : (
@@ -394,21 +421,15 @@ interface ProductProps {
     image: string;
     category: string;
     description?: string;
-    whatsapp?: string;
+    seller?: string;
     isFeatured: boolean;
     isUserProduct?: boolean;
-  }
+  };
+  onMessageSeller: (sellerName: string) => void;
 }
 
-const ProductCard = ({ product }: ProductProps) => {
+const ProductCard = ({ product, onMessageSeller }: ProductProps) => {
   const [showDetails, setShowDetails] = useState(false);
-  
-  const handleWhatsAppClick = () => {
-    if (product.whatsapp) {
-      const url = `https://wa.me/${product.whatsapp.replace(/\+/g, '')}?text=Hi, I'm interested in your product: ${product.name}`;
-      window.open(url, '_blank');
-    }
-  };
   
   return (
     <Card className="overflow-hidden hover:shadow-md transition-shadow">
@@ -464,14 +485,13 @@ const ProductCard = ({ product }: ProductProps) => {
       <CardFooter className="pt-0 flex flex-col gap-2">
         {product.isUserProduct ? (
           <>
-            {product.whatsapp && (
-              <Button 
-                onClick={handleWhatsAppClick}
-                className="w-full bg-green-500 hover:bg-green-600"
-              >
-                Contact Seller
-              </Button>
-            )}
+            <Button 
+              onClick={() => onMessageSeller(product.seller || "Seller")}
+              className="w-full bg-bee-blue hover:bg-bee-blue/90"
+            >
+              <MessageCircle size={16} className="mr-2" />
+              Message Seller
+            </Button>
             <Button 
               variant="outline" 
               className="w-full"
