@@ -19,14 +19,16 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
-      <div className="container flex h-32 items-center justify-between px-4">
-        <div className="flex items-center gap-6">
-          {/* Fixed size logo container */}
-          <div className="flex-shrink-0">
+      <div className="container flex h-32 items-center justify-between px-4 gap-4">
+        {/* Left section - Logo with fixed width container */}
+        <div className="flex items-center gap-4 min-w-0">
+          <div className="flex-shrink-0 w-auto">
             <Logo className="scale-95" />
           </div>
-          {/* Ad widget with constrained width */}
-          <div className="flex-shrink-0">
+          {/* Separator to prevent bleeding */}
+          <div className="hidden sm:block w-px h-8 bg-gray-200 dark:bg-gray-700 mx-2" />
+          {/* Ad widget in its own contained space */}
+          <div className="flex-shrink-0 max-w-[180px]">
             <BurgerAdWidget />
           </div>
         </div>
@@ -36,8 +38,8 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
           <SearchBar />
         </div>
         
-        <div className="flex items-center gap-3">
-          {/* Mobile menu button with notification indicator */}
+        {/* Right section - Mobile menu */}
+        <div className="flex items-center gap-3 flex-shrink-0">
           <Button
             variant="ghost"
             size="icon"
