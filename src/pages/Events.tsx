@@ -87,14 +87,7 @@ const Events = () => {
         
         {/* Main Content - TikTok Style Feed */}
         <div className="flex-1 overflow-y-auto h-screen snap-y snap-mandatory">
-          <div className="sticky top-0 bg-black z-10">
-            <h1 className="text-2xl font-bold py-4 px-4 text-white text-center">Bahamas Event Videos</h1>
-            <div className="px-4 pb-4">
-              <p className="text-sm text-gray-300 text-center italic">
-                * Videos are subject to approval by Bee App admin before posting
-              </p>
-            </div>
-          </div>
+          <h1 className="text-2xl font-bold py-4 px-4 text-white text-center sticky top-0 bg-black z-10">Bahamas Event Videos</h1>
           
           {/* Vertical TikTok-style feed */}
           <div className="max-w-md mx-auto">
