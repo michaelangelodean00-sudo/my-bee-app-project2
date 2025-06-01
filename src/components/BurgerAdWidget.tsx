@@ -1,6 +1,6 @@
-
 import { useState, useEffect } from "react";
 import { Rotate3d } from "lucide-react";
+import { isValidUrl } from "../utils/security";
 
 interface AdContent {
   imageSrc: string;
@@ -53,7 +53,12 @@ const BurgerAdWidget = () => {
   const currentAd = ads[currentAdIndex];
 
   const handleAdClick = () => {
-    window.open(currentAd.linkUrl, '_blank', 'noopener,noreferrer');
+    // Validate URL before opening
+    if (isValidUrl(currentAd.linkUrl)) {
+      window.open(currentAd.linkUrl, '_blank', 'noopener,noreferrer');
+    } else {
+      console.warn('Invalid URL detected:', currentAd.linkUrl);
+    }
   };
 
   return (
