@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Handshake, Drum, ShoppingCart } from "lucide-react";
+import { Handshake, Calendar, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
@@ -35,7 +35,7 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
           className="w-full h-36 flex flex-col items-center justify-center gap-4 text-lg font-semibold border-bee-blue hover:bg-bee-blue/10 py-6"
         >
           <div className="rounded-full bg-gradient-to-br from-purple-400 to-purple-600 p-4 mb-2">
-            <Drum size={48} className="text-white" />
+            <Calendar size={48} className="text-white" />
           </div>
           <span className="text-2xl font-extrabold text-[#F97316] tracking-wide">Events</span>
         </Button>
