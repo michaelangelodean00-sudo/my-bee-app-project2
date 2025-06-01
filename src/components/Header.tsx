@@ -21,8 +21,14 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
     <header className="sticky top-0 z-50 w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
       <div className="container flex h-32 items-center justify-between px-4">
         <div className="flex items-center gap-6">
-          <Logo className="scale-95" />
-          <BurgerAdWidget />
+          {/* Fixed size logo container */}
+          <div className="flex-shrink-0">
+            <Logo className="scale-95" />
+          </div>
+          {/* Ad widget with constrained width */}
+          <div className="flex-shrink-0">
+            <BurgerAdWidget />
+          </div>
         </div>
         
         {/* Search Bar - visible on larger screens */}
