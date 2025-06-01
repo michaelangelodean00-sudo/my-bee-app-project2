@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
-import VideoPlayer from "../components/VideoPlayer";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Phone, Armchair, Shirt, Quote, Baby, Smartphone, Tv, Video, MessageCircle } from "lucide-react";
+import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Phone, Armchair, Shirt, Quote, Baby, Smartphone, Tv, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -310,14 +309,8 @@ const Ecommerce = () => {
             </DialogContent>
           </Dialog>
           
-          <Tabs defaultValue="videos" className="mb-6">
+          <Tabs defaultValue="products" className="mb-6">
             <TabsList className="flex flex-wrap">
-              <TabsTrigger value="videos">
-                <span className="flex items-center gap-2">
-                  <Video size={16} />
-                  Shopping Videos
-                </span>
-              </TabsTrigger>
               <TabsTrigger value="products">Products</TabsTrigger>
               {categories.map((category) => (
                 <TabsTrigger key={category.id} value={category.id}>
@@ -328,27 +321,6 @@ const Ecommerce = () => {
                 </TabsTrigger>
               ))}
             </TabsList>
-            
-            <TabsContent value="videos">
-              <div className="bg-black rounded-lg overflow-hidden">
-                <h2 className="text-xl font-bold py-4 px-4 text-white text-center bg-black">Shopping Videos</h2>
-                
-                {/* TikTok-style video feed */}
-                <div className="max-w-md mx-auto">
-                  {ecommerceVideos.map((video) => (
-                    <div key={video.id} className="h-screen snap-y snap-mandatory">
-                      <VideoPlayer
-                        platform={video.platform}
-                        videoUrl={video.videoUrl}
-                        title={video.title}
-                        description={video.description}
-                        isNew={video.isNew}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </TabsContent>
             
             <TabsContent value="products">
               {userProducts.length > 0 ? (
