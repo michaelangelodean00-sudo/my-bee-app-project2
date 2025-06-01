@@ -19,35 +19,63 @@ const Events = () => {
     markEventsVideosAsViewed();
   }, [markEventsVideosAsViewed]);
 
-  // Mock approved videos for events
+  // Sample Bahamas event videos
   const eventVideos = [
     {
       id: "1",
       platform: "youtube",
       videoUrl: "https://youtube.com/watch?v=example1",
-      title: "Bahamas Summer Jam Highlights",
-      description: "Check out the best moments from last year's festival with amazing performances and vibes"
+      title: "Bahamas Junkanoo Festival 2024",
+      description: "Experience the vibrant colors, music, and energy of Nassau's most spectacular cultural celebration with traditional costumes and rhythms"
     },
     {
       id: "2",
       platform: "instagram",
       videoUrl: "https://instagram.com/reel/example2",
-      title: "Junkanoo Behind the Scenes",
-      description: "See how the amazing costumes are made and the preparation that goes into this cultural celebration"
+      title: "Paradise Island Beach Festival",
+      description: "Join the ultimate beach party featuring local DJs, conch fritters, and the most beautiful sunset views in the Caribbean"
     },
     {
       id: "3",
       platform: "tiktok",
       videoUrl: "https://tiktok.com/@example3",
-      title: "Dance Workshop Preview",
-      description: "Learn some moves before the big festival! Quick tutorial for everyone to enjoy"
+      title: "Conch Bar Crawl Adventures",
+      description: "Explore Nassau's best conch spots and learn traditional Bahamian recipes from local chefs in this food adventure"
     },
     {
       id: "4",
       platform: "facebook",
       videoUrl: "https://facebook.com/video/example4",
-      title: "Local Artist Spotlight",
-      description: "Meet the talented artists performing at upcoming events around Nassau"
+      title: "Atlantis Resort Concert Series",
+      description: "Behind the scenes at the exclusive resort concert featuring Caribbean artists and international stars"
+    },
+    {
+      id: "5",
+      platform: "youtube",
+      videoUrl: "https://youtube.com/watch?v=example5",
+      title: "Cable Beach Regatta 2024",
+      description: "Witness the excitement of traditional Bahamian sailing with colorful boats racing across turquoise waters"
+    },
+    {
+      id: "6",
+      platform: "instagram",
+      videoUrl: "https://instagram.com/reel/example6",
+      title: "Goombay Summer Festival",
+      description: "Dance to authentic Goombay rhythms and taste traditional Bahamian cuisine at this annual cultural celebration"
+    },
+    {
+      id: "7",
+      platform: "tiktok",
+      videoUrl: "https://tiktok.com/@example7",
+      title: "Exuma Swimming Pigs Experience",
+      description: "Take a boat trip to see the famous swimming pigs of Exuma and enjoy this unique Bahamian adventure"
+    },
+    {
+      id: "8",
+      platform: "facebook",
+      videoUrl: "https://facebook.com/video/example8",
+      title: "Freeport Jazz Festival Highlights",
+      description: "Smooth jazz meets island vibes at Grand Bahama's premier music festival featuring local and international artists"
     }
   ];
 
@@ -60,7 +88,7 @@ const Events = () => {
         
         {/* Main Content */}
         <div className="flex-1 py-6 px-4">
-          <h1 className="text-2xl font-bold mb-6 text-white text-center">Event Videos</h1>
+          <h1 className="text-2xl font-bold mb-6 text-white text-center">Bahamas Event Videos</h1>
           
           {/* TikTok-style grid - responsive */}
           <div className="max-w-7xl mx-auto">
