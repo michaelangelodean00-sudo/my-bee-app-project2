@@ -12,7 +12,8 @@ import { Upload, Video } from "lucide-react";
 
 interface VideoSubmission {
   platform: string;
-  videoUrl: string;
+  videoUrl?: string;
+  videoFile?: File;
   title: string;
   description: string;
 }
@@ -20,6 +21,7 @@ interface VideoSubmission {
 const VideoUploadForm = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const form = useForm<VideoSubmission>({
     defaultValues: {
@@ -30,18 +32,27 @@ const VideoUploadForm = () => {
     },
   });
 
+  const watchedPlatform = form.watch("platform");
+
   const onSubmit = async (data: VideoSubmission) => {
     setIsSubmitting(true);
     
     try {
-      // Simulate API call to submit video for approval
-      console.log("Submitting video for approval:", data);
+      // Prepare submission data
+      const submissionData = {
+        ...data,
+        videoFile: selectedFile,
+        fileSize: selectedFile ? Math.round(selectedFile.size / 1024 / 1024 * 100) / 100 : null, // Size in MB
+      };
+
+      console.log("Submitting video for approval:", submissionData);
       
       // In a real app, this would send to your backend/Supabase
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       toast.success("Video submitted for approval! You'll be notified once it's reviewed.");
       form.reset();
+      setSelectedFile(null);
       setIsOpen(false);
     } catch (error) {
       toast.error("Failed to submit video. Please try again.");
@@ -61,6 +72,29 @@ const VideoUploadForm = () => {
     
     return patterns[platform as keyof typeof patterns]?.test(url) || false;
   };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Check file type
+      if (!file.type.startsWith('video/')) {
+        toast.error("Please select a valid video file");
+        return;
+      }
+      
+      // Check file size (50MB limit)
+      const maxSize = 50 * 1024 * 1024; // 50MB in bytes
+      if (file.size > maxSize) {
+        toast.error("File size must be less than 50MB");
+        return;
+      }
+      
+      setSelectedFile(file);
+      toast.success(`File "${file.name}" selected successfully`);
+    }
+  };
+
+  const isFileUpload = watchedPlatform === "mp4";
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -98,6 +132,7 @@ const VideoUploadForm = () => {
                       <SelectItem value="instagram">Instagram</SelectItem>
                       <SelectItem value="tiktok">TikTok</SelectItem>
                       <SelectItem value="facebook">Facebook</SelectItem>
+                      <SelectItem value="mp4">Upload MP4 File</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -105,32 +140,60 @@ const VideoUploadForm = () => {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="videoUrl"
-              rules={{ 
-                required: "Video URL is required",
-                validate: (value) => {
-                  const platform = form.watch("platform");
-                  if (platform && !validateUrl(value, platform)) {
-                    return `Please enter a valid ${platform} URL`;
-                  }
-                  return true;
-                }
-              }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Video URL</FormLabel>
-                  <FormControl>
-                    <Input 
-                      placeholder="Paste your video URL here..." 
-                      {...field} 
+            {isFileUpload ? (
+              <div className="space-y-2">
+                <FormLabel>Upload Video File</FormLabel>
+                <div className="flex items-center justify-center w-full">
+                  <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <Upload className="w-8 h-8 mb-4 text-gray-500" />
+                      <p className="mb-2 text-sm text-gray-500">
+                        <span className="font-semibold">Click to upload</span> your MP4 video
+                      </p>
+                      <p className="text-xs text-gray-500">MP4 files up to 50MB</p>
+                      {selectedFile && (
+                        <p className="text-xs text-green-600 mt-2">
+                          Selected: {selectedFile.name}
+                        </p>
+                      )}
+                    </div>
+                    <input
+                      type="file"
+                      className="hidden"
+                      accept="video/mp4,video/quicktime,video/x-msvideo"
+                      onChange={handleFileChange}
                     />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                  </label>
+                </div>
+              </div>
+            ) : (
+              <FormField
+                control={form.control}
+                name="videoUrl"
+                rules={{ 
+                  required: watchedPlatform ? "Video URL is required" : false,
+                  validate: (value) => {
+                    if (!watchedPlatform || isFileUpload) return true;
+                    if (watchedPlatform && !validateUrl(value, watchedPlatform)) {
+                      return `Please enter a valid ${watchedPlatform} URL`;
+                    }
+                    return true;
+                  }
+                }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Video URL</FormLabel>
+                    <FormControl>
+                      <Input 
+                        placeholder="Paste your video URL here..." 
+                        {...field} 
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
 
             <FormField
               control={form.control}
@@ -179,7 +242,7 @@ const VideoUploadForm = () => {
               </Button>
               <Button 
                 type="submit" 
-                disabled={isSubmitting}
+                disabled={isSubmitting || (isFileUpload && !selectedFile)}
                 className="flex-1"
               >
                 {isSubmitting ? "Submitting..." : "Submit for Approval"}
