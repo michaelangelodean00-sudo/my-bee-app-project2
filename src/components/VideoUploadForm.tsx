@@ -1,22 +1,13 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Upload, Video } from "lucide-react";
-
-interface VideoSubmission {
-  platform: string;
-  videoUrl?: string;
-  videoFile?: File;
-  title: string;
-  description: string;
-  category: string;
-}
+import { Video } from "lucide-react";
+import { VideoSubmission } from "@/types/video";
+import VideoFormFields from "./video/VideoFormFields";
 
 const VideoUploadForm = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -63,38 +54,6 @@ const VideoUploadForm = () => {
     }
   };
 
-  const validateUrl = (url: string, platform: string) => {
-    const patterns = {
-      youtube: /^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+/,
-      instagram: /^(https?\:\/\/)?(www\.)?instagram\.com\/.+/,
-      tiktok: /^(https?\:\/\/)?(www\.)?tiktok\.com\/.+/,
-      facebook: /^(https?\:\/\/)?(www\.)?facebook\.com\/.+/,
-    };
-    
-    return patterns[platform as keyof typeof patterns]?.test(url) || false;
-  };
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      // Check file type
-      if (!file.type.startsWith('video/')) {
-        toast.error("Please select a valid video file");
-        return;
-      }
-      
-      // Check file size (50MB limit)
-      const maxSize = 50 * 1024 * 1024; // 50MB in bytes
-      if (file.size > maxSize) {
-        toast.error("File size must be less than 50MB");
-        return;
-      }
-      
-      setSelectedFile(file);
-      toast.success(`File "${file.name}" selected successfully`);
-    }
-  };
-
   const isFileUpload = watchedPlatform === "mp4";
 
   return (
@@ -115,144 +74,11 @@ const VideoUploadForm = () => {
         
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
+            <VideoFormFields 
               control={form.control}
-              name="category"
-              rules={{ required: "Please select a category" }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Video Category</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select category" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="business">Business</SelectItem>
-                      <SelectItem value="events">Events</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="platform"
-              rules={{ required: "Please select a platform" }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Platform</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select platform" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="youtube">YouTube</SelectItem>
-                      <SelectItem value="instagram">Instagram</SelectItem>
-                      <SelectItem value="tiktok">TikTok</SelectItem>
-                      <SelectItem value="facebook">Facebook</SelectItem>
-                      <SelectItem value="mp4">Upload MP4 File</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {isFileUpload ? (
-              <div className="space-y-2">
-                <FormLabel>Upload Video File</FormLabel>
-                <div className="flex items-center justify-center w-full">
-                  <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
-                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                      <Upload className="w-8 h-8 mb-4 text-gray-500" />
-                      <p className="mb-2 text-sm text-gray-500">
-                        <span className="font-semibold">Click to upload</span> your MP4 video
-                      </p>
-                      <p className="text-xs text-gray-500">MP4 files up to 50MB</p>
-                      {selectedFile && (
-                        <p className="text-xs text-green-600 mt-2">
-                          Selected: {selectedFile.name}
-                        </p>
-                      )}
-                    </div>
-                    <input
-                      type="file"
-                      className="hidden"
-                      accept="video/mp4,video/quicktime,video/x-msvideo"
-                      onChange={handleFileChange}
-                    />
-                  </label>
-                </div>
-              </div>
-            ) : (
-              <FormField
-                control={form.control}
-                name="videoUrl"
-                rules={{ 
-                  required: watchedPlatform ? "Video URL is required" : false,
-                  validate: (value) => {
-                    if (!watchedPlatform || isFileUpload) return true;
-                    if (watchedPlatform && !validateUrl(value, watchedPlatform)) {
-                      return `Please enter a valid ${watchedPlatform} URL`;
-                    }
-                    return true;
-                  }
-                }}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Video URL</FormLabel>
-                    <FormControl>
-                      <Input 
-                        placeholder="Paste your video URL here..." 
-                        {...field} 
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-
-            <FormField
-              control={form.control}
-              name="title"
-              rules={{ required: "Title is required" }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Video Title</FormLabel>
-                  <FormControl>
-                    <Input 
-                      placeholder="Enter video title..." 
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description (Optional)</FormLabel>
-                  <FormControl>
-                    <Textarea 
-                      placeholder="Add a description..." 
-                      className="resize-none"
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              watchedPlatform={watchedPlatform}
+              selectedFile={selectedFile}
+              onFileChange={setSelectedFile}
             />
 
             <div className="flex gap-2 pt-4">
