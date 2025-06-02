@@ -6,7 +6,6 @@ import AdSplash from "../components/AdSplash";
 import CreatePost from "../components/CreatePost";
 import RightSidebar from "../components/RightSidebar";
 import Post from "../components/Post";
-import QuickActions from "../components/QuickActions";
 
 const Index = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -77,7 +76,6 @@ const Index = () => {
         
         {/* Main Content */}
         <div className="flex-1 w-full max-w-5xl mx-auto py-6 px-4">
-          <QuickActions />
           <div data-create-post>
             <CreatePost onPostCreated={handleNewPost} />
           </div>
