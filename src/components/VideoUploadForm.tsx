@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +15,7 @@ interface VideoSubmission {
   videoFile?: File;
   title: string;
   description: string;
+  category: string;
 }
 
 const VideoUploadForm = () => {
@@ -29,6 +29,7 @@ const VideoUploadForm = () => {
       videoUrl: "",
       title: "",
       description: "",
+      category: "",
     },
   });
 
@@ -114,6 +115,29 @@ const VideoUploadForm = () => {
         
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="category"
+              rules={{ required: "Please select a category" }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Video Category</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="business">Business</SelectItem>
+                      <SelectItem value="events">Events</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="platform"
