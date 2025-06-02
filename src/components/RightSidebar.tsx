@@ -1,10 +1,14 @@
 
-import { cn } from "@/lib/utils";
+import WeatherWidget from "./WeatherWidget";
+import UserProfile from "./UserProfile";
+import TrendingSection from "./TrendingSection";
 
-const RightSidebar = ({ className }: { className?: string }) => {
+const RightSidebar = () => {
   return (
-    <div className={cn("w-80 p-4 hidden lg:block", className)}>
-      {/* Intentionally left empty as per user request */}
+    <div className="hidden lg:block w-80 p-6 space-y-6 bg-white dark:bg-gray-900 min-h-screen border-l border-gray-200 dark:border-gray-700">
+      <UserProfile />
+      <WeatherWidget />
+      <TrendingSection />
     </div>
   );
 };
