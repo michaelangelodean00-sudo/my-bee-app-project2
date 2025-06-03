@@ -13,8 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Upload, X } from "lucide-react";
+import { Upload } from "lucide-react";
 
 interface ProfileEditDialogProps {
   open: boolean;
@@ -36,8 +35,6 @@ const ProfileEditDialog = ({ open, onOpenChange, currentUser, onSave }: ProfileE
     location: currentUser.location,
     avatarUrl: currentUser.avatarUrl,
     businessOwner: currentUser.businessOwner,
-    businessType: "",
-    website: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -59,11 +56,11 @@ const ProfileEditDialog = ({ open, onOpenChange, currentUser, onSave }: ProfileE
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit Your Profile</DialogTitle>
+          <DialogTitle>Complete Your Profile</DialogTitle>
           <DialogDescription>
-            Update your profile information to help others connect with you.
+            Add a few details to help others connect with you.
           </DialogDescription>
         </DialogHeader>
         
@@ -86,36 +83,38 @@ const ProfileEditDialog = ({ open, onOpenChange, currentUser, onSave }: ProfileE
                 <Button type="button" variant="outline" size="sm" asChild>
                   <span>
                     <Upload size={14} className="mr-1" />
-                    Change Photo
+                    Add Photo
                   </span>
                 </Button>
               </Label>
             </div>
           </div>
 
-          {/* Basic Info */}
+          {/* Name */}
           <div className="space-y-2">
-            <Label htmlFor="name">Full Name</Label>
+            <Label htmlFor="name">Name</Label>
             <Input
               id="name"
               value={formData.name}
               onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-              placeholder="Enter your full name"
+              placeholder="Your name"
               required
             />
           </div>
 
+          {/* Bio */}
           <div className="space-y-2">
             <Label htmlFor="bio">Bio</Label>
             <Textarea
               id="bio"
               value={formData.bio}
               onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}
-              placeholder="Tell us about yourself..."
-              rows={3}
+              placeholder="Tell us a bit about yourself..."
+              rows={2}
             />
           </div>
 
+          {/* Location */}
           <div className="space-y-2">
             <Label htmlFor="location">Location</Label>
             <Input
@@ -126,47 +125,21 @@ const ProfileEditDialog = ({ open, onOpenChange, currentUser, onSave }: ProfileE
             />
           </div>
 
-          {/* Business Info */}
-          <div className="space-y-2">
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id="businessOwner"
-                checked={formData.businessOwner}
-                onChange={(e) => setFormData(prev => ({ ...prev, businessOwner: e.target.checked }))}
-                className="rounded"
-              />
-              <Label htmlFor="businessOwner">I'm a business owner</Label>
-            </div>
+          {/* Business Owner Toggle */}
+          <div className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              id="businessOwner"
+              checked={formData.businessOwner}
+              onChange={(e) => setFormData(prev => ({ ...prev, businessOwner: e.target.checked }))}
+              className="rounded"
+            />
+            <Label htmlFor="businessOwner">I'm a business owner</Label>
           </div>
-
-          {formData.businessOwner && (
-            <>
-              <div className="space-y-2">
-                <Label htmlFor="businessType">Business Type</Label>
-                <Input
-                  id="businessType"
-                  value={formData.businessType}
-                  onChange={(e) => setFormData(prev => ({ ...prev, businessType: e.target.value }))}
-                  placeholder="e.g., Restaurant, Retail, Service"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="website">Website</Label>
-                <Input
-                  id="website"
-                  value={formData.website}
-                  onChange={(e) => setFormData(prev => ({ ...prev, website: e.target.value }))}
-                  placeholder="https://yourwebsite.com"
-                />
-              </div>
-            </>
-          )}
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              Skip for now
             </Button>
             <Button type="submit">
               Save Profile
