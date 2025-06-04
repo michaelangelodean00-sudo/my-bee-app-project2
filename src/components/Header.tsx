@@ -33,8 +33,8 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
           </div>
         </div>
         
-        {/* Search Bar - visible on larger screens */}
-        <div className="hidden md:flex flex-1 max-w-md mx-8">
+        {/* Search Bar - now visible on all screen sizes */}
+        <div className="flex flex-1 max-w-md mx-4">
           <SearchBar />
         </div>
         
@@ -43,7 +43,7 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden relative"
+            className="relative"
             onClick={toggleMobileSidebar}
           >
             <Menu size={24} />

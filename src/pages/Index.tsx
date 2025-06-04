@@ -91,7 +91,7 @@ const Index = () => {
           ))}
         </div>
         
-        {/* Right Sidebar */}
+        {/* Right Sidebar - now visible on larger mobile screens */}
         <RightSidebar />
       </div>
     </div>

@@ -1,3 +1,4 @@
+
 import { Building2, Calendar, ShoppingCart, Settings, User, Home, UserCircle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useNotifications } from "../contexts/NotificationContext";
@@ -11,9 +12,9 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
   const location = useLocation();
   const { hasNewBusinessVideos, hasNewEventsVideos, hasNewEcommerceItems } = useNotifications();
 
-  console.log("Sidebar - hasNewBusinessVideos:", hasNewBusinessVideos); // Debug log
-  console.log("Sidebar - hasNewEventsVideos:", hasNewEventsVideos); // Debug log
-  console.log("Sidebar - hasNewEcommerceItems:", hasNewEcommerceItems); // Debug log
+  console.log("Sidebar - hasNewBusinessVideos:", hasNewBusinessVideos);
+  console.log("Sidebar - hasNewEventsVideos:", hasNewEventsVideos);
+  console.log("Sidebar - hasNewEcommerceItems:", hasNewEcommerceItems);
 
   const navigationItems = [
     { icon: Home, label: "Home", path: "/" },
@@ -25,7 +26,7 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
   ];
 
   return (
-    <div className={`w-64 bg-white border-r border-gray-200 min-h-screen ${className}`}>
+    <div className={`w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 min-h-screen ${className}`}>
       <div className="p-4">
         <nav className="space-y-2">
           {navigationItems.map((item) => {
@@ -38,8 +39,8 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
                 to={item.path}
                 className={`flex items-center justify-between px-4 py-3 rounded-lg transition-colors relative ${
                   isActive
-                    ? "bg-blue-50 text-blue-700 border border-blue-200"
-                    : "text-gray-700 hover:bg-gray-50"
+                    ? "bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-400"
+                    : "text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700"
                 }`}
               >
                 <div className="flex items-center space-x-3">
