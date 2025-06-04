@@ -64,7 +64,7 @@ const BurgerAdWidget = () => {
 
   return (
     <div 
-      className={`${currentAd.bgColor} text-white px-3 py-3 rounded-md flex items-center transition-all duration-500 ${isRotating ? 'scale-95 opacity-80' : 'scale-100 opacity-100'} w-32 sm:w-40 md:w-44 cursor-pointer hover:opacity-80 flex-shrink-0 h-16`}
+      className={`${currentAd.bgColor} text-white px-3 py-3 rounded-md flex items-center transition-all duration-500 ${isRotating ? 'scale-95 opacity-80' : 'scale-100 opacity-100'} w-40 sm:w-52 md:w-60 cursor-pointer hover:opacity-80 flex-shrink-0 h-16`}
       onClick={handleAdClick}
     >
       <div className="flex items-center w-full">
