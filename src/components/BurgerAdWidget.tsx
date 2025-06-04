@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Rotate3d } from "lucide-react";
 import { isValidUrl } from "../utils/security";
@@ -63,17 +64,17 @@ const BurgerAdWidget = () => {
 
   return (
     <div 
-      className={`${currentAd.bgColor} text-white px-2 py-1.5 rounded-md flex items-center transition-all duration-500 ${isRotating ? 'scale-95 opacity-80' : 'scale-100 opacity-100'} w-32 sm:w-36 md:w-40 cursor-pointer hover:opacity-80 flex-shrink-0`}
+      className={`${currentAd.bgColor} text-white px-3 py-3 rounded-md flex items-center transition-all duration-500 ${isRotating ? 'scale-95 opacity-80' : 'scale-100 opacity-100'} w-32 sm:w-40 md:w-44 cursor-pointer hover:opacity-80 flex-shrink-0 h-16`}
       onClick={handleAdClick}
     >
       <div className="flex items-center w-full">
         <img 
           src={currentAd.imageSrc}
           alt={currentAd.altText} 
-          className="w-5 h-5 sm:w-6 sm:h-6 rounded-full object-cover mr-1.5 flex-shrink-0"
+          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover mr-2 flex-shrink-0"
         />
         <div className="min-w-0 flex-1 overflow-hidden">
-          <p className="text-xs font-bold whitespace-nowrap overflow-hidden text-ellipsis">
+          <p className="text-sm font-bold whitespace-nowrap overflow-hidden text-ellipsis">
             {currentAd.title}<br />
             <span className={`${currentAd.highlightColor} block truncate`}>{currentAd.highlight}</span>
           </p>
