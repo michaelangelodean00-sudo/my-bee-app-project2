@@ -33,8 +33,8 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
           </div>
         </div>
         
-        {/* Search Bar - now visible on all screen sizes */}
-        <div className="flex flex-1 max-w-md mx-4">
+        {/* Search Bar - visible on desktop only */}
+        <div className="hidden md:flex flex-1 max-w-md mx-4">
           <SearchBar />
         </div>
         

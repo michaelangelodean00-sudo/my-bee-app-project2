@@ -3,6 +3,7 @@ import { Building2, Calendar, ShoppingCart, Settings, User, Home, UserCircle } f
 import { Link, useLocation } from "react-router-dom";
 import { useNotifications } from "../contexts/NotificationContext";
 import { Badge } from "./ui/badge";
+import SearchBar from "./SearchBar";
 
 interface SidebarProps {
   className?: string;
@@ -28,6 +29,11 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
   return (
     <div className={`w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 min-h-screen ${className}`}>
       <div className="p-4">
+        {/* Mobile Search Bar */}
+        <div className="md:hidden mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+          <SearchBar />
+        </div>
+        
         <nav className="space-y-2">
           {navigationItems.map((item) => {
             const Icon = item.icon;
