@@ -19,16 +19,16 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
-      <div className="container flex h-32 items-center justify-between px-4 gap-4">
-        {/* Left section - Logo with fixed width container */}
-        <div className="flex items-center gap-4 min-w-0">
-          <div className="flex-shrink-0 w-auto">
-            <Logo className="scale-95" />
+      <div className="container flex h-32 items-center justify-between px-4 gap-2">
+        {/* Left section - Logo with controlled width */}
+        <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-shrink-0">
+          <div className="flex-shrink-0">
+            <Logo className="scale-90 sm:scale-95" />
           </div>
-          {/* Separator to prevent bleeding */}
-          <div className="hidden sm:block w-px h-8 bg-gray-200 dark:bg-gray-700 mx-2" />
-          {/* Ad widget in its own contained space */}
-          <div className="flex-shrink-0 max-w-[180px]">
+          {/* Separator - hidden on very small screens */}
+          <div className="hidden sm:block w-px h-8 bg-gray-200 dark:bg-gray-700" />
+          {/* Ad widget with constrained width */}
+          <div className="flex-shrink-0 max-w-[140px] sm:max-w-[160px] md:max-w-[180px]">
             <BurgerAdWidget />
           </div>
         </div>
@@ -38,12 +38,12 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
           <SearchBar />
         </div>
         
-        {/* Right section - Mobile menu */}
-        <div className="flex items-center gap-3 flex-shrink-0">
+        {/* Right section - Mobile menu with adequate spacing */}
+        <div className="flex items-center flex-shrink-0 ml-2">
           <Button
             variant="ghost"
             size="icon"
-            className="relative"
+            className="relative h-10 w-10"
             onClick={toggleMobileSidebar}
           >
             <Menu size={24} />
