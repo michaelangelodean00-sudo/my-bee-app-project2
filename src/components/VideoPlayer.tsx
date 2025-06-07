@@ -24,6 +24,16 @@ const VideoPlayer = ({ platform, videoUrl, title, description, isNew = false }: 
       case 'instagram': return 'bg-gradient-to-r from-purple-500 to-pink-500 text-white';
       case 'tiktok': return 'bg-black text-white';
       case 'facebook': return 'bg-blue-600 text-white';
+      case 'twitter': return 'bg-black text-white';
+      case 'linkedin': return 'bg-blue-700 text-white';
+      case 'snapchat': return 'bg-yellow-400 text-black';
+      case 'twitch': return 'bg-purple-600 text-white';
+      case 'vimeo': return 'bg-blue-500 text-white';
+      case 'pinterest': return 'bg-red-600 text-white';
+      case 'reddit': return 'bg-orange-500 text-white';
+      case 'telegram': return 'bg-blue-400 text-white';
+      case 'discord': return 'bg-indigo-600 text-white';
+      case 'whatsapp': return 'bg-green-500 text-white';
       default: return 'bg-gray-600 text-white';
     }
   };
@@ -33,6 +43,9 @@ const VideoPlayer = ({ platform, videoUrl, title, description, isNew = false }: 
       case 'youtube':
         const youtubeId = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
         return youtubeId ? `https://www.youtube.com/embed/${youtubeId[1]}` : null;
+      case 'vimeo':
+        const vimeoId = url.match(/vimeo\.com\/(\d+)/);
+        return vimeoId ? `https://player.vimeo.com/video/${vimeoId[1]}` : null;
       default:
         return null;
     }

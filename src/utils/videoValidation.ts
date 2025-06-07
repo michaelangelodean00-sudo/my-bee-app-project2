@@ -5,6 +5,16 @@ export const validateUrl = (url: string, platform: string) => {
     instagram: /^(https?\:\/\/)?(www\.)?instagram\.com\/.+/,
     tiktok: /^(https?\:\/\/)?(www\.)?tiktok\.com\/.+/,
     facebook: /^(https?\:\/\/)?(www\.)?facebook\.com\/.+/,
+    twitter: /^(https?\:\/\/)?(www\.)?(twitter\.com|x\.com)\/.+/,
+    linkedin: /^(https?\:\/\/)?(www\.)?linkedin\.com\/.+/,
+    snapchat: /^(https?\:\/\/)?(www\.)?snapchat\.com\/.+/,
+    twitch: /^(https?\:\/\/)?(www\.)?twitch\.tv\/.+/,
+    vimeo: /^(https?\:\/\/)?(www\.)?vimeo\.com\/.+/,
+    pinterest: /^(https?\:\/\/)?(www\.)?pinterest\.com\/.+/,
+    reddit: /^(https?\:\/\/)?(www\.)?reddit\.com\/.+/,
+    telegram: /^(https?\:\/\/)?(www\.)?(t\.me|telegram\.me)\/.+/,
+    discord: /^(https?\:\/\/)?(www\.)?discord\.gg\/.+/,
+    whatsapp: /^(https?\:\/\/)?(www\.)?wa\.me\/.+/,
   };
   
   return patterns[platform as keyof typeof patterns]?.test(url) || false;
