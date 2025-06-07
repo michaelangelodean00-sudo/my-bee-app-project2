@@ -3,9 +3,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Video } from "lucide-react";
+import { Video, Info } from "lucide-react";
 import { VideoSubmission } from "@/types/video";
 import VideoFormFields from "./video/VideoFormFields";
 
@@ -35,6 +36,8 @@ const VideoUploadForm = () => {
         ...data,
         videoFile: selectedFile,
         fileSize: selectedFile ? Math.round(selectedFile.size / 1024 / 1024 * 100) / 100 : null, // Size in MB
+        submittedAt: new Date().toISOString(),
+        status: 'pending' // All videos start as pending
       };
 
       console.log("Submitting video for approval:", submissionData);
@@ -42,7 +45,7 @@ const VideoUploadForm = () => {
       // In a real app, this would send to your backend/Supabase
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      toast.success("Video submitted for approval! You'll be notified once it's reviewed.");
+      toast.success("Video submitted successfully! It will appear in the app once approved by our admin team.");
       form.reset();
       setSelectedFile(null);
       setIsOpen(false);
@@ -71,6 +74,13 @@ const VideoUploadForm = () => {
         <DialogHeader>
           <DialogTitle>Submit Video for Approval</DialogTitle>
         </DialogHeader>
+        
+        <Alert className="mb-4">
+          <Info className="h-4 w-4" />
+          <AlertDescription>
+            All videos are reviewed by our admin team before appearing in the BEE APP. You'll be notified once your video is approved.
+          </AlertDescription>
+        </Alert>
         
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
