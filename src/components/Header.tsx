@@ -23,12 +23,12 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
         {/* Left section - Logo with controlled width */}
         <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-shrink-0">
           <div className="flex-shrink-0">
-            <Logo className="scale-90 sm:scale-95" />
+            <Logo className="scale-75 sm:scale-90 md:scale-95" />
           </div>
           {/* Separator - hidden on very small screens */}
           <div className="hidden sm:block w-px h-8 bg-gray-200 dark:bg-gray-700" />
-          {/* Ad widget with constrained width */}
-          <div className="flex-shrink-0 max-w-[140px] sm:max-w-[160px] md:max-w-[180px]">
+          {/* Ad widget with more constrained width on mobile */}
+          <div className="flex-shrink-0 max-w-[100px] xs:max-w-[120px] sm:max-w-[160px] md:max-w-[180px]">
             <BurgerAdWidget />
           </div>
         </div>
@@ -38,12 +38,12 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
           <SearchBar />
         </div>
         
-        {/* Right section - Mobile menu with adequate spacing */}
-        <div className="flex items-center flex-shrink-0 ml-2">
+        {/* Right section - Mobile menu with guaranteed space */}
+        <div className="flex items-center flex-shrink-0 ml-3 min-w-[44px]">
           <Button
             variant="ghost"
             size="icon"
-            className="relative h-10 w-10"
+            className="relative h-10 w-10 flex-shrink-0"
             onClick={toggleMobileSidebar}
           >
             <Menu size={24} />
