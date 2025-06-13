@@ -20,14 +20,14 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
     <header className="sticky top-0 z-50 w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
       <div className="container flex h-32 items-center justify-between px-4 gap-2">
         {/* Left section - Logo with controlled width */}
-        <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-shrink-0">
+        <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
           <div className="flex-shrink-0">
             <Logo className="scale-75 sm:scale-90 md:scale-95" />
           </div>
           {/* Separator - hidden on very small screens */}
           <div className="hidden sm:block w-px h-8 bg-gray-200 dark:bg-gray-700" />
-          {/* Ad widget with more constrained width on mobile */}
-          <div className="flex-shrink-0 max-w-[100px] xs:max-w-[120px] sm:max-w-[160px] md:max-w-[180px]">
+          {/* Ad widget with extended width */}
+          <div className="flex-1 max-w-[140px] xs:max-w-[180px] sm:max-w-[240px] md:max-w-[300px] lg:max-w-[350px]">
             <BurgerAdWidget />
           </div>
         </div>
