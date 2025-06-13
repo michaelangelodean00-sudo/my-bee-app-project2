@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import Logo from "./Logo";
 import BurgerAdWidget from "./BurgerAdWidget";
-import SearchBar from "./SearchBar";
 import { useNotifications } from "../contexts/NotificationContext";
 
 interface HeaderProps {
@@ -31,11 +30,6 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
           <div className="flex-shrink-0 max-w-[100px] xs:max-w-[120px] sm:max-w-[160px] md:max-w-[180px]">
             <BurgerAdWidget />
           </div>
-        </div>
-        
-        {/* Search Bar - visible on desktop only */}
-        <div className="hidden md:flex flex-1 max-w-md mx-4">
-          <SearchBar />
         </div>
         
         {/* Right section - Mobile menu with guaranteed space */}
