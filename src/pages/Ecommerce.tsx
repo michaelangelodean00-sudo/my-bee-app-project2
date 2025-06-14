@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Phone, Armchair, Shirt, Quote, Baby, Smartphone, Tv, MessageCircle } from "lucide-react";
+import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Phone, Armchair, Shirt, Quote, Baby, Smartphone, Tv, MessageCircle, Microwave } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -58,6 +58,7 @@ const categories = [
   { id: "rentals", name: "Rentals", icon: <Home size={16} /> },
   { id: "realestate", name: "Real Estate", icon: <Home size={16} /> },
   { id: "electronics", name: "Electronics", icon: <Tv size={16} /> },
+  { id: "appliances", name: "Appliances", icon: <Microwave size={16} /> },
   { id: "furniture", name: "Furniture", icon: <Armchair size={16} /> },
   { id: "menswear", name: "Menswear", icon: <Shirt size={16} /> },
   { id: "womenswear", name: "Womenswear", icon: <Quote size={16} /> },
