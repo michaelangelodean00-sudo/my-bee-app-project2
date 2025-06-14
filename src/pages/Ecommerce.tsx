@@ -311,14 +311,12 @@ const Ecommerce = () => {
           </Dialog>
           
           <Tabs defaultValue="products" className="mb-6">
-            <TabsList className="flex flex-wrap">
-              <TabsTrigger value="products">Products</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-10 gap-1 h-auto p-1">
+              <TabsTrigger value="products" className="text-xs sm:text-sm">Products</TabsTrigger>
               {categories.map((category) => (
-                <TabsTrigger key={category.id} value={category.id}>
-                  <span className="flex items-center gap-2">
-                    {category.icon}
-                    {category.name}
-                  </span>
+                <TabsTrigger key={category.id} value={category.id} className="text-xs sm:text-sm flex items-center gap-1 min-w-0">
+                  <span className="hidden sm:inline">{category.icon}</span>
+                  <span className="truncate">{category.name}</span>
                 </TabsTrigger>
               ))}
             </TabsList>
