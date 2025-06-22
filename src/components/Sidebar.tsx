@@ -1,4 +1,3 @@
-
 import { Building2, Calendar, ShoppingCart, Settings, User, Home, UserCircle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useNotifications } from "../contexts/NotificationContext";
@@ -23,11 +22,11 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
     { icon: Calendar, label: "Events", path: "/events", hasNotification: hasNewEventsVideos },
     { icon: ShoppingCart, label: "E-commerce", path: "/ecommerce", hasNotification: hasNewEcommerceItems },
     { icon: Settings, label: "Settings", path: "/settings" },
-    { icon: User, label: "Profile", path: "/profile" },
+    { icon: UserCircle, label: "Profile", path: "/profile" },
   ];
 
   return (
-    <div className={`w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 min-h-screen ${className}`}>
+    <div className={`w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 h-screen sticky top-0 ${className}`}>
       <div className="p-4">
         {/* Mobile Search Bar */}
         <div className="md:hidden mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
