@@ -33,7 +33,7 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
           <SearchBar />
         </div>
         
-        <nav className="space-y-2">
+        <nav className="space-y-1">
           {navigationItems.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
@@ -42,16 +42,16 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center justify-between px-4 py-3 rounded-lg transition-colors relative ${
+                className={`flex items-center justify-between px-4 py-2 rounded-lg transition-colors relative ${
                   isActive
                     ? "bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-400"
                     : "text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700"
                 }`}
               >
                 <div className="flex items-center space-x-3">
-                  <Icon size={24} />
+                  <Icon size={20} />
                   <div className="flex items-center space-x-2">
-                    <span className="font-medium">{item.label}</span>
+                    <span className="font-medium text-sm">{item.label}</span>
                     {item.hasNotification && (
                       <Badge variant="destructive" className="text-xs px-1.5 py-0.5 bg-red-500 text-white animate-pulse">
                         NEW
