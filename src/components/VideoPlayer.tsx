@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,7 +21,7 @@ const VideoPlayer = ({ platform, videoUrl, title, description, isNew = false }: 
     switch (platform) {
       case 'youtube': return 'bg-red-500 text-white';
       case 'instagram': return 'bg-gradient-to-r from-purple-500 to-pink-500 text-white';
-      case 'tiktok': return 'bg-black text-white';
+      case 'tiktok': return 'bg-gradient-to-r from-blue-500 via-purple-500 to-red-500 text-white';
       case 'facebook': return 'bg-blue-600 text-white';
       case 'twitter': return 'bg-black text-white';
       case 'linkedin': return 'bg-blue-700 text-white';
@@ -84,16 +83,16 @@ const VideoPlayer = ({ platform, videoUrl, title, description, isNew = false }: 
             {/* Play button */}
             <Button
               onClick={() => setIsPlaying(true)}
-              className="relative z-10 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white rounded-full w-20 h-20 border-2 border-white/50"
+              className="relative z-10 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white rounded-full w-14 h-14 border-2 border-white/50"
               size="icon"
             >
-              <Play size={32} fill="white" />
+              <Play size={28} fill="white" />
             </Button>
           </div>
         )}
 
         {/* Platform Badge and NEW badge */}
-        <div className="absolute top-4 left-4 z-20 flex gap-2">
+        <div className="absolute top-20 left-4 z-20 flex gap-2 drop-shadow-md sm:top-16">
           <Badge className={`${getPlatformColor(platform)} font-semibold px-3 py-1`}>
             {platform.toUpperCase()}
           </Badge>
@@ -105,50 +104,50 @@ const VideoPlayer = ({ platform, videoUrl, title, description, isNew = false }: 
         </div>
 
         {/* Right Side Actions (TikTok style) */}
-        <div className="absolute right-4 bottom-32 z-20 flex flex-col gap-6">
+        <div className="absolute right-4 bottom-24 z-20 flex flex-col gap-4">
           <div className="flex flex-col items-center">
             <Button
               onClick={handleLike}
-              className={`w-14 h-14 rounded-full ${
+              className={`w-10 h-10 rounded-full ${
                 liked ? 'bg-red-500 hover:bg-red-600' : 'bg-white/20 hover:bg-white/30'
               } backdrop-blur-sm border-2 border-white/50`}
               size="icon"
             >
-              <Heart size={24} className={liked ? 'fill-white text-white' : 'text-white'} />
+              <Heart size={20} className={liked ? 'fill-white text-white' : 'text-white'} />
             </Button>
-            <span className="text-white text-sm font-semibold mt-2">{likeCount}</span>
+            <span className="text-white text-xs font-semibold mt-1">{likeCount}</span>
           </div>
 
           <div className="flex flex-col items-center">
             <Button
-              className="w-14 h-14 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border-2 border-white/50"
+              className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border-2 border-white/50"
               size="icon"
             >
-              <MessageCircle size={24} className="text-white" />
+              <MessageCircle size={20} className="text-white" />
             </Button>
-            <span className="text-white text-sm font-semibold mt-2">{Math.floor(Math.random() * 100)}</span>
+            <span className="text-white text-xs font-semibold mt-1">{Math.floor(Math.random() * 100)}</span>
           </div>
 
           <div className="flex flex-col items-center">
             <Button
-              className="w-14 h-14 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border-2 border-white/50"
+              className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border-2 border-white/50"
               size="icon"
             >
-              <Share size={24} className="text-white" />
+              <Share size={20} className="text-white" />
             </Button>
-            <span className="text-white text-sm font-semibold mt-2">{Math.floor(Math.random() * 50)}</span>
+            <span className="text-white text-xs font-semibold mt-1">{Math.floor(Math.random() * 50)}</span>
           </div>
 
           <Button
-            className="w-14 h-14 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border-2 border-white/50"
+            className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border-2 border-white/50"
             size="icon"
           >
-            <MoreHorizontal size={24} className="text-white" />
+            <MoreHorizontal size={20} className="text-white" />
           </Button>
         </div>
 
         {/* Bottom Content Overlay */}
-        <div className="absolute bottom-0 left-0 right-16 z-20 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 pb-8">
+        <div className="absolute bottom-24 left-0 right-20 z-20 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 pb-8">
           <div className="text-white">
             <h3 className="font-bold text-xl mb-2 leading-tight">{title}</h3>
             {description && (

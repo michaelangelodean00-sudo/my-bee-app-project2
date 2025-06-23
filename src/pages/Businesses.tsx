@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from "react";
 import { Play, Pause } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -155,7 +154,7 @@ const Businesses = () => {
           </div>
           
           {/* Vertical TikTok-style feed */}
-          <div className="max-w-md mx-auto">
+          <div>
             {businessVideos.map((video, index) => (
               <div key={video.id} className="h-screen snap-start">
                 <VideoPlayer

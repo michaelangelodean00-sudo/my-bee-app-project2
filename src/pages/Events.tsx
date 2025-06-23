@@ -168,7 +168,7 @@ const Events = () => {
           </div>
           
           {/* Vertical TikTok-style feed */}
-          <div className="max-w-md mx-auto">
+          <div>
             {eventVideos.map((video) => (
               <div key={video.id} className="h-screen snap-start">
                 <VideoPlayer
