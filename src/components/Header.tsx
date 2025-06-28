@@ -22,7 +22,7 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
         {/* Left section - Logo with controlled width */}
         <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
           <div className="flex-shrink-0">
-            <Logo className="scale-75 sm:scale-90 md:scale-95" />
+            <Logo />
           </div>
           {/* Separator - hidden on very small screens */}
           <div className="hidden sm:block w-px h-8 bg-gray-200 dark:bg-gray-700" />
