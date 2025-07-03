@@ -146,23 +146,48 @@ const Businesses = () => {
                 )}
               </Button>
             </div>
+            {/* Platform badge below header, left-aligned */}
+            <div className="px-4 pb-2 flex gap-2">
+              <span className={`font-semibold px-3 py-1 rounded ${(() => {
+                const platform = businessVideos[currentVideoIndex].platform;
+                switch (platform) {
+                  case 'youtube': return 'bg-red-500 text-white';
+                  case 'instagram': return 'bg-gradient-to-r from-purple-500 to-pink-500 text-white';
+                  case 'tiktok': return 'bg-gradient-to-r from-blue-500 via-purple-500 to-red-500 text-white';
+                  case 'facebook': return 'bg-blue-600 text-white';
+                  case 'twitter': return 'bg-black text-white';
+                  case 'linkedin': return 'bg-blue-700 text-white';
+                  case 'snapchat': return 'bg-yellow-400 text-black';
+                  case 'twitch': return 'bg-purple-600 text-white';
+                  case 'vimeo': return 'bg-blue-500 text-white';
+                  case 'pinterest': return 'bg-red-600 text-white';
+                  case 'reddit': return 'bg-orange-500 text-white';
+                  case 'telegram': return 'bg-blue-400 text-white';
+                  case 'discord': return 'bg-indigo-600 text-white';
+                  case 'whatsapp': return 'bg-green-500 text-white';
+                  default: return 'bg-gray-600 text-white';
+                }
+              })()}`}>{businessVideos[currentVideoIndex].platform.toUpperCase()}</span>
+              {businessVideos[currentVideoIndex].isNew && (
+                <span className="bg-green-500 text-white font-semibold px-3 py-1 rounded animate-pulse">NEW</span>
+              )}
+            </div>
             <div className="px-4 pb-4">
               <p className="text-sm text-gray-300 text-center italic">
                 * Videos are subject to approval by Bee App admin before posting
               </p>
             </div>
           </div>
-          
           {/* Vertical TikTok-style feed */}
           <div>
             {businessVideos.map((video, index) => (
               <div key={video.id} className="h-screen snap-start">
                 <VideoPlayer
-                  platform={video.platform}
                   videoUrl={video.videoUrl}
                   title={video.title}
                   description={video.description}
                   isNew={video.isNew}
+                  platform={video.platform}
                 />
               </div>
             ))}

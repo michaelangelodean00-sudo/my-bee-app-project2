@@ -92,19 +92,10 @@ const VideoPlayer = ({ platform, videoUrl, title, description, isNew = false }: 
         )}
 
         {/* Platform Badge and NEW badge */}
-        <div className="absolute top-20 left-4 z-20 flex gap-2 drop-shadow-md sm:top-16">
-          <Badge className={`${getPlatformColor(platform)} font-semibold px-3 py-1`}>
-            {platform.toUpperCase()}
-          </Badge>
-          {isNew && (
-            <Badge className="bg-green-500 text-white font-semibold px-3 py-1 animate-pulse">
-              NEW
-            </Badge>
-          )}
-        </div>
+        {/* Removed: now rendered in parent below header */}
 
         {/* Right Side Actions (TikTok style) */}
-        <div className="absolute right-4 bottom-24 z-20 flex flex-col gap-4">
+        <div className="absolute right-2 bottom-32 z-20 flex flex-col gap-4 sm:right-4 sm:bottom-32">
           <div className="flex flex-col items-center">
             <Button
               onClick={handleLike}
@@ -117,7 +108,6 @@ const VideoPlayer = ({ platform, videoUrl, title, description, isNew = false }: 
             </Button>
             <span className="text-white text-xs font-semibold mt-1">{likeCount}</span>
           </div>
-
           <div className="flex flex-col items-center">
             <Button
               className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border-2 border-white/50"
@@ -127,7 +117,6 @@ const VideoPlayer = ({ platform, videoUrl, title, description, isNew = false }: 
             </Button>
             <span className="text-white text-xs font-semibold mt-1">{Math.floor(Math.random() * 100)}</span>
           </div>
-
           <div className="flex flex-col items-center">
             <Button
               className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border-2 border-white/50"
@@ -137,7 +126,6 @@ const VideoPlayer = ({ platform, videoUrl, title, description, isNew = false }: 
             </Button>
             <span className="text-white text-xs font-semibold mt-1">{Math.floor(Math.random() * 50)}</span>
           </div>
-
           <Button
             className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border-2 border-white/50"
             size="icon"
@@ -147,15 +135,15 @@ const VideoPlayer = ({ platform, videoUrl, title, description, isNew = false }: 
         </div>
 
         {/* Bottom Content Overlay */}
-        <div className="absolute bottom-24 left-0 right-20 z-20 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 pb-8">
+        <div className="absolute bottom-0 left-0 right-0 z-20 bg-gradient-to-t from-black/90 via-black/60 to-transparent px-4 pt-3 pb-3 sm:px-6 sm:pt-4 sm:pb-5 max-h-[28vh] overflow-hidden flex flex-col justify-end">
           <div className="text-white">
-            <h3 className="font-bold text-xl mb-2 leading-tight">{title}</h3>
+            <h3 className="font-bold text-base sm:text-lg mb-1 leading-tight line-clamp-1">{title}</h3>
             {description && (
-              <p className="text-base text-gray-200 mb-4 leading-relaxed opacity-90">{description}</p>
+              <p className="text-xs sm:text-sm text-gray-200 mb-2 leading-snug opacity-90 line-clamp-2">{description}</p>
             )}
             <Button 
               variant="outline" 
-              size="default" 
+              size="sm" 
               className="bg-white/20 border-white/30 text-white hover:bg-white/30 backdrop-blur-sm"
             >
               <ExternalLink size={16} className="mr-2" />
