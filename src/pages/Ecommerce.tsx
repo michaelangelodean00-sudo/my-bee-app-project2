@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Phone, Armchair, Shirt, Quote, Baby, Smartphone, Tv, MessageCircle, Microwave } from "lucide-react";
+import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Phone, Armchair, Shirt, Quote, Baby, Smartphone, Tv, MessageCircle, Microwave, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -54,7 +54,11 @@ const ecommerceVideos = [
 ];
 
 const categories = [
-  { id: "vehicles", name: "Vehicles", icon: <Car size={16} /> },
+  { id: "vehicles", name: "Vehicles", icon: <Car size={16} />, subCategories: [
+    { id: "cars", name: "Cars", icon: <Car size={16} /> },
+    { id: "suv", name: "SUV", icon: <Car size={16} /> },
+    { id: "trucks", name: "Trucks", icon: <Truck size={16} /> }
+  ]},
   { id: "rentals", name: "Rentals", icon: <Home size={16} /> },
   { id: "realestate", name: "Real Estate", icon: <Home size={16} /> },
   { id: "electronics", name: "Electronics", icon: <Tv size={16} /> },
@@ -70,6 +74,7 @@ const formSchema = z.object({
   price: z.coerce.number().min(0.01, { message: "Price must be greater than 0" }),
   description: z.string().min(10, { message: "Description must be at least 10 characters" }),
   category: z.string().min(1, { message: "Please select a category" }),
+  subCategory: z.string().optional(),
   image: z.instanceof(File).optional()
 });
 
@@ -83,6 +88,7 @@ const Ecommerce = () => {
   const [messageDialog, setMessageDialog] = useState(false);
   const [selectedSeller, setSelectedSeller] = useState<string>("");
   const [messageText, setMessageText] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -91,6 +97,7 @@ const Ecommerce = () => {
       price: 0,
       description: "",
       category: "",
+      subCategory: "",
     }
   });
 
@@ -119,6 +126,7 @@ const Ecommerce = () => {
       rating: 5.0,
       image: imagePreview || "https://images.unsplash.com/photo-1493962853295-0fd70327578a?w=1000",
       category: data.category,
+      subCategory: data.subCategory,
       description: data.description,
       seller: "You",
       isFeatured: false,
@@ -129,9 +137,12 @@ const Ecommerce = () => {
     setOpenDialog(false);
     setImagePreview(null);
     form.reset();
+    setSelectedCategory("");
     toast.success("Your product has been listed successfully!");
   };
 
+  const selectedCategoryData = categories.find(cat => cat.id === selectedCategory);
+  
   const handleMessageSeller = (sellerName: string) => {
     setSelectedSeller(sellerName);
     setMessageDialog(true);
@@ -192,7 +203,11 @@ const Ecommerce = () => {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Category</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select onValueChange={(value) => {
+                            field.onChange(value);
+                            setSelectedCategory(value);
+                            form.setValue("subCategory", "");
+                          }} defaultValue={field.value}>
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Select a category" />
@@ -213,6 +228,36 @@ const Ecommerce = () => {
                         </FormItem>
                       )}
                     />
+                    
+                    {selectedCategoryData?.subCategories && (
+                      <FormField
+                        control={form.control}
+                        name="subCategory"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Sub-Category</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select a sub-category" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {selectedCategoryData.subCategories.map((subCategory) => (
+                                  <SelectItem key={subCategory.id} value={subCategory.id}>
+                                    <span className="flex items-center gap-2">
+                                      {subCategory.icon}
+                                      {subCategory.name}
+                                    </span>
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )}
                     
                     <FormField
                       control={form.control}
@@ -349,30 +394,75 @@ const Ecommerce = () => {
             
             {categories.map((category) => (
               <TabsContent key={category.id} value={category.id}>
-                {userProducts.filter(p => p.category === category.id).length > 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                    {userProducts
-                      .filter(p => p.category === category.id)
-                      .map((product) => (
-                        <ProductCard key={product.id} product={product} onMessageSeller={handleMessageSeller} />
+                {category.subCategories ? (
+                  <div className="space-y-6">
+                    <Tabs defaultValue={category.subCategories[0].id} className="w-full">
+                      <TabsList className="grid w-full grid-cols-3 gap-1 h-auto p-1">
+                        {category.subCategories.map((subCategory) => (
+                          <TabsTrigger key={subCategory.id} value={subCategory.id} className="text-xs sm:text-sm flex items-center gap-1">
+                            {subCategory.icon}
+                            <span className="truncate">{subCategory.name}</span>
+                          </TabsTrigger>
+                        ))}
+                      </TabsList>
+                      
+                      {category.subCategories.map((subCategory) => (
+                        <TabsContent key={subCategory.id} value={subCategory.id}>
+                          {userProducts.filter(p => p.category === category.id && p.subCategory === subCategory.id).length > 0 ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                              {userProducts
+                                .filter(p => p.category === category.id && p.subCategory === subCategory.id)
+                                .map((product) => (
+                                  <ProductCard key={product.id} product={product} onMessageSeller={handleMessageSeller} />
+                                ))}
+                            </div>
+                          ) : (
+                            <div className="text-center py-12 px-4">
+                              <div className="bg-gray-100 rounded-xl p-8 max-w-lg mx-auto">
+                                {subCategory.icon && React.cloneElement(subCategory.icon, { className: "mx-auto h-12 w-12 text-gray-400" })}
+                                <h3 className="mt-4 text-lg font-medium text-gray-900">No {subCategory.name} listed yet</h3>
+                                <p className="mt-2 text-sm text-gray-500">
+                                  Be the first to list a {subCategory.name.toLowerCase()} item on the marketplace.
+                                </p>
+                                <Button 
+                                  className="mt-6 bg-bee-blue hover:bg-bee-blue/90"
+                                  onClick={() => setOpenDialog(true)}
+                                >
+                                  List an Item
+                                </Button>
+                              </div>
+                            </div>
+                          )}
+                        </TabsContent>
                       ))}
+                    </Tabs>
                   </div>
                 ) : (
-                  <div className="text-center py-12 px-4">
-                    <div className="bg-gray-100 rounded-xl p-8 max-w-lg mx-auto">
-                      {category.icon && React.cloneElement(category.icon, { className: "mx-auto h-12 w-12 text-gray-400" })}
-                      <h3 className="mt-4 text-lg font-medium text-gray-900">No {category.name} listed yet</h3>
-                      <p className="mt-2 text-sm text-gray-500">
-                        Be the first to list a {category.name.toLowerCase()} item on the marketplace.
-                      </p>
-                      <Button 
-                        className="mt-6 bg-bee-blue hover:bg-bee-blue/90"
-                        onClick={() => setOpenDialog(true)}
-                      >
-                        List an Item
-                      </Button>
+                  userProducts.filter(p => p.category === category.id).length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                      {userProducts
+                        .filter(p => p.category === category.id)
+                        .map((product) => (
+                          <ProductCard key={product.id} product={product} onMessageSeller={handleMessageSeller} />
+                        ))}
                     </div>
-                  </div>
+                  ) : (
+                    <div className="text-center py-12 px-4">
+                      <div className="bg-gray-100 rounded-xl p-8 max-w-lg mx-auto">
+                        {category.icon && React.cloneElement(category.icon, { className: "mx-auto h-12 w-12 text-gray-400" })}
+                        <h3 className="mt-4 text-lg font-medium text-gray-900">No {category.name} listed yet</h3>
+                        <p className="mt-2 text-sm text-gray-500">
+                          Be the first to list a {category.name.toLowerCase()} item on the marketplace.
+                        </p>
+                        <Button 
+                          className="mt-6 bg-bee-blue hover:bg-bee-blue/90"
+                          onClick={() => setOpenDialog(true)}
+                        >
+                          List an Item
+                        </Button>
+                      </div>
+                    </div>
+                  )
                 )}
               </TabsContent>
             ))}
