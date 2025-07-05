@@ -64,19 +64,19 @@ const BurgerAdWidget = () => {
 
   return (
     <div 
-      className={`${currentAd.bgColor} text-white px-1.5 py-2 rounded-md flex items-center transition-all duration-500 ${isRotating ? 'scale-95 opacity-80' : 'scale-100 opacity-100'} w-full max-w-full md:max-w-xs lg:max-w-sm xl:max-w-md cursor-pointer hover:opacity-80 flex-shrink-0 h-12 sm:h-14 overflow-hidden`}
+      className={`${currentAd.bgColor} text-white px-1.5 py-2 rounded-md flex items-center transition-all duration-500 ${isRotating ? 'scale-95 opacity-80' : 'scale-100 opacity-100'} w-full max-w-full md:max-w-sm lg:max-w-lg xl:max-w-xl cursor-pointer hover:opacity-80 flex-shrink-0 h-12 sm:h-14 overflow-hidden`}
       onClick={handleAdClick}
     >
       <div className="flex items-center w-full min-w-0">
         <img 
           src={currentAd.imageSrc}
           alt={currentAd.altText} 
-          className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 rounded-full object-cover mr-1 sm:mr-1.5 md:mr-2 flex-shrink-0"
+          className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 rounded-full object-cover mr-1 sm:mr-1.5 md:mr-2 lg:mr-3 flex-shrink-0"
         />
         <div className="min-w-0 flex-1 overflow-hidden">
           <p className="text-xs leading-tight">
-            <span className="block truncate text-xs sm:text-sm md:text-base font-bold">{currentAd.title}</span>
-            <span className={`${currentAd.highlightColor} block truncate text-xs md:text-sm`}>{currentAd.highlight}</span>
+            <span className="block truncate text-xs sm:text-sm md:text-base lg:text-lg font-bold">{currentAd.title}</span>
+            <span className={`${currentAd.highlightColor} block truncate text-xs md:text-sm lg:text-base`}>{currentAd.highlight}</span>
           </p>
         </div>
       </div>
