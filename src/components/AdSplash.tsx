@@ -6,6 +6,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
 
 interface Ad {
@@ -80,16 +81,14 @@ const AdSplash = () => {
   const [autoplay, setAutoplay] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loadedImages, setLoadedImages] = useState(new Set([0])); // Start with first image loaded
+  const [api, setApi] = useState<CarouselApi>();
   
   useEffect(() => {
     let interval: number;
     
-    if (autoplay) {
+    if (autoplay && api) {
       interval = window.setInterval(() => {
-        const carouselNext = document.querySelector('[data-carousel-next]');
-        if (carouselNext) {
-          (carouselNext as HTMLButtonElement).click();
-        }
+        api.scrollNext();
       }, 5000); // Auto rotate every 5 seconds
     }
     
@@ -98,7 +97,17 @@ const AdSplash = () => {
         clearInterval(interval);
       }
     };
-  }, [autoplay]);
+  }, [autoplay, api]);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    api.on("select", () => {
+      setCurrentSlide(api.selectedScrollSnap());
+    });
+  }, [api]);
 
   // Lazy load images for current and next/previous slides
   useEffect(() => {
@@ -120,7 +129,9 @@ const AdSplash = () => {
   };
 
   const handleSlideChange = (index: number) => {
-    setCurrentSlide(index);
+    if (api) {
+      api.scrollTo(index);
+    }
   };
   
   return (
@@ -128,7 +139,7 @@ const AdSplash = () => {
       <Carousel 
         className="max-w-6xl mx-auto px-4 py-4" 
         opts={{ loop: true }}
-        onSlideChange={handleSlideChange}
+        setApi={setApi}
       >
         <CarouselContent>
           {ads.map((ad, index) => (
@@ -163,7 +174,7 @@ const AdSplash = () => {
           ))}
         </CarouselContent>
         <CarouselPrevious className="left-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30" />
-        <CarouselNext className="right-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30" data-carousel-next />
+        <CarouselNext className="right-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30" />
         
         {/* Slide indicators */}
         <div className="flex justify-center mt-4 space-x-2">
