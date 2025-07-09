@@ -1,4 +1,3 @@
-
 import { Control } from "react-hook-form";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -61,7 +60,6 @@ const VideoFormFields = ({ control, watchedPlatform, selectedFile, onFileChange 
                 <SelectItem value="instagram">Instagram</SelectItem>
                 <SelectItem value="tiktok">TikTok</SelectItem>
                 <SelectItem value="facebook">Facebook</SelectItem>
-                <SelectItem value="twitter">Twitter / X</SelectItem>
                 <SelectItem value="linkedin">LinkedIn</SelectItem>
                 <SelectItem value="snapchat">Snapchat</SelectItem>
                 <SelectItem value="twitch">Twitch</SelectItem>
