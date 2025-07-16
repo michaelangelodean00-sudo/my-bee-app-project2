@@ -7,13 +7,16 @@ import {
 } from 'react-icons/fa';
 import { Play, Pause } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import VideoPlayer from "../components/VideoPlayer";
+import VideoPlayerWithAds from "../components/VideoPlayerWithAds";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { useNotifications } from "../contexts/NotificationContext";
+import { useAdAnalytics } from "../hooks/useAdAnalytics";
+import { VideoAd, SponsoredContent } from "@/types/ads";
 
 const Events = () => {
   const { markEventsVideosAsViewed } = useNotifications();
+  const { trackImpression, trackClick } = useAdAnalytics();
   const [isAutoScrolling, setIsAutoScrolling] = useState(false);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -23,6 +26,37 @@ const Events = () => {
   useEffect(() => {
     markEventsVideosAsViewed();
   }, [markEventsVideosAsViewed]);
+
+  // Mock ads data
+  const eventAds: VideoAd[] = [
+    {
+      id: "event-ad-1",
+      title: "Nassau Music Festival 2024",
+      description: "Join us for the biggest music event of the year with local and international artists",
+      videoUrl: "https://youtube.com/watch?v=music-festival",
+      advertiser: "Nassau Entertainment",
+      category: "events",
+      targetSection: "events",
+      duration: 30,
+      clickUrl: "https://nassaumusicfest.com",
+      impressions: 0,
+      clicks: 0,
+      isActive: true,
+      createdAt: "2024-01-15T10:00:00Z"
+    }
+  ];
+
+  // Mock sponsored content
+  const sponsoredContent: SponsoredContent[] = [
+    {
+      videoId: "2",
+      advertiser: "Paradise Resort",
+      sponsorshipType: "featured",
+      startDate: "2024-01-01",
+      endDate: "2024-12-31",
+      isActive: true
+    }
+  ];
 
   // Sample Bahamas event videos
   const eventVideos = [
@@ -40,6 +74,8 @@ const Events = () => {
       title: "Paradise Island Beach Festival",
       description: "Join the ultimate beach party featuring local DJs, conch fritters, and the most beautiful sunset views in the Caribbean"
     },
+    // Insert ad after every 2 videos
+    ...eventAds.map(ad => ({ ...ad, isAd: true })),
     {
       id: "3",
       platform: "tiktok",
@@ -83,6 +119,10 @@ const Events = () => {
       description: "Smooth jazz meets island vibes at Grand Bahama's premier music festival featuring local and international artists"
     }
   ];
+
+  const getSponsoredData = (videoId: string) => {
+    return sponsoredContent.find(s => s.videoId === videoId && s.isActive);
+  };
 
   const scrollToVideo = (index: number) => {
     if (containerRef.current) {
@@ -169,16 +209,26 @@ const Events = () => {
           
           {/* Vertical TikTok-style feed */}
           <div>
-            {eventVideos.map((video) => (
-              <div key={video.id} className="h-screen snap-start">
-                <VideoPlayer
-                  platform={video.platform}
-                  videoUrl={video.videoUrl}
-                  title={video.title}
-                  description={video.description}
-                />
-              </div>
-            ))}
+            {eventVideos.map((video) => {
+              const isAd = 'isAd' in video && video.isAd;
+              const sponsoredData = getSponsoredData(video.id);
+              
+              return (
+                <div key={video.id} className="h-screen snap-start">
+                  <VideoPlayerWithAds
+                    platform={isAd ? 'ad' : video.platform}
+                    videoUrl={video.videoUrl}
+                    title={video.title}
+                    description={video.description}
+                    isAd={isAd}
+                    adData={isAd ? video as VideoAd : undefined}
+                    sponsoredData={sponsoredData}
+                    onAdImpression={trackImpression}
+                    onAdClick={trackClick}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

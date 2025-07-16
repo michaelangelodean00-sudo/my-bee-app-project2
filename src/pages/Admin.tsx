@@ -4,8 +4,9 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import RightSidebar from "../components/RightSidebar";
 import AdminVideoReview from "../components/AdminVideoReview";
+import AdManagement from "../components/admin/AdManagement";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Shield, Video, Users, Settings } from "lucide-react";
+import { Shield, Video, Users, Settings, Play } from "lucide-react";
 
 const Admin = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -44,10 +45,14 @@ const Admin = () => {
             </div>
             
             <Tabs defaultValue="videos" className="w-full">
-              <TabsList className="grid w-full grid-cols-4">
+              <TabsList className="grid w-full grid-cols-5">
                 <TabsTrigger value="videos" className="flex items-center gap-2">
                   <Video size={16} />
                   Video Review
+                </TabsTrigger>
+                <TabsTrigger value="ads" className="flex items-center gap-2">
+                  <Play size={16} />
+                  Video Ads
                 </TabsTrigger>
                 <TabsTrigger value="users" className="flex items-center gap-2">
                   <Users size={16} />
@@ -65,6 +70,10 @@ const Admin = () => {
               
               <TabsContent value="videos" className="mt-6">
                 <AdminVideoReview />
+              </TabsContent>
+              
+              <TabsContent value="ads" className="mt-6">
+                <AdManagement />
               </TabsContent>
               
               <TabsContent value="users" className="mt-6">

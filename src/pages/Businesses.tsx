@@ -3,8 +3,10 @@ import { Play, Pause } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
-import VideoPlayer from "../components/VideoPlayer";
+import VideoPlayerWithAds from "../components/VideoPlayerWithAds";
 import { useNotifications } from "../contexts/NotificationContext";
+import { useAdAnalytics } from "../hooks/useAdAnalytics";
+import { VideoAd, SponsoredContent } from "@/types/ads";
 
 // Mock approved videos for businesses
 const businessVideos = [
@@ -58,8 +60,40 @@ const businessVideos = [
   }
 ];
 
+// Mock business ads
+const businessAds: VideoAd[] = [
+  {
+    id: "business-ad-1",
+    title: "Best Restaurant in Nassau",
+    description: "Try our award-winning conch fritters and fresh seafood daily",
+    videoUrl: "https://youtube.com/watch?v=restaurant-ad",
+    advertiser: "Conch Palace Restaurant",
+    category: "business",
+    targetSection: "businesses",
+    duration: 30,
+    clickUrl: "https://conchpalace.com",
+    impressions: 0,
+    clicks: 0,
+    isActive: true,
+    createdAt: "2024-01-15T10:00:00Z"
+  }
+];
+
+// Mock sponsored content
+const sponsoredContent: SponsoredContent[] = [
+  {
+    videoId: "1",
+    advertiser: "Nassau Tourism Board",
+    sponsorshipType: "promoted",
+    startDate: "2024-01-01",
+    endDate: "2024-12-31",
+    isActive: true
+  }
+];
+
 const Businesses = () => {
   const { markBusinessVideosAsViewed } = useNotifications();
+  const { trackImpression, trackClick } = useAdAnalytics();
   const [isAutoScrolling, setIsAutoScrolling] = useState(false);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -69,6 +103,21 @@ const Businesses = () => {
     // Mark business videos as viewed when component mounts
     markBusinessVideosAsViewed();
   }, [markBusinessVideosAsViewed]);
+
+  // Combine regular videos with ads (insert ads every 3 videos)
+  const videosWithAds = [...businessVideos];
+  businessAds.forEach((ad, index) => {
+    const insertIndex = (index + 1) * 3; // Insert after every 3 videos
+    if (insertIndex < videosWithAds.length) {
+      videosWithAds.splice(insertIndex, 0, { ...ad, isAd: true });
+    } else {
+      videosWithAds.push({ ...ad, isAd: true });
+    }
+  });
+
+  const getSponsoredData = (videoId: string) => {
+    return sponsoredContent.find(s => s.videoId === videoId && s.isActive);
+  };
 
   const scrollToVideo = (index: number) => {
     if (containerRef.current) {
@@ -84,7 +133,7 @@ const Businesses = () => {
     setIsAutoScrolling(true);
     autoScrollInterval.current = setInterval(() => {
       setCurrentVideoIndex((prevIndex) => {
-        const nextIndex = (prevIndex + 1) % businessVideos.length;
+        const nextIndex = (prevIndex + 1) % videosWithAds.length;
         scrollToVideo(nextIndex);
         return nextIndex;
       });
@@ -149,26 +198,29 @@ const Businesses = () => {
             {/* Platform badge below header, left-aligned */}
             <div className="px-4 pb-2 flex gap-2">
               <span className={`font-semibold px-3 py-1 rounded ${(() => {
-                const platform = businessVideos[currentVideoIndex].platform;
+                const currentVideo = videosWithAds[currentVideoIndex];
+                if (!currentVideo) return 'bg-gray-600 text-white';
+                
+                const isAd = 'isAd' in currentVideo && currentVideo.isAd;
+                const platform = isAd ? 'ad' : currentVideo.platform;
+                
                 switch (platform) {
                   case 'youtube': return 'bg-red-500 text-white';
                   case 'instagram': return 'bg-gradient-to-r from-purple-500 to-pink-500 text-white';
                   case 'tiktok': return 'bg-gradient-to-r from-blue-500 via-purple-500 to-red-500 text-white';
                   case 'facebook': return 'bg-blue-600 text-white';
-                  case 'twitter': return 'bg-black text-white';
-                  case 'linkedin': return 'bg-blue-700 text-white';
-                  case 'snapchat': return 'bg-yellow-400 text-black';
-                  case 'twitch': return 'bg-purple-600 text-white';
-                  case 'vimeo': return 'bg-blue-500 text-white';
-                  case 'pinterest': return 'bg-red-600 text-white';
-                  case 'reddit': return 'bg-orange-500 text-white';
-                  case 'telegram': return 'bg-blue-400 text-white';
-                  case 'discord': return 'bg-indigo-600 text-white';
-                  case 'whatsapp': return 'bg-green-500 text-white';
+                  case 'ad': return 'bg-green-500 text-white';
                   default: return 'bg-gray-600 text-white';
                 }
-              })()}`}>{businessVideos[currentVideoIndex].platform.toUpperCase()}</span>
-              {businessVideos[currentVideoIndex].isNew && (
+              })()}`}>
+                {(() => {
+                  const currentVideo = videosWithAds[currentVideoIndex];
+                  if (!currentVideo) return 'UNKNOWN';
+                  const isAd = 'isAd' in currentVideo && currentVideo.isAd;
+                  return isAd ? 'AD' : currentVideo.platform.toUpperCase();
+                })()}
+              </span>
+              {videosWithAds[currentVideoIndex] && 'isNew' in videosWithAds[currentVideoIndex] && videosWithAds[currentVideoIndex].isNew && (
                 <span className="bg-green-500 text-white font-semibold px-3 py-1 rounded animate-pulse">NEW</span>
               )}
             </div>
@@ -180,17 +232,27 @@ const Businesses = () => {
           </div>
           {/* Vertical TikTok-style feed */}
           <div>
-            {businessVideos.map((video, index) => (
-              <div key={video.id} className="h-screen snap-start">
-                <VideoPlayer
-                  videoUrl={video.videoUrl}
-                  title={video.title}
-                  description={video.description}
-                  isNew={video.isNew}
-                  platform={video.platform}
-                />
-              </div>
-            ))}
+            {videosWithAds.map((video, index) => {
+              const isAd = 'isAd' in video && video.isAd;
+              const sponsoredData = getSponsoredData(video.id);
+              
+              return (
+                <div key={video.id} className="h-screen snap-start">
+                  <VideoPlayerWithAds
+                    videoUrl={video.videoUrl}
+                    title={video.title}
+                    description={video.description}
+                    isNew={'isNew' in video ? video.isNew : false}
+                    platform={isAd ? 'ad' : video.platform}
+                    isAd={isAd}
+                    adData={isAd ? video as VideoAd : undefined}
+                    sponsoredData={sponsoredData}
+                    onAdImpression={trackImpression}
+                    onAdClick={trackClick}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
