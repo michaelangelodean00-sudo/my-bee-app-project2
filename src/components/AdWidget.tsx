@@ -54,16 +54,16 @@ const AdWidget = () => {
   
   return (
     <div className="bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white min-h-screen flex items-center justify-center relative">
-      <div className="max-w-6xl mx-auto w-full px-8 md:px-16 py-12 md:py-24">
-        <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
-          <div className="w-full md:w-1/2 flex justify-center">
+      <div className="max-w-6xl mx-auto w-full px-8 md:px-16 py-12 md:py-24 flex justify-center md:justify-end">
+        <div className="flex flex-col items-center text-center max-w-lg">
+          <div className="mb-8">
             <img 
               src={currentAd.imageUrl} 
               alt={currentAd.title} 
-              className="rounded-xl h-[400px] md:h-[500px] w-full max-w-sm md:max-w-md object-cover shadow-2xl"
+              className="rounded-xl h-[400px] md:h-[500px] w-full max-w-sm md:max-w-md object-cover shadow-2xl mx-auto"
             />
           </div>
-          <div className="w-full md:w-1/2 text-center">
+          <div className="text-center">
             <h3 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-8 md:mb-12 leading-tight">{currentAd.title}</h3>
             <p className="text-xl md:text-2xl lg:text-3xl mb-12 md:mb-16 leading-relaxed">{currentAd.description}</p>
             <div className="flex justify-center">
