@@ -492,6 +492,11 @@ interface ProductProps {
 const ProductCard = ({ product, onMessageSeller }: ProductProps) => {
   const [showDetails, setShowDetails] = useState(false);
   
+  // Find the category data to get the proper name and icon
+  const categoryData = categories.find(c => c.id === product.category);
+  const categoryName = categoryData?.name || product.category;
+  const categoryIcon = categoryData?.icon;
+  
   return (
     <Card className="overflow-hidden hover:shadow-md transition-shadow">
       <div className="h-48 overflow-hidden relative">
@@ -516,11 +521,23 @@ const ProductCard = ({ product, onMessageSeller }: ProductProps) => {
       </div>
       <CardHeader className="pb-2">
         <CardTitle className="text-base">{product.name}</CardTitle>
-        <div className="flex items-center text-sm">
-          <Tag size={14} className="text-gray-500 mr-1" />
-          <span className="text-gray-600">
-            {categories.find(c => c.id === product.category)?.name || product.category}
-          </span>
+        
+        {/* Enhanced category display */}
+        <div className="flex items-center justify-between mt-2">
+          <div className="flex items-center bg-gray-100 px-3 py-1.5 rounded-full">
+            {categoryIcon && React.cloneElement(categoryIcon, { 
+              size: 16, 
+              className: "text-bee-blue mr-2" 
+            })}
+            <span className="text-sm font-medium text-gray-700">
+              {categoryName}
+            </span>
+          </div>
+          
+          {/* Price moved to the right for better balance */}
+          <div className="text-lg font-bold text-bee-blue">
+            ${product.price.toFixed(2)}
+          </div>
         </div>
       </CardHeader>
       <CardContent className="pb-2">
@@ -534,7 +551,6 @@ const ProductCard = ({ product, onMessageSeller }: ProductProps) => {
           ))}
           <span className="ml-1 text-sm text-gray-600">{product.rating}</span>
         </div>
-        <div className="text-lg font-bold">${product.price.toFixed(2)}</div>
         
         {product.description && showDetails && (
           <div className="mt-2">
