@@ -53,24 +53,26 @@ const AdWidget = () => {
   const currentAd = ads[currentAdIndex];
   
   return (
-    <div className="bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white min-h-screen flex items-center relative">
-      <div className="max-w-full mx-auto w-full px-16 py-24 flex flex-col md:flex-row items-center">
-        <div className="w-full md:w-1/2 mb-12 md:mb-0 md:mr-16">
+    <div className="bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white min-h-screen flex items-center justify-center relative">
+      <div className="max-w-full mx-auto w-full px-16 py-24 flex flex-col md:flex-row items-center justify-center">
+        <div className="w-full md:w-1/2 mb-12 md:mb-0 md:mr-16 flex justify-center">
           <img 
             src={currentAd.imageUrl} 
             alt={currentAd.title} 
-            className="rounded-xl h-[500px] md:h-[700px] w-full object-cover shadow-2xl"
+            className="rounded-xl h-[500px] md:h-[700px] w-full max-w-md object-cover shadow-2xl"
           />
         </div>
-        <div className="w-full md:w-1/2">
+        <div className="w-full md:w-1/2 text-center md:text-left">
           <h3 className="text-5xl md:text-7xl font-bold mb-12 leading-tight">{currentAd.title}</h3>
           <p className="text-2xl md:text-3xl mb-16 leading-relaxed">{currentAd.description}</p>
-          <a 
-            href={currentAd.linkUrl} 
-            className="inline-block bg-bee-yellow text-bee-black px-12 py-6 rounded-xl text-2xl font-medium hover:bg-bee-yellow/90 transition-colors shadow-lg"
-          >
-            Learn More
-          </a>
+          <div className="flex justify-center md:justify-start">
+            <a 
+              href={currentAd.linkUrl} 
+              className="inline-block bg-bee-yellow text-bee-black px-12 py-6 rounded-xl text-2xl font-medium hover:bg-bee-yellow/90 transition-colors shadow-lg"
+            >
+              Learn More
+            </a>
+          </div>
         </div>
         <button 
           onClick={() => setDismissed(true)}
