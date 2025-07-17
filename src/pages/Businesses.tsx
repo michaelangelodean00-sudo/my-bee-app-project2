@@ -1,3 +1,4 @@
+
 import { useEffect, useState, useRef } from "react";
 import { Play, Pause } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,8 +9,23 @@ import { useNotifications } from "../contexts/NotificationContext";
 import { useAdAnalytics } from "../hooks/useAdAnalytics";
 import { VideoAd, SponsoredContent } from "@/types/ads";
 
+interface BusinessVideo {
+  id: string;
+  platform: string;
+  videoUrl: string;
+  title: string;
+  description: string;
+  isNew: boolean;
+}
+
+interface VideoWithAd extends VideoAd {
+  isAd: true;
+}
+
+type FeedItem = BusinessVideo | VideoWithAd;
+
 // Mock approved videos for businesses
-const businessVideos = [
+const businessVideos: BusinessVideo[] = [
   {
     id: "1",
     platform: "instagram",
@@ -105,13 +121,14 @@ const Businesses = () => {
   }, [markBusinessVideosAsViewed]);
 
   // Combine regular videos with ads (insert ads every 3 videos)
-  const videosWithAds = [...businessVideos];
+  const videosWithAds: FeedItem[] = [...businessVideos];
   businessAds.forEach((ad, index) => {
     const insertIndex = (index + 1) * 3; // Insert after every 3 videos
+    const adWithFlag: VideoWithAd = { ...ad, isAd: true };
     if (insertIndex < videosWithAds.length) {
-      videosWithAds.splice(insertIndex, 0, { ...ad, isAd: true });
+      videosWithAds.splice(insertIndex, 0, adWithFlag);
     } else {
-      videosWithAds.push({ ...ad, isAd: true });
+      videosWithAds.push(adWithFlag);
     }
   });
 
@@ -164,6 +181,10 @@ const Businesses = () => {
     };
   }, []);
 
+  const isAd = (item: FeedItem): item is VideoWithAd => {
+    return 'isAd' in item && item.isAd === true;
+  };
+
   return (
     <div className="min-h-screen bg-black">
       <Header toggleMobileSidebar={() => {}} />
@@ -201,8 +222,8 @@ const Businesses = () => {
                 const currentVideo = videosWithAds[currentVideoIndex];
                 if (!currentVideo) return 'bg-gray-600 text-white';
                 
-                const isAd = 'isAd' in currentVideo && currentVideo.isAd;
-                const platform = isAd ? 'ad' : currentVideo.platform;
+                const currentIsAd = isAd(currentVideo);
+                const platform = currentIsAd ? 'ad' : currentVideo.platform;
                 
                 switch (platform) {
                   case 'youtube': return 'bg-red-500 text-white';
@@ -216,11 +237,11 @@ const Businesses = () => {
                 {(() => {
                   const currentVideo = videosWithAds[currentVideoIndex];
                   if (!currentVideo) return 'UNKNOWN';
-                  const isAd = 'isAd' in currentVideo && currentVideo.isAd;
-                  return isAd ? 'AD' : currentVideo.platform.toUpperCase();
+                  const currentIsAd = isAd(currentVideo);
+                  return currentIsAd ? 'AD' : currentVideo.platform.toUpperCase();
                 })()}
               </span>
-              {videosWithAds[currentVideoIndex] && 'isNew' in videosWithAds[currentVideoIndex] && videosWithAds[currentVideoIndex].isNew && (
+              {videosWithAds[currentVideoIndex] && !isAd(videosWithAds[currentVideoIndex]) && (videosWithAds[currentVideoIndex] as BusinessVideo).isNew && (
                 <span className="bg-green-500 text-white font-semibold px-3 py-1 rounded animate-pulse">NEW</span>
               )}
             </div>
@@ -233,7 +254,7 @@ const Businesses = () => {
           {/* Vertical TikTok-style feed */}
           <div>
             {videosWithAds.map((video, index) => {
-              const isAd = 'isAd' in video && video.isAd;
+              const videoIsAd = isAd(video);
               const sponsoredData = getSponsoredData(video.id);
               
               return (
@@ -242,10 +263,10 @@ const Businesses = () => {
                     videoUrl={video.videoUrl}
                     title={video.title}
                     description={video.description}
-                    isNew={'isNew' in video ? video.isNew : false}
-                    platform={isAd ? 'ad' : video.platform}
-                    isAd={isAd}
-                    adData={isAd ? video as VideoAd : undefined}
+                    isNew={!videoIsAd ? video.isNew : false}
+                    platform={videoIsAd ? 'ad' : video.platform}
+                    isAd={videoIsAd}
+                    adData={videoIsAd ? video : undefined}
                     sponsoredData={sponsoredData}
                     onAdImpression={trackImpression}
                     onAdClick={trackClick}

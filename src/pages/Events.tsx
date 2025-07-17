@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef } from 'react';
 import { 
   FaGuitar, 
@@ -13,6 +14,20 @@ import Sidebar from "../components/Sidebar";
 import { useNotifications } from "../contexts/NotificationContext";
 import { useAdAnalytics } from "../hooks/useAdAnalytics";
 import { VideoAd, SponsoredContent } from "@/types/ads";
+
+interface EventVideo {
+  id: string;
+  platform: string;
+  videoUrl: string;
+  title: string;
+  description: string;
+}
+
+interface EventVideoWithAd extends VideoAd {
+  isAd: true;
+}
+
+type FeedItem = EventVideo | EventVideoWithAd;
 
 const Events = () => {
   const { markEventsVideosAsViewed } = useNotifications();
@@ -59,7 +74,7 @@ const Events = () => {
   ];
 
   // Sample Bahamas event videos
-  const eventVideos = [
+  const eventVideos: EventVideo[] = [
     {
       id: "1",
       platform: "youtube",
@@ -74,8 +89,6 @@ const Events = () => {
       title: "Paradise Island Beach Festival",
       description: "Join the ultimate beach party featuring local DJs, conch fritters, and the most beautiful sunset views in the Caribbean"
     },
-    // Insert ad after every 2 videos
-    ...eventAds.map(ad => ({ ...ad, isAd: true })),
     {
       id: "3",
       platform: "tiktok",
@@ -120,6 +133,20 @@ const Events = () => {
     }
   ];
 
+  // Combine videos with ads
+  const videosWithAds: FeedItem[] = [...eventVideos];
+  
+  // Insert ads after every 2 videos
+  eventAds.forEach((ad, index) => {
+    const insertIndex = (index + 1) * 2; // Insert after every 2 videos
+    const adWithFlag: EventVideoWithAd = { ...ad, isAd: true };
+    if (insertIndex < videosWithAds.length) {
+      videosWithAds.splice(insertIndex, 0, adWithFlag);
+    } else {
+      videosWithAds.push(adWithFlag);
+    }
+  });
+
   const getSponsoredData = (videoId: string) => {
     return sponsoredContent.find(s => s.videoId === videoId && s.isActive);
   };
@@ -138,7 +165,7 @@ const Events = () => {
     setIsAutoScrolling(true);
     autoScrollInterval.current = setInterval(() => {
       setCurrentVideoIndex((prevIndex) => {
-        const nextIndex = (prevIndex + 1) % eventVideos.length;
+        const nextIndex = (prevIndex + 1) % videosWithAds.length;
         scrollToVideo(nextIndex);
         return nextIndex;
       });
@@ -168,6 +195,10 @@ const Events = () => {
       }
     };
   }, []);
+
+  const isAd = (item: FeedItem): item is EventVideoWithAd => {
+    return 'isAd' in item && item.isAd === true;
+  };
 
   return (
     <div className="min-h-screen bg-black">
@@ -209,19 +240,19 @@ const Events = () => {
           
           {/* Vertical TikTok-style feed */}
           <div>
-            {eventVideos.map((video) => {
-              const isAd = 'isAd' in video && video.isAd;
+            {videosWithAds.map((video) => {
+              const videoIsAd = isAd(video);
               const sponsoredData = getSponsoredData(video.id);
               
               return (
                 <div key={video.id} className="h-screen snap-start">
                   <VideoPlayerWithAds
-                    platform={isAd ? 'ad' : video.platform}
+                    platform={videoIsAd ? 'ad' : video.platform}
                     videoUrl={video.videoUrl}
                     title={video.title}
                     description={video.description}
-                    isAd={isAd}
-                    adData={isAd ? video as VideoAd : undefined}
+                    isAd={videoIsAd}
+                    adData={videoIsAd ? video : undefined}
                     sponsoredData={sponsoredData}
                     onAdImpression={trackImpression}
                     onAdClick={trackClick}

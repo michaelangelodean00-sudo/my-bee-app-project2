@@ -50,19 +50,32 @@ const mockAds: VideoAd[] = [
   }
 ];
 
+interface NewAdForm {
+  title: string;
+  description: string;
+  videoUrl: string;
+  advertiser: string;
+  category: 'business' | 'events' | 'general';
+  targetSection: 'businesses' | 'events' | 'both';
+  duration: number;
+  clickUrl: string;
+  budget: number;
+  costPerView: number;
+}
+
 const AdManagement = () => {
   const [ads, setAds] = useState<VideoAd[]>(mockAds);
   const [selectedAd, setSelectedAd] = useState<VideoAd | null>(null);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [filter, setFilter] = useState<'all' | 'business' | 'events'>('all');
 
-  const [newAd, setNewAd] = useState({
+  const [newAd, setNewAd] = useState<NewAdForm>({
     title: '',
     description: '',
     videoUrl: '',
     advertiser: '',
-    category: 'business' as const,
-    targetSection: 'businesses' as const,
+    category: 'business',
+    targetSection: 'businesses',
     duration: 30,
     clickUrl: '',
     budget: 0,
@@ -198,7 +211,7 @@ const AdManagement = () => {
                   <Label htmlFor="category">Category</Label>
                   <Select
                     value={newAd.category}
-                    onValueChange={(value: 'business' | 'events') => 
+                    onValueChange={(value: 'business' | 'events' | 'general') => 
                       setNewAd(prev => ({ ...prev, category: value }))
                     }
                   >
@@ -208,6 +221,7 @@ const AdManagement = () => {
                     <SelectContent>
                       <SelectItem value="business">Business</SelectItem>
                       <SelectItem value="events">Events</SelectItem>
+                      <SelectItem value="general">General</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
