@@ -43,7 +43,7 @@ const ads: Ad[] = [
   },
   {
     id: "ad4",
-    title: "Bamboo Shack Ad",
+    title: "Bamboo Shack Special",
     description: "Taste the best of the Bahamas! Visit Bamboo Shack for delicious local cuisine and unbeatable deals.",
     imageUrl: bambooAd,
     linkUrl: "https://www.bambooshackbahamas.com"
