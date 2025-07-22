@@ -57,13 +57,6 @@ const ads: Ad[] = [
     linkUrl: "https://www.adventuresports.com"
   },
   {
-    id: "ad6",
-    title: "Cultural Heritage Tour",
-    description: "Discover the rich history and traditions of our islands with expert local guides.",
-    imageUrl: "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=800&auto=format&fit=crop",
-    linkUrl: "https://www.heritagetours.com"
-  },
-  {
     id: "ad7",
     title: "Tropical Spa Retreat",
     description: "Relax and rejuvenate with our signature treatments using natural island ingredients.",
