@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Phone, Armchair, Shirt, Quote, Baby, Smartphone, Tv, MessageCircle, Microwave, Truck } from "lucide-react";
+import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Phone, Armchair, Shirt, Quote, Baby, Smartphone, Tv, MessageCircle, Microwave, Truck, Trash2, Ban, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -16,6 +16,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useNotifications } from "../contexts/NotificationContext";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 // Mock e-commerce videos
 const ecommerceVideos = [
@@ -89,6 +90,10 @@ const Ecommerce = () => {
   const [selectedSeller, setSelectedSeller] = useState<string>("");
   const [messageText, setMessageText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [blockedUsers, setBlockedUsers] = useState<string[]>([]);
+  
+  // Simple admin check - in a real app this would come from authentication
+  const isAdmin = true; // Set to true for demo purposes
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -156,6 +161,23 @@ const Ecommerce = () => {
       setSelectedSeller("");
     }
   };
+
+  const handleDeleteProduct = (productId: string) => {
+    setUserProducts(userProducts.filter(product => product.id !== productId));
+    toast.success("Product deleted successfully");
+  };
+
+  const handleBlockUser = (seller: string) => {
+    if (!blockedUsers.includes(seller)) {
+      setBlockedUsers([...blockedUsers, seller]);
+      toast.success(`User ${seller} has been blocked`);
+    }
+  };
+
+  const handleUnblockUser = (seller: string) => {
+    setBlockedUsers(blockedUsers.filter(user => user !== seller));
+    toast.success(`User ${seller} has been unblocked`);
+  };
   
   return (
     <div className="min-h-screen bg-gray-50">
@@ -166,7 +188,15 @@ const Ecommerce = () => {
         
         <div className="flex-1 max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold text-bee-black">Marketplace</h1>
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl font-bold text-bee-black">Marketplace</h1>
+              {isAdmin && (
+                <Badge variant="secondary" className="bg-red-100 text-red-800">
+                  <Shield size={14} className="mr-1" />
+                  Admin Mode
+                </Badge>
+              )}
+            </div>
             <Dialog open={openDialog} onOpenChange={setOpenDialog}>
               <DialogTrigger asChild>
                 <Button className="bg-bee-blue hover:bg-bee-blue/90">
@@ -376,7 +406,16 @@ const Ecommerce = () => {
               {userProducts.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                   {userProducts.map((product) => (
-                    <ProductCard key={product.id} product={product} onMessageSeller={handleMessageSeller} />
+                    <ProductCard 
+                      key={product.id} 
+                      product={product} 
+                      onMessageSeller={handleMessageSeller}
+                      isAdmin={isAdmin}
+                      onDeleteProduct={handleDeleteProduct}
+                      onBlockUser={handleBlockUser}
+                      onUnblockUser={handleUnblockUser}
+                      isUserBlocked={blockedUsers.includes(product.seller || "")}
+                    />
                   ))}
                 </div>
               ) : (
@@ -419,7 +458,16 @@ const Ecommerce = () => {
                               {userProducts
                                 .filter(p => p.category === category.id && p.subCategory === subCategory.id)
                                 .map((product) => (
-                                  <ProductCard key={product.id} product={product} onMessageSeller={handleMessageSeller} />
+                                  <ProductCard 
+                                    key={product.id} 
+                                    product={product} 
+                                    onMessageSeller={handleMessageSeller}
+                                    isAdmin={isAdmin}
+                                    onDeleteProduct={handleDeleteProduct}
+                                    onBlockUser={handleBlockUser}
+                                    onUnblockUser={handleUnblockUser}
+                                    isUserBlocked={blockedUsers.includes(product.seller || "")}
+                                  />
                                 ))}
                             </div>
                           ) : (
@@ -449,7 +497,16 @@ const Ecommerce = () => {
                       {userProducts
                         .filter(p => p.category === category.id)
                         .map((product) => (
-                          <ProductCard key={product.id} product={product} onMessageSeller={handleMessageSeller} />
+                          <ProductCard 
+                            key={product.id} 
+                            product={product} 
+                            onMessageSeller={handleMessageSeller}
+                            isAdmin={isAdmin}
+                            onDeleteProduct={handleDeleteProduct}
+                            onBlockUser={handleBlockUser}
+                            onUnblockUser={handleUnblockUser}
+                            isUserBlocked={blockedUsers.includes(product.seller || "")}
+                          />
                         ))}
                     </div>
                   ) : (
@@ -493,9 +550,22 @@ interface ProductProps {
     isUserProduct?: boolean;
   };
   onMessageSeller: (sellerName: string) => void;
+  isAdmin?: boolean;
+  onDeleteProduct?: (productId: string) => void;
+  onBlockUser?: (seller: string) => void;
+  onUnblockUser?: (seller: string) => void;
+  isUserBlocked?: boolean;
 }
 
-const ProductCard = ({ product, onMessageSeller }: ProductProps) => {
+const ProductCard = ({ 
+  product, 
+  onMessageSeller, 
+  isAdmin = false, 
+  onDeleteProduct, 
+  onBlockUser, 
+  onUnblockUser, 
+  isUserBlocked = false 
+}: ProductProps) => {
   const [showDetails, setShowDetails] = useState(false);
   
   // Find the category data to get the proper name and icon
@@ -521,9 +591,75 @@ const ProductCard = ({ product, onMessageSeller }: ProductProps) => {
             New Listing
           </Badge>
         )}
-        <button className="absolute top-2 right-2 bg-white p-2 rounded-full hover:bg-gray-100">
-          <Heart size={16} className="text-gray-600" />
-        </button>
+        {isUserBlocked && (
+          <Badge className="absolute top-2 left-16 bg-red-500 text-white">
+            Blocked User
+          </Badge>
+        )}
+        <div className="absolute top-2 right-2 flex gap-1">
+          {isAdmin && (
+            <>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive" size="sm" className="p-2 h-8 w-8">
+                    <Trash2 size={14} />
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Delete Product</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Are you sure you want to delete "{product.name}"? This action cannot be undone.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => onDeleteProduct?.(product.id)}>
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+              
+              {product.seller && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant={isUserBlocked ? "outline" : "destructive"} size="sm" className="p-2 h-8 w-8">
+                      <Ban size={14} />
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        {isUserBlocked ? "Unblock User" : "Block User"}
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        {isUserBlocked 
+                          ? `Are you sure you want to unblock user "${product.seller}"?`
+                          : `Are you sure you want to block user "${product.seller}"? This will prevent them from listing new items.`
+                        }
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction 
+                        onClick={() => isUserBlocked 
+                          ? onUnblockUser?.(product.seller!) 
+                          : onBlockUser?.(product.seller!)
+                        }
+                      >
+                        {isUserBlocked ? "Unblock" : "Block"}
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
+            </>
+          )}
+          <button className="bg-white p-2 rounded-full hover:bg-gray-100">
+            <Heart size={16} className="text-gray-600" />
+          </button>
+        </div>
       </div>
       <CardHeader className="pb-2">
         <CardTitle className="text-base">{product.name}</CardTitle>
