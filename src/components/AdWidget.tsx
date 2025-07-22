@@ -55,7 +55,7 @@ const AdWidget = () => {
   return (
     <div className="bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white min-h-screen flex items-center justify-center relative">
       <div className="max-w-6xl mx-auto w-full px-8 md:px-16 py-12 md:py-24 flex justify-center md:justify-end">
-        <div className="flex flex-col items-center text-center max-w-lg md:max-w-2xl lg:max-w-4xl">
+        <div className="flex flex-col items-center text-center max-w-lg md:max-w-4xl lg:max-w-6xl xl:max-w-7xl">
           <div className="mb-8">
             <img 
               src={currentAd.imageUrl} 
