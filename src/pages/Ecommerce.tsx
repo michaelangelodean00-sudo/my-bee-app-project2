@@ -386,18 +386,18 @@ const Ecommerce = () => {
           </Dialog>
           
           <Tabs defaultValue="products" className="mb-6">
-            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-10 gap-2 h-auto p-3 bg-card border rounded-lg">
-              <TabsTrigger value="products" className="text-base font-semibold py-3 px-4 rounded-md bg-background text-foreground border border-border data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-primary shadow-sm transition-all">
+            <TabsList className="flex flex-wrap w-full gap-2 h-auto p-3 bg-card border rounded-lg">
+              <TabsTrigger value="products" className="text-base font-semibold py-3 px-6 rounded-md bg-background text-foreground border border-border data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-primary shadow-sm transition-all whitespace-nowrap">
                 Products
               </TabsTrigger>
               {categories.map((category) => (
                 <TabsTrigger 
                   key={category.id} 
                   value={category.id} 
-                  className="text-base font-semibold py-3 px-4 rounded-md bg-background text-foreground border border-border flex items-center gap-2 min-w-0 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-primary shadow-sm transition-all hover:bg-accent hover:text-accent-foreground"
+                  className="text-base font-semibold py-3 px-6 rounded-md bg-background text-foreground border border-border flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-primary shadow-sm transition-all hover:bg-accent hover:text-accent-foreground whitespace-nowrap"
                 >
                   <span className="flex-shrink-0">{category.icon}</span>
-                  <span className="truncate text-sm sm:text-base font-medium">{category.name}</span>
+                  <span className="font-medium">{category.name}</span>
                 </TabsTrigger>
               ))}
             </TabsList>
