@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef } from 'react';
 import { 
   FaGuitar, 
@@ -7,13 +8,30 @@ import {
 } from 'react-icons/fa';
 import { Play, Pause } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import VideoPlayer from "../components/VideoPlayer";
+import VideoPlayerWithAds from "../components/VideoPlayerWithAds";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { useNotifications } from "../contexts/NotificationContext";
+import { useAdAnalytics } from "../hooks/useAdAnalytics";
+import { VideoAd, SponsoredContent } from "@/types/ads";
+
+interface EventVideo {
+  id: string;
+  platform: string;
+  videoUrl: string;
+  title: string;
+  description: string;
+}
+
+interface EventVideoWithAd extends VideoAd {
+  isAd: true;
+}
+
+type FeedItem = EventVideo | EventVideoWithAd;
 
 const Events = () => {
   const { markEventsVideosAsViewed } = useNotifications();
+  const { trackImpression, trackClick } = useAdAnalytics();
   const [isAutoScrolling, setIsAutoScrolling] = useState(false);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -24,8 +42,39 @@ const Events = () => {
     markEventsVideosAsViewed();
   }, [markEventsVideosAsViewed]);
 
+  // Mock ads data
+  const eventAds: VideoAd[] = [
+    {
+      id: "event-ad-1",
+      title: "Nassau Music Festival 2024",
+      description: "Join us for the biggest music event of the year with local and international artists",
+      videoUrl: "https://youtube.com/watch?v=music-festival",
+      advertiser: "Nassau Entertainment",
+      category: "events",
+      targetSection: "events",
+      duration: 30,
+      clickUrl: "https://nassaumusicfest.com",
+      impressions: 0,
+      clicks: 0,
+      isActive: true,
+      createdAt: "2024-01-15T10:00:00Z"
+    }
+  ];
+
+  // Mock sponsored content
+  const sponsoredContent: SponsoredContent[] = [
+    {
+      videoId: "2",
+      advertiser: "Paradise Resort",
+      sponsorshipType: "featured",
+      startDate: "2024-01-01",
+      endDate: "2024-12-31",
+      isActive: true
+    }
+  ];
+
   // Sample Bahamas event videos
-  const eventVideos = [
+  const eventVideos: EventVideo[] = [
     {
       id: "1",
       platform: "youtube",
@@ -84,6 +133,24 @@ const Events = () => {
     }
   ];
 
+  // Combine videos with ads
+  const videosWithAds: FeedItem[] = [...eventVideos];
+  
+  // Insert ads after every 2 videos
+  eventAds.forEach((ad, index) => {
+    const insertIndex = (index + 1) * 2; // Insert after every 2 videos
+    const adWithFlag: EventVideoWithAd = { ...ad, isAd: true };
+    if (insertIndex < videosWithAds.length) {
+      videosWithAds.splice(insertIndex, 0, adWithFlag);
+    } else {
+      videosWithAds.push(adWithFlag);
+    }
+  });
+
+  const getSponsoredData = (videoId: string) => {
+    return sponsoredContent.find(s => s.videoId === videoId && s.isActive);
+  };
+
   const scrollToVideo = (index: number) => {
     if (containerRef.current) {
       const videoElement = containerRef.current.children[index + 1] as HTMLElement; // +1 to account for header
@@ -98,7 +165,7 @@ const Events = () => {
     setIsAutoScrolling(true);
     autoScrollInterval.current = setInterval(() => {
       setCurrentVideoIndex((prevIndex) => {
-        const nextIndex = (prevIndex + 1) % eventVideos.length;
+        const nextIndex = (prevIndex + 1) % videosWithAds.length;
         scrollToVideo(nextIndex);
         return nextIndex;
       });
@@ -128,6 +195,10 @@ const Events = () => {
       }
     };
   }, []);
+
+  const isAd = (item: FeedItem): item is EventVideoWithAd => {
+    return 'isAd' in item && item.isAd === true;
+  };
 
   return (
     <div className="min-h-screen bg-black">
@@ -169,16 +240,26 @@ const Events = () => {
           
           {/* Vertical TikTok-style feed */}
           <div>
-            {eventVideos.map((video) => (
-              <div key={video.id} className="h-screen snap-start">
-                <VideoPlayer
-                  platform={video.platform}
-                  videoUrl={video.videoUrl}
-                  title={video.title}
-                  description={video.description}
-                />
-              </div>
-            ))}
+            {videosWithAds.map((video) => {
+              const videoIsAd = isAd(video);
+              const sponsoredData = getSponsoredData(video.id);
+              
+              return (
+                <div key={video.id} className="h-screen snap-start">
+                  <VideoPlayerWithAds
+                    platform={videoIsAd ? 'ad' : video.platform}
+                    videoUrl={video.videoUrl}
+                    title={video.title}
+                    description={video.description}
+                    isAd={videoIsAd}
+                    adData={videoIsAd ? video : undefined}
+                    sponsoredData={sponsoredData}
+                    onAdImpression={trackImpression}
+                    onAdClick={trackClick}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

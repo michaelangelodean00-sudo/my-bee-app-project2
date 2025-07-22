@@ -6,6 +6,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
 import bambooAd from "../images/bamboo-ad.jpeg";
 
@@ -17,6 +18,7 @@ interface Ad {
   linkUrl: string;
 }
 
+// Expanded ads array with more examples
 const ads: Ad[] = [
   {
     id: "ad1",
@@ -45,21 +47,57 @@ const ads: Ad[] = [
     description: "Taste the best of the Bahamas! Visit Bamboo Shack for delicious local cuisine and unbeatable deals.",
     imageUrl: bambooAd,
     linkUrl: "https://www.bambooshackbahamas.com"
+    
+  },
+  {
+    id: "ad5",
+    title: "Adventure Sports Center",
+    description: "Try kayaking, snorkeling, and diving with professional instructors. Equipment provided.",
+    imageUrl: "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=800&auto=format&fit=crop",
+    linkUrl: "https://www.adventuresports.com"
+  },
+  {
+    id: "ad6",
+    title: "Cultural Heritage Tour",
+    description: "Discover the rich history and traditions of our islands with expert local guides.",
+    imageUrl: "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=800&auto=format&fit=crop",
+    linkUrl: "https://www.heritagetours.com"
+  },
+  {
+    id: "ad7",
+    title: "Tropical Spa Retreat",
+    description: "Relax and rejuvenate with our signature treatments using natural island ingredients.",
+    imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&auto=format&fit=crop",
+    linkUrl: "https://www.tropicalspa.com"
+  },
+  {
+    id: "ad8",
+    title: "Artisan Market",
+    description: "Shop unique handcrafted items from local artisans. Support our creative community.",
+    imageUrl: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop",
+    linkUrl: "https://www.artisanmarket.com"
+  },
+  {
+    id: "ad9",
+    title: "Oceanfront Restaurant",
+    description: "Experience fine dining with breathtaking ocean views. Fresh seafood and local cuisine daily.",
+    imageUrl: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&auto=format&fit=crop",
+    linkUrl: "https://www.oceanfrontdining.com"
   }
 ];
 
 const AdSplash = () => {
   const [autoplay, setAutoplay] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [loadedImages, setLoadedImages] = useState(new Set([0])); // Start with first image loaded
+  const [api, setApi] = useState<CarouselApi>();
   
   useEffect(() => {
     let interval: number;
     
-    if (autoplay) {
+    if (autoplay && api) {
       interval = window.setInterval(() => {
-        const carouselNext = document.querySelector('[data-carousel-next]');
-        if (carouselNext) {
-          (carouselNext as HTMLButtonElement).click();
-        }
+        api.scrollNext();
       }, 5000); // Auto rotate every 5 seconds
     }
     
@@ -68,25 +106,67 @@ const AdSplash = () => {
         clearInterval(interval);
       }
     };
-  }, [autoplay]);
+  }, [autoplay, api]);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    api.on("select", () => {
+      setCurrentSlide(api.selectedScrollSnap());
+    });
+  }, [api]);
+
+  // Lazy load images for current and next/previous slides
+  useEffect(() => {
+    const indicesToLoad = [
+      currentSlide,
+      (currentSlide + 1) % ads.length,
+      currentSlide === 0 ? ads.length - 1 : currentSlide - 1
+    ];
+    
+    setLoadedImages(prev => {
+      const newSet = new Set(prev);
+      indicesToLoad.forEach(index => newSet.add(index));
+      return newSet;
+    });
+  }, [currentSlide]);
 
   const handleGetMoreInfo = (linkUrl: string) => {
     window.open(linkUrl, '_blank', 'noopener,noreferrer');
   };
+
+  const handleSlideChange = (index: number) => {
+    if (api) {
+      api.scrollTo(index);
+    }
+  };
   
   return (
     <div className="relative bg-bee-blue/90 text-white overflow-hidden">
-      <Carousel className="max-w-6xl mx-auto px-4 py-4" opts={{ loop: true }}>
+      <Carousel 
+        className="max-w-6xl mx-auto px-4 py-4" 
+        opts={{ loop: true }}
+        setApi={setApi}
+      >
         <CarouselContent>
-          {ads.map((ad) => (
+          {ads.map((ad, index) => (
             <CarouselItem key={ad.id}>
               <div className="flex flex-col md:flex-row items-center">
                 <div className="w-full md:w-1/3 mb-4 md:mb-0 md:mr-6">
-                  <img 
-                    src={ad.imageUrl} 
-                    alt={ad.title} 
-                    className="rounded-lg w-full h-32 md:h-40 object-cover"
-                  />
+                  {loadedImages.has(index) ? (
+                    <img 
+                      src={ad.imageUrl} 
+                      alt={ad.title} 
+                      className="rounded-lg w-full h-32 md:h-40 object-cover"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="rounded-lg w-full h-32 md:h-40 bg-gray-300 animate-pulse flex items-center justify-center">
+                      <span className="text-gray-500 text-sm">Loading...</span>
+                    </div>
+                  )}
                 </div>
                 <div className="w-full md:w-2/3">
                   <h3 className="text-xl font-bold mb-2">{ad.title}</h3>
@@ -103,7 +183,21 @@ const AdSplash = () => {
           ))}
         </CarouselContent>
         <CarouselPrevious className="left-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30" />
-        <CarouselNext className="right-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30" data-carousel-next />
+        <CarouselNext className="right-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30" />
+        
+        {/* Slide indicators */}
+        <div className="flex justify-center mt-4 space-x-2">
+          {ads.map((_, index) => (
+            <button
+              key={index}
+              className={`w-2 h-2 rounded-full transition-colors ${
+                index === currentSlide ? 'bg-white' : 'bg-white/40'
+              }`}
+              onClick={() => handleSlideChange(index)}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
       </Carousel>
     </div>
   );

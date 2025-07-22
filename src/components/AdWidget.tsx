@@ -53,28 +53,32 @@ const AdWidget = () => {
   const currentAd = ads[currentAdIndex];
   
   return (
-    <div className="bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white min-h-screen flex items-center relative">
-      <div className="max-w-full mx-auto w-full px-16 py-24 flex flex-col md:flex-row items-center">
-        <div className="w-full md:w-1/2 mb-12 md:mb-0 md:mr-16">
-          <img 
-            src={currentAd.imageUrl} 
-            alt={currentAd.title} 
-            className="rounded-xl h-[500px] md:h-[700px] w-full object-cover shadow-2xl"
-          />
-        </div>
-        <div className="w-full md:w-1/2">
-          <h3 className="text-5xl md:text-7xl font-bold mb-12 leading-tight">{currentAd.title}</h3>
-          <p className="text-2xl md:text-3xl mb-16 leading-relaxed">{currentAd.description}</p>
-          <a 
-            href={currentAd.linkUrl} 
-            className="inline-block bg-bee-yellow text-bee-black px-12 py-6 rounded-xl text-2xl font-medium hover:bg-bee-yellow/90 transition-colors shadow-lg"
-          >
-            Learn More
-          </a>
+    <div className="bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white min-h-screen flex items-center justify-center relative">
+      <div className="max-w-6xl mx-auto w-full px-8 md:px-16 py-12 md:py-24 flex justify-center md:justify-end">
+        <div className="flex flex-col items-center text-center max-w-lg md:max-w-4xl lg:max-w-6xl xl:max-w-7xl">
+          <div className="mb-8">
+            <img 
+              src={currentAd.imageUrl} 
+              alt={currentAd.title} 
+              className="rounded-xl h-[400px] md:h-[500px] w-full max-w-sm md:max-w-md object-cover shadow-2xl mx-auto"
+            />
+          </div>
+          <div className="text-center">
+            <h3 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-8 md:mb-12 leading-tight">{currentAd.title}</h3>
+            <p className="text-xl md:text-2xl lg:text-3xl mb-12 md:mb-16 leading-relaxed">{currentAd.description}</p>
+            <div className="flex justify-center">
+              <a 
+                href={currentAd.linkUrl} 
+                className="inline-block bg-bee-yellow text-bee-black px-8 md:px-12 py-4 md:py-6 rounded-xl text-xl md:text-2xl font-medium hover:bg-bee-yellow/90 transition-colors shadow-lg"
+              >
+                Learn More
+              </a>
+            </div>
+          </div>
         </div>
         <button 
           onClick={() => setDismissed(true)}
-          className="absolute top-8 right-8 text-white/80 hover:text-white"
+          className="absolute top-4 md:top-8 right-4 md:right-8 text-white/80 hover:text-white"
           aria-label="Dismiss ad"
         >
           <X size={32} />
