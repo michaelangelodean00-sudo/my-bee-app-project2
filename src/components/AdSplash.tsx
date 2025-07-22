@@ -7,6 +7,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import bambooAd from "../images/bamboo-ad.jpeg";
 
 interface Ad {
   id: string;
@@ -37,6 +38,13 @@ const ads: Ad[] = [
     description: "Explore the beauty of our islands with special discounts on tours and excursions.",
     imageUrl: "https://images.unsplash.com/photo-1548574505-5e239809ee19?w=800&auto=format&fit=crop",
     linkUrl: "https://www.islandtours.com"
+  },
+  {
+    id: "ad4",
+    title: "Bamboo Shack Ad",
+    description: "Taste the best of the Bahamas! Visit Bamboo Shack for delicious local cuisine and unbeatable deals.",
+    imageUrl: bambooAd,
+    linkUrl: "https://www.bambooshackbahamas.com"
   }
 ];
 
