@@ -91,6 +91,7 @@ const Ecommerce = () => {
   const [messageText, setMessageText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [blockedUsers, setBlockedUsers] = useState<string[]>([]);
+  const [wishlistItems, setWishlistItems] = useState<string[]>([]);
   
   // Simple admin check - in a real app this would come from authentication
   const isAdmin = true; // Set to true for demo purposes
@@ -177,6 +178,18 @@ const Ecommerce = () => {
   const handleUnblockUser = (seller: string) => {
     setBlockedUsers(blockedUsers.filter(user => user !== seller));
     toast.success(`User ${seller} has been unblocked`);
+  };
+
+  const handleToggleWishlist = (productId: string) => {
+    setWishlistItems(prev => {
+      if (prev.includes(productId)) {
+        toast.success("Removed from wishlist");
+        return prev.filter(id => id !== productId);
+      } else {
+        toast.success("Added to wishlist");
+        return [...prev, productId];
+      }
+    });
   };
   
   return (
@@ -390,6 +403,10 @@ const Ecommerce = () => {
               <TabsTrigger value="products" className="text-base font-semibold py-3 px-6 rounded-md bg-background text-foreground border border-border data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-primary shadow-sm transition-all whitespace-nowrap">
                 Products
               </TabsTrigger>
+              <TabsTrigger value="wishlist" className="text-base font-semibold py-3 px-6 rounded-md bg-background text-foreground border border-border data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-primary shadow-sm transition-all whitespace-nowrap">
+                <Heart size={16} className="mr-2" />
+                Wishlist ({wishlistItems.length})
+              </TabsTrigger>
               {categories.map((category) => (
                 <TabsTrigger 
                   key={category.id} 
@@ -415,6 +432,8 @@ const Ecommerce = () => {
                       onBlockUser={handleBlockUser}
                       onUnblockUser={handleUnblockUser}
                       isUserBlocked={blockedUsers.includes(product.seller || "")}
+                      onToggleWishlist={handleToggleWishlist}
+                      isInWishlist={wishlistItems.includes(product.id)}
                     />
                   ))}
                 </div>
@@ -432,6 +451,39 @@ const Ecommerce = () => {
                     >
                       List an Item
                     </Button>
+                  </div>
+                </div>
+              )}
+            </TabsContent>
+
+            <TabsContent value="wishlist">
+              {wishlistItems.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                  {userProducts
+                    .filter(product => wishlistItems.includes(product.id))
+                    .map((product) => (
+                      <ProductCard 
+                        key={product.id} 
+                        product={product} 
+                        onMessageSeller={handleMessageSeller}
+                        isAdmin={isAdmin}
+                        onDeleteProduct={handleDeleteProduct}
+                        onBlockUser={handleBlockUser}
+                        onUnblockUser={handleUnblockUser}
+                        isUserBlocked={blockedUsers.includes(product.seller || "")}
+                        onToggleWishlist={handleToggleWishlist}
+                        isInWishlist={wishlistItems.includes(product.id)}
+                      />
+                    ))}
+                </div>
+              ) : (
+                <div className="text-center py-12 px-4">
+                  <div className="bg-gray-100 rounded-xl p-8 max-w-lg mx-auto">
+                    <Heart className="mx-auto h-12 w-12 text-gray-400" />
+                    <h3 className="mt-4 text-lg font-medium text-gray-900">Your wishlist is empty</h3>
+                    <p className="mt-2 text-sm text-gray-500">
+                      Browse products and click the heart icon to save items for later.
+                    </p>
                   </div>
                 </div>
               )}
@@ -465,12 +517,14 @@ const Ecommerce = () => {
                                     isAdmin={isAdmin}
                                     onDeleteProduct={handleDeleteProduct}
                                     onBlockUser={handleBlockUser}
-                                    onUnblockUser={handleUnblockUser}
-                                    isUserBlocked={blockedUsers.includes(product.seller || "")}
-                                  />
-                                ))}
-                            </div>
-                          ) : (
+                                     onUnblockUser={handleUnblockUser}
+                                     isUserBlocked={blockedUsers.includes(product.seller || "")}
+                                     onToggleWishlist={handleToggleWishlist}
+                                     isInWishlist={wishlistItems.includes(product.id)}
+                                   />
+                                 ))}
+                             </div>
+                           ) : (
                             <div className="text-center py-12 px-4">
                               <div className="bg-gray-100 rounded-xl p-8 max-w-lg mx-auto">
                                 {subCategory.icon && React.cloneElement(subCategory.icon, { className: "mx-auto h-12 w-12 text-gray-400" })}
@@ -504,12 +558,14 @@ const Ecommerce = () => {
                             isAdmin={isAdmin}
                             onDeleteProduct={handleDeleteProduct}
                             onBlockUser={handleBlockUser}
-                            onUnblockUser={handleUnblockUser}
-                            isUserBlocked={blockedUsers.includes(product.seller || "")}
-                          />
-                        ))}
-                    </div>
-                  ) : (
+                             onUnblockUser={handleUnblockUser}
+                             isUserBlocked={blockedUsers.includes(product.seller || "")}
+                             onToggleWishlist={handleToggleWishlist}
+                             isInWishlist={wishlistItems.includes(product.id)}
+                           />
+                         ))}
+                     </div>
+                   ) : (
                     <div className="text-center py-12 px-4">
                       <div className="bg-gray-100 rounded-xl p-8 max-w-lg mx-auto">
                         {category.icon && React.cloneElement(category.icon, { className: "mx-auto h-12 w-12 text-gray-400" })}
@@ -555,6 +611,8 @@ interface ProductProps {
   onBlockUser?: (seller: string) => void;
   onUnblockUser?: (seller: string) => void;
   isUserBlocked?: boolean;
+  onToggleWishlist?: (productId: string) => void;
+  isInWishlist?: boolean;
 }
 
 const ProductCard = ({ 
@@ -564,7 +622,9 @@ const ProductCard = ({
   onDeleteProduct, 
   onBlockUser, 
   onUnblockUser, 
-  isUserBlocked = false 
+  isUserBlocked = false,
+  onToggleWishlist,
+  isInWishlist = false
 }: ProductProps) => {
   const [showDetails, setShowDetails] = useState(false);
   
@@ -656,8 +716,14 @@ const ProductCard = ({
               )}
             </>
           )}
-          <button className="bg-white p-2 rounded-full hover:bg-gray-100">
-            <Heart size={16} className="text-gray-600" />
+          <button 
+            onClick={() => onToggleWishlist?.(product.id)}
+            className="bg-white p-2 rounded-full hover:bg-gray-100"
+          >
+            <Heart 
+              size={16} 
+              className={isInWishlist ? "text-red-500 fill-red-500" : "text-gray-600"} 
+            />
           </button>
         </div>
       </div>
