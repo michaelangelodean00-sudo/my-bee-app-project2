@@ -60,7 +60,7 @@ const AdWidget = () => {
             <img 
               src={currentAd.imageUrl} 
               alt={currentAd.title} 
-              className="rounded-xl h-[500px] md:h-[600px] w-full max-w-sm md:max-w-md object-cover shadow-2xl mx-auto"
+              className="rounded-xl h-[600px] md:h-[700px] w-full max-w-sm md:max-w-md object-cover shadow-2xl mx-auto"
             />
           </div>
           <div className="text-center">
