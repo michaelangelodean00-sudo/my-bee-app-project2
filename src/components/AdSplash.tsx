@@ -137,9 +137,9 @@ const AdSplash = () => {
   };
   
   return (
-    <div className="relative bg-bee-blue/90 text-white overflow-hidden">
+    <div className="relative bg-bee-blue/90 text-white overflow-hidden flex justify-center">
       <Carousel 
-        className="max-w-6xl mx-auto px-4 py-4" 
+        className="w-full max-w-6xl mx-auto px-4 py-8" 
         opts={{ loop: true }}
         setApi={setApi}
       >
