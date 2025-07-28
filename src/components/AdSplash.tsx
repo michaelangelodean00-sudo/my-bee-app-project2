@@ -147,26 +147,26 @@ const AdSplash = () => {
           {ads.map((ad, index) => (
             <CarouselItem key={ad.id}>
               <div className="flex flex-col md:flex-row items-center">
-                <div className="w-full md:w-1/3 mb-4 md:mb-0 md:mr-6">
+                <div className="w-full md:w-1/2 mb-6 md:mb-0 md:mr-8">
                   {loadedImages.has(index) ? (
                     <img 
                       src={ad.imageUrl} 
                       alt={ad.title} 
-                      className="rounded-lg w-full h-32 md:h-40 object-cover"
+                      className="rounded-xl w-full h-48 md:h-64 object-cover shadow-lg"
                       loading="lazy"
                     />
                   ) : (
-                    <div className="rounded-lg w-full h-32 md:h-40 bg-gray-300 animate-pulse flex items-center justify-center">
+                    <div className="rounded-xl w-full h-48 md:h-64 bg-gray-300 animate-pulse flex items-center justify-center shadow-lg">
                       <span className="text-gray-500 text-sm">Loading...</span>
                     </div>
                   )}
                 </div>
-                <div className="w-full md:w-2/3">
-                  <h3 className="text-xl font-bold mb-2">{ad.title}</h3>
-                  <p className="mb-4">{ad.description}</p>
+                <div className="w-full md:w-1/2">
+                  <h3 className="text-2xl md:text-3xl font-bold mb-4">{ad.title}</h3>
+                  <p className="text-lg mb-6 leading-relaxed">{ad.description}</p>
                   <button 
                     onClick={() => handleGetMoreInfo(ad.linkUrl)}
-                    className="inline-block bg-bee-yellow text-bee-black px-4 py-2 rounded-md font-medium hover:bg-bee-yellow/90 transition-colors cursor-pointer"
+                    className="inline-block bg-bee-yellow text-bee-black px-6 py-3 rounded-lg font-semibold text-lg hover:bg-bee-yellow/90 transition-colors cursor-pointer shadow-md"
                   >
                     Get More Info
                   </button>
