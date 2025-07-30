@@ -7,6 +7,7 @@ import CreatePost from "../components/CreatePost";
 import RightSidebar from "../components/RightSidebar";
 import Post from "../components/Post";
 import PageLoader from "../components/PageLoader";
+import McdonaldsAdWidget from "../components/McdonaldsAdWidget";
 
 const Index = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -88,6 +89,12 @@ const Index = () => {
         <div className="flex-1 w-full max-w-5xl mx-auto py-6 px-4">
           <div data-create-post>
             <CreatePost onPostCreated={handleNewPost} />
+          </div>
+          
+          {/* Strategic Ad Placement - After posting area for engagement */}
+          <div className="my-6 bg-gradient-to-r from-background/80 to-muted/40 p-4 rounded-2xl border border-border/30 shadow-md">
+            <div className="text-xs text-muted-foreground mb-3 text-center font-medium tracking-wide">Featured Partner</div>
+            <McdonaldsAdWidget />
           </div>
           
           {/* Posts Section */}

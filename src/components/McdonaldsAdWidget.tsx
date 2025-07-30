@@ -8,7 +8,7 @@ const McdonaldsAdWidget = () => {
 
   return (
     <div 
-      className="bg-red-600 text-white rounded-lg flex items-center cursor-pointer hover:bg-red-700 active:scale-95 transition-all duration-200 w-full min-h-[44px] px-3 py-2 sm:px-4 sm:py-3 md:max-w-sm lg:max-w-lg xl:max-w-xl md:min-h-[48px] lg:min-h-[52px] shadow-lg mr-0 md:mr-2"
+      className="bg-gradient-to-r from-red-600 to-red-500 text-white rounded-xl flex items-center cursor-pointer hover:from-red-500 hover:to-red-400 hover:scale-105 hover:shadow-xl active:scale-95 transition-all duration-300 w-full min-h-[56px] px-4 py-3 shadow-lg border border-red-400/20 backdrop-blur-sm"
       onClick={handleAdClick}
     >
       <div className="flex items-center w-full gap-2 sm:gap-3">
