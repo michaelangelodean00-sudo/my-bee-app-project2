@@ -23,158 +23,82 @@
 
 @layer base {
   :root {
-    /* Enhanced Background Palette */
-    --background: 0 0% 99%;
-    --background-secondary: 210 40% 98%;
-    --background-tertiary: 220 14% 96%;
+    --background: 0 0% 98%;
     --foreground: 222.2 84% 4.9%;
 
-    /* Enhanced Card System */
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-    --card-hover: 210 40% 98%;
 
-    /* Popover Enhancement */
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    /* Enhanced Primary Palette */
-    --primary: 45 93% 58%;
-    --primary-light: 48 100% 67%;
-    --primary-dark: 42 87% 55%;
-    --primary-foreground: 0 0% 9%;
+    --primary: 48 100% 50%;
+    --primary-foreground: 210 40% 98%;
 
-    /* Enhanced Secondary Palette */
-    --secondary: 195 100% 63%;
-    --secondary-light: 195 100% 75%;
-    --secondary-dark: 195 100% 50%;
+    --secondary: 190 78% 57%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
-    /* Enhanced Muted System */
-    --muted: 210 40% 96%;
-    --muted-dark: 215.4 16.3% 91%;
+    --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    /* Enhanced Accent */
-    --accent: 195 100% 63%;
-    --accent-light: 195 100% 75%;
+    --accent: 190 78% 57%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
-    /* Enhanced Semantic Colors */
-    --success: 142 76% 36%;
-    --success-foreground: 355.7 100% 97.3%;
-    --warning: 32 95% 44%;
-    --warning-foreground: 210 40% 98%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    /* Enhanced Borders */
     --border: 214.3 31.8% 91.4%;
-    --border-light: 220 13% 95%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 45 93% 58%;
+    --ring: 48 100% 50%;
 
-    /* Enhanced Radius System */
-    --radius: 0.75rem;
-    --radius-sm: 0.5rem;
-    --radius-lg: 1rem;
-    --radius-xl: 1.5rem;
+    --radius: 0.5rem;
 
-    /* Enhanced Shadows */
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-
-    /* Enhanced Spacing Scale */
-    --spacing-xs: 0.25rem;
-    --spacing-sm: 0.5rem;
-    --spacing-md: 1rem;
-    --spacing-lg: 1.5rem;
-    --spacing-xl: 2rem;
-    --spacing-2xl: 3rem;
-    --spacing-3xl: 4rem;
-
-    /* Enhanced Sidebar */
-    --sidebar-background: 0 0% 99%;
+    --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 45 93% 58%;
-    --sidebar-primary-foreground: 0 0% 9%;
-    --sidebar-accent: 195 100% 63%;
+    --sidebar-primary: 48 100% 50%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 190 78% 57%;
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 45 93% 58%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    /* Enhanced Dark Background Palette */
     --background: 222.2 84% 4.9%;
-    --background-secondary: 222.2 84% 6%;
-    --background-tertiary: 222.2 84% 8%;
     --foreground: 210 40% 98%;
 
-    /* Enhanced Dark Card System */
-    --card: 222.2 84% 6%;
+    --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-    --card-hover: 222.2 84% 8%;
 
-    /* Dark Popover Enhancement */
-    --popover: 222.2 84% 6%;
+    --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    /* Enhanced Dark Primary Palette */
-    --primary: 45 93% 58%;
-    --primary-light: 48 100% 67%;
-    --primary-dark: 42 87% 50%;
-    --primary-foreground: 222.2 84% 4.9%;
+    --primary: 48 100% 50%;
+    --primary-foreground: 222.2 47.4% 11.2%;
 
-    /* Enhanced Dark Secondary Palette */
-    --secondary: 195 100% 63%;
-    --secondary-light: 195 100% 75%;
-    --secondary-dark: 195 100% 50%;
+    --secondary: 190 78% 57%;
     --secondary-foreground: 210 40% 98%;
 
-    /* Enhanced Dark Muted System */
     --muted: 217.2 32.6% 17.5%;
-    --muted-dark: 217.2 32.6% 12%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    /* Enhanced Dark Accent */
-    --accent: 195 100% 63%;
-    --accent-light: 195 100% 75%;
+    --accent: 190 78% 57%;
     --accent-foreground: 210 40% 98%;
 
-    /* Enhanced Dark Semantic Colors */
-    --success: 142 76% 45%;
-    --success-foreground: 355.7 100% 97.3%;
-    --warning: 32 95% 55%;
-    --warning-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    /* Enhanced Dark Borders */
     --border: 217.2 32.6% 17.5%;
-    --border-light: 217.2 32.6% 20%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 45 93% 58%;
-
-    /* Enhanced Dark Shadows */
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
-
-    /* Enhanced Dark Sidebar */
+    --ring: 48 100% 50%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 45 93% 58%;
-    --sidebar-primary-foreground: 240 5.9% 10%;
-    --sidebar-accent: 195 100% 63%;
+    --sidebar-primary: 48 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 190 78% 57%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 45 93% 58%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
@@ -189,64 +113,17 @@
 }
 
 @layer components {
-  /* Enhanced Button System */
   .bee-btn {
-    @apply bg-primary text-primary-foreground font-medium hover:bg-primary-dark transition-all duration-200 rounded-lg px-4 py-2 shadow-sm hover:shadow-md;
+    @apply bg-bee-yellow text-bee-black font-medium hover:bg-bee-yellow/90 transition-colors;
   }
   
-  .bee-btn-secondary {
-    @apply bg-secondary text-secondary-foreground font-medium hover:bg-secondary-dark transition-all duration-200 rounded-lg px-4 py-2 shadow-sm hover:shadow-md;
-  }
-  
-  .bee-btn-outline {
-    @apply bg-transparent text-primary border-2 border-primary font-medium hover:bg-primary hover:text-primary-foreground transition-all duration-200 rounded-lg px-4 py-2;
-  }
-  
-  /* Enhanced Card System */
   .bee-card {
-    @apply bg-card border border-border rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-4;
+    @apply bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow;
   }
   
-  .bee-card-elevated {
-    @apply bg-card border border-border rounded-xl shadow-md hover:shadow-lg transition-all duration-200 p-6;
-  }
-  
-  .bee-card-interactive {
-    @apply bg-card border border-border rounded-xl shadow-sm hover:shadow-lg hover:bg-card-hover transition-all duration-200 p-4 cursor-pointer;
-  }
-  
-  /* Enhanced Link System */
   .bee-link {
-    @apply text-primary hover:text-primary-dark transition-colors duration-200 underline-offset-2 hover:underline;
+    @apply text-bee-blue hover:text-bee-darkblue transition-colors;
   }
-  
-  .bee-link-subtle {
-    @apply text-muted-foreground hover:text-primary transition-colors duration-200;
-  }
-  
-  /* Enhanced Input System */
-  .bee-input {
-    @apply bg-background border border-border rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200;
-  }
-  
-  /* Enhanced Spacing Utilities */
-  .spacing-xs { @apply p-1; }
-  .spacing-sm { @apply p-2; }
-  .spacing-md { @apply p-4; }
-  .spacing-lg { @apply p-6; }
-  .spacing-xl { @apply p-8; }
-  .spacing-2xl { @apply p-12; }
-  
-  /* Enhanced Border Radius Utilities */
-  .rounded-bee { @apply rounded-xl; }
-  .rounded-bee-lg { @apply rounded-2xl; }
-  .rounded-bee-full { @apply rounded-full; }
-  
-  /* Enhanced Shadow Utilities */
-  .shadow-bee { box-shadow: var(--shadow); }
-  .shadow-bee-md { box-shadow: var(--shadow-md); }
-  .shadow-bee-lg { box-shadow: var(--shadow-lg); }
-  .shadow-bee-xl { box-shadow: var(--shadow-xl); }
 }
 
 @layer utilities {
