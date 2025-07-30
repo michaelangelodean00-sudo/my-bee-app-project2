@@ -18,26 +18,23 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
-      <div className="container flex h-32 items-center justify-between px-2 sm:px-4 gap-1 sm:gap-2 max-w-full overflow-hidden">
-        {/* Left section - Logo with controlled width */}
-        <div className="flex items-center gap-1 sm:gap-2 md:gap-4 min-w-0 flex-1 overflow-hidden">
-          <div className="flex-shrink-0">
-            <Logo />
-          </div>
-          {/* Separator - hidden on very small screens */}
-          <div className="hidden sm:block w-px h-8 bg-gray-200 dark:bg-gray-700 flex-shrink-0" />
-          {/* Ad widget with strict mobile constraints */}
-          <div className="flex-1 min-w-0 max-w-[120px] xs:max-w-[160px] sm:max-w-[200px] md:max-w-[300px] lg:max-w-[350px] overflow-hidden">
-            <BurgerAdWidget />
-          </div>
+      <div className="flex items-center w-full px-2 sm:px-4 py-2 gap-2 sm:gap-3 md:gap-4 min-h-[60px] sm:min-h-[70px] md:min-h-[80px]">
+        {/* Logo - mobile optimized */}
+        <div className="flex-shrink-0">
+          <Logo />
         </div>
         
-        {/* Right section - Mobile menu with guaranteed space */}
-        <div className="flex items-center flex-shrink-0 ml-1 sm:ml-3 min-w-[44px]">
+        {/* Ad widget - full width on mobile, constrained on desktop */}
+        <div className="flex-1 min-w-0 md:max-w-sm lg:max-w-lg xl:max-w-xl">
+          <BurgerAdWidget />
+        </div>
+        
+        {/* Mobile menu button - touch-friendly */}
+        <div className="flex-shrink-0">
           <Button
             variant="ghost"
             size="icon"
-            className="relative h-10 w-10 flex-shrink-0"
+            className="relative min-w-[44px] min-h-[44px] w-11 h-11 flex-shrink-0 touch-manipulation"
             onClick={toggleMobileSidebar}
           >
             <Menu size={24} />

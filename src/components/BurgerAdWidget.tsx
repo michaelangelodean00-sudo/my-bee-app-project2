@@ -64,20 +64,23 @@ const BurgerAdWidget = () => {
 
   return (
     <div 
-      className={`${currentAd.bgColor} text-white px-1.5 py-2 rounded-md flex items-center transition-all duration-500 ${isRotating ? 'scale-95 opacity-80' : 'scale-100 opacity-100'} w-full max-w-full md:max-w-sm lg:max-w-lg xl:max-w-xl cursor-pointer hover:opacity-80 flex-shrink-0 h-12 sm:h-14 overflow-hidden`}
+      className={`${currentAd.bgColor} text-white rounded-lg flex items-center transition-all duration-500 ${isRotating ? 'scale-95 opacity-80' : 'scale-100 opacity-100'} cursor-pointer hover:opacity-90 active:scale-95 w-full min-h-[44px] px-3 py-2 sm:px-4 sm:py-3 md:rounded-md md:max-w-sm lg:max-w-lg xl:max-w-xl md:min-h-[48px] lg:min-h-[52px] shadow-lg`}
       onClick={handleAdClick}
     >
-      <div className="flex items-center w-full min-w-0">
+      <div className="flex items-center w-full min-w-0 gap-2 sm:gap-3">
         <img 
           src={currentAd.imageSrc}
           alt={currentAd.altText} 
-          className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 rounded-full object-cover mr-1 sm:mr-1.5 md:mr-2 lg:mr-3 flex-shrink-0"
+          className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full object-cover flex-shrink-0"
         />
         <div className="min-w-0 flex-1 overflow-hidden">
-          <p className="text-xs leading-tight">
-            <span className="block truncate text-xs sm:text-sm md:text-base lg:text-lg font-bold">{currentAd.title}</span>
-            <span className={`${currentAd.highlightColor} block truncate text-xs md:text-sm lg:text-base`}>{currentAd.highlight}</span>
-          </p>
+          <div className="text-sm sm:text-base md:text-lg font-black leading-tight">{currentAd.title}</div>
+          <div className={`${currentAd.highlightColor} text-sm sm:text-base md:text-lg font-extrabold leading-tight truncate`}>{currentAd.highlight}</div>
+        </div>
+        <div className="flex-shrink-0">
+          <div className="bg-white/20 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded text-xs sm:text-sm font-bold min-w-[44px] min-h-[32px] flex items-center justify-center">
+            TAP
+          </div>
         </div>
       </div>
     </div>
