@@ -7,6 +7,7 @@ import CreatePost from "../components/CreatePost";
 import RightSidebar from "../components/RightSidebar";
 import Post from "../components/Post";
 import PageLoader from "../components/PageLoader";
+import StickyAdBanner from "../components/StickyAdBanner";
 
 const Index = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -122,6 +123,7 @@ const Index = () => {
         {/* Right Sidebar - now visible on larger mobile screens */}
         <RightSidebar />
       </div>
+      <StickyAdBanner />
     </div>
   );
 };

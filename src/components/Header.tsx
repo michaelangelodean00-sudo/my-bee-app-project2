@@ -17,7 +17,7 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
   const hasAnyNotifications = hasNewBusinessVideos || hasNewEventsVideos || hasNewEcommerceItems;
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+    <header className="sticky top-0 z-40 w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
       <div className="container flex h-32 items-center justify-between px-2 sm:px-4 gap-1 sm:gap-2 max-w-full overflow-hidden">
         {/* Left section - Logo with controlled width */}
         <div className="flex items-center gap-1 sm:gap-2 md:gap-4 min-w-0 flex-1 overflow-hidden">
@@ -37,7 +37,7 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
           <Button
             variant="ghost"
             size="icon"
-            className="relative h-10 w-10 flex-shrink-0"
+            className="relative h-10 w-10 flex-shrink-0 z-50"
             onClick={toggleMobileSidebar}
           >
             <Menu size={24} />

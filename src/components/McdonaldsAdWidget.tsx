@@ -3,7 +3,7 @@ import { X } from "lucide-react";
 
 const McdonaldsAdWidget = () => {
   return (
-    <div className="bg-red-600 text-white px-3 py-2 rounded-lg flex items-center mr-2 md:max-w-sm lg:max-w-lg xl:max-w-xl">
+    <div className="bg-red-600 text-white px-3 py-2 rounded-lg flex items-center mr-2 md:max-w-sm lg:max-w-lg xl:max-w-xl relative z-40">
       <div className="flex items-center">
         <img 
           src="https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=64&h=64&auto=format&fit=crop"
