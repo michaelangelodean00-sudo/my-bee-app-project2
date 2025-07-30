@@ -19,7 +19,7 @@ const LogoImage = ({ className, size = 'default' }: LogoImageProps) => {
     <img 
       src="/lovable-uploads/2893898e-72bd-4b44-96ae-dba8462fe68c.png" 
       alt="B.E.E App Bahamas Logo" 
-      className={`object-contain ${sizeClasses[size]} ${className ?? ''}`}
+      className={`object-contain ${sizeClasses[size]} ${className ?? ''} animate-fade-in hover:animate-glow transition-all duration-300 ease-out hover:scale-105`}
     />
   );
 };
