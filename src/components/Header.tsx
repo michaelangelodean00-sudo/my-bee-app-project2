@@ -37,7 +37,7 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
           <Button
             variant="ghost"
             size="icon"
-            className="relative h-10 w-10 flex-shrink-0 z-50"
+            className="relative h-10 w-10 flex-shrink-0"
             onClick={toggleMobileSidebar}
           >
             <Menu size={24} />

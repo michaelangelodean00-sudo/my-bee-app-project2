@@ -7,8 +7,6 @@ import CreatePost from "../components/CreatePost";
 import RightSidebar from "../components/RightSidebar";
 import Post from "../components/Post";
 import PageLoader from "../components/PageLoader";
-import StickyAdBanner from "../components/StickyAdBanner";
-import InFeedAdWidget from "../components/InFeedAdWidget";
 
 const Index = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -99,20 +97,12 @@ const Index = () => {
             <div className="space-y-4">
               {/* Sample Posts */}
               {samplePosts.map((post, index) => (
-                <div key={post.id}>
-                  <div 
-                    className="animate-stagger-fade"
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                  >
-                    <Post {...post} />
-                  </div>
-                  
-                  {/* Insert ad after first post */}
-                  {index === 0 && (
-                    <div className="my-6 animate-stagger-fade" style={{ animationDelay: '0.3s' }}>
-                      <InFeedAdWidget />
-                    </div>
-                  )}
+                <div 
+                  key={post.id} 
+                  className="animate-stagger-fade"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <Post {...post} />
                 </div>
               ))}
               
@@ -128,9 +118,6 @@ const Index = () => {
             </div>
           )}
         </div>
-        
-        {/* Sticky Ad Banner */}
-        <StickyAdBanner position="bottom" />
         
         {/* Right Sidebar - now visible on larger mobile screens */}
         <RightSidebar />
