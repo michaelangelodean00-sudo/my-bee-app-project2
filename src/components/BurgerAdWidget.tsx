@@ -64,21 +64,21 @@ const BurgerAdWidget = () => {
 
   return (
     <div 
-      className={`${currentAd.bgColor} text-white rounded-xl flex items-center transition-all duration-500 ${isRotating ? 'scale-98 opacity-85' : 'scale-100 opacity-100'} cursor-pointer hover:scale-105 hover:shadow-xl active:scale-95 w-full min-h-[56px] px-4 py-3 shadow-lg border border-white/10 backdrop-blur-sm`}
+      className={`${currentAd.bgColor} text-white rounded-xl flex items-center transition-all duration-500 ${isRotating ? 'scale-98 opacity-85' : 'scale-100 opacity-100'} cursor-pointer hover:scale-105 hover:shadow-xl active:scale-95 w-full max-w-full min-h-[56px] px-3 py-3 shadow-lg border border-white/10 backdrop-blur-sm overflow-hidden`}
       onClick={handleAdClick}
     >
-      <div className="flex items-center w-full min-w-0 gap-3 sm:gap-4">
+      <div className="flex items-center w-full min-w-0 gap-2 sm:gap-3">
         <img 
           src={currentAd.imageSrc}
           alt={currentAd.altText} 
-          className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl object-cover flex-shrink-0 shadow-md border-2 border-white/20"
+          className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg object-cover flex-shrink-0 shadow-md border-2 border-white/20"
         />
-        <div className="min-w-0 flex-1 overflow-hidden">
-          <div className="text-base sm:text-lg md:text-xl font-black leading-tight mb-1">{currentAd.title}</div>
-          <div className={`${currentAd.highlightColor} text-base sm:text-lg md:text-xl font-extrabold leading-tight`}>{currentAd.highlight}</div>
+        <div className="min-w-0 flex-1 overflow-hidden pr-2">
+          <div className="text-sm sm:text-base md:text-lg font-black leading-tight mb-0.5 truncate">{currentAd.title}</div>
+          <div className={`${currentAd.highlightColor} text-sm sm:text-base md:text-lg font-extrabold leading-tight truncate`}>{currentAd.highlight}</div>
         </div>
-        <div className="flex-shrink-0">
-          <div className="bg-white/20 text-white px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg text-sm sm:text-base font-bold min-w-[52px] min-h-[40px] flex items-center justify-center shadow-md backdrop-blur-sm">
+        <div className="flex-shrink-0 ml-auto">
+          <div className="bg-white/20 text-white px-2 py-1.5 sm:px-3 sm:py-2 rounded-md text-xs sm:text-sm font-bold min-w-[40px] max-w-[50px] h-[32px] flex items-center justify-center shadow-md backdrop-blur-sm">
             TAP
           </div>
         </div>
