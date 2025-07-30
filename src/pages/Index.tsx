@@ -1,7 +1,8 @@
 
 import { useState } from "react";
-import Sidebar from "../components/Sidebar";
+import ModernSidebar from "../components/ModernSidebar";
 import Header from "../components/Header";
+import HeroSection from "../components/HeroSection";
 import AdSplash from "../components/AdSplash";
 import CreatePost from "../components/CreatePost";
 import RightSidebar from "../components/RightSidebar";
@@ -9,10 +10,15 @@ import Post from "../components/Post";
 
 const Index = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [posts, setPosts] = useState([]);
   
   const toggleMobileSidebar = () => {
     setMobileSidebarOpen(!mobileSidebarOpen);
+  };
+
+  const toggleSidebarCollapse = () => {
+    setSidebarCollapsed(!sidebarCollapsed);
   };
   
   const handleNewPost = (newPost) => {
@@ -53,46 +59,76 @@ const Index = () => {
   ];
   
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+    <div className="min-h-screen bg-background transition-colors">
+      {/* Header */}
       <Header toggleMobileSidebar={toggleMobileSidebar} />
-      <AdSplash />
       
-      <div className="flex">
+      {/* Hero Section */}
+      <HeroSection />
+      
+      {/* Ad Splash */}
+      <div className="py-8">
+        <AdSplash />
+      </div>
+      
+      <div className="flex w-full">
         {/* Mobile Sidebar Overlay */}
         {mobileSidebarOpen && (
           <div 
-            className="fixed inset-0 bg-black/50 z-40 md:hidden"
+            className="fixed inset-0 bg-black/50 z-40 lg:hidden"
             onClick={toggleMobileSidebar}
           />
         )}
         
         {/* Mobile Sidebar */}
-        <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 transform ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 ease-in-out md:hidden`}>
-          <Sidebar />
+        <div className={`fixed inset-y-0 left-0 z-50 transform ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:hidden`}>
+          <ModernSidebar />
         </div>
         
         {/* Desktop Sidebar */}
-        <Sidebar className="hidden md:block" />
+        <ModernSidebar 
+          className="hidden lg:block" 
+          isCollapsed={sidebarCollapsed}
+          onToggleCollapse={toggleSidebarCollapse}
+        />
         
-        {/* Main Content */}
-        <div className="flex-1 w-full max-w-5xl mx-auto py-6 px-4">
-          <div data-create-post>
-            <CreatePost onPostCreated={handleNewPost} />
+        {/* Main Content Area */}
+        <main className="flex-1 min-w-0">
+          <div className="max-w-6xl mx-auto px-4 py-8">
+            {/* Content Grid */}
+            <div className="grid lg:grid-cols-3 gap-8">
+              {/* Main Feed */}
+              <div className="lg:col-span-2 space-y-6">
+                {/* Create Post Section */}
+                <div className="bee-card p-6" data-create-post>
+                  <CreatePost onPostCreated={handleNewPost} />
+                </div>
+                
+                {/* Posts Grid */}
+                <div className="space-y-6">
+                  {/* Sample Posts */}
+                  {samplePosts.map((post) => (
+                    <div key={post.id} className="bee-card">
+                      <Post {...post} />
+                    </div>
+                  ))}
+                  
+                  {/* User Created Posts */}
+                  {posts.map((post, index) => (
+                    <div key={`user-${index}`} className="bee-card">
+                      <Post {...post} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Right Sidebar */}
+              <div className="hidden lg:block space-y-6">
+                <RightSidebar />
+              </div>
+            </div>
           </div>
-          
-          {/* Sample Posts */}
-          {samplePosts.map((post) => (
-            <Post key={post.id} {...post} />
-          ))}
-          
-          {/* User Created Posts */}
-          {posts.map((post, index) => (
-            <Post key={`user-${index}`} {...post} />
-          ))}
-        </div>
-        
-        {/* Right Sidebar - now visible on larger mobile screens */}
-        <RightSidebar />
+        </main>
       </div>
     </div>
   );
