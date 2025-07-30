@@ -184,7 +184,10 @@ export default {
         'slide-up': 'slide-up 0.3s ease-out',
         'scale-in': 'scale-in 0.2s ease-out',
         'logo-entrance': 'logo-entrance 0.8s ease-out',
-        'bee-hover': 'bee-hover 0.6s ease-in-out'
+        'bee-hover': 'bee-hover 0.6s ease-in-out',
+        'shimmer': 'shimmer 1.5s ease-in-out infinite',
+        'content-fade-in': 'content-fade-in 0.5s ease-out',
+        'stagger-fade': 'stagger-fade 0.4s ease-out'
       }
     }
   },

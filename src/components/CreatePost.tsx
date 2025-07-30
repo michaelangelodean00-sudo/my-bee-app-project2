@@ -21,10 +21,10 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
         <Button 
           onClick={() => navigateTo("/businesses")}
           variant="outline" 
-          className="w-full h-36 flex flex-col items-center justify-center gap-4 text-lg font-semibold border-bee-blue hover:bg-bee-blue/10 py-6"
+          className="w-full h-36 flex flex-col items-center justify-center gap-4 text-lg font-semibold border-bee-blue hover:bg-bee-blue/10 py-6 hover:scale-105 transition-all duration-300 hover:shadow-lg group"
         >
-          <div className="rounded-full bg-gradient-to-br from-blue-400 to-blue-600 p-4 mb-2">
-            <Handshake size={48} className="text-white" />
+          <div className="rounded-full bg-gradient-to-br from-blue-400 to-blue-600 p-4 mb-2 group-hover:animate-bounce">
+            <Handshake size={48} className="text-white transition-transform duration-300 group-hover:scale-110" />
           </div>
           <span className="text-2xl font-extrabold text-[#8B5CF6] tracking-wide">Business</span>
         </Button>
@@ -32,10 +32,10 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
         <Button 
           onClick={() => navigateTo("/events")}
           variant="outline" 
-          className="w-full h-36 flex flex-col items-center justify-center gap-4 text-lg font-semibold border-bee-blue hover:bg-bee-blue/10 py-6"
+          className="w-full h-36 flex flex-col items-center justify-center gap-4 text-lg font-semibold border-bee-blue hover:bg-bee-blue/10 py-6 hover:scale-105 transition-all duration-300 hover:shadow-lg group"
         >
-          <div className="rounded-full bg-gradient-to-br from-pink-400 via-purple-400 to-indigo-400 p-4 mb-2">
-            <Calendar size={48} className="text-white" />
+          <div className="rounded-full bg-gradient-to-br from-pink-400 via-purple-400 to-indigo-400 p-4 mb-2 group-hover:animate-bounce">
+            <Calendar size={48} className="text-white transition-transform duration-300 group-hover:scale-110" />
           </div>
           <span className="text-2xl font-extrabold text-[#F97316] tracking-wide">Events</span>
         </Button>
@@ -43,10 +43,10 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
         <Button 
           onClick={() => navigateTo("/ecommerce")}
           variant="outline" 
-          className="w-full h-36 flex flex-col items-center justify-center gap-4 text-lg font-semibold border-bee-blue hover:bg-bee-blue/10 py-6"
+          className="w-full h-36 flex flex-col items-center justify-center gap-4 text-lg font-semibold border-bee-blue hover:bg-bee-blue/10 py-6 hover:scale-105 transition-all duration-300 hover:shadow-lg group"
         >
-          <div className="rounded-full bg-gradient-to-br from-green-400 to-green-600 p-4 mb-2">
-            <ShoppingCart size={48} className="text-white" />
+          <div className="rounded-full bg-gradient-to-br from-green-400 to-green-600 p-4 mb-2 group-hover:animate-bounce">
+            <ShoppingCart size={48} className="text-white transition-transform duration-300 group-hover:scale-110" />
           </div>
           <span className="text-2xl font-extrabold text-[#1EAEDB] tracking-wide">E-commerce</span>
         </Button>

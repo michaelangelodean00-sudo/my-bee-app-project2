@@ -1,15 +1,17 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import AdSplash from "../components/AdSplash";
 import CreatePost from "../components/CreatePost";
 import RightSidebar from "../components/RightSidebar";
 import Post from "../components/Post";
+import PageLoader from "../components/PageLoader";
 
 const Index = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   
   const toggleMobileSidebar = () => {
     setMobileSidebarOpen(!mobileSidebarOpen);
@@ -18,6 +20,14 @@ const Index = () => {
   const handleNewPost = (newPost) => {
     setPosts([newPost, ...posts]);
   };
+
+  // Simulate loading state
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Sample posts for demonstration
   const samplePosts = [
@@ -80,15 +90,33 @@ const Index = () => {
             <CreatePost onPostCreated={handleNewPost} />
           </div>
           
-          {/* Sample Posts */}
-          {samplePosts.map((post) => (
-            <Post key={post.id} {...post} />
-          ))}
-          
-          {/* User Created Posts */}
-          {posts.map((post, index) => (
-            <Post key={`user-${index}`} {...post} />
-          ))}
+          {/* Posts Section */}
+          {isLoading ? (
+            <PageLoader type="posts" />
+          ) : (
+            <div className="space-y-4">
+              {/* Sample Posts */}
+              {samplePosts.map((post, index) => (
+                <div 
+                  key={post.id} 
+                  className="animate-stagger-fade"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <Post {...post} />
+                </div>
+              ))}
+              
+              {/* User Created Posts */}
+              {posts.map((post, index) => (
+                <div 
+                  key={`user-${index}`} 
+                  className="animate-content-fade-in"
+                >
+                  <Post {...post} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         
         {/* Right Sidebar - now visible on larger mobile screens */}

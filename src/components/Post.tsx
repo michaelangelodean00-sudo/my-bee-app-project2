@@ -95,7 +95,7 @@ const Post = ({
   
   return (
     <>
-      <div className="bee-card p-4 mb-4 dark:bg-gray-800 dark:border-gray-700">
+      <div className="bee-card p-4 mb-4 dark:bg-gray-800 dark:border-gray-700 hover:shadow-lg transition-all duration-300 hover:scale-[1.01] group">
         <div className="flex justify-between items-start">
           <div className="flex gap-3">
             <Avatar>
@@ -117,11 +117,11 @@ const Post = ({
         <div className="mt-3">
           <p className="text-gray-800 dark:text-gray-200">{content}</p>
           {imageUrl && (
-            <div className="mt-3 rounded-lg overflow-hidden">
+            <div className="mt-3 rounded-lg overflow-hidden group-hover:shadow-md transition-shadow duration-300">
               <img 
                 src={imageUrl} 
                 alt="Post" 
-                className="w-full h-auto object-cover"
+                className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
               />
             </div>
           )}
