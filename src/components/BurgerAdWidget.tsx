@@ -64,25 +64,20 @@ const BurgerAdWidget = () => {
 
   return (
     <div 
-      className={`${currentAd.bgColor} text-white px-4 py-4 rounded-xl flex items-center justify-between transition-all duration-500 ${isRotating ? 'scale-95 opacity-80' : 'scale-100 opacity-100'} w-full max-w-full md:max-w-md lg:max-w-lg xl:max-w-xl cursor-pointer hover:scale-105 hover:shadow-xl flex-shrink-0 h-20 sm:h-24 md:h-28 overflow-hidden border-2 border-white/20 shadow-lg backdrop-blur-sm`}
+      className={`${currentAd.bgColor} text-white px-1.5 py-2 rounded-md flex items-center transition-all duration-500 ${isRotating ? 'scale-95 opacity-80' : 'scale-100 opacity-100'} w-full max-w-full md:max-w-sm lg:max-w-lg xl:max-w-xl cursor-pointer hover:opacity-80 flex-shrink-0 h-12 sm:h-14 overflow-hidden`}
       onClick={handleAdClick}
     >
       <div className="flex items-center w-full min-w-0">
         <img 
           src={currentAd.imageSrc}
           alt={currentAd.altText} 
-          className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-xl object-cover mr-3 sm:mr-4 md:mr-5 flex-shrink-0 border-2 border-white/30 shadow-md"
+          className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 rounded-full object-cover mr-1 sm:mr-1.5 md:mr-2 lg:mr-3 flex-shrink-0"
         />
         <div className="min-w-0 flex-1 overflow-hidden">
-          <div className="text-sm leading-tight">
-            <span className="block truncate text-sm sm:text-base md:text-lg lg:text-xl font-black tracking-tight">{currentAd.title}</span>
-            <span className={`${currentAd.highlightColor} block truncate text-base sm:text-lg md:text-xl lg:text-2xl font-extrabold drop-shadow-sm`}>{currentAd.highlight}</span>
-          </div>
-        </div>
-        <div className="ml-3 flex-shrink-0">
-          <button className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white font-bold py-2 px-4 rounded-lg text-sm border border-white/30 transition-all duration-200 hover:scale-105 shadow-md">
-            Shop Now
-          </button>
+          <p className="text-xs leading-tight">
+            <span className="block truncate text-xs sm:text-sm md:text-base lg:text-lg font-bold">{currentAd.title}</span>
+            <span className={`${currentAd.highlightColor} block truncate text-xs md:text-sm lg:text-base`}>{currentAd.highlight}</span>
+          </p>
         </div>
       </div>
     </div>
