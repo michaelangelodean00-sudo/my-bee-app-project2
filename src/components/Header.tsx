@@ -17,44 +17,30 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
   const hasAnyNotifications = hasNewBusinessVideos || hasNewEventsVideos || hasNewEcommerceItems;
 
   return (
-    <header className="sticky top-0 z-50 w-full glass-card border-b border-border/20 backdrop-blur-md">
-      <div className="container flex h-20 items-center justify-between px-4 gap-4 max-w-full">
-        {/* Left section - Logo */}
-        <div className="flex items-center gap-4 min-w-0">
+    <header className="sticky top-0 z-50 w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+      <div className="container flex h-32 items-center justify-between px-2 sm:px-4 gap-1 sm:gap-2 max-w-full overflow-hidden">
+        {/* Left section - Logo with controlled width */}
+        <div className="flex items-center gap-1 sm:gap-2 md:gap-4 min-w-0 flex-1 overflow-hidden">
           <div className="flex-shrink-0">
             <Logo />
           </div>
-          
-          {/* Navigation breadcrumb */}
-          <div className="hidden md:flex items-center space-x-2 text-sm text-muted-foreground">
-            <span>•</span>
-            <span>Welcome to B.E.E Platform</span>
+          {/* Separator - hidden on very small screens */}
+          <div className="hidden sm:block w-px h-8 bg-gray-200 dark:bg-gray-700 flex-shrink-0" />
+          {/* Ad widget with strict mobile constraints */}
+          <div className="flex-1 min-w-0 max-w-[120px] xs:max-w-[160px] sm:max-w-[200px] md:max-w-[300px] lg:max-w-[350px] overflow-hidden">
+            <BurgerAdWidget />
           </div>
         </div>
         
-        {/* Center section - Ad widget (hidden on mobile) */}
-        <div className="hidden lg:flex flex-1 justify-center max-w-md">
-          <BurgerAdWidget />
-        </div>
-        
-        {/* Right section - Actions */}
-        <div className="flex items-center space-x-3">
-          {/* Notifications indicator */}
-          {hasAnyNotifications && (
-            <div className="hidden sm:flex items-center space-x-2 text-sm text-primary">
-              <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-              <span className="font-medium">New updates available</span>
-            </div>
-          )}
-          
-          {/* Mobile menu button */}
+        {/* Right section - Mobile menu with guaranteed space */}
+        <div className="flex items-center flex-shrink-0 ml-1 sm:ml-3 min-w-[44px]">
           <Button
             variant="ghost"
             size="icon"
-            className="relative lg:hidden"
+            className="relative h-10 w-10 flex-shrink-0"
             onClick={toggleMobileSidebar}
           >
-            <Menu size={20} />
+            <Menu size={24} />
             {hasAnyNotifications && (
               <div className="absolute -top-1 -right-1">
                 <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />

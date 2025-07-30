@@ -51,9 +51,9 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 48 100% 50%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 100%;
+    --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 48 100% 50%;
     --sidebar-primary-foreground: 0 0% 98%;
@@ -61,20 +61,6 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-
-    /* Enhanced Design System */
-    --gradient-primary: linear-gradient(135deg, hsl(48 100% 50%) 0%, hsl(45 100% 55%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(190 78% 57%) 0%, hsl(195 85% 62%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(48 100% 50% / 0.1) 0%, hsl(190 78% 57% / 0.1) 100%);
-    
-    --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.05);
-    --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.1), 0 2px 4px -2px hsl(0 0% 0% / 0.1);
-    --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.1), 0 4px 6px -4px hsl(0 0% 0% / 0.1);
-    --shadow-xl: 0 20px 25px -5px hsl(0 0% 0% / 0.1), 0 8px 10px -6px hsl(0 0% 0% / 0.1);
-    --shadow-glow: 0 0 20px hsl(48 100% 50% / 0.3);
-    
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-fast: all 0.15s ease-out;
   }
 
   .dark {
@@ -105,7 +91,6 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 48 100% 50%;
-    
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 48 100% 50%;
@@ -114,13 +99,6 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-
-    /* Dark mode gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(48 100% 50%) 0%, hsl(45 100% 55%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(190 78% 57%) 0%, hsl(195 85% 62%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(48 100% 50% / 0.05) 0%, hsl(190 78% 57% / 0.05) 100%);
-    
-    --shadow-glow: 0 0 20px hsl(48 100% 50% / 0.2);
   }
 }
 
@@ -136,64 +114,15 @@
 
 @layer components {
   .bee-btn {
-    @apply bg-primary text-primary-foreground font-medium rounded-xl px-6 py-3 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105;
-    background: var(--gradient-primary);
+    @apply bg-bee-yellow text-bee-black font-medium hover:bg-bee-yellow/90 transition-colors;
   }
   
   .bee-card {
-    @apply bg-card border border-border rounded-xl shadow-lg hover:shadow-xl backdrop-blur-sm;
-    box-shadow: var(--shadow-lg);
-    transition: var(--transition-smooth);
-  }
-  
-  .bee-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-xl);
+    @apply bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow;
   }
   
   .bee-link {
-    @apply text-secondary hover:text-secondary/80 transition-all duration-300 relative;
-  }
-  
-  .bee-link:hover::after {
-    @apply absolute bottom-0 left-0 w-full h-0.5 bg-secondary origin-left scale-x-100;
-    content: '';
-    transform: scaleX(1);
-    transition: transform 0.3s ease;
-  }
-  
-  .bee-link::after {
-    @apply absolute bottom-0 left-0 w-full h-0.5 bg-secondary origin-left scale-x-0;
-    content: '';
-    transition: transform 0.3s ease;
-  }
-  
-  .glass-card {
-    @apply bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-white/20 dark:border-gray-700/20 rounded-2xl shadow-xl;
-  }
-  
-  .gradient-text {
-    @apply bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent;
-    background-size: 200% auto;
-    animation: gradient-shine 3s ease-in-out infinite;
-  }
-  
-  @keyframes gradient-shine {
-    0%, 100% { background-position: 0% center; }
-    50% { background-position: 100% center; }
-  }
-  
-  .hero-gradient {
-    background: var(--gradient-hero);
-  }
-  
-  .floating-animation {
-    animation: floating 6s ease-in-out infinite;
-  }
-  
-  @keyframes floating {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
+    @apply text-bee-blue hover:text-bee-darkblue transition-colors;
   }
 }
 
