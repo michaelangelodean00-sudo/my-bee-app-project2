@@ -12,6 +12,7 @@ import VideoPlayerWithAds from "../components/VideoPlayerWithAds";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { useNotifications } from "../contexts/NotificationContext";
+import { useContentFilter } from "../contexts/ContentFilterContext";
 import { useAdAnalytics } from "../hooks/useAdAnalytics";
 import { VideoAd, SponsoredContent } from "@/types/ads";
 
@@ -32,6 +33,7 @@ type FeedItem = EventVideo | EventVideoWithAd;
 const Events = () => {
   const { markEventsVideosAsViewed } = useNotifications();
   const { trackImpression, trackClick } = useAdAnalytics();
+  const { isEventVideoBlocked } = useContentFilter();
   const [isAutoScrolling, setIsAutoScrolling] = useState(false);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -133,8 +135,11 @@ const Events = () => {
     }
   ];
 
-  // Combine videos with ads
-  const videosWithAds: FeedItem[] = [...eventVideos];
+  // Filter out blocked videos
+  const filteredEventVideos = eventVideos.filter(video => !isEventVideoBlocked(video.id));
+  
+  // Combine filtered videos with ads
+  const videosWithAds: FeedItem[] = [...filteredEventVideos];
   
   // Insert ads after every 2 videos
   eventAds.forEach((ad, index) => {
@@ -247,6 +252,7 @@ const Events = () => {
               return (
                 <div key={video.id} className="h-screen snap-start">
                   <VideoPlayerWithAds
+                    videoId={video.id}
                     platform={videoIsAd ? 'ad' : video.platform}
                     videoUrl={video.videoUrl}
                     title={video.title}
@@ -254,6 +260,7 @@ const Events = () => {
                     isAd={videoIsAd}
                     adData={videoIsAd ? video : undefined}
                     sponsoredData={sponsoredData}
+                    contentType="event"
                     onAdImpression={trackImpression}
                     onAdClick={trackClick}
                   />

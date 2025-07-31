@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
 import { NotificationProvider } from "./contexts/NotificationContext";
+import { ContentFilterProvider } from "./contexts/ContentFilterContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { SecurityProvider } from "./components/SecurityProvider";
 import Index from "./pages/Index";
@@ -20,7 +21,8 @@ const App = () => (
     <SecurityProvider>
       <ThemeProvider>
         <NotificationProvider>
-          <BrowserRouter>
+          <ContentFilterProvider>
+            <BrowserRouter>
             <Toaster position="bottom-right" />
             <Routes>
               <Route path="/" element={<Index />} />
@@ -35,6 +37,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
+          </ContentFilterProvider>
         </NotificationProvider>
       </ThemeProvider>
     </SecurityProvider>

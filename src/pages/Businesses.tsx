@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import VideoPlayerWithAds from "../components/VideoPlayerWithAds";
 import { useNotifications } from "../contexts/NotificationContext";
+import { useContentFilter } from "../contexts/ContentFilterContext";
 import { useAdAnalytics } from "../hooks/useAdAnalytics";
 import { VideoAd, SponsoredContent } from "@/types/ads";
 
@@ -110,6 +111,7 @@ const sponsoredContent: SponsoredContent[] = [
 const Businesses = () => {
   const { markBusinessVideosAsViewed } = useNotifications();
   const { trackImpression, trackClick } = useAdAnalytics();
+  const { isBusinessVideoBlocked } = useContentFilter();
   const [isAutoScrolling, setIsAutoScrolling] = useState(false);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -120,8 +122,11 @@ const Businesses = () => {
     markBusinessVideosAsViewed();
   }, [markBusinessVideosAsViewed]);
 
-  // Combine regular videos with ads (insert ads every 3 videos)
-  const videosWithAds: FeedItem[] = [...businessVideos];
+  // Filter out blocked videos
+  const filteredBusinessVideos = businessVideos.filter(video => !isBusinessVideoBlocked(video.id));
+  
+  // Combine filtered videos with ads (insert ads every 3 videos)
+  const videosWithAds: FeedItem[] = [...filteredBusinessVideos];
   businessAds.forEach((ad, index) => {
     const insertIndex = (index + 1) * 3; // Insert after every 3 videos
     const adWithFlag: VideoWithAd = { ...ad, isAd: true };
@@ -260,6 +265,7 @@ const Businesses = () => {
               return (
                 <div key={video.id} className="h-screen snap-start">
                   <VideoPlayerWithAds
+                    videoId={video.id}
                     videoUrl={video.videoUrl}
                     title={video.title}
                     description={video.description}
@@ -268,6 +274,7 @@ const Businesses = () => {
                     isAd={videoIsAd}
                     adData={videoIsAd ? video : undefined}
                     sponsoredData={sponsoredData}
+                    contentType="business"
                     onAdImpression={trackImpression}
                     onAdClick={trackClick}
                   />

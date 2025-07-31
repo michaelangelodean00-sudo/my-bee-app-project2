@@ -5,8 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Play, Heart, MessageCircle, Share, MoreHorizontal, ExternalLink, Star, Crown } from "lucide-react";
 import { VideoAd, SponsoredContent } from "@/types/ads";
+import ContentFilterControls from "./ContentFilterControls";
 
 interface VideoPlayerWithAdsProps {
+  videoId: string;
   platform: string;
   videoUrl: string;
   title: string;
@@ -15,11 +17,13 @@ interface VideoPlayerWithAdsProps {
   isAd?: boolean;
   adData?: VideoAd;
   sponsoredData?: SponsoredContent;
+  contentType?: 'business' | 'event';
   onAdImpression?: (adId: string) => void;
   onAdClick?: (adId: string) => void;
 }
 
 const VideoPlayerWithAds = ({ 
+  videoId,
   platform, 
   videoUrl, 
   title, 
@@ -28,6 +32,7 @@ const VideoPlayerWithAds = ({
   isAd = false,
   adData,
   sponsoredData,
+  contentType = 'business',
   onAdImpression,
   onAdClick
 }: VideoPlayerWithAdsProps) => {
@@ -180,12 +185,13 @@ const VideoPlayerWithAds = ({
             </Button>
             <span className="text-white text-xs font-semibold mt-1">{Math.floor(Math.random() * 50)}</span>
           </div>
-          <Button
-            className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border-2 border-white/50"
-            size="icon"
-          >
-            <MoreHorizontal size={20} className="text-white" />
-          </Button>
+          {!isAd && (
+            <ContentFilterControls
+              videoId={videoId}
+              contentType={contentType}
+              className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border-2 border-white/50"
+            />
+          )}
         </div>
 
         {/* Bottom Content Overlay */}
