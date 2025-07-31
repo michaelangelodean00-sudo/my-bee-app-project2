@@ -77,8 +77,8 @@ const BurgerAdWidget = () => {
           <div className="text-sm sm:text-base md:text-lg font-black leading-tight mb-0.5 truncate">{currentAd.title}</div>
           <div className={`${currentAd.highlightColor} text-sm sm:text-base md:text-lg font-extrabold leading-tight truncate`}>{currentAd.highlight}</div>
         </div>
-        <div className="flex-shrink-0">
-          <div className="bg-white/20 text-white px-2 py-1 sm:px-3 sm:py-2 rounded-md text-xs sm:text-sm font-bold min-w-[40px] max-w-[45px] h-[30px] flex items-center justify-center shadow-md backdrop-blur-sm">
+        <div className="hidden sm:flex flex-shrink-0">
+          <div className="bg-white/20 text-white px-3 py-2 rounded-md text-sm font-bold min-w-[45px] max-w-[55px] h-[34px] flex items-center justify-center shadow-md backdrop-blur-sm">
             TAP
           </div>
         </div>
