@@ -71,14 +71,14 @@ const BurgerAdWidget = () => {
         <img 
           src={currentAd.imageSrc}
           alt={currentAd.altText} 
-          className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg object-cover flex-shrink-0 shadow-md border-2 border-white/20"
+          className="w-12 h-12 sm:w-13 sm:h-13 md:w-14 md:h-14 rounded-lg object-cover flex-shrink-0 shadow-md border-2 border-white/20"
         />
         <div className="min-w-0 flex-1 overflow-hidden pr-2">
-          <div className="text-sm sm:text-base md:text-lg font-black leading-tight mb-0.5 truncate">{currentAd.title}</div>
-          <div className={`${currentAd.highlightColor} text-sm sm:text-base md:text-lg font-extrabold leading-tight truncate`}>{currentAd.highlight}</div>
+          <div className="text-base sm:text-base md:text-lg font-black leading-tight mb-0.5 truncate">{currentAd.title}</div>
+          <div className={`${currentAd.highlightColor} text-base sm:text-base md:text-lg font-extrabold leading-tight truncate`}>{currentAd.highlight}</div>
         </div>
         <div className="flex-shrink-0 ml-auto">
-          <div className="bg-white/20 text-white px-2 py-1.5 sm:px-3 sm:py-2 rounded-md text-xs sm:text-sm font-bold min-w-[40px] max-w-[50px] h-[32px] flex items-center justify-center shadow-md backdrop-blur-sm">
+          <div className="bg-white/20 text-white px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-md text-sm sm:text-sm font-bold min-w-[45px] max-w-[55px] h-[34px] flex items-center justify-center shadow-md backdrop-blur-sm">
             TAP
           </div>
         </div>
