@@ -91,11 +91,6 @@ const Index = () => {
             <CreatePost onPostCreated={handleNewPost} />
           </div>
           
-          {/* Strategic Ad Placement - After posting area for engagement */}
-          <div className="my-6 bg-gradient-to-r from-background/80 to-muted/40 p-4 rounded-2xl border border-border/30 shadow-md">
-            <div className="text-xs text-muted-foreground mb-3 text-center font-medium tracking-wide">Featured Partner</div>
-            <McdonaldsAdWidget />
-          </div>
           
           {/* Posts Section */}
           {isLoading ? (
