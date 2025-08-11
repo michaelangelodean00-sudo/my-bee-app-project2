@@ -91,6 +91,11 @@ const Index = () => {
             <CreatePost onPostCreated={handleNewPost} />
           </div>
           
+          {/* Ad Widget between CreatePost and posts */}
+          <div className="my-6">
+            <div className="text-xs text-muted-foreground mb-2 text-center font-medium">Sponsored</div>
+            <McdonaldsAdWidget />
+          </div>
           
           {/* Posts Section */}
           {isLoading ? (
