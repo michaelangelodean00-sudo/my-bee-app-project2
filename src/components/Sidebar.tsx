@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useNotifications } from "../contexts/NotificationContext";
 import { Badge } from "./ui/badge";
 import SearchBar from "./SearchBar";
+import McdonaldsAdWidget from "./McdonaldsAdWidget";
 
 interface SidebarProps {
   className?: string;
@@ -69,6 +70,12 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
             );
           })}
         </nav>
+        
+        {/* Ad Widget below navigation */}
+        <div className="mt-6 px-1">
+          <div className="text-xs text-muted-foreground mb-2 text-center font-medium">Sponsored</div>
+          <McdonaldsAdWidget />
+        </div>
       </div>
     </div>
   );
