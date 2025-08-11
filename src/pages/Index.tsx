@@ -99,12 +99,22 @@ const Index = () => {
             <div className="space-y-4">
               {/* Sample Posts */}
               {samplePosts.map((post, index) => (
-                <div 
-                  key={post.id} 
-                  className="animate-stagger-fade"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <Post {...post} />
+                <div key={`post-section-${index}`}>
+                  <div 
+                    key={post.id} 
+                    className="animate-stagger-fade"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <Post {...post} />
+                  </div>
+                  
+                  {/* Ad Widget after first post */}
+                  {index === 0 && (
+                    <div className="my-6 animate-stagger-fade" style={{ animationDelay: `${(index + 1) * 0.1}s` }}>
+                      <div className="text-xs text-muted-foreground mb-2 text-center font-medium">Sponsored</div>
+                      <McdonaldsAdWidget />
+                    </div>
+                  )}
                 </div>
               ))}
               
