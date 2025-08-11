@@ -1,29 +1,84 @@
 
-import { X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { isValidUrl } from "../utils/security";
+
+interface AdContent {
+  imageSrc: string;
+  altText: string;
+  title: string;
+  highlight: string;
+  bgColor: string;
+  highlightColor: string;
+  linkUrl: string;
+}
+
+const ads: AdContent[] = [
+  {
+    imageSrc: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=64&h=64&auto=format&fit=crop",
+    altText: "McDonald's Promotion",
+    title: "Try the new",
+    highlight: "McSaver Deal",
+    bgColor: "bg-gradient-to-r from-red-600 to-red-500",
+    highlightColor: "text-yellow-300",
+    linkUrl: "https://www.mcdonalds.com"
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=64&h=64&auto=format&fit=crop",
+    altText: "Burger Special",
+    title: "Limited time",
+    highlight: "Big Mac Combo",
+    bgColor: "bg-gradient-to-r from-amber-600 to-orange-500",
+    highlightColor: "text-yellow-200",
+    linkUrl: "https://www.mcdonalds.com"
+  }
+];
 
 const McdonaldsAdWidget = () => {
+  const [currentAdIndex, setCurrentAdIndex] = useState(0);
+  const [isRotating, setIsRotating] = useState(false);
+
+  // Rotate ads every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsRotating(true);
+      setTimeout(() => {
+        setCurrentAdIndex((prevIndex) => (prevIndex + 1) % ads.length);
+        setIsRotating(false);
+      }, 500); // Wait for animation to complete
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const currentAd = ads[currentAdIndex];
+
   const handleAdClick = () => {
-    window.open('https://www.mcdonalds.com', '_blank', 'noopener,noreferrer');
+    // Validate URL before opening
+    if (isValidUrl(currentAd.linkUrl)) {
+      window.open(currentAd.linkUrl, '_blank', 'noopener,noreferrer');
+    } else {
+      console.warn('Invalid URL detected:', currentAd.linkUrl);
+    }
   };
 
   return (
     <div 
-      className="bg-gradient-to-r from-red-600 to-red-500 text-white rounded-xl flex items-center cursor-pointer hover:from-red-500 hover:to-red-400 hover:scale-105 hover:shadow-xl active:scale-95 transition-all duration-300 w-full max-w-full min-h-[56px] px-3 py-3 shadow-lg border border-red-400/20 backdrop-blur-sm overflow-hidden"
+      className={`${currentAd.bgColor} text-white rounded-xl flex items-center transition-all duration-500 ${isRotating ? 'scale-98 opacity-85' : 'scale-100 opacity-100'} cursor-pointer hover:scale-105 hover:shadow-xl active:scale-95 w-full max-w-full min-h-[56px] px-3 py-3 shadow-lg border border-white/10 backdrop-blur-sm overflow-hidden`}
       onClick={handleAdClick}
     >
       <div className="flex items-center w-full min-w-0 gap-2">
         <img 
-          src="https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=64&h=64&auto=format&fit=crop"
-          alt="McDonald's Promotion" 
-          className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg object-cover flex-shrink-0 shadow-md border-2 border-yellow-300/30"
+          src={currentAd.imageSrc}
+          alt={currentAd.altText} 
+          className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg object-cover flex-shrink-0 shadow-md border-2 border-white/20"
         />
-        <div className="flex-1 min-w-0 overflow-hidden pr-1">
-          <div className="text-sm sm:text-base md:text-lg font-black leading-tight mb-0.5 truncate">Try the new</div>
-          <div className="text-yellow-300 text-sm sm:text-base md:text-lg font-extrabold leading-tight truncate">McSaver Deal</div>
+        <div className="min-w-0 flex-1 overflow-hidden pr-1">
+          <div className="text-sm sm:text-base md:text-lg font-black leading-tight mb-0.5 truncate">{currentAd.title}</div>
+          <div className={`${currentAd.highlightColor} text-sm sm:text-base md:text-lg font-extrabold leading-tight truncate`}>{currentAd.highlight}</div>
         </div>
-        <div className="flex-shrink-0">
-          <div className="bg-yellow-400 text-red-600 px-2 py-1 sm:px-3 sm:py-2 rounded-md text-xs sm:text-sm font-black min-w-[40px] max-w-[45px] h-[30px] flex items-center justify-center shadow-md">
-            ORDER
+        <div className="hidden sm:flex flex-shrink-0">
+          <div className="bg-white/20 text-white px-3 py-2 rounded-md text-sm font-bold min-w-[45px] max-w-[55px] h-[34px] flex items-center justify-center shadow-md backdrop-blur-sm">
+            TAP
           </div>
         </div>
       </div>
