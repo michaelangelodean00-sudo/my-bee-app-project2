@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Phone, Armchair, Shirt, Quote, Baby, Smartphone, Tv, MessageCircle, Microwave, Truck, Trash2, Ban, Shield } from "lucide-react";
+import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Phone, Armchair, Shirt, Quote, Baby, Smartphone, Tv, MessageCircle, Microwave, Truck, Trash2, Ban, Shield, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -92,6 +92,8 @@ const Ecommerce = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [blockedUsers, setBlockedUsers] = useState<string[]>([]);
   const [wishlistItems, setWishlistItems] = useState<string[]>([]);
+  const [editDialog, setEditDialog] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<any>(null);
   
   // Simple admin check - in a real app this would come from authentication
   const isAdmin = true; // Set to true for demo purposes
@@ -104,6 +106,17 @@ const Ecommerce = () => {
       description: "",
       category: "",
       subCategory: "",
+    }
+  });
+
+  const editForm = useForm<{ price: number; description: string }>({
+    resolver: zodResolver(z.object({
+      price: z.coerce.number().min(0.01, { message: "Price must be greater than 0" }),
+      description: z.string().min(10, { message: "Description must be at least 10 characters" })
+    })),
+    defaultValues: {
+      price: 0,
+      description: ""
     }
   });
 
@@ -190,6 +203,27 @@ const Ecommerce = () => {
         return [...prev, productId];
       }
     });
+  };
+
+  const handleEditProduct = (product: any) => {
+    setEditingProduct(product);
+    editForm.setValue("price", product.price);
+    editForm.setValue("description", product.description);
+    setEditDialog(true);
+  };
+
+  const onEditSubmit = (data: { price: number; description: string }) => {
+    setUserProducts(prev => 
+      prev.map(product => 
+        product.id === editingProduct.id 
+          ? { ...product, price: data.price, description: data.description }
+          : product
+      )
+    );
+    setEditDialog(false);
+    setEditingProduct(null);
+    editForm.reset();
+    toast.success("Product updated successfully!");
   };
   
   return (
@@ -396,6 +430,63 @@ const Ecommerce = () => {
                 </Button>
               </DialogFooter>
             </DialogContent>
+            </Dialog>
+
+          {/* Edit Product Dialog */}
+          <Dialog open={editDialog} onOpenChange={setEditDialog}>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit Product</DialogTitle>
+                <DialogDescription>
+                  Update the price and description for "{editingProduct?.name}"
+                </DialogDescription>
+              </DialogHeader>
+              <Form {...editForm}>
+                <form onSubmit={editForm.handleSubmit(onEditSubmit)} className="space-y-4">
+                  <FormField
+                    control={editForm.control}
+                    name="price"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Price ($)</FormLabel>
+                        <FormControl>
+                          <Input type="number" step="0.01" placeholder="0.00" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={editForm.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Description</FormLabel>
+                        <FormControl>
+                          <Textarea 
+                            placeholder="Describe your product" 
+                            className="min-h-[100px]" 
+                            {...field} 
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setEditDialog(false)}>
+                      Cancel
+                    </Button>
+                    <Button type="submit" className="bg-bee-blue hover:bg-bee-blue/90">
+                      <Edit size={16} className="mr-2" />
+                      Update Product
+                    </Button>
+                  </DialogFooter>
+                </form>
+              </Form>
+            </DialogContent>
           </Dialog>
           
           <Tabs defaultValue="products" className="mb-6">
@@ -434,6 +525,7 @@ const Ecommerce = () => {
                       isUserBlocked={blockedUsers.includes(product.seller || "")}
                       onToggleWishlist={handleToggleWishlist}
                       isInWishlist={wishlistItems.includes(product.id)}
+                      onEditProduct={handleEditProduct}
                     />
                   ))}
                 </div>
@@ -473,6 +565,7 @@ const Ecommerce = () => {
                         isUserBlocked={blockedUsers.includes(product.seller || "")}
                         onToggleWishlist={handleToggleWishlist}
                         isInWishlist={wishlistItems.includes(product.id)}
+                        onEditProduct={handleEditProduct}
                       />
                     ))}
                 </div>
@@ -521,6 +614,7 @@ const Ecommerce = () => {
                                      isUserBlocked={blockedUsers.includes(product.seller || "")}
                                      onToggleWishlist={handleToggleWishlist}
                                      isInWishlist={wishlistItems.includes(product.id)}
+                                     onEditProduct={handleEditProduct}
                                    />
                                  ))}
                              </div>
@@ -562,6 +656,7 @@ const Ecommerce = () => {
                              isUserBlocked={blockedUsers.includes(product.seller || "")}
                              onToggleWishlist={handleToggleWishlist}
                              isInWishlist={wishlistItems.includes(product.id)}
+                             onEditProduct={handleEditProduct}
                            />
                          ))}
                      </div>
@@ -613,6 +708,7 @@ interface ProductProps {
   isUserBlocked?: boolean;
   onToggleWishlist?: (productId: string) => void;
   isInWishlist?: boolean;
+  onEditProduct?: (product: any) => void;
 }
 
 const ProductCard = ({ 
@@ -624,7 +720,8 @@ const ProductCard = ({
   onUnblockUser, 
   isUserBlocked = false,
   onToggleWishlist,
-  isInWishlist = false
+  isInWishlist = false,
+  onEditProduct
 }: ProductProps) => {
   const [showDetails, setShowDetails] = useState(false);
   
@@ -770,13 +867,22 @@ const ProductCard = ({
       <CardFooter className="pt-0 flex flex-col gap-2">
         {product.isUserProduct ? (
           <>
-            <Button 
-              onClick={() => onMessageSeller(product.seller || "Seller")}
-              className="w-full bg-bee-blue hover:bg-bee-blue/90"
-            >
-              <MessageCircle size={16} className="mr-2" />
-              Message Seller
-            </Button>
+            <div className="flex gap-2 w-full">
+              <Button 
+                onClick={() => onMessageSeller(product.seller || "Seller")}
+                className="flex-1 bg-bee-blue hover:bg-bee-blue/90"
+              >
+                <MessageCircle size={16} className="mr-2" />
+                Message Seller
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => onEditProduct?.(product)}
+                className="px-3"
+              >
+                <Edit size={16} />
+              </Button>
+            </div>
             <Button 
               variant="outline" 
               className="w-full"
