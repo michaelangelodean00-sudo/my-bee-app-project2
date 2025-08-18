@@ -95,7 +95,7 @@ const Post = ({
   
   return (
     <>
-      <div className="bee-card p-4 mb-4 dark:bg-gray-800 dark:border-gray-700 hover:shadow-lg transition-all duration-300 hover:scale-[1.01] group">
+      <div className="bee-card p-4 mb-4 group">
         <div className="flex justify-between items-start">
           <div className="flex gap-3">
             <Avatar>

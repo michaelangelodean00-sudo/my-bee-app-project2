@@ -64,7 +64,7 @@ const Index = () => {
   ];
   
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-accent/5 pattern-bee-subtle transition-colors">
       <Header toggleMobileSidebar={toggleMobileSidebar} />
       <AdSplash />
       
@@ -94,7 +94,9 @@ const Index = () => {
           {/* Ad Widget between CreatePost and posts */}
           <div className="my-6">
             <div className="text-xs text-muted-foreground mb-2 text-center font-medium">Sponsored</div>
-            <McdonaldsAdWidget />
+            <div className="bee-card-premium p-3 animate-glow">
+              <McdonaldsAdWidget />
+            </div>
           </div>
           
           {/* Posts Section */}

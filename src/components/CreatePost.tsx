@@ -14,7 +14,7 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
   };
   
   return (
-    <div className="bee-card p-4 mb-4 max-w-4xl mx-auto">
+    <div className="bee-card-premium p-4 mb-4 max-w-4xl mx-auto animate-float">
       <Separator className="my-4" />
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 px-2 sm:px-4">

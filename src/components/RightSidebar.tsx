@@ -22,11 +22,11 @@ const RightSidebar = () => {
   };
 
   return (
-    <div className="hidden xl:block w-80 p-6 space-y-6 bg-white dark:bg-gray-900 min-h-screen border-l border-gray-200 dark:border-gray-700">
+    <div className="hidden xl:block w-80 p-6 space-y-6 glass-sidebar min-h-screen">
       <UserProfile {...defaultUser} />
       
       {/* Premium Ad Placement - Between profile and widgets for better visibility */}
-      <div className="bg-gradient-to-br from-background/50 to-muted/30 p-3 rounded-xl border border-border/20 shadow-sm">
+      <div className="bee-card-premium p-3">
         <div className="text-xs text-muted-foreground mb-2 text-center font-medium">Sponsored</div>
         <BurgerAdWidget />
       </div>

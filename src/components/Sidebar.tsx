@@ -26,7 +26,7 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
   ];
 
   return (
-    <div className={`w-full md:w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 h-screen sticky top-0 ${className}`}>
+    <div className={`w-full md:w-64 glass-sidebar h-screen sticky top-0 ${className}`}>
       <div className="p-3 sm:p-4">
         {/* Mobile Search Bar */}
         <div className="md:hidden mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
