@@ -8,9 +8,6 @@ import RightSidebar from "../components/RightSidebar";
 import Post from "../components/Post";
 import PageLoader from "../components/PageLoader";
 import McdonaldsAdWidget from "../components/McdonaldsAdWidget";
-import FloatingActionButton from "../components/FloatingActionButton";
-import FloatingNotifications from "../components/FloatingNotifications";
-import QuickActions from "../components/QuickActions";
 
 const Index = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -134,11 +131,6 @@ const Index = () => {
         {/* Right Sidebar - now visible on larger mobile screens */}
         <RightSidebar />
       </div>
-      
-      {/* Floating Action Elements */}
-      <FloatingActionButton />
-      <FloatingNotifications />
-      <QuickActions />
     </div>
   );
 };
