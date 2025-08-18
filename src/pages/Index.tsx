@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import AdSplash from "../components/AdSplash";
-import Hero from "../components/Hero";
 import CreatePost from "../components/CreatePost";
 import RightSidebar from "../components/RightSidebar";
 import Post from "../components/Post";
@@ -88,11 +87,6 @@ const Index = () => {
         
         {/* Main Content */}
         <div className="flex-1 w-full max-w-5xl mx-auto py-6 px-4">
-          {/* Hero Section */}
-          <div className="mb-8">
-            <Hero />
-          </div>
-          
           <div data-create-post>
             <CreatePost onPostCreated={handleNewPost} />
           </div>
