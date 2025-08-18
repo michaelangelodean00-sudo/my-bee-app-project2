@@ -8,6 +8,9 @@ import RightSidebar from "../components/RightSidebar";
 import Post from "../components/Post";
 import PageLoader from "../components/PageLoader";
 import McdonaldsAdWidget from "../components/McdonaldsAdWidget";
+import AnimatedBackground from "../components/AnimatedBackground";
+import EnhancedCard from "../components/EnhancedCard";
+import ScrollReveal from "../components/ScrollReveal";
 
 const Index = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -64,7 +67,8 @@ const Index = () => {
   ];
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-accent/5 pattern-bee-subtle transition-colors">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-accent/5 pattern-bee-subtle transition-colors relative">
+      <AnimatedBackground />
       <Header toggleMobileSidebar={toggleMobileSidebar} />
       <AdSplash />
       
@@ -86,18 +90,22 @@ const Index = () => {
         <Sidebar className="hidden md:block" />
         
         {/* Main Content */}
-        <div className="flex-1 w-full max-w-5xl mx-auto py-6 px-4">
-          <div data-create-post>
-            <CreatePost onPostCreated={handleNewPost} />
-          </div>
+        <div className="flex-1 w-full max-w-5xl mx-auto py-6 px-4 relative z-10">
+          <ScrollReveal direction="up" delay={100}>
+            <div data-create-post>
+              <CreatePost onPostCreated={handleNewPost} />
+            </div>
+          </ScrollReveal>
           
           {/* Ad Widget between CreatePost and posts */}
-          <div className="my-6">
-            <div className="text-xs text-muted-foreground mb-2 text-center font-medium">Sponsored</div>
-            <div className="bee-card-premium p-3 animate-glow">
-              <McdonaldsAdWidget />
+          <ScrollReveal direction="fade" delay={200}>
+            <div className="my-6">
+              <div className="text-xs text-muted-foreground mb-2 text-center font-medium">Sponsored</div>
+              <EnhancedCard variant="glow" className="p-3 animate-pulse-slow">
+                <McdonaldsAdWidget />
+              </EnhancedCard>
             </div>
-          </div>
+          </ScrollReveal>
           
           {/* Posts Section */}
           {isLoading ? (
@@ -106,23 +114,28 @@ const Index = () => {
             <div className="space-y-4">
               {/* Sample Posts */}
               {samplePosts.map((post, index) => (
-                <div 
-                  key={post.id} 
-                  className="animate-stagger-fade"
-                  style={{ animationDelay: `${index * 0.1}s` }}
+                <ScrollReveal 
+                  key={post.id}
+                  direction="up"
+                  delay={300 + (index * 150)}
                 >
-                  <Post {...post} />
-                </div>
+                  <EnhancedCard variant="floating" hover>
+                    <Post {...post} />
+                  </EnhancedCard>
+                </ScrollReveal>
               ))}
               
               {/* User Created Posts */}
               {posts.map((post, index) => (
-                <div 
-                  key={`user-${index}`} 
-                  className="animate-content-fade-in"
+                <ScrollReveal 
+                  key={`user-${index}`}
+                  direction="up"
+                  delay={100}
                 >
-                  <Post {...post} />
-                </div>
+                  <EnhancedCard variant="premium" hover>
+                    <Post {...post} />
+                  </EnhancedCard>
+                </ScrollReveal>
               ))}
             </div>
           )}
