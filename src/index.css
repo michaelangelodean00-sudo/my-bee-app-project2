@@ -300,8 +300,8 @@
     @apply animate-[wiggle_1s_ease-in-out_infinite];
   }
 
-  .animate-glow-pulse {
-    @apply animate-[glow-pulse_3s_ease-in-out_infinite];
+  .animate-breathing {
+    @apply animate-[breathing_4s_ease-in-out_infinite];
   }
 
   .animate-slide {
@@ -404,12 +404,12 @@
     }
   }
 
-  @keyframes glow-pulse {
+  @keyframes breathing {
     0%, 100% { 
-      box-shadow: 0 0 20px rgba(255, 193, 7, 0.3), 0 0 40px rgba(255, 193, 7, 0.1);
+      transform: scale(1);
     }
     50% { 
-      box-shadow: 0 0 30px rgba(255, 193, 7, 0.6), 0 0 60px rgba(255, 193, 7, 0.3);
+      transform: scale(1.02);
     }
   }
 
