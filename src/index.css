@@ -300,10 +300,8 @@
     @apply animate-[wiggle_1s_ease-in-out_infinite];
   }
 
-  .animate-shimmer {
-    @apply animate-[shimmer_3s_ease-in-out_infinite];
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    background-size: 200% 100%;
+  .animate-floating {
+    @apply animate-[floating_3s_ease-in-out_infinite];
   }
 
   .animate-slide {
@@ -406,12 +404,12 @@
     }
   }
 
-  @keyframes shimmer {
-    0% { 
-      background-position: -200% 0;
+  @keyframes floating {
+    0%, 100% { 
+      transform: translateY(0px);
     }
-    100% { 
-      background-position: 200% 0;
+    50% { 
+      transform: translateY(-6px);
     }
   }
 
