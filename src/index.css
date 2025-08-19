@@ -300,8 +300,8 @@
     @apply animate-[wiggle_1s_ease-in-out_infinite];
   }
 
-  .animate-floating {
-    @apply animate-[floating_3s_ease-in-out_infinite];
+  .animate-shadow-pulse {
+    @apply animate-[shadow-pulse_3s_ease-in-out_infinite];
   }
 
   .animate-slide {
@@ -404,12 +404,12 @@
     }
   }
 
-  @keyframes floating {
+  @keyframes shadow-pulse {
     0%, 100% { 
-      transform: translateY(0px);
+      box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.1);
     }
     50% { 
-      transform: translateY(-6px);
+      box-shadow: 0 8px 25px 0 rgba(0, 0, 0, 0.3);
     }
   }
 
