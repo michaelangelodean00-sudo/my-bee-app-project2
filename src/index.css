@@ -60,6 +60,12 @@
     --gradient-shimmer: linear-gradient(90deg, transparent, hsl(48 100% 50% / 0.1), transparent);
     --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.95), hsl(210 40% 98% / 0.8));
     
+    /* Advanced overlays */
+    --gradient-overlay-soft: linear-gradient(135deg, hsl(48 100% 50% / 0.05) 0%, hsl(190 78% 57% / 0.03) 50%, hsl(48 100% 50% / 0.02) 100%);
+    --gradient-overlay-vibrant: linear-gradient(135deg, hsl(48 100% 50% / 0.1) 0%, hsl(190 78% 57% / 0.08) 100%);
+    --gradient-border: linear-gradient(135deg, hsl(48 100% 50% / 0.3), hsl(190 78% 57% / 0.2), hsl(48 100% 50% / 0.1));
+    --gradient-shimmer-enhanced: linear-gradient(90deg, transparent 0%, hsl(48 100% 50% / 0.1) 50%, transparent 100%);
+    
     /* Enhanced Glass morphism */
     --glass-bg: hsla(0 0% 100% / 0.85);
     --glass-border: hsla(0 0% 100% / 0.3);
@@ -116,6 +122,12 @@
     --gradient-dark: linear-gradient(135deg, hsl(48 60% 25%) 0%, hsl(190 40% 30%) 100%);
     --gradient-shimmer: linear-gradient(90deg, transparent, hsl(48 100% 40% / 0.15), transparent);
     --gradient-glass: linear-gradient(135deg, hsla(222.2 84% 4.9% / 0.95), hsla(217.2 32.6% 17.5% / 0.8));
+    
+    /* Dark mode overlays */
+    --gradient-overlay-soft: linear-gradient(135deg, hsl(48 100% 40% / 0.08) 0%, hsl(190 78% 45% / 0.05) 50%, hsl(48 100% 40% / 0.03) 100%);
+    --gradient-overlay-vibrant: linear-gradient(135deg, hsl(48 100% 40% / 0.15) 0%, hsl(190 78% 45% / 0.12) 100%);
+    --gradient-border: linear-gradient(135deg, hsl(48 100% 40% / 0.4), hsl(190 78% 45% / 0.3), hsl(48 100% 40% / 0.2));
+    --gradient-shimmer-enhanced: linear-gradient(90deg, transparent 0%, hsl(48 100% 40% / 0.15) 50%, transparent 100%);
     
     /* Dark glass morphism */
     --glass-bg: hsla(222.2 84% 4.9% / 0.85);
@@ -203,33 +215,110 @@
     box-shadow: var(--glass-shadow), inset 0 1px 0 hsla(0 0% 100% / 0.1);
   }
 
-  /* Enhanced button styles */
+  /* Enhanced button styles with micro-interactions */
   .bee-btn {
     @apply bg-gradient-to-r from-primary to-secondary text-primary-foreground font-medium 
-           hover:scale-105 transition-all duration-300 ease-out;
+           relative overflow-hidden transition-all duration-300 ease-out;
     box-shadow: var(--glass-shadow), 0 4px 20px hsl(var(--primary) / 0.3);
+  }
+  
+  .bee-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-shimmer-enhanced);
+    transition: left 0.5s ease;
+    z-index: 1;
+  }
+  
+  .bee-btn:hover::before {
+    left: 100%;
   }
 
   .bee-btn:hover {
-    box-shadow: var(--shadow-glass-hover), 0 6px 25px hsl(var(--primary) / 0.4);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: var(--shadow-glass-hover), 0 8px 30px hsl(var(--primary) / 0.5);
+  }
+  
+  .bee-btn:active {
+    transform: translateY(0) scale(1.02);
+    transition: all 0.1s ease;
+  }
+  
+  .bee-btn > * {
+    position: relative;
+    z-index: 2;
   }
   
   .bee-card {
-    @apply glass-card rounded-xl transition-all duration-300 ease-out;
+    @apply glass-card rounded-xl relative overflow-hidden transition-all duration-400 ease-out;
+  }
+  
+  .bee-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-overlay-soft);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
   }
 
   .bee-card:hover {
-    transform: translateY(-2px) scale(1.01);
+    transform: translateY(-4px) scale(1.02);
     box-shadow: var(--shadow-glass-hover);
+  }
+  
+  .bee-card:hover::after {
+    opacity: 1;
+  }
+  
+  .bee-card > * {
+    position: relative;
+    z-index: 2;
   }
 
   .bee-card-premium {
-    @apply glass-premium rounded-xl transition-all duration-300 ease-out;
+    @apply glass-premium rounded-xl relative overflow-hidden transition-all duration-400 ease-out;
+    border: 1px solid transparent;
+    background-image: var(--gradient-border), var(--glass-premium);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+  }
+  
+  .bee-card-premium::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-overlay-vibrant);
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
   }
 
   .bee-card-premium:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: var(--shadow-glass-hover), inset 0 1px 0 hsla(0 0% 100% / 0.2);
+    transform: translateY(-6px) scale(1.03) rotate(0.5deg);
+    box-shadow: var(--shadow-glass-hover), inset 0 1px 0 hsla(0 0% 100% / 0.3);
+  }
+  
+  .bee-card-premium:hover::after {
+    opacity: 1;
+  }
+  
+  .bee-card-premium > * {
+    position: relative;
+    z-index: 2;
   }
   
   .bee-link {
@@ -306,6 +395,22 @@
 
   .animate-slide {
     @apply animate-[slide_20s_linear_infinite];
+  }
+  
+  .animate-micro-bounce {
+    @apply animate-[micro-bounce_0.6s_ease-out];
+  }
+  
+  .animate-gentle-scale {
+    @apply animate-[gentle-scale_0.3s_ease-out];
+  }
+  
+  .hover-lift {
+    @apply transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg;
+  }
+  
+  .hover-glow {
+    @apply transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,215,0,0.3)];
   }
 
   /* Brand patterns */
@@ -422,6 +527,22 @@
   @keyframes slide {
     0% { transform: translateX(0); }
     100% { transform: translateX(-60px); }
+  }
+  
+  @keyframes micro-bounce {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  
+  @keyframes gentle-scale {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.02); }
+  }
+  
+  @keyframes shimmer-enhanced {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
   }
 
   @keyframes morphism {

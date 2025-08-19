@@ -32,8 +32,13 @@ const EnhancedCard = ({
       hoverEffects,
       className
     )}>
-      {/* Animated border gradient */}
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20 opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      {/* Enhanced gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-secondary/10 to-accent/8 opacity-0 hover:opacity-100 transition-all duration-500 pointer-events-none" />
+      
+      {/* Shimmer effect */}
+      <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-700">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full hover:animate-shimmer" />
+      </div>
       
       {/* Content */}
       <div className="relative z-10">
