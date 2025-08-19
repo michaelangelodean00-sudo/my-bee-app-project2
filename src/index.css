@@ -300,8 +300,8 @@
     @apply animate-[wiggle_1s_ease-in-out_infinite];
   }
 
-  .animate-border-gradient {
-    @apply animate-[border-gradient_4s_ease-in-out_infinite];
+  .animate-floating {
+    @apply animate-[floating_3s_ease-in-out_infinite];
   }
 
   .animate-slide {
@@ -404,18 +404,12 @@
     }
   }
 
-  @keyframes border-gradient {
+  @keyframes floating {
     0%, 100% { 
-      border-color: rgba(255, 255, 255, 0.2);
-    }
-    25% { 
-      border-color: rgba(255, 193, 7, 0.6);
+      transform: translateY(0px);
     }
     50% { 
-      border-color: rgba(255, 255, 255, 0.4);
-    }
-    75% { 
-      border-color: rgba(220, 38, 127, 0.6);
+      transform: translateY(-6px);
     }
   }
 
