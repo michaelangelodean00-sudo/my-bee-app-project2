@@ -101,7 +101,7 @@ const Index = () => {
           <ScrollReveal direction="fade" delay={200}>
             <div className="my-6">
               <div className="text-xs text-muted-foreground mb-2 text-center font-medium">Sponsored</div>
-              <EnhancedCard variant="glow" className="p-3 animate-pulse-slow">
+              <EnhancedCard variant="glow" className="p-3">
                 <McdonaldsAdWidget />
               </EnhancedCard>
             </div>

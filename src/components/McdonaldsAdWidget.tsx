@@ -37,15 +37,11 @@ const McdonaldsAdWidget = () => {
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
   const [isRotating, setIsRotating] = useState(false);
 
-  // Rotate ads every 5 seconds
+  // Rotate ads every 10 seconds (reduced frequency)
   useEffect(() => {
     const interval = setInterval(() => {
-      setIsRotating(true);
-      setTimeout(() => {
-        setCurrentAdIndex((prevIndex) => (prevIndex + 1) % ads.length);
-        setIsRotating(false);
-      }, 500); // Wait for animation to complete
-    }, 5000);
+      setCurrentAdIndex((prevIndex) => (prevIndex + 1) % ads.length);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, []);
@@ -63,7 +59,7 @@ const McdonaldsAdWidget = () => {
 
   return (
     <div 
-      className={`${currentAd.bgColor} text-white rounded-xl flex items-center transition-all duration-500 ${isRotating ? 'scale-98 opacity-85' : 'scale-100 opacity-100'} cursor-pointer hover:scale-105 hover:shadow-xl active:scale-95 w-full max-w-full min-h-[56px] px-3 py-3 shadow-lg border border-white/10 backdrop-blur-sm overflow-hidden`}
+      className={`${currentAd.bgColor} text-white rounded-xl flex items-center transition-colors duration-300 cursor-pointer hover:brightness-110 w-full max-w-full min-h-[56px] px-3 py-3 shadow-lg border border-white/10 backdrop-blur-sm overflow-hidden`}
       onClick={handleAdClick}
     >
       <div className="flex items-center w-full min-w-0 gap-2">
