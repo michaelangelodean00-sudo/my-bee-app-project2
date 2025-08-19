@@ -293,7 +293,7 @@
   }
 
   .animate-pulse-slow {
-    @apply animate-[pulse-slow_5s_ease-in-out_infinite];
+    @apply animate-[pulse-slow_20s_ease-in-out_infinite];
   }
 
   .animate-wiggle {
