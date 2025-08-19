@@ -254,7 +254,7 @@
   }
   
   .bee-card {
-    @apply glass-card rounded-xl relative overflow-hidden transition-all duration-400 ease-out;
+    @apply glass-card rounded-xl relative overflow-hidden transition-all duration-300 ease-out;
   }
   
   .bee-card::after {
@@ -286,7 +286,7 @@
   }
 
   .bee-card-premium {
-    @apply glass-premium rounded-xl relative overflow-hidden transition-all duration-400 ease-out;
+    @apply glass-premium rounded-xl relative overflow-hidden transition-all duration-300 ease-out;
     border: 1px solid transparent;
     background-image: var(--gradient-border), var(--glass-premium);
     background-origin: border-box;
