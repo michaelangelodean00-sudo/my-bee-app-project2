@@ -1,24 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Bebas+Neue:wght@400&family=Outfit:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* SF Pro Font */
+/* Enhanced Font Loading */
 @font-face {
-  font-family: 'SF Pro';
+  font-family: 'SF Pro Display';
   src: url('https://fonts.cdnfonts.com/css/sf-pro-display');
-  font-weight: 400;
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
-}
-
-@font-face {
-  font-family: 'SF Pro';
-  src: url('https://fonts.cdnfonts.com/css/sf-pro-display');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'pnum' 1, 'tnum' 0, 'onum' 1, 'lnum' 0, 'dlig' 0;
 }
 
 @layer base {
@@ -326,33 +319,145 @@
            hover:scale-105 inline-block;
   }
 
-  /* Typography hierarchy */
+  /* Enhanced Typography System */
   .heading-display {
-    @apply font-display text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight;
+    @apply font-heading text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter
+           bg-gradient-to-r from-foreground via-primary to-secondary bg-clip-text text-transparent
+           leading-tight;
   }
   
   .heading-large {
-    @apply font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight;
+    @apply font-heading text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight
+           text-foreground leading-tight;
   }
   
   .heading-medium {
-    @apply font-display text-2xl md:text-3xl font-bold tracking-tight;
+    @apply font-heading text-2xl md:text-3xl font-bold tracking-tight
+           text-foreground leading-snug;
   }
   
   .heading-small {
-    @apply font-display text-xl md:text-2xl font-bold tracking-tight;
+    @apply font-heading text-xl md:text-2xl font-semibold tracking-tight
+           text-foreground leading-snug;
+  }
+  
+  .heading-xs {
+    @apply font-heading text-lg md:text-xl font-semibold tracking-normal
+           text-foreground leading-normal;
+  }
+  
+  .subheading-large {
+    @apply font-body text-lg md:text-xl font-medium tracking-wide
+           text-muted-foreground leading-relaxed;
+  }
+  
+  .subheading-medium {
+    @apply font-body text-base md:text-lg font-medium tracking-wide
+           text-muted-foreground leading-relaxed;
   }
   
   .body-large {
-    @apply font-sf-pro text-lg md:text-xl leading-relaxed;
+    @apply font-body text-lg md:text-xl font-normal tracking-normal
+           text-foreground leading-relaxed;
   }
   
   .body-medium {
-    @apply font-sf-pro text-base md:text-lg leading-relaxed;
+    @apply font-body text-base md:text-lg font-normal tracking-normal
+           text-foreground leading-relaxed;
   }
   
   .body-small {
-    @apply font-sf-pro text-sm md:text-base leading-relaxed;
+    @apply font-body text-sm md:text-base font-normal tracking-normal
+           text-foreground leading-relaxed;
+  }
+  
+  .caption-large {
+    @apply font-body text-sm font-medium tracking-wide
+           text-muted-foreground leading-normal uppercase;
+  }
+  
+  .caption-small {
+    @apply font-body text-xs font-medium tracking-wider
+           text-muted-foreground leading-normal uppercase;
+  }
+  
+  .label-large {
+    @apply font-body text-sm font-semibold tracking-normal
+           text-foreground leading-normal;
+  }
+  
+  .label-medium {
+    @apply font-body text-xs font-semibold tracking-wide
+           text-foreground leading-normal;
+  }
+  
+  /* Interactive Typography */
+  .text-interactive {
+    @apply transition-all duration-200 ease-out hover:text-primary cursor-pointer;
+  }
+  
+  .text-gradient-primary {
+    @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold;
+  }
+  
+  .text-gradient-soft {
+    @apply bg-gradient-to-r from-muted-foreground to-foreground bg-clip-text text-transparent;
+  }
+  
+  .text-shimmer {
+    @apply bg-gradient-to-r from-primary via-secondary to-primary bg-[length:200%_100%] 
+           bg-clip-text text-transparent animate-[shimmer_2s_ease-in-out_infinite];
+  }
+  
+  /* Typography Spacing */
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  
+  /* Enhanced readability */
+  .prose-enhanced {
+    @apply font-body text-base leading-relaxed text-foreground;
+  }
+  
+  .prose-enhanced h1 {
+    @apply heading-large mb-6 mt-8 first:mt-0;
+  }
+  
+  .prose-enhanced h2 {
+    @apply heading-medium mb-4 mt-6;
+  }
+  
+  .prose-enhanced h3 {
+    @apply heading-small mb-3 mt-5;
+  }
+  
+  .prose-enhanced h4 {
+    @apply heading-xs mb-3 mt-4;
+  }
+  
+  .prose-enhanced p {
+    @apply body-medium mb-4;
+  }
+  
+  .prose-enhanced ul, .prose-enhanced ol {
+    @apply mb-4 ml-6;
+  }
+  
+  .prose-enhanced li {
+    @apply mb-2;
+  }
+  
+  .prose-enhanced blockquote {
+    @apply border-l-4 border-primary pl-4 py-2 bg-muted/30 rounded-r-lg 
+           italic text-muted-foreground;
+  }
+  
+  .prose-enhanced code {
+    @apply bg-muted px-2 py-1 rounded text-sm font-medium;
   }
 
   /* Gradient backgrounds */
