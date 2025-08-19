@@ -25,12 +25,6 @@ const RightSidebar = () => {
     <div className="hidden xl:block w-80 p-6 space-y-6 glass-sidebar min-h-screen">
       <UserProfile {...defaultUser} />
       
-      {/* Premium Ad Placement - Between profile and widgets for better visibility */}
-      <div className="bee-card-premium p-3">
-        <div className="text-xs text-muted-foreground mb-2 text-center font-medium">Sponsored</div>
-        <BurgerAdWidget />
-      </div>
-      
       <WeatherWidget />
       <TrendingSection />
     </div>
