@@ -301,7 +301,7 @@
   }
 
   .animate-floating {
-    @apply animate-[floating_8s_ease-in-out_infinite];
+    @apply animate-[floating_15s_ease-in-out_infinite];
   }
 
   .animate-slide {
