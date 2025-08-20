@@ -791,6 +791,10 @@
     @apply animate-[heartbeat_60s_ease-in-out_infinite];
   }
 
+  .animate-gentle-sway {
+    @apply animate-[gentle-sway_4s_ease-in-out_infinite];
+  }
+
   .animate-slide {
     @apply animate-[slide_20s_linear_infinite];
   }
@@ -928,6 +932,18 @@
     }
     75% {
       transform: scale(1.01);
+    }
+  }
+
+  @keyframes gentle-sway {
+    0%, 100% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(0.5deg);
+    }
+    75% {
+      transform: rotate(-0.5deg);
     }
   }
 
