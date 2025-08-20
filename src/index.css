@@ -783,8 +783,8 @@
     @apply animate-[wiggle_1s_ease-in-out_infinite];
   }
 
-  .animate-floating {
-    @apply animate-[floating_90s_ease-in-out_infinite];
+.animate-floating {
+    @apply animate-[floating_6s_ease-in-out_infinite];
   }
 
   .animate-slide {
