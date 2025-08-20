@@ -787,6 +787,10 @@
     @apply animate-[floating_6s_ease-in-out_infinite];
   }
 
+  .animate-heartbeat {
+    @apply animate-[heartbeat_1.5s_ease-in-out_infinite];
+  }
+
   .animate-slide {
     @apply animate-[slide_20s_linear_infinite];
   }
@@ -903,7 +907,7 @@
     }
   }
 
-@keyframes floating {
+  @keyframes floating {
     0%, 75% { 
       transform: translateY(0px);
     }
@@ -912,6 +916,18 @@
     }
     100% { 
       transform: translateY(0px);
+    }
+  }
+
+  @keyframes heartbeat {
+    0%, 50%, 100% {
+      transform: scale(1);
+    }
+    25% {
+      transform: scale(1.02);
+    }
+    75% {
+      transform: scale(1.01);
     }
   }
 
