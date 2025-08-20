@@ -904,11 +904,14 @@
   }
 
 @keyframes floating {
-    0%, 25%, 75%, 100% { 
+    0%, 40% { 
       transform: translateY(0px);
     }
-    50% { 
+    45%, 55% { 
       transform: translateY(-6px);
+    }
+    60%, 100% { 
+      transform: translateY(0px);
     }
   }
 
