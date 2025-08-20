@@ -59,7 +59,7 @@ const McdonaldsAdWidget = () => {
 
   return (
     <div 
-      className={`${currentAd.bgColor} text-white rounded-xl flex items-center transition-colors duration-300 cursor-pointer hover:brightness-110 w-full max-w-full min-h-[56px] px-3 py-3 shadow-lg border border-white/10 backdrop-blur-sm overflow-hidden`}
+      className={`${currentAd.bgColor} text-white rounded-xl flex items-center transition-all duration-300 cursor-pointer hover:brightness-110 hover:scale-105 hover:shadow-xl w-full max-w-full min-h-[56px] px-3 py-3 shadow-lg border border-white/10 backdrop-blur-sm overflow-hidden animate-pulse`}
       onClick={handleAdClick}
     >
       <div className="flex items-center w-full min-w-0 gap-2">
