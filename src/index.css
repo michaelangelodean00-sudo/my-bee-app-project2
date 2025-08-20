@@ -788,7 +788,7 @@
   }
 
 .animate-heartbeat {
-    @apply animate-[heartbeat_8s_ease-in-out_infinite];
+    @apply animate-[heartbeat_15s_ease-in-out_infinite];
   }
 
   .animate-slide {
