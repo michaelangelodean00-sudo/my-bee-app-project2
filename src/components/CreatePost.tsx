@@ -26,7 +26,7 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
           <div className="rounded-full bg-gradient-to-br from-blue-400 to-blue-600 p-4 mb-2 group-hover:animate-bounce">
             <Handshake size={48} className="text-white transition-transform duration-300 group-hover:scale-110" />
           </div>
-          <span className="text-lg sm:text-xl lg:text-2xl font-extrabold text-[#8B5CF6] tracking-wide">Business</span>
+          <span className="text-sm sm:text-base lg:text-lg font-extrabold text-[#8B5CF6] tracking-wide">Business</span>
         </Button>
         
         <Button 
@@ -37,7 +37,7 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
           <div className="rounded-full bg-gradient-to-br from-pink-400 via-purple-400 to-indigo-400 p-4 mb-2 group-hover:animate-bounce">
             <Calendar size={48} className="text-white transition-transform duration-300 group-hover:scale-110" />
           </div>
-          <span className="text-lg sm:text-xl lg:text-2xl font-extrabold text-[#F97316] tracking-wide">Events</span>
+          <span className="text-sm sm:text-base lg:text-lg font-extrabold text-[#F97316] tracking-wide">Events</span>
         </Button>
         
         <Button 
@@ -48,7 +48,7 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
           <div className="rounded-full bg-gradient-to-br from-green-400 to-green-600 p-4 mb-2 group-hover:animate-bounce">
             <ShoppingCart size={48} className="text-white transition-transform duration-300 group-hover:scale-110" />
           </div>
-          <span className="text-lg sm:text-xl lg:text-2xl font-extrabold text-[#1EAEDB] tracking-wide">E-commerce</span>
+          <span className="text-sm sm:text-base lg:text-lg font-extrabold text-[#1EAEDB] tracking-wide">E-commerce</span>
         </Button>
         
         <VideoUploadForm />
