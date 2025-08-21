@@ -66,7 +66,7 @@ const VideoUploadForm = () => {
           <div className="rounded-full bg-gradient-to-br from-red-400 to-red-600 p-4 mb-2">
             <Video size={48} className="text-white" />
           </div>
-          <span className="text-sm sm:text-base lg:text-lg font-extrabold text-[#DC2626] tracking-wide">Video Upload</span>
+          <span className="text-base sm:text-lg lg:text-xl font-extrabold text-[#DC2626] tracking-wide">Video Upload</span>
         </Button>
       </DialogTrigger>
       
