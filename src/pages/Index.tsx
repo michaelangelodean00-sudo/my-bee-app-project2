@@ -11,6 +11,7 @@ import McdonaldsAdWidget from "../components/McdonaldsAdWidget";
 import AnimatedBackground from "../components/AnimatedBackground";
 import EnhancedCard from "../components/EnhancedCard";
 import ScrollReveal from "../components/ScrollReveal";
+import LazyImage from "../components/LazyImage";
 
 const Index = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -69,6 +70,13 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-accent/5 pattern-bee-subtle transition-colors relative">
       <AnimatedBackground />
+      
+      {/* SEO Header */}
+      <header>
+        <h1 className="sr-only">B.E.E App Bahamas - Business, Events & E-commerce Platform</h1>
+        <p className="sr-only">Connect with local Bahamian businesses, discover events, and explore e-commerce opportunities in the Caribbean.</p>
+      </header>
+      
       <Header toggleMobileSidebar={toggleMobileSidebar} />
       <AdSplash />
       
@@ -90,59 +98,67 @@ const Index = () => {
         <Sidebar className="hidden md:block" />
         
         {/* Main Content */}
-        <div className="flex-1 w-full max-w-5xl mx-auto py-6 px-4 relative z-10">
+        <main className="flex-1 w-full max-w-5xl mx-auto py-6 px-4 relative z-10" role="main" id="main-content">
           <ScrollReveal direction="up" delay={100}>
-            <div data-create-post>
+            <section aria-label="Create new post">
               <CreatePost onPostCreated={handleNewPost} />
-            </div>
+            </section>
           </ScrollReveal>
           
           {/* Ad Widget between CreatePost and posts */}
           <ScrollReveal direction="fade" delay={200}>
-            <div className="my-6">
+            <section className="my-6" aria-label="Sponsored content">
               <div className="text-xs text-muted-foreground mb-2 text-center font-medium">Sponsored</div>
               <EnhancedCard variant="glow" className="p-3">
                 <McdonaldsAdWidget />
               </EnhancedCard>
-            </div>
+            </section>
           </ScrollReveal>
           
           {/* Posts Section */}
-          {isLoading ? (
-            <PageLoader type="posts" />
-          ) : (
-            <div className="space-y-4">
-              {/* Sample Posts */}
-              {samplePosts.map((post, index) => (
-                <ScrollReveal 
-                  key={post.id}
-                  direction="up"
-                  delay={300 + (index * 150)}
-                >
-                  <EnhancedCard variant="floating" hover>
-                    <Post {...post} />
-                  </EnhancedCard>
-                </ScrollReveal>
-              ))}
-              
-              {/* User Created Posts */}
-              {posts.map((post, index) => (
-                <ScrollReveal 
-                  key={`user-${index}`}
-                  direction="up"
-                  delay={100}
-                >
-                  <EnhancedCard variant="premium" hover>
-                    <Post {...post} />
-                  </EnhancedCard>
-                </ScrollReveal>
-              ))}
-            </div>
-          )}
-        </div>
+          <section aria-label="Social media posts">
+            {isLoading ? (
+              <PageLoader type="posts" />
+            ) : (
+              <div className="space-y-4">
+                {/* Sample Posts */}
+                {samplePosts.map((post, index) => (
+                  <ScrollReveal 
+                    key={post.id}
+                    direction="up"
+                    delay={300 + (index * 150)}
+                  >
+                    <article>
+                      <EnhancedCard variant="floating" hover>
+                        <Post {...post} />
+                      </EnhancedCard>
+                    </article>
+                  </ScrollReveal>
+                ))}
+                
+                {/* User Created Posts */}
+                {posts.map((post, index) => (
+                  <ScrollReveal 
+                    key={`user-${index}`}
+                    direction="up"
+                    delay={100}
+                  >
+                    <article>
+                      <EnhancedCard variant="premium" hover>
+                        <Post {...post} />
+                      </EnhancedCard>
+                    </article>
+                  </ScrollReveal>
+                ))}
+              </div>
+            )}
+          </section>
+        </main>
         
         {/* Right Sidebar - now visible on larger mobile screens */}
-        <RightSidebar />
+        <aside aria-label="Additional content and widgets">
+          <RightSidebar />
+        </aside>
       </div>
     </div>
   );

@@ -12,3 +12,25 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+# Sitemap
+Sitemap: https://beeappbahamas.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
+
+# Specific pages
+Disallow: /admin/
+Disallow: /settings/
+Disallow: /profile/*/private
+Disallow: /api/
+Disallow: /*?*
+
+# Allow important pages
+Allow: /businesses
+Allow: /events
+Allow: /ecommerce
+Allow: /profile
+
+# Host preference (helps with SEO)
+Host: https://beeappbahamas.com

@@ -1,0 +1,61 @@
+{
+  "name": "B.E.E App Bahamas",
+  "short_name": "B.E.E App",
+  "description": "The premier social platform connecting Bahamian businesses, events, and e-commerce",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#FFD500",
+  "orientation": "portrait-primary",
+  "categories": ["social", "business", "lifestyle"],
+  "lang": "en-BS",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/lovable-uploads/d5511939-48e5-44cf-9f2b-d8f9e829b842.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/lovable-uploads/d5511939-48e5-44cf-9f2b-d8f9e829b842.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/lovable-uploads/f4a4e8e5-574a-4d93-88f9-155b1f4b2e32.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Businesses",
+      "short_name": "Business",
+      "description": "Discover local businesses",
+      "url": "/businesses",
+      "icons": [
+        {
+          "src": "/lovable-uploads/d5511939-48e5-44cf-9f2b-d8f9e829b842.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Events",
+      "short_name": "Events",
+      "description": "Find exciting events",
+      "url": "/events",
+      "icons": [
+        {
+          "src": "/lovable-uploads/d5511939-48e5-44cf-9f2b-d8f9e829b842.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}
