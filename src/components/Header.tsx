@@ -38,16 +38,22 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
             onClick={toggleMobileSidebar}
           >
             <Menu size={24} />
-            {hasAnyNotifications && (
-              <div className="absolute -top-1 -right-1">
-                <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
-                <div className="absolute inset-0 w-3 h-3 bg-red-500 rounded-full animate-ping opacity-75" />
-              </div>
-            )}
-          </Button>
-        </div>
-      </div>
-    </header>
+        {hasAnyNotifications && (
+          <div className="absolute -top-1 -right-1">
+            <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+            <div className="absolute inset-0 w-3 h-3 bg-red-500 rounded-full animate-ping opacity-75" />
+          </div>
+        )}
+        <span className="sr-only">© 2024 B.E.E App Bahamas</span>
+      </Button>
+    </div>
+  </div>
+
+  {/* Copyright Watermark */}
+  <div className="absolute top-2 right-4 text-xs text-muted-foreground/30 pointer-events-none select-none">
+    © B.E.E App
+  </div>
+</header>
   );
 };
 

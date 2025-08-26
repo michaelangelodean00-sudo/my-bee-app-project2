@@ -1,0 +1,50 @@
+# Copyright © 2024 B.E.E App Bahamas - All Rights Reserved
+# This file is protected by copyright law
+
+# Security headers for copyright protection
+<IfModule mod_headers.c>
+    Header set X-Content-Copyright "© 2024 B.E.E App Bahamas. All rights reserved."
+    Header set X-App-Protected "true"
+    Header set X-Rights-Management "strict"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-Content-Type-Options "nosniff"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Prevent access to source files
+<Files "*.map">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "*.json">
+    Order allow,deny
+    Deny from all
+    <FilesMatch "^(manifest|sitemap)\.json$">
+        Order deny,allow
+        Allow from all
+    </FilesMatch>
+</Files>
+
+# Copyright protection
+<Files "robots.txt">
+    Header set X-Copyright "© B.E.E App Bahamas - Content protected"
+</Files>
+
+# Cache control with copyright headers
+<IfModule mod_expires.c>
+    ExpiresActive on
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType image/png "access plus 6 months"
+    ExpiresByType image/jpg "access plus 6 months"
+    ExpiresByType image/jpeg "access plus 6 months"
+    ExpiresByType image/gif "access plus 6 months"
+    ExpiresByType image/webp "access plus 6 months"
+</IfModule>
+
+# Redirect old URLs
+RewriteEngine On
+RewriteRule ^legal$ /copyright [R=301,L]
+RewriteRule ^terms-of-service$ /terms [R=301,L]
+RewriteRule ^privacy-policy$ /privacy [R=301,L]

@@ -8,6 +8,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { SecurityProvider } from "./components/SecurityProvider";
 import ErrorBoundary from "./components/ErrorBoundary";
 import AccessibilityEnhancements from "./components/AccessibilityEnhancements";
+import CopyrightProtection from "./components/CopyrightProtection";
 import Index from "./pages/Index";
 import Businesses from "./pages/Businesses";
 import Events from "./pages/Events";
@@ -16,6 +17,7 @@ import Admin from "./pages/Admin";
 import ProfileSettings from "./pages/ProfileSettings";
 import NotFound from "./pages/NotFound";
 import UserProfilePage from "./pages/UserProfilePage";
+import Copyright from "./pages/Copyright";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,6 +38,7 @@ const App = () => (
             <NotificationProvider>
               <ContentFilterProvider>
                 <BrowserRouter>
+                  <CopyrightProtection />
                   <AccessibilityEnhancements />
                   <Toaster 
                     position="bottom-right" 
@@ -57,6 +60,10 @@ const App = () => (
                     <Route path="/settings" element={<ProfileSettings />} />
                     <Route path="/profile" element={<UserProfilePage />} />
                     <Route path="/profile/:id" element={<UserProfilePage />} />
+                    <Route path="/copyright" element={<Copyright />} />
+                    <Route path="/terms" element={<Copyright />} />
+                    <Route path="/privacy" element={<Copyright />} />
+                    <Route path="/dmca" element={<Copyright />} />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>

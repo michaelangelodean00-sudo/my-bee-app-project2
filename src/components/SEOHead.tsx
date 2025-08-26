@@ -54,6 +54,14 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
 
+      {/* Copyright and Legal Meta Tags */}
+      <meta name="copyright" content={`© ${new Date().getFullYear()} B.E.E App Bahamas. All rights reserved.`} />
+      <meta name="rights" content="All content protected by copyright law" />
+      <meta name="publisher" content="B.E.E App Bahamas" />
+      <meta name="dcterms.rights" content="© B.E.E App Bahamas. Trademark and copyright protected." />
+      <meta name="dcterms.dateCopyrighted" content={new Date().getFullYear().toString()} />
+      <link rel="license" href="/copyright" />
+
       {/* Additional SEO Tags */}
       <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
       <meta name="googlebot" content="index, follow" />

@@ -18,8 +18,9 @@ const LogoImage = ({ className, size = 'default' }: LogoImageProps) => {
   return (
     <img 
       src="/lovable-uploads/2893898e-72bd-4b44-96ae-dba8462fe68c.png" 
-      alt="B.E.E App Bahamas Logo" 
+      alt="B.E.E App Bahamas Logo - © 2024 All Rights Reserved" 
       className={`object-contain ${sizeClasses[size]} ${className ?? ''}`}
+      data-copyright-protected="true"
     />
   );
 };

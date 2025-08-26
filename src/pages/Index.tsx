@@ -12,6 +12,8 @@ import AnimatedBackground from "../components/AnimatedBackground";
 import EnhancedCard from "../components/EnhancedCard";
 import ScrollReveal from "../components/ScrollReveal";
 import LazyImage from "../components/LazyImage";
+import Footer from "../components/Footer";
+import CopyrightWatermark from "../components/CopyrightWatermark";
 
 const Index = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -70,6 +72,12 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-accent/5 pattern-bee-subtle transition-colors relative">
       <AnimatedBackground />
+      
+      {/* Copyright Watermark */}
+      <CopyrightWatermark 
+        className="fixed top-4 right-4 z-50" 
+        variant="subtle" 
+      />
       
       {/* SEO Header */}
       <header>
@@ -160,6 +168,9 @@ const Index = () => {
           <RightSidebar />
         </aside>
       </div>
+      
+      {/* Footer with Copyright */}
+      <Footer />
     </div>
   );
 };

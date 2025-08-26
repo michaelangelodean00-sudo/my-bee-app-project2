@@ -1,7 +1,7 @@
 {
   "name": "B.E.E App Bahamas",
   "short_name": "B.E.E App",
-  "description": "The premier social platform connecting Bahamian businesses, events, and e-commerce",
+  "description": "The premier social platform connecting Bahamian businesses, events, and e-commerce - Copyright © 2024 B.E.E App Bahamas. All rights reserved.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -10,6 +10,8 @@
   "categories": ["social", "business", "lifestyle"],
   "lang": "en-BS",
   "dir": "ltr",
+  "copyright": "© 2024 B.E.E App Bahamas. All rights reserved.",
+  "author": "B.E.E App Bahamas",
   "icons": [
     {
       "src": "/lovable-uploads/d5511939-48e5-44cf-9f2b-d8f9e829b842.png",
