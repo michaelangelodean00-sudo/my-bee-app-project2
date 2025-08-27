@@ -12,13 +12,6 @@ const Footer = () => {
         <div className="flex justify-center mb-8">
           {/* Brand Section */}
           <div className="text-center">
-            <div className="mb-4">
-              <Logo className="scale-75" />
-            </div>
-            <p className="text-muted-foreground mb-4 max-w-md">
-              The premier social platform connecting Bahamian businesses, events, and e-commerce. 
-              Building stronger communities through digital innovation.
-            </p>
             <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
               <Shield size={16} />
               <span>Secured & Protected Platform</span>
