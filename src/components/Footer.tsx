@@ -9,9 +9,9 @@ const Footer = () => {
     <footer className="bg-gradient-to-br from-background to-muted/50 border-t border-border/50 mt-16">
       <div className="max-w-7xl mx-auto px-4 py-12">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+        <div className="flex justify-center mb-8">
           {/* Brand Section */}
-          <div className="lg:col-span-2">
+          <div className="text-center">
             <div className="mb-4">
               <Logo className="scale-75" />
             </div>
@@ -19,31 +19,10 @@ const Footer = () => {
               The premier social platform connecting Bahamian businesses, events, and e-commerce. 
               Building stronger communities through digital innovation.
             </p>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
               <Shield size={16} />
               <span>Secured & Protected Platform</span>
             </div>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h3 className="font-semibold text-foreground mb-4">Platform</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link to="/businesses" className="hover:text-primary transition-colors">Businesses</Link></li>
-              <li><Link to="/events" className="hover:text-primary transition-colors">Events</Link></li>
-              <li><Link to="/ecommerce" className="hover:text-primary transition-colors">E-commerce</Link></li>
-            </ul>
-          </div>
-
-          {/* Legal Links */}
-          <div>
-            <h3 className="font-semibold text-foreground mb-4">Legal</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link to="/copyright" className="hover:text-primary transition-colors">Copyright Policy</Link></li>
-              <li><Link to="/terms" className="hover:text-primary transition-colors">Terms of Service</Link></li>
-              <li><Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
-              <li><Link to="/dmca" className="hover:text-primary transition-colors">DMCA Notice</Link></li>
-            </ul>
           </div>
         </div>
 
