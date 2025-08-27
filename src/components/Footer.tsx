@@ -22,13 +22,6 @@ const Footer = () => {
               </p>
             </div>
             
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <span>Made with</span>
-              <Heart size={12} className="text-red-500 animate-pulse" />
-              <span>in The Bahamas</span>
-              <Calendar size={12} />
-              <span>{currentYear}</span>
-            </div>
           </div>
 
           {/* Additional Copyright Notice */}
