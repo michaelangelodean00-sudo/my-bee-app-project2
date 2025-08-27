@@ -9,15 +9,6 @@ const Footer = () => {
     <footer className="bg-gradient-to-br from-background to-muted/50 border-t border-border/50 mt-16">
       <div className="max-w-7xl mx-auto px-4 py-12">
         {/* Main Footer Content */}
-        <div className="flex justify-center mb-8">
-          {/* Brand Section */}
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-              <Shield size={16} />
-              <span>Secured & Protected Platform</span>
-            </div>
-          </div>
-        </div>
 
         {/* Copyright Bar */}
         <div className="border-t border-border/50 pt-8">
