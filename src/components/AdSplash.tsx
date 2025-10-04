@@ -146,18 +146,29 @@ const AdSplash = () => {
         <CarouselContent>
           {ads.map((ad, index) => (
             <CarouselItem key={ad.id}>
-              <div className="flex flex-col md:flex-row items-center">
-                <div className="w-full md:w-1/2 mb-6 md:mb-0 md:mr-8">
+              <div className="flex flex-col md:flex-row items-center gap-8">
+                <div className="w-full md:w-1/2 relative group">
                   {loadedImages.has(index) ? (
-                    <img 
-                      src={ad.imageUrl} 
-                      alt={ad.title} 
-                      className="rounded-xl w-full h-48 md:h-64 object-cover shadow-lg"
-                      loading="lazy"
-                    />
+                    <div className="relative overflow-hidden rounded-2xl">
+                      {/* Gradient overlay for depth */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-accent/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      
+                      {/* Decorative border glow */}
+                      <div className="absolute inset-0 rounded-2xl border-2 border-white/20 group-hover:border-white/40 transition-colors duration-300" />
+                      
+                      <img 
+                        src={ad.imageUrl} 
+                        alt={ad.title} 
+                        className="rounded-2xl w-full h-64 md:h-80 lg:h-96 object-cover transform transition-all duration-700 group-hover:scale-110 shadow-2xl shadow-primary/30"
+                        loading="lazy"
+                      />
+                      
+                      {/* Shine effect on hover */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
+                    </div>
                   ) : (
-                    <div className="rounded-xl w-full h-48 md:h-64 bg-gray-300 animate-pulse flex items-center justify-center shadow-lg">
-                      <span className="text-gray-500 text-sm">Loading...</span>
+                    <div className="rounded-2xl w-full h-64 md:h-80 lg:h-96 bg-gradient-to-br from-muted/50 to-muted animate-pulse flex items-center justify-center shadow-2xl">
+                      <span className="text-muted-foreground text-sm">Loading...</span>
                     </div>
                   )}
                 </div>
