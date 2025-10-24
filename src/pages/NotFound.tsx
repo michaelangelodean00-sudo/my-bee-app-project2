@@ -17,7 +17,7 @@ const NotFound = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4">
       <img 
-        src="/lovable-uploads/d5511939-48e5-44cf-9f2b-d8f9e829b842.png" 
+        src="/lovable-uploads/new-bee-logo.png" 
         alt="B.E.E App Bahamas Logo" 
         className="h-16 mb-6"
       />
