@@ -19,7 +19,7 @@ const NotFound = () => {
       <img 
         src="/lovable-uploads/new-bee-logo.png" 
         alt="B.E.E App Bahamas Logo" 
-        className="h-16 mb-6"
+        className="h-24 mb-6"
       />
       <h1 className="text-4xl font-bold mb-4 text-bee-black">Page Not Found</h1>
       <p className="text-xl text-gray-600 mb-8 text-center">
