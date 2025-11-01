@@ -137,16 +137,25 @@ const AdSplash = () => {
   };
   
   return (
-    <div className="relative bg-bee-blue/90 text-white overflow-hidden flex justify-center">
+    <div className="relative bg-bee-blue/90 text-white overflow-visible flex justify-center">
       <Carousel 
-        className="w-full max-w-6xl mx-auto px-4 py-8" 
-        opts={{ loop: true }}
+        className="w-full max-w-7xl mx-auto py-8" 
+        opts={{ 
+          loop: true,
+          align: "center",
+        }}
         setApi={setApi}
       >
-        <CarouselContent>
+        <CarouselContent className="-ml-4">
           {ads.map((ad, index) => (
-            <CarouselItem key={ad.id}>
-              <div className="flex flex-col md:flex-row items-center gap-8">
+            <CarouselItem key={ad.id} className="pl-4 basis-[85%] md:basis-[90%]">
+              <div 
+                className={`flex flex-col md:flex-row items-center gap-8 px-4 transition-all duration-500 ${
+                  index === currentSlide 
+                    ? 'scale-100 opacity-100' 
+                    : 'scale-95 opacity-60'
+                }`}
+              >
                 <div className="w-full md:w-1/2 relative group">
                   {loadedImages.has(index) ? (
                     <div className="relative overflow-hidden rounded-2xl">
@@ -186,8 +195,8 @@ const AdSplash = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30" />
-        <CarouselNext className="right-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30" />
+        <CarouselPrevious className="left-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30 z-20" />
+        <CarouselNext className="right-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30 z-20" />
         
         {/* Slide indicators */}
         <div className="flex justify-center mt-4 space-x-2">
