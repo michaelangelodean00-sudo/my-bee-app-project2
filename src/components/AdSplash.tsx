@@ -148,7 +148,7 @@ const AdSplash = () => {
       >
         <CarouselContent className="-ml-2 md:-ml-4">
           {ads.map((ad, index) => (
-            <CarouselItem key={ad.id} className="pl-2 md:pl-4 basis-[92%] md:basis-[85%]">
+            <CarouselItem key={ad.id} className="pl-2 md:pl-4 basis-[90%] md:basis-[85%]">
               <div 
                 className={`flex flex-col md:flex-row items-center gap-8 px-4 transition-all duration-500 ${
                   index === currentSlide 
