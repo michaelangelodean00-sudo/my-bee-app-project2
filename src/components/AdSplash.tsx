@@ -9,14 +9,9 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import bambooAd from "../images/bamboo-ad.jpeg";
+import { optimizeAds } from "@/utils/adUtils";
+import type { Ad } from "@/utils/adUtils";
 
-interface Ad {
-  id: string;
-  title: string;
-  description: string;
-  imageUrl: string;
-  linkUrl: string;
-}
 
 // Expanded ads array with more examples
 const ads: Ad[] = [
@@ -80,6 +75,9 @@ const ads: Ad[] = [
 ];
 
 const AdSplash = () => {
+  // Automatically optimize all ad images on load
+  const optimizedAds = optimizeAds(ads, 'splash');
+  
   const [autoplay, setAutoplay] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loadedImages, setLoadedImages] = useState(new Set([0])); // Start with first image loaded
@@ -115,8 +113,8 @@ const AdSplash = () => {
   useEffect(() => {
     const indicesToLoad = [
       currentSlide,
-      (currentSlide + 1) % ads.length,
-      currentSlide === 0 ? ads.length - 1 : currentSlide - 1
+      (currentSlide + 1) % optimizedAds.length,
+      currentSlide === 0 ? optimizedAds.length - 1 : currentSlide - 1
     ];
     
     setLoadedImages(prev => {
@@ -147,7 +145,7 @@ const AdSplash = () => {
         setApi={setApi}
       >
         <CarouselContent className="-ml-2 md:-ml-4">
-          {ads.map((ad, index) => (
+          {optimizedAds.map((ad, index) => (
             <CarouselItem key={ad.id} className="pl-2 md:pl-4 basis-[80%] md:basis-[85%]">
               <div 
                 className={`flex flex-col md:flex-row items-center gap-8 px-4 transition-all duration-500 ${
@@ -202,7 +200,7 @@ const AdSplash = () => {
         
         {/* Slide indicators */}
         <div className="flex justify-center mt-4 space-x-2">
-          {ads.map((_, index) => (
+          {optimizedAds.map((_, index) => (
             <button
               key={index}
               className={`w-2 h-2 rounded-full transition-colors ${
