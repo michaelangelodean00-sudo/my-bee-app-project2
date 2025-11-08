@@ -9,7 +9,7 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import bambooAd from "../images/bamboo-ad.jpeg";
-import { optimizeAds } from "@/utils/adUtils";
+import { optimizeAds, preloadImage } from "@/utils/adUtils";
 import type { Ad } from "@/utils/adUtils";
 
 
@@ -86,13 +86,30 @@ const AdSplash = () => {
   
   // Enable autoplay after initial load
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsReady(true);
-      setAutoplay(true);
-    }, 500); // Small delay to ensure smooth initial render
-    
-    return () => clearTimeout(timer);
-  }, []);
+    let isMounted = true;
+    const warmup = async () => {
+      try {
+        // Preload the first ad image (and start the next) to avoid initial paint flicker
+        if (optimizedAds[0]?.imageUrl) {
+          await preloadImage(optimizedAds[0].imageUrl);
+        }
+        if (optimizedAds[1]?.imageUrl) {
+          // Fire-and-forget for the next slide
+          preloadImage(optimizedAds[1].imageUrl).catch(() => {});
+        }
+      } finally {
+        if (isMounted) {
+          setIsReady(true);
+          setAutoplay(true);
+        }
+      }
+    };
+    const timer = window.setTimeout(warmup, 100);
+    return () => {
+      isMounted = false;
+      window.clearTimeout(timer);
+    };
+  }, [optimizedAds]);
   
   useEffect(() => {
     let interval: number;
@@ -159,12 +176,12 @@ const AdSplash = () => {
           {optimizedAds.map((ad, index) => (
             <CarouselItem key={ad.id} className="pl-2 md:pl-4 basis-[80%] md:basis-[85%]">
               <div 
-                className={`flex flex-col md:flex-row items-center gap-8 px-4 ${
-                  isReady ? 'transition-all duration-500' : ''
+                className={`flex flex-col md:flex-row items-center gap-8 px-4 will-change-transform transform-gpu ${
+                  isReady ? 'transition-transform duration-500' : ''
                 } ${
                   index === currentSlide 
-                    ? 'scale-100 opacity-100' 
-                    : isReady ? 'scale-95 opacity-60' : 'scale-100 opacity-100'
+                    ? 'scale-100' 
+                    : isReady ? 'scale-95' : 'scale-100'
                 }`}
               >
                 <div className="w-full md:w-1/2 relative group">
@@ -179,9 +196,10 @@ const AdSplash = () => {
                       <img 
                         src={ad.imageUrl} 
                         alt={ad.title} 
-                        className="rounded-2xl w-full h-64 md:h-80 lg:h-96 object-cover transform transition-all duration-700 group-hover:scale-110 shadow-2xl shadow-primary/30"
+                        className="rounded-2xl w-full h-64 md:h-80 lg:h-96 object-cover transform-gpu will-change-transform transition-transform duration-700 group-hover:scale-110 shadow-2xl shadow-primary/30"
                         loading={index === 0 ? "eager" : "lazy"}
                         decoding="async"
+                        fetchPriority={index === 0 ? "high" : "auto"}
                       />
                       
                       {/* Shine effect on hover */}
