@@ -24,21 +24,21 @@ const ads: Ad[] = [
     id: "ad1",
     title: "Summer Festival Weekend",
     description: "Join us for the biggest summer celebration with live music, food, and activities for the whole family.",
-    imageUrl: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&auto=format&fit=crop",
+    imageUrl: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1920&h=1080&q=90&fm=webp&fit=crop",
     linkUrl: "https://www.facebook.com/summerfestival"
   },
   {
     id: "ad2",
     title: "Local Business Spotlight",
     description: "Discover the best local businesses and exclusive deals just for B.E.E App members.",
-    imageUrl: "https://images.unsplash.com/photo-1525328437458-0c4d4db7cab4?w=800&auto=format&fit=crop",
+    imageUrl: "https://images.unsplash.com/photo-1525328437458-0c4d4db7cab4?w=1920&h=1080&q=90&fm=webp&fit=crop",
     linkUrl: "https://www.instagram.com/localbusiness"
   },
   {
     id: "ad3",
     title: "Island Tour Specials",
     description: "Explore the beauty of our islands with special discounts on tours and excursions.",
-    imageUrl: "https://images.unsplash.com/photo-1548574505-5e239809ee19?w=800&auto=format&fit=crop",
+    imageUrl: "https://images.unsplash.com/photo-1548574505-5e239809ee19?w=1920&h=1080&q=90&fm=webp&fit=crop",
     linkUrl: "https://www.islandtours.com"
   },
   {
@@ -53,28 +53,28 @@ const ads: Ad[] = [
     id: "ad5",
     title: "Adventure Sports Center",
     description: "Try kayaking, snorkeling, and diving with professional instructors. Equipment provided.",
-    imageUrl: "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=800&auto=format&fit=crop",
+    imageUrl: "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=1920&h=1080&q=90&fm=webp&fit=crop",
     linkUrl: "https://www.adventuresports.com"
   },
   {
     id: "ad7",
     title: "Tropical Spa Retreat",
     description: "Relax and rejuvenate with our signature treatments using natural island ingredients.",
-    imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&auto=format&fit=crop",
+    imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1920&h=1080&q=90&fm=webp&fit=crop",
     linkUrl: "https://www.tropicalspa.com"
   },
   {
     id: "ad8",
     title: "Artisan Market",
     description: "Shop unique handcrafted items from local artisans. Support our creative community.",
-    imageUrl: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop",
+    imageUrl: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&h=1080&q=90&fm=webp&fit=crop",
     linkUrl: "https://www.artisanmarket.com"
   },
   {
     id: "ad9",
     title: "Oceanfront Restaurant",
     description: "Experience fine dining with breathtaking ocean views. Fresh seafood and local cuisine daily.",
-    imageUrl: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&auto=format&fit=crop",
+    imageUrl: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&h=1080&q=90&fm=webp&fit=crop",
     linkUrl: "https://www.oceanfrontdining.com"
   }
 ];
@@ -170,6 +170,8 @@ const AdSplash = () => {
                         alt={ad.title} 
                         className="rounded-2xl w-full h-64 md:h-80 lg:h-96 object-cover transform transition-all duration-700 group-hover:scale-110 shadow-2xl shadow-primary/30"
                         loading="lazy"
+                        decoding="async"
+                        fetchPriority={index === 0 ? "high" : "auto"}
                       />
                       
                       {/* Shine effect on hover */}

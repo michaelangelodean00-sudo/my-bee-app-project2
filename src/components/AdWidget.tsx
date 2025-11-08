@@ -15,21 +15,21 @@ const ads: Ad[] = [
     id: "ad1",
     title: "Summer Festival Weekend",
     description: "Join us for the biggest summer celebration with live music, food, and activities for the whole family.",
-    imageUrl: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&auto=format&fit=crop",
+    imageUrl: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1200&h=1600&q=90&fm=webp&fit=crop",
     linkUrl: "#summer-festival"
   },
   {
     id: "ad2",
     title: "Local Business Spotlight",
     description: "Discover the best local businesses and exclusive deals just for B.E.E App members.",
-    imageUrl: "https://images.unsplash.com/photo-1525328437458-0c4d4db7cab4?w=800&auto=format&fit=crop",
+    imageUrl: "https://images.unsplash.com/photo-1525328437458-0c4d4db7cab4?w=1200&h=1600&q=90&fm=webp&fit=crop",
     linkUrl: "#business-spotlight"
   },
   {
     id: "ad3",
     title: "Island Tour Specials",
     description: "Explore the beauty of our islands with special discounts on tours and excursions.",
-    imageUrl: "https://images.unsplash.com/photo-1548574505-5e239809ee19?w=800&auto=format&fit=crop",
+    imageUrl: "https://images.unsplash.com/photo-1548574505-5e239809ee19?w=1200&h=1600&q=90&fm=webp&fit=crop",
     linkUrl: "#island-tours"
   }
 ];
@@ -61,6 +61,9 @@ const AdWidget = () => {
               src={currentAd.imageUrl} 
               alt={currentAd.title} 
               className="rounded-xl h-[600px] md:h-[700px] w-full max-w-sm md:max-w-md object-cover shadow-2xl mx-auto"
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
             />
           </div>
           <div className="text-center">

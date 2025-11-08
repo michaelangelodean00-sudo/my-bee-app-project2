@@ -14,7 +14,7 @@ interface AdContent {
 
 const ads: AdContent[] = [
   {
-    imageSrc: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=64&h=64&auto=format&fit=crop",
+    imageSrc: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=256&h=256&q=90&fm=webp&fit=crop",
     altText: "McDonald's Promotion",
     title: "Try the new",
     highlight: "McSaver Deal",
@@ -23,7 +23,7 @@ const ads: AdContent[] = [
     linkUrl: "https://www.mcdonalds.com"
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=64&h=64&auto=format&fit=crop",
+    imageSrc: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=256&h=256&q=90&fm=webp&fit=crop",
     altText: "Burger Special",
     title: "Limited time",
     highlight: "Big Mac Combo",
@@ -67,6 +67,8 @@ const McdonaldsAdWidget = () => {
           src={currentAd.imageSrc}
           alt={currentAd.altText} 
           className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg object-cover flex-shrink-0 shadow-md border-2 border-white/20"
+          loading="lazy"
+          decoding="async"
         />
         <div className="min-w-0 flex-1 overflow-hidden pr-1">
           <div className="text-sm sm:text-base md:text-lg font-black leading-tight mb-0.5 truncate">{currentAd.title}</div>
