@@ -63,7 +63,6 @@ const AdWidget = () => {
               className="rounded-xl h-[600px] md:h-[700px] w-full max-w-sm md:max-w-md object-cover shadow-2xl mx-auto"
               loading="eager"
               decoding="async"
-              fetchPriority="high"
             />
           </div>
           <div className="text-center">

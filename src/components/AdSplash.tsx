@@ -78,15 +78,26 @@ const AdSplash = () => {
   // Automatically optimize all ad images on load
   const optimizedAds = optimizeAds(ads, 'splash');
   
-  const [autoplay, setAutoplay] = useState(true);
+  const [autoplay, setAutoplay] = useState(false); // Start with autoplay off
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loadedImages, setLoadedImages] = useState(new Set([0])); // Start with first image loaded
   const [api, setApi] = useState<CarouselApi>();
+  const [isReady, setIsReady] = useState(false);
+  
+  // Enable autoplay after initial load
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsReady(true);
+      setAutoplay(true);
+    }, 500); // Small delay to ensure smooth initial render
+    
+    return () => clearTimeout(timer);
+  }, []);
   
   useEffect(() => {
     let interval: number;
     
-    if (autoplay && api) {
+    if (autoplay && api && isReady) {
       interval = window.setInterval(() => {
         api.scrollNext();
       }, 5000); // Auto rotate every 5 seconds
@@ -97,7 +108,7 @@ const AdSplash = () => {
         clearInterval(interval);
       }
     };
-  }, [autoplay, api]);
+  }, [autoplay, api, isReady]);
 
   useEffect(() => {
     if (!api) {
@@ -148,10 +159,12 @@ const AdSplash = () => {
           {optimizedAds.map((ad, index) => (
             <CarouselItem key={ad.id} className="pl-2 md:pl-4 basis-[80%] md:basis-[85%]">
               <div 
-                className={`flex flex-col md:flex-row items-center gap-8 px-4 transition-all duration-500 ${
+                className={`flex flex-col md:flex-row items-center gap-8 px-4 ${
+                  isReady ? 'transition-all duration-500' : ''
+                } ${
                   index === currentSlide 
                     ? 'scale-100 opacity-100' 
-                    : 'scale-95 opacity-60'
+                    : isReady ? 'scale-95 opacity-60' : 'scale-100 opacity-100'
                 }`}
               >
                 <div className="w-full md:w-1/2 relative group">
@@ -167,9 +180,8 @@ const AdSplash = () => {
                         src={ad.imageUrl} 
                         alt={ad.title} 
                         className="rounded-2xl w-full h-64 md:h-80 lg:h-96 object-cover transform transition-all duration-700 group-hover:scale-110 shadow-2xl shadow-primary/30"
-                        loading="lazy"
+                        loading={index === 0 ? "eager" : "lazy"}
                         decoding="async"
-                        fetchPriority={index === 0 ? "high" : "auto"}
                       />
                       
                       {/* Shine effect on hover */}
