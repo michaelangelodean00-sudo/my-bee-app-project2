@@ -92,13 +92,27 @@ const Index = () => {
         {/* Mobile Sidebar Overlay */}
         {mobileSidebarOpen && (
           <div 
-            className="fixed inset-0 bg-black/50 z-40 md:hidden"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden animate-in fade-in duration-300"
             onClick={toggleMobileSidebar}
           />
         )}
         
         {/* Mobile Sidebar */}
-        <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 transform ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 ease-in-out md:hidden`}>
+        <div className={`fixed inset-y-0 left-0 z-50 w-64 glass-sidebar shadow-2xl transform ${
+          mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        } transition-transform duration-300 ease-out md:hidden`}>
+          <div className="flex justify-between items-center p-4 border-b border-border/50">
+            <h2 className="text-lg font-semibold">Menu</h2>
+            <button
+              onClick={toggleMobileSidebar}
+              className="p-2 hover:bg-accent rounded-lg transition-colors active:scale-90 touch-manipulation"
+              aria-label="Close menu"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          </div>
           <Sidebar />
         </div>
         

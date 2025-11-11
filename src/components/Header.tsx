@@ -34,19 +34,19 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
           <Button
             variant="ghost"
             size="icon"
-            className="relative min-w-[44px] min-h-[44px] w-11 h-11 flex-shrink-0 touch-manipulation"
+            className="relative min-w-[44px] min-h-[44px] w-11 h-11 flex-shrink-0 touch-manipulation active:scale-90 transition-transform"
             onClick={toggleMobileSidebar}
           >
-            <Menu size={24} />
-        {hasAnyNotifications && (
-          <div className="absolute -top-1 -right-1">
-            <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
-            <div className="absolute inset-0 w-3 h-3 bg-red-500 rounded-full animate-ping opacity-75" />
-          </div>
-        )}
-        <span className="sr-only">© 2024 B.E.E App Bahamas</span>
-      </Button>
-    </div>
+            <Menu size={24} className="transition-transform" />
+            {hasAnyNotifications && (
+              <div className="absolute -top-1 -right-1">
+                <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+                <div className="absolute inset-0 w-3 h-3 bg-red-500 rounded-full animate-ping opacity-75" />
+              </div>
+            )}
+            <span className="sr-only">© 2024 B.E.E App Bahamas</span>
+          </Button>
+        </div>
   </div>
 
   {/* Copyright Watermark */}

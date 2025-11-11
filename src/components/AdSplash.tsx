@@ -216,7 +216,7 @@ const AdSplash = () => {
                   <p className="text-lg mb-6 leading-relaxed">{ad.description}</p>
                   <button 
                     onClick={() => handleGetMoreInfo(ad.linkUrl)}
-                    className="inline-block bg-bee-yellow text-bee-black px-6 py-3 rounded-lg font-semibold text-lg hover:bg-bee-yellow/90 transition-colors cursor-pointer shadow-md"
+                    className="inline-block bg-bee-yellow text-bee-black px-6 py-3 rounded-lg font-semibold text-lg hover:bg-bee-yellow/90 active:scale-95 transition-all cursor-pointer shadow-md touch-manipulation min-h-[44px]"
                   >
                     Get More Info
                   </button>
@@ -228,13 +228,26 @@ const AdSplash = () => {
         <CarouselPrevious className="left-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30 z-20" />
         <CarouselNext className="right-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30 z-20" />
         
+        {/* Swipe indicator - Mobile hint */}
+        <div className="md:hidden flex items-center justify-center mt-6 gap-2 animate-pulse">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-white/60">
+            <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="text-white/60 text-sm font-medium">Swipe to explore ads</span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-white/60">
+            <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+        
         {/* Slide indicators */}
         <div className="flex justify-center mt-4 space-x-2">
           {optimizedAds.map((_, index) => (
             <button
               key={index}
-              className={`w-2 h-2 rounded-full transition-colors ${
-                index === currentSlide ? 'bg-white' : 'bg-white/40'
+              className={`h-2 rounded-full transition-all duration-300 active:scale-90 touch-manipulation ${
+                index === currentSlide 
+                  ? 'bg-white w-8' 
+                  : 'bg-white/40 w-2 hover:bg-white/60'
               }`}
               onClick={() => handleSlideChange(index)}
               aria-label={`Go to slide ${index + 1}`}
