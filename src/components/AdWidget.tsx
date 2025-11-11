@@ -37,14 +37,34 @@ const ads: Ad[] = [
 const AdWidget = () => {
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
   const [dismissed, setDismissed] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(true);
+  const [progress, setProgress] = useState(0);
   
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentAdIndex((prevIndex) => (prevIndex + 1) % ads.length);
-    }, 5000); // Rotate ads every 5 seconds
+    // Animation trigger
+    setIsAnimating(true);
+    const animationTimer = setTimeout(() => setIsAnimating(false), 600);
     
-    return () => clearInterval(interval);
-  }, []);
+    // Progress bar
+    setProgress(0);
+    const progressInterval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) return 0;
+        return prev + 2;
+      });
+    }, 100);
+    
+    // Ad rotation
+    const rotationInterval = setInterval(() => {
+      setCurrentAdIndex((prevIndex) => (prevIndex + 1) % ads.length);
+    }, 5000);
+    
+    return () => {
+      clearTimeout(animationTimer);
+      clearInterval(progressInterval);
+      clearInterval(rotationInterval);
+    };
+  }, [currentAdIndex]);
   
   if (dismissed) {
     return null;
@@ -53,38 +73,109 @@ const AdWidget = () => {
   const currentAd = ads[currentAdIndex];
   
   return (
-    <div className="bg-gradient-to-r from-bee-blue/90 to-bee-darkblue/90 text-white min-h-screen flex items-center justify-center relative">
-      <div className="max-w-6xl mx-auto w-full px-8 md:px-16 py-12 md:py-24 flex justify-center md:justify-end">
-        <div className="flex flex-col items-center text-center max-w-lg md:max-w-4xl lg:max-w-6xl xl:max-w-7xl">
-          <div className="mb-8">
-            <img 
-              src={currentAd.imageUrl} 
-              alt={currentAd.title} 
-              className="rounded-xl h-[600px] md:h-[700px] w-full max-w-sm md:max-w-md object-cover shadow-2xl mx-auto"
-              loading="eager"
-              decoding="async"
-            />
-          </div>
-          <div className="text-center">
-            <h3 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-8 md:mb-12 leading-tight">{currentAd.title}</h3>
-            <p className="text-xl md:text-2xl lg:text-3xl mb-12 md:mb-16 leading-relaxed">{currentAd.description}</p>
-            <div className="flex justify-center">
-              <a 
-                href={currentAd.linkUrl} 
-                className="inline-block bg-bee-yellow text-bee-black px-8 md:px-12 py-4 md:py-6 rounded-xl text-xl md:text-2xl font-medium hover:bg-bee-yellow/90 transition-colors shadow-lg"
-              >
-                Learn More
-              </a>
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Animated gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-secondary via-accent to-primary opacity-95 animate-gradient" />
+      
+      {/* Glass morphism overlay */}
+      <div className="absolute inset-0 glass-overlay" />
+      
+      {/* Floating close button */}
+      <button 
+        onClick={() => setDismissed(true)}
+        className="absolute top-6 right-6 z-50 glass-button rounded-full p-3 text-foreground hover:text-primary transition-all duration-300 hover:scale-110 hover:rotate-90 shadow-lg"
+        aria-label="Dismiss ad"
+      >
+        <X size={24} />
+      </button>
+      
+      {/* Main content */}
+      <div className="relative z-10 max-w-6xl mx-auto w-full px-6 md:px-12 py-12">
+        <div 
+          className={`flex flex-col items-center text-center transition-all duration-600 ${
+            isAnimating ? 'opacity-0 translate-y-8' : 'opacity-100 translate-y-0'
+          }`}
+        >
+          {/* Image with glass card */}
+          <div className="mb-10 relative group">
+            <div className="glass-premium rounded-3xl p-2 shadow-2xl hover:shadow-glow-lg transition-all duration-500 hover:scale-[1.02]">
+              <div className="relative overflow-hidden rounded-2xl">
+                {/* Gradient overlay for text contrast */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                
+                <img 
+                  src={currentAd.imageUrl} 
+                  alt={currentAd.title} 
+                  className="h-[500px] md:h-[600px] w-full max-w-md object-cover transform transition-transform duration-700 group-hover:scale-105"
+                  loading="eager"
+                  decoding="async"
+                />
+                
+                {/* Shimmer effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+              </div>
             </div>
           </div>
+          
+          {/* Text content with glass card */}
+          <div className="glass-card rounded-3xl p-8 md:p-12 max-w-3xl backdrop-blur-xl">
+            <h3 className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent leading-tight">
+              {currentAd.title}
+            </h3>
+            
+            <p className="text-lg md:text-xl lg:text-2xl mb-10 text-foreground/90 leading-relaxed font-body">
+              {currentAd.description}
+            </p>
+            
+            {/* Premium gradient button */}
+            <a 
+              href={currentAd.linkUrl} 
+              className="inline-flex items-center justify-center px-10 py-5 text-xl md:text-2xl font-semibold rounded-2xl
+                bg-gradient-to-r from-primary via-secondary to-accent
+                text-primary-foreground
+                shadow-glow hover:shadow-glow-lg
+                transform hover:scale-105 hover:-translate-y-1
+                transition-all duration-300
+                relative overflow-hidden group/btn"
+            >
+              <span className="relative z-10">Learn More</span>
+              
+              {/* Button shimmer */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700" />
+            </a>
+          </div>
+          
+          {/* Progress dots */}
+          <div className="flex gap-3 mt-10">
+            {ads.map((ad, index) => (
+              <button
+                key={ad.id}
+                onClick={() => setCurrentAdIndex(index)}
+                className={`relative h-2 rounded-full transition-all duration-300 ${
+                  index === currentAdIndex 
+                    ? 'w-12 bg-primary shadow-glow' 
+                    : 'w-2 bg-foreground/30 hover:bg-foreground/50'
+                }`}
+                aria-label={`Go to ad ${index + 1}`}
+              >
+                {index === currentAdIndex && (
+                  <div 
+                    className="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-full"
+                    style={{ width: `${progress}%` }}
+                  />
+                )}
+              </button>
+            ))}
+          </div>
         </div>
-        <button 
-          onClick={() => setDismissed(true)}
-          className="absolute top-4 md:top-8 right-4 md:right-8 text-white/80 hover:text-white"
-          aria-label="Dismiss ad"
-        >
-          <X size={32} />
-        </button>
+      </div>
+      
+      {/* Bottom progress bar */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-foreground/10">
+        <div 
+          className="h-full bg-gradient-to-r from-primary via-secondary to-accent transition-all duration-100"
+          style={{ width: `${progress}%` }}
+        />
       </div>
     </div>
   );
