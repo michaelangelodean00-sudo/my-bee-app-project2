@@ -33,9 +33,9 @@ const VideoFileUpload = ({ selectedFile, onFileChange }: VideoFileUploadProps) =
           <div className="flex flex-col items-center justify-center pt-5 pb-6">
             <Upload className="w-8 h-8 mb-4 text-gray-500" />
             <p className="mb-2 text-sm text-gray-500">
-              <span className="font-semibold">Click to upload</span> your MP4 video
+              <span className="font-semibold">Click to upload</span> your video
             </p>
-            <p className="text-xs text-gray-500">MP4 files up to 50MB</p>
+            <p className="text-xs text-gray-500">MP4, MOV, AVI, MKV, WebM (up to 50MB)</p>
             {selectedFile && (
               <p className="text-xs text-green-600 mt-2">
                 Selected: {selectedFile.name}
@@ -45,7 +45,7 @@ const VideoFileUpload = ({ selectedFile, onFileChange }: VideoFileUploadProps) =
           <input
             type="file"
             className="hidden"
-            accept="video/mp4,video/quicktime,video/x-msvideo"
+            accept="video/mp4,video/mpeg,video/quicktime,video/x-msvideo,video/x-matroska,video/webm"
             onChange={handleFileChange}
           />
         </label>

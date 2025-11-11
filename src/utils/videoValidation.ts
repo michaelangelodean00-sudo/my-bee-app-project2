@@ -21,9 +21,19 @@ export const validateUrl = (url: string, platform: string) => {
 };
 
 export const validateVideoFile = (file: File) => {
+  // Accepted video MIME types (MP4 and common formats)
+  const acceptedTypes = [
+    'video/mp4',
+    'video/mpeg',
+    'video/quicktime',
+    'video/x-msvideo',
+    'video/x-matroska',
+    'video/webm'
+  ];
+  
   // Check file type
-  if (!file.type.startsWith('video/')) {
-    return { isValid: false, error: "Please select a valid video file" };
+  if (!acceptedTypes.includes(file.type) && !file.type.startsWith('video/')) {
+    return { isValid: false, error: "Please select a valid video file (MP4, MOV, AVI, MKV, WebM)" };
   }
   
   // Check file size (50MB limit)
