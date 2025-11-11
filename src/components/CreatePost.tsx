@@ -4,7 +4,6 @@ import { Handshake, Calendar, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
-import VideoUploadForm from "./VideoUploadForm";
 
 const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) => {
   const navigate = useNavigate();
@@ -17,7 +16,7 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
     <div className="bee-card-premium p-4 mb-4 max-w-4xl mx-auto animate-float">
       <Separator className="my-4" />
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 px-2 sm:px-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-2 sm:px-4">
         <Button 
           onClick={() => navigateTo("/businesses")}
           variant="outline" 
@@ -50,8 +49,6 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
           </div>
           <span className="text-2xl sm:text-2xl lg:text-lg font-extrabold text-[#1EAEDB] tracking-wide">E-commerce</span>
         </Button>
-        
-        <VideoUploadForm />
       </div>
     </div>
   );

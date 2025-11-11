@@ -33,8 +33,10 @@ import {
   Phone,
   Mail,
   Home,
-  Edit
+  Edit,
+  Video
 } from "lucide-react";
+import VideoUploadForm from "@/components/VideoUploadForm";
 
 const ProfileSettings = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -122,6 +124,10 @@ const ProfileSettings = () => {
               <TabsTrigger value="general" className="w-full justify-start">
                 <User size={16} className="mr-2" />
                 General
+              </TabsTrigger>
+              <TabsTrigger value="my-content" className="w-full justify-start">
+                <Video size={16} className="mr-2" />
+                My Content
               </TabsTrigger>
               <TabsTrigger value="security" className="w-full justify-start">
                 <Lock size={16} className="mr-2" />
@@ -385,8 +391,28 @@ const ProfileSettings = () => {
                 </Card>
               </TabsContent>
 
+              {/* My Content */}
+              <TabsContent value="my-content" className="space-y-6 mt-0">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Video size={20} />
+                      Upload Videos
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <p className="text-sm text-muted-foreground">
+                        Share your videos with the BEE community. All uploads are reviewed by our admin team before being published to ensure quality content.
+                      </p>
+                      <VideoUploadForm />
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
               {/* Security Settings */}
-              <TabsContent value="security" className="space-y-6">
+              <TabsContent value="security" className="space-y-6 mt-0">
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
