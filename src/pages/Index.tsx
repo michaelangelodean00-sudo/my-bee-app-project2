@@ -14,7 +14,6 @@ import ScrollReveal from "../components/ScrollReveal";
 import LazyImage from "../components/LazyImage";
 import Footer from "../components/Footer";
 import CopyrightWatermark from "../components/CopyrightWatermark";
-import VideoUploadForm from "../components/VideoUploadForm";
 
 const Index = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -125,13 +124,6 @@ const Index = () => {
           <ScrollReveal direction="up" delay={100}>
             <section aria-label="Create new post">
               <CreatePost onPostCreated={handleNewPost} />
-            </section>
-          </ScrollReveal>
-          
-          {/* Video Upload Section */}
-          <ScrollReveal direction="up" delay={150}>
-            <section aria-label="Upload video content" className="my-4">
-              <VideoUploadForm />
             </section>
           </ScrollReveal>
           
