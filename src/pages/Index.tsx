@@ -14,12 +14,15 @@ import ScrollReveal from "../components/ScrollReveal";
 import LazyImage from "../components/LazyImage";
 import Footer from "../components/Footer";
 import CopyrightWatermark from "../components/CopyrightWatermark";
-import VideoUploadForm from "../components/VideoUploadForm";
+import { useNavigate } from "react-router-dom";
+import { Plus, Video } from "lucide-react";
+import { Card } from "@/components/ui/card";
 
 const Index = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
   
   const toggleMobileSidebar = () => {
     setMobileSidebarOpen(!mobileSidebarOpen);
@@ -128,10 +131,23 @@ const Index = () => {
             </section>
           </ScrollReveal>
           
-          {/* Video Upload Section */}
+          {/* Video Upload Button */}
           <ScrollReveal direction="up" delay={150}>
             <section aria-label="Upload video content" className="my-4">
-              <VideoUploadForm />
+              <Card 
+                className="p-6 cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-[1.02] bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border-primary/20"
+                onClick={() => navigate('/upload-video')}
+              >
+                <div className="flex items-center justify-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                    <Plus size={24} className="text-primary" />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Video size={20} className="text-primary" />
+                    <span className="text-lg font-semibold">Upload Video</span>
+                  </div>
+                </div>
+              </Card>
             </section>
           </ScrollReveal>
           

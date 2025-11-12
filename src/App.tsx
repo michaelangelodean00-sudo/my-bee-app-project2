@@ -19,6 +19,7 @@ import ProfileSettings from "./pages/ProfileSettings";
 import NotFound from "./pages/NotFound";
 import UserProfilePage from "./pages/UserProfilePage";
 import Copyright from "./pages/Copyright";
+import VideoUpload from "./pages/VideoUpload";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -71,6 +72,7 @@ const App = () => {
                     <Route path="/settings" element={<ProfileSettings />} />
                     <Route path="/profile" element={<UserProfilePage />} />
                     <Route path="/profile/:id" element={<UserProfilePage />} />
+                    <Route path="/upload-video" element={<VideoUpload />} />
                     <Route path="/copyright" element={<Copyright />} />
                     <Route path="/terms" element={<Copyright />} />
                     <Route path="/privacy" element={<Copyright />} />
