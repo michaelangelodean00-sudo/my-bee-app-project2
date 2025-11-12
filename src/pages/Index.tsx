@@ -15,7 +15,7 @@ import LazyImage from "../components/LazyImage";
 import Footer from "../components/Footer";
 import CopyrightWatermark from "../components/CopyrightWatermark";
 import { useNavigate } from "react-router-dom";
-import { Plus, Video } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 const Index = () => {
@@ -135,17 +135,11 @@ const Index = () => {
           <ScrollReveal direction="up" delay={150}>
             <section aria-label="Upload video content" className="my-4">
               <Card 
-                className="p-6 cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-[1.02] bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border-primary/20"
+                className="p-4 cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border-primary/20 w-fit mx-auto"
                 onClick={() => navigate('/upload-video')}
               >
-                <div className="flex items-center justify-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-                    <Plus size={24} className="text-primary" />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Video size={20} className="text-primary" />
-                    <span className="text-lg font-semibold">Upload Video</span>
-                  </div>
+                <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center hover:bg-primary/30 transition-colors">
+                  <Plus size={28} className="text-primary" />
                 </div>
               </Card>
             </section>
