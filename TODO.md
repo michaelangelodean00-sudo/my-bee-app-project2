@@ -99,3 +99,7 @@
 - [ ] Analytics and reporting
 - [ ] Email notifications (using Resend)
 - [ ] Content filtering and moderation
+- [ ] AI-powered chat support (ChatGPT/Lovable AI integration)
+  - Floating chat widget or support page
+  - Automated responses for common questions
+  - Help with navigation and app features
