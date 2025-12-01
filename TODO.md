@@ -99,6 +99,12 @@
 - [ ] Analytics and reporting
 - [ ] Email notifications (using Resend)
 - [ ] Content filtering and moderation
+- [ ] **Customer-Facing Ad Analytics Dashboard**
+  - Database persistence for ad performance data (impressions, clicks, CTR)
+  - Link ads to customer accounts
+  - Customer portal to view their ad analytics
+  - Performance metrics over time (7-day, 30-day views)
+  - Export analytics reports
 - [ ] AI-powered chat support (ChatGPT/Lovable AI integration)
   - Floating chat widget or support page
   - Automated responses for common questions
