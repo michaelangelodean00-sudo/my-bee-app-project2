@@ -11,6 +11,7 @@ import {
 import bambooAd from "../images/bamboo-ad.jpeg";
 import { optimizeAds, preloadImage } from "@/utils/adUtils";
 import type { Ad } from "@/utils/adUtils";
+import { useAdAnalytics } from "@/hooks/useAdAnalytics";
 
 
 // Expanded ads array with more examples
@@ -84,6 +85,9 @@ const AdSplash = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [isReady, setIsReady] = useState(false);
   
+  // Analytics tracking
+  const { trackImpression, trackClick, getAdPerformance } = useAdAnalytics();
+  
   // Enable autoplay after initial load
   useEffect(() => {
     let isMounted = true;
@@ -133,9 +137,22 @@ const AdSplash = () => {
     }
 
     api.on("select", () => {
-      setCurrentSlide(api.selectedScrollSnap());
+      const newSlide = api.selectedScrollSnap();
+      setCurrentSlide(newSlide);
+      
+      // Track impression when slide changes
+      if (optimizedAds[newSlide]) {
+        trackImpression(optimizedAds[newSlide].id);
+      }
     });
-  }, [api]);
+  }, [api, optimizedAds, trackImpression]);
+  
+  // Track initial impression
+  useEffect(() => {
+    if (isReady && optimizedAds[0]) {
+      trackImpression(optimizedAds[0].id);
+    }
+  }, [isReady, optimizedAds, trackImpression]);
 
   // Lazy load images for current and next/previous slides
   useEffect(() => {
@@ -152,7 +169,14 @@ const AdSplash = () => {
     });
   }, [currentSlide]);
 
-  const handleGetMoreInfo = (linkUrl: string) => {
+  const handleGetMoreInfo = (adId: string, linkUrl: string) => {
+    // Track click before opening link
+    trackClick(adId);
+    
+    // Log performance data for debugging
+    const performance = getAdPerformance(adId, 7);
+    console.log(`Ad Performance for ${adId} (last 7 days):`, performance);
+    
     window.open(linkUrl, '_blank', 'noopener,noreferrer');
   };
 
@@ -215,7 +239,7 @@ const AdSplash = () => {
                   <h3 className="text-2xl md:text-3xl font-bold mb-4">{ad.title}</h3>
                   <p className="text-lg mb-6 leading-relaxed">{ad.description}</p>
                   <button 
-                    onClick={() => handleGetMoreInfo(ad.linkUrl)}
+                    onClick={() => handleGetMoreInfo(ad.id, ad.linkUrl)}
                     className="inline-block bg-bee-yellow text-bee-black px-6 py-3 rounded-lg font-semibold text-lg hover:bg-bee-yellow/90 active:scale-95 transition-all cursor-pointer shadow-md touch-manipulation min-h-[44px]"
                   >
                     Get More Info
