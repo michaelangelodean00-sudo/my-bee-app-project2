@@ -20,6 +20,7 @@ import NotFound from "./pages/NotFound";
 import UserProfilePage from "./pages/UserProfilePage";
 import Copyright from "./pages/Copyright";
 import VideoUpload from "./pages/VideoUpload";
+import CustomerAnalytics from "./pages/CustomerAnalytics";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -77,6 +78,7 @@ const App = () => {
                     <Route path="/terms" element={<Copyright />} />
                     <Route path="/privacy" element={<Copyright />} />
                     <Route path="/dmca" element={<Copyright />} />
+                    <Route path="/customer-analytics" element={<CustomerAnalytics />} />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>
