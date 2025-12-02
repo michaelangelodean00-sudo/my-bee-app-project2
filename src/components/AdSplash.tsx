@@ -12,6 +12,9 @@ import bambooAd from "../images/bamboo-ad.jpeg";
 import { optimizeAds, preloadImage } from "@/utils/adUtils";
 import type { Ad } from "@/utils/adUtils";
 import { useAdAnalytics } from "@/hooks/useAdAnalytics";
+import ShareDialog from "./ShareDialog";
+import { Share2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 
 // Expanded ads array with more examples
@@ -84,6 +87,9 @@ const AdSplash = () => {
   const [loadedImages, setLoadedImages] = useState(new Set([0])); // Start with first image loaded
   const [api, setApi] = useState<CarouselApi>();
   const [isReady, setIsReady] = useState(false);
+  const [shareDialog, setShareDialog] = useState(false);
+  const [selectedAd, setSelectedAd] = useState<Ad | null>(null);
+  const [shareCounts, setShareCounts] = useState<Record<string, number>>({});
   
   // Analytics tracking
   const { trackImpression, trackClick, getAdPerformance } = useAdAnalytics();
@@ -185,6 +191,21 @@ const AdSplash = () => {
       api.scrollTo(index);
     }
   };
+
+  const handleShare = (ad: Ad) => {
+    setSelectedAd(ad);
+    setShareDialog(true);
+  };
+
+  const handleShareComplete = () => {
+    if (selectedAd) {
+      setShareCounts(prev => ({
+        ...prev,
+        [selectedAd.id]: (prev[selectedAd.id] || 0) + 1
+      }));
+    }
+    setShareDialog(false);
+  };
   
   return (
     <div className="relative bg-bee-blue/90 text-white overflow-visible flex justify-center">
@@ -238,12 +259,26 @@ const AdSplash = () => {
                 <div className="w-full md:w-1/2">
                   <h3 className="text-2xl md:text-3xl font-bold mb-4">{ad.title}</h3>
                   <p className="text-lg mb-6 leading-relaxed">{ad.description}</p>
-                  <button 
-                    onClick={() => handleGetMoreInfo(ad.id, ad.linkUrl)}
-                    className="inline-block bg-bee-yellow text-bee-black px-6 py-3 rounded-lg font-semibold text-lg hover:bg-bee-yellow/90 active:scale-95 transition-all cursor-pointer shadow-md touch-manipulation min-h-[44px]"
-                  >
-                    Get More Info
-                  </button>
+                  <div className="flex flex-wrap gap-3 items-center">
+                    <button 
+                      onClick={() => handleGetMoreInfo(ad.id, ad.linkUrl)}
+                      className="bg-bee-yellow text-bee-black px-6 py-3 rounded-lg font-semibold text-lg hover:bg-bee-yellow/90 active:scale-95 transition-all cursor-pointer shadow-md touch-manipulation min-h-[44px]"
+                    >
+                      Get More Info
+                    </button>
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      onClick={() => handleShare(ad)}
+                      className="bg-white/10 text-white border-white/30 hover:bg-white/20 hover:text-white min-h-[44px] gap-2"
+                    >
+                      <Share2 size={18} />
+                      Share
+                      {shareCounts[ad.id] ? (
+                        <span className="ml-1 text-sm">({shareCounts[ad.id]})</span>
+                      ) : null}
+                    </Button>
+                  </div>
                 </div>
               </div>
             </CarouselItem>
@@ -279,6 +314,17 @@ const AdSplash = () => {
           ))}
         </div>
       </Carousel>
+
+      {/* Share Dialog */}
+      {selectedAd && (
+        <ShareDialog
+          open={shareDialog}
+          onOpenChange={setShareDialog}
+          postId={selectedAd.id}
+          postContent={`${selectedAd.title} - ${selectedAd.description}`}
+          onShareComplete={handleShareComplete}
+        />
+      )}
     </div>
   );
 };
