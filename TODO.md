@@ -12,6 +12,11 @@
   - User profile management
   - Password reset functionality
   - User roles system (admin, moderator, user)
+  - **Account type differentiation (Company vs User)**
+    - Company accounts: Can place ads, access analytics dashboard, manage business profile
+    - User accounts: Content consumption, video uploads, social features
+    - Account type selection during signup
+    - Role-specific UI and permissions
 
 ## Database Setup
 - [ ] **Create Database Tables**
