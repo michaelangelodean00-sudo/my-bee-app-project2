@@ -1,13 +1,14 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ThumbsUp, MessageSquare, Share2, MoreHorizontal, Heart } from "lucide-react";
+import { ThumbsUp, MessageSquare, Share2, MoreHorizontal } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import ShareDialog from "./ShareDialog";
 
 export interface PostProps {
   id: string;
@@ -50,9 +51,11 @@ const Post = ({
     { emoji: "😡", label: "Angry", count: 0 },
   ]);
   
+  const [shareCount, setShareCount] = useState(shares);
   const [userReaction, setUserReaction] = useState<string | null>(null);
   const [showReactions, setShowReactions] = useState(false);
   const [messageDialog, setMessageDialog] = useState(false);
+  const [shareDialog, setShareDialog] = useState(false);
   const [messageText, setMessageText] = useState("");
   
   const handleReaction = (emoji: string) => {
@@ -88,6 +91,11 @@ const Post = ({
       setMessageDialog(false);
       setMessageText("");
     }
+  };
+
+  const handleShareComplete = () => {
+    setShareCount(prev => prev + 1);
+    setShareDialog(false);
   };
 
   const totalReactions = reactions.reduce((sum, reaction) => sum + reaction.count, 0);
@@ -140,7 +148,7 @@ const Post = ({
             )}
           </div>
           <div>
-            <span>{comments} comments • {shares} shares</span>
+            <span>{comments} comments • {shareCount} shares</span>
           </div>
         </div>
         
@@ -185,7 +193,7 @@ const Post = ({
             <MessageSquare size={18} className="mr-2" />
             Message
           </Button>
-          <Button variant="ghost" className="flex-1 text-gray-600 dark:text-gray-400">
+          <Button variant="ghost" className="flex-1 text-gray-600 dark:text-gray-400" onClick={() => setShareDialog(true)}>
             <Share2 size={18} className="mr-2" />
             Share
           </Button>
@@ -220,6 +228,15 @@ const Post = ({
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Share Dialog */}
+      <ShareDialog
+        open={shareDialog}
+        onOpenChange={setShareDialog}
+        postId={id}
+        postContent={content}
+        onShareComplete={handleShareComplete}
+      />
     </>
   );
 };
