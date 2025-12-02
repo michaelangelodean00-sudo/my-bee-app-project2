@@ -267,16 +267,16 @@ const AdSplash = () => {
                       Get More Info
                     </button>
                     <Button
-                      variant="outline"
+                      variant="ghost"
                       size="lg"
                       onClick={() => handleShare(ad)}
-                      className="bg-white/10 text-white border-white/30 hover:bg-white/20 hover:text-white min-h-[44px] gap-2"
+                      className="text-white hover:bg-white/10 border border-white/20 hover:border-white/40 backdrop-blur-sm min-h-[44px] gap-2 px-5 transition-all active:scale-95 font-medium"
                     >
-                      <Share2 size={18} />
-                      Share
-                      {shareCounts[ad.id] ? (
-                        <span className="ml-1 text-sm">({shareCounts[ad.id]})</span>
-                      ) : null}
+                      <Share2 size={18} className="transition-transform group-hover:scale-110" />
+                      <span>Share</span>
+                      {shareCounts[ad.id] > 0 && (
+                        <span className="ml-0.5 text-sm opacity-80">· {shareCounts[ad.id]}</span>
+                      )}
                     </Button>
                   </div>
                 </div>
