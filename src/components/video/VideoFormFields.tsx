@@ -102,13 +102,13 @@ const VideoFormFields = ({ control, watchedPlatform, selectedFile, onFileChange 
       <FormField
         control={control}
         name="title"
-        rules={{ required: "Title is required" }}
+        rules={{ required: isFileUpload ? "Title is required for MP4 uploads" : false }}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Video Title</FormLabel>
+            <FormLabel>Video Title {!isFileUpload && <span className="text-muted-foreground text-xs">(Optional)</span>}</FormLabel>
             <FormControl>
               <Input 
-                placeholder="Enter video title..." 
+                placeholder={isFileUpload ? "Enter video title..." : "Custom title (optional)..."} 
                 {...field} 
               />
             </FormControl>
@@ -122,10 +122,10 @@ const VideoFormFields = ({ control, watchedPlatform, selectedFile, onFileChange 
         name="description"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Description (Optional)</FormLabel>
+            <FormLabel>Description <span className="text-muted-foreground text-xs">(Optional)</span></FormLabel>
             <FormControl>
               <Textarea 
-                placeholder="Add a description..." 
+                placeholder={isFileUpload ? "Add a description..." : "Custom description (optional)..."} 
                 className="resize-none"
                 {...field} 
               />
