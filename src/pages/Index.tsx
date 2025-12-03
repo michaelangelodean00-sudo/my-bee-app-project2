@@ -138,8 +138,11 @@ const Index = () => {
                 className="p-4 cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border-primary/20 w-fit mx-auto"
                 onClick={() => navigate('/upload-video')}
               >
-                <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center hover:bg-primary/30 transition-colors">
-                  <Plus size={28} className="text-primary" />
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center hover:bg-primary/30 transition-colors">
+                    <Plus size={28} className="text-primary" />
+                  </div>
+                  <span className="text-sm font-medium text-primary">Upload Video</span>
                 </div>
               </Card>
             </section>
