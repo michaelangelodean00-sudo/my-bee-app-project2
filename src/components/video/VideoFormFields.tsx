@@ -55,20 +55,11 @@ const VideoFormFields = ({ control, watchedPlatform, selectedFile, onFileChange 
                   <SelectValue placeholder="Select platform" />
                 </SelectTrigger>
               </FormControl>
-              <SelectContent className="max-h-48 overflow-y-auto">
+              <SelectContent>
                 <SelectItem value="youtube">YouTube</SelectItem>
                 <SelectItem value="instagram">Instagram</SelectItem>
                 <SelectItem value="tiktok">TikTok</SelectItem>
                 <SelectItem value="facebook">Facebook</SelectItem>
-                <SelectItem value="linkedin">LinkedIn</SelectItem>
-                <SelectItem value="snapchat">Snapchat</SelectItem>
-                <SelectItem value="twitch">Twitch</SelectItem>
-                <SelectItem value="vimeo">Vimeo</SelectItem>
-                <SelectItem value="pinterest">Pinterest</SelectItem>
-                <SelectItem value="reddit">Reddit</SelectItem>
-                <SelectItem value="telegram">Telegram</SelectItem>
-                <SelectItem value="discord">Discord</SelectItem>
-                <SelectItem value="whatsapp">WhatsApp</SelectItem>
                 <SelectItem value="mp4">Upload MP4 File</SelectItem>
               </SelectContent>
             </Select>
