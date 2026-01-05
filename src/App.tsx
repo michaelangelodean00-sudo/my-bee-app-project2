@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
@@ -10,17 +10,20 @@ import { SecurityProvider } from "./components/SecurityProvider";
 import ErrorBoundary from "./components/ErrorBoundary";
 import AccessibilityEnhancements from "./components/AccessibilityEnhancements";
 import CopyrightProtection from "./components/CopyrightProtection";
-import Index from "./pages/Index";
-import Businesses from "./pages/Businesses";
-import Events from "./pages/Events";
-import Ecommerce from "./pages/Ecommerce";
-import Admin from "./pages/Admin";
-import ProfileSettings from "./pages/ProfileSettings";
-import NotFound from "./pages/NotFound";
-import UserProfilePage from "./pages/UserProfilePage";
-import Copyright from "./pages/Copyright";
-import VideoUpload from "./pages/VideoUpload";
-import CustomerAnalytics from "./pages/CustomerAnalytics";
+import PageLoader from "./components/PageLoader";
+
+// Lazy load all pages for code splitting
+const Index = lazy(() => import("./pages/Index"));
+const Businesses = lazy(() => import("./pages/Businesses"));
+const Events = lazy(() => import("./pages/Events"));
+const Ecommerce = lazy(() => import("./pages/Ecommerce"));
+const Admin = lazy(() => import("./pages/Admin"));
+const ProfileSettings = lazy(() => import("./pages/ProfileSettings"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const UserProfilePage = lazy(() => import("./pages/UserProfilePage"));
+const Copyright = lazy(() => import("./pages/Copyright"));
+const VideoUpload = lazy(() => import("./pages/VideoUpload"));
+const CustomerAnalytics = lazy(() => import("./pages/CustomerAnalytics"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -64,24 +67,26 @@ const App = () => {
                       },
                     }}
                   />
-                  <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route path="/businesses" element={<Businesses />} />
-                    <Route path="/events" element={<Events />} />
-                    <Route path="/ecommerce" element={<Ecommerce />} />
-                    <Route path="/admin" element={<Admin />} />
-                    <Route path="/settings" element={<ProfileSettings />} />
-                    <Route path="/profile" element={<UserProfilePage />} />
-                    <Route path="/profile/:id" element={<UserProfilePage />} />
-                    <Route path="/upload-video" element={<VideoUpload />} />
-                    <Route path="/copyright" element={<Copyright />} />
-                    <Route path="/terms" element={<Copyright />} />
-                    <Route path="/privacy" element={<Copyright />} />
-                    <Route path="/dmca" element={<Copyright />} />
-                    <Route path="/customer-analytics" element={<CustomerAnalytics />} />
-                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
+                  <Suspense fallback={<PageLoader type="full" message="Loading B.E.E App..." />}>
+                    <Routes>
+                      <Route path="/" element={<Index />} />
+                      <Route path="/businesses" element={<Businesses />} />
+                      <Route path="/events" element={<Events />} />
+                      <Route path="/ecommerce" element={<Ecommerce />} />
+                      <Route path="/admin" element={<Admin />} />
+                      <Route path="/settings" element={<ProfileSettings />} />
+                      <Route path="/profile" element={<UserProfilePage />} />
+                      <Route path="/profile/:id" element={<UserProfilePage />} />
+                      <Route path="/upload-video" element={<VideoUpload />} />
+                      <Route path="/copyright" element={<Copyright />} />
+                      <Route path="/terms" element={<Copyright />} />
+                      <Route path="/privacy" element={<Copyright />} />
+                      <Route path="/dmca" element={<Copyright />} />
+                      <Route path="/customer-analytics" element={<CustomerAnalytics />} />
+                      {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </Suspense>
                 </BrowserRouter>
               </ContentFilterProvider>
             </NotificationProvider>
