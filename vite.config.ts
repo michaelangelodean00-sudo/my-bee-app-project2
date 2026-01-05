@@ -20,14 +20,8 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    // Enable minification and tree shaking
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-      },
-    },
+    // Use esbuild for minification (built-in, faster than terser)
+    minify: 'esbuild',
     // Optimize chunk splitting for better caching
     rollupOptions: {
       output: {
