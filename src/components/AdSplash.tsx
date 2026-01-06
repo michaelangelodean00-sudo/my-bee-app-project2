@@ -153,12 +153,13 @@ const AdSplash = () => {
     });
   }, [api, optimizedAds, trackImpression]);
   
-  // Track initial impression
+  // Track initial impression - only once when component mounts
   useEffect(() => {
     if (isReady && optimizedAds[0]) {
       trackImpression(optimizedAds[0].id);
     }
-  }, [isReady, optimizedAds, trackImpression]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isReady]);
 
   // Lazy load images for current and next/previous slides
   useEffect(() => {
@@ -170,10 +171,16 @@ const AdSplash = () => {
     
     setLoadedImages(prev => {
       const newSet = new Set(prev);
-      indicesToLoad.forEach(index => newSet.add(index));
-      return newSet;
+      let hasNewItems = false;
+      indicesToLoad.forEach(index => {
+        if (!newSet.has(index)) {
+          newSet.add(index);
+          hasNewItems = true;
+        }
+      });
+      return hasNewItems ? newSet : prev;
     });
-  }, [currentSlide]);
+  }, [currentSlide, optimizedAds.length]);
 
   const handleGetMoreInfo = (adId: string, linkUrl: string) => {
     // Track click before opening link

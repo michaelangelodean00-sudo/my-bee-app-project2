@@ -159,13 +159,39 @@
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden;
+  }
+  
+  /* Enhanced focus states for accessibility and visual appeal */
+  :focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  
+  /* Smooth selection */
+  ::selection {
+    background: hsl(var(--primary) / 0.3);
+    color: hsl(var(--foreground));
   }
   
   /* Enhanced touch feedback for mobile */
   button, a, [role="button"] {
     -webkit-tap-highlight-color: transparent;
+    @apply transition-all duration-200;
+  }
+  
+  /* Interactive elements subtle lift on hover */
+  button:not(:disabled):hover,
+  a:hover,
+  [role="button"]:not(:disabled):hover {
+    @apply transform -translate-y-0.5;
   }
   
   @media (hover: none) and (pointer: coarse) {
@@ -175,6 +201,27 @@
       transform: scale(0.97);
       transition: transform 0.1s ease;
     }
+  }
+  
+  /* Smooth scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--muted) / 0.3);
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary) / 0.4);
+    border-radius: 4px;
+    transition: background 0.3s ease;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.6);
   }
 }
 
