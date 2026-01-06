@@ -169,6 +169,46 @@ export default {
             transform: "translateY(0)"
           }
         },
+        'fade-in-up': {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(20px)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0)'
+          }
+        },
+        'fade-in-down': {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(-20px)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0)'
+          }
+        },
+        'fade-in-left': {
+          '0%': {
+            opacity: '0',
+            transform: 'translateX(-20px)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateX(0)'
+          }
+        },
+        'fade-in-right': {
+          '0%': {
+            opacity: '0',
+            transform: 'translateX(20px)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateX(0)'
+          }
+        },
         'subtle-bounce': {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-3px)' },
@@ -185,6 +225,16 @@ export default {
             boxShadow: '0 0 10px hsl(var(--primary) / 0.4), 0 0 20px hsl(var(--primary) / 0.4), 0 0 30px hsl(var(--primary) / 0.4)'
           }
         },
+        'pulse-soft': {
+          '0%, 100%': { 
+            opacity: '1',
+            transform: 'scale(1)'
+          },
+          '50%': { 
+            opacity: '0.85',
+            transform: 'scale(1.02)'
+          }
+        },
         'slide-up': {
           from: { transform: 'translateY(100%)' },
           to: { transform: 'translateY(0)' }
@@ -192,6 +242,20 @@ export default {
         'scale-in': {
           from: { transform: 'scale(0.9)', opacity: '0' },
           to: { transform: 'scale(1)', opacity: '1' }
+        },
+        'scale-up': {
+          '0%': { transform: 'scale(0.95)', opacity: '0' },
+          '100%': { transform: 'scale(1)', opacity: '1' }
+        },
+        'bounce-in': {
+          '0%': { transform: 'scale(0.3)', opacity: '0' },
+          '50%': { transform: 'scale(1.05)' },
+          '70%': { transform: 'scale(0.9)' },
+          '100%': { transform: 'scale(1)', opacity: '1' }
+        },
+        'wiggle': {
+          '0%, 100%': { transform: 'rotate(-3deg)' },
+          '50%': { transform: 'rotate(3deg)' }
         },
         'logo-entrance': {
           '0%': { 
@@ -213,20 +277,37 @@ export default {
           '50%': { transform: 'translateY(-4px) rotate(0deg)' },
           '75%': { transform: 'translateY(-2px) rotate(-1deg)' },
           '100%': { transform: 'translateY(0px) rotate(0deg)' }
+        },
+        'micro-bounce': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-2px)' }
+        },
+        'shimmer': {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' }
         }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'fade-in': 'fade-in 0.5s ease-out',
+        'fade-in-up': 'fade-in-up 0.6s ease-out',
+        'fade-in-down': 'fade-in-down 0.6s ease-out',
+        'fade-in-left': 'fade-in-left 0.6s ease-out',
+        'fade-in-right': 'fade-in-right 0.6s ease-out',
         'subtle-hover': 'subtle-bounce 0.3s ease-in-out',
         'float': 'float 3s ease-in-out infinite',
         'glow': 'glow 2s ease-in-out infinite alternate',
+        'pulse-soft': 'pulse-soft 2s ease-in-out infinite',
         'slide-up': 'slide-up 0.3s ease-out',
         'scale-in': 'scale-in 0.2s ease-out',
+        'scale-up': 'scale-up 0.4s ease-out',
+        'bounce-in': 'bounce-in 0.6s ease-out',
+        'wiggle': 'wiggle 0.3s ease-in-out',
         'logo-entrance': 'logo-entrance 0.8s ease-out',
         'bee-hover': 'bee-hover 0.6s ease-in-out',
-        'shimmer': 'shimmer 1.5s ease-in-out infinite',
+        'micro-bounce': 'micro-bounce 0.2s ease-in-out',
+        'shimmer': 'shimmer 2s linear infinite',
         'content-fade-in': 'content-fade-in 0.5s ease-out',
         'stagger-fade': 'stagger-fade 0.4s ease-out'
       }
