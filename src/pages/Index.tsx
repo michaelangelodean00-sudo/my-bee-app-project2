@@ -12,7 +12,6 @@ import AnimatedBackground from "../components/AnimatedBackground";
 import EnhancedCard from "../components/EnhancedCard";
 import ScrollReveal from "../components/ScrollReveal";
 import LazyImage from "../components/LazyImage";
-import AdPromotion from "../components/AdPromotion";
 import Footer from "../components/Footer";
 import CopyrightWatermark from "../components/CopyrightWatermark";
 import { useNavigate } from "react-router-dom";
@@ -156,13 +155,6 @@ const Index = () => {
               <EnhancedCard variant="glow" className="p-3">
                 <McdonaldsAdWidget />
               </EnhancedCard>
-            </section>
-          </ScrollReveal>
-          
-          {/* B.E.E Ads Promotion Section */}
-          <ScrollReveal direction="up" delay={250}>
-            <section className="my-8" aria-label="Advertise with B.E.E">
-              <AdPromotion />
             </section>
           </ScrollReveal>
           
