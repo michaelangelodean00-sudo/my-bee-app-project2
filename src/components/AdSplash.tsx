@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+
+import { useState, useEffect } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -7,341 +8,328 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
+import bambooAd from "../images/bamboo-ad.jpeg";
+import { optimizeAds, preloadImage } from "@/utils/adUtils";
+import type { Ad } from "@/utils/adUtils";
+import { useAdAnalytics } from "@/hooks/useAdAnalytics";
+import ShareDialog from "./ShareDialog";
+import { Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Share2, Volume2, VolumeX, Play, Pause } from "lucide-react";
-import ShareDialog from './ShareDialog';
-import { useAdAnalytics } from '@/hooks/useAdAnalytics';
 
-interface Ad {
-  id: string;
-  title: string;
-  description: string;
-  imageUrl?: string;
-  videoUrl?: string;
-  linkUrl: string;
-  type: 'image' | 'video';
-}
 
+// Expanded ads array with more examples
 const ads: Ad[] = [
   {
-    id: '1',
-    title: 'Premium Honey Collection',
-    description: 'Discover our exclusive organic honey varieties from local beekeepers',
-    imageUrl: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=1920&h=1080&fit=crop&q=90&fm=webp',
-    linkUrl: 'https://example.com/honey',
-    type: 'image'
+    id: "ad1",
+    title: "Summer Festival Weekend",
+    description: "Join us for the biggest summer celebration with live music, food, and activities for the whole family.",
+    imageUrl: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1920&h=1080&q=90&fm=webp&fit=crop",
+    linkUrl: "https://www.facebook.com/summerfestival"
   },
   {
-    id: '2',
-    title: 'Bee Conservation Initiative',
-    description: 'Join our mission to protect bee populations worldwide',
-    videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-    linkUrl: 'https://example.com/conservation',
-    type: 'video'
+    id: "ad2",
+    title: "Local Business Spotlight",
+    description: "Discover the best local businesses and exclusive deals just for B.E.E App members.",
+    imageUrl: "https://images.unsplash.com/photo-1525328437458-0c4d4db7cab4?w=1920&h=1080&q=90&fm=webp&fit=crop",
+    linkUrl: "https://www.instagram.com/localbusiness"
   },
   {
-    id: '3',
-    title: 'Artisan Beeswax Products',
-    description: 'Handcrafted candles and skincare made with pure beeswax',
-    imageUrl: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=1920&h=1080&fit=crop&q=90&fm=webp',
-    linkUrl: 'https://example.com/beeswax',
-    type: 'image'
+    id: "ad3",
+    title: "Island Tour Specials",
+    description: "Explore the beauty of our islands with special discounts on tours and excursions.",
+    imageUrl: "https://images.unsplash.com/photo-1548574505-5e239809ee19?w=1920&h=1080&q=90&fm=webp&fit=crop",
+    linkUrl: "https://www.islandtours.com"
   },
   {
-    id: '4',
-    title: 'Beekeeping Essentials',
-    description: 'Everything you need to start your beekeeping journey',
-    videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
-    linkUrl: 'https://example.com/beekeeping',
-    type: 'video'
+    id: "ad4",
+    title: "Bamboo Shack Special",
+    description: "Taste the best of the Bahamas! Visit Bamboo Shack for delicious local cuisine and unbeatable deals.",
+    imageUrl: bambooAd,
+    linkUrl: "https://www.bambooshackbahamas.com"
+    
   },
   {
-    id: '5',
-    title: 'Pollinator Garden Seeds',
-    description: 'Create a bee-friendly garden with our curated seed collection',
-    imageUrl: 'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=1920&h=1080&fit=crop&q=90&fm=webp',
-    linkUrl: 'https://example.com/seeds',
-    type: 'image'
+    id: "ad5",
+    title: "Adventure Sports Center",
+    description: "Try kayaking, snorkeling, and diving with professional instructors. Equipment provided.",
+    imageUrl: "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=1920&h=1080&q=90&fm=webp&fit=crop",
+    linkUrl: "https://www.adventuresports.com"
+  },
+  {
+    id: "ad7",
+    title: "Tropical Spa Retreat",
+    description: "Relax and rejuvenate with our signature treatments using natural island ingredients.",
+    imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1920&h=1080&q=90&fm=webp&fit=crop",
+    linkUrl: "https://www.tropicalspa.com"
+  },
+  {
+    id: "ad8",
+    title: "Artisan Market",
+    description: "Shop unique handcrafted items from local artisans. Support our creative community.",
+    imageUrl: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&h=1080&q=90&fm=webp&fit=crop",
+    linkUrl: "https://www.artisanmarket.com"
+  },
+  {
+    id: "ad9",
+    title: "Oceanfront Restaurant",
+    description: "Experience fine dining with breathtaking ocean views. Fresh seafood and local cuisine daily.",
+    imageUrl: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&h=1080&q=90&fm=webp&fit=crop",
+    linkUrl: "https://www.oceanfrontdining.com"
   }
 ];
 
 const AdSplash = () => {
-  const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
-  const [autoplay, setAutoplay] = useState(true);
-  const [loadedMedia, setLoadedMedia] = useState<Set<number>>(new Set([0, 1]));
-  const [shareDialogOpen, setShareDialogOpen] = useState(false);
-  const [selectedAd, setSelectedAd] = useState<Ad | null>(null);
-  const [mutedVideos, setMutedVideos] = useState<Set<string>>(new Set(ads.filter(a => a.type === 'video').map(a => a.id)));
-  const [playingVideos, setPlayingVideos] = useState<Set<string>>(new Set());
-  const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
+  // Automatically optimize all ad images on load
+  const optimizedAds = optimizeAds(ads, 'splash');
   
-  const { trackImpression, trackClick } = useAdAnalytics();
-
-  // Preload images
+  const [autoplay, setAutoplay] = useState(false); // Start with autoplay off
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [loadedImages, setLoadedImages] = useState(new Set([0])); // Start with first image loaded
+  const [api, setApi] = useState<CarouselApi>();
+  const [isReady, setIsReady] = useState(false);
+  const [shareDialog, setShareDialog] = useState(false);
+  const [selectedAd, setSelectedAd] = useState<Ad | null>(null);
+  const [shareCounts, setShareCounts] = useState<Record<string, number>>({});
+  
+  // Analytics tracking
+  const { trackImpression, trackClick, getAdPerformance } = useAdAnalytics();
+  
+  // Enable autoplay after initial load
   useEffect(() => {
-    ads.forEach((ad, index) => {
-      if (ad.type === 'image' && ad.imageUrl && index < 3) {
-        const img = new Image();
-        img.src = ad.imageUrl;
-        img.onload = () => {
-          setLoadedMedia(prev => new Set([...prev, index]));
-        };
-      }
-    });
-  }, []);
-
-  // Handle autoplay
-  useEffect(() => {
-    if (!api || !autoplay) return;
-
-    const interval = setInterval(() => {
-      const currentAd = ads[current];
-      // If current slide is a playing video, don't auto-advance
-      if (currentAd?.type === 'video' && playingVideos.has(currentAd.id)) {
-        return;
-      }
-      api.scrollNext();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [api, autoplay, current, playingVideos]);
-
-  // Track slide changes
-  useEffect(() => {
-    if (!api) return;
-
-    const onSelect = () => {
-      const newIndex = api.selectedScrollSnap();
-      setCurrent(newIndex);
-      
-      // Lazy load nearby slides
-      setLoadedMedia(prev => {
-        const newSet = new Set(prev);
-        for (let i = Math.max(0, newIndex - 1); i <= Math.min(ads.length - 1, newIndex + 1); i++) {
-          newSet.add(i);
+    let isMounted = true;
+    const warmup = async () => {
+      try {
+        // Preload the first ad image (and start the next) to avoid initial paint flicker
+        if (optimizedAds[0]?.imageUrl) {
+          await preloadImage(optimizedAds[0].imageUrl);
         }
-        return newSet;
-      });
-
-      // Pause all videos except current
-      Object.entries(videoRefs.current).forEach(([id, video]) => {
-        if (video && ads[newIndex]?.id !== id) {
-          video.pause();
-          setPlayingVideos(prev => {
-            const newSet = new Set(prev);
-            newSet.delete(id);
-            return newSet;
-          });
+        if (optimizedAds[1]?.imageUrl) {
+          // Fire-and-forget for the next slide
+          preloadImage(optimizedAds[1].imageUrl).catch(() => {});
         }
-      });
+      } finally {
+        if (isMounted) {
+          setIsReady(true);
+          setAutoplay(true);
+        }
+      }
     };
-
-    api.on('select', onSelect);
+    const timer = window.setTimeout(warmup, 100);
     return () => {
-      api.off('select', onSelect);
+      isMounted = false;
+      window.clearTimeout(timer);
     };
-  }, [api]);
-
-  // Track impressions
+  }, [optimizedAds]);
+  
   useEffect(() => {
-    if (ads[current]) {
-      trackImpression(ads[current].id);
+    let interval: number;
+    
+    if (autoplay && api && isReady) {
+      interval = window.setInterval(() => {
+        api.scrollNext();
+      }, 5000); // Auto rotate every 5 seconds
     }
-  }, [current, trackImpression]);
-
-  const handleGetMoreInfo = useCallback((ad: Ad) => {
-    trackClick(ad.id);
-    window.open(ad.linkUrl, '_blank', 'noopener,noreferrer');
-  }, [trackClick]);
-
-  const handleShare = useCallback((ad: Ad) => {
-    setSelectedAd(ad);
-    setShareDialogOpen(true);
-  }, []);
-
-  const toggleMute = useCallback((adId: string) => {
-    setMutedVideos(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(adId)) {
-        newSet.delete(adId);
-      } else {
-        newSet.add(adId);
+    
+    return () => {
+      if (interval) {
+        clearInterval(interval);
       }
-      return newSet;
+    };
+  }, [autoplay, api, isReady]);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    api.on("select", () => {
+      const newSlide = api.selectedScrollSnap();
+      setCurrentSlide(newSlide);
+      
+      // Track impression when slide changes
+      if (optimizedAds[newSlide]) {
+        trackImpression(optimizedAds[newSlide].id);
+      }
     });
-  }, []);
-
-  const togglePlayPause = useCallback((adId: string) => {
-    const video = videoRefs.current[adId];
-    if (video) {
-      if (video.paused) {
-        video.play();
-        setPlayingVideos(prev => new Set([...prev, adId]));
-      } else {
-        video.pause();
-        setPlayingVideos(prev => {
-          const newSet = new Set(prev);
-          newSet.delete(adId);
-          return newSet;
-        });
-      }
+  }, [api, optimizedAds, trackImpression]);
+  
+  // Track initial impression - only once when component mounts
+  useEffect(() => {
+    if (isReady && optimizedAds[0]) {
+      trackImpression(optimizedAds[0].id);
     }
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isReady]);
 
-  const handleVideoRef = useCallback((adId: string, el: HTMLVideoElement | null) => {
-    videoRefs.current[adId] = el;
-  }, []);
+  // Lazy load images for current and next/previous slides
+  useEffect(() => {
+    const indicesToLoad = [
+      currentSlide,
+      (currentSlide + 1) % optimizedAds.length,
+      currentSlide === 0 ? optimizedAds.length - 1 : currentSlide - 1
+    ];
+    
+    setLoadedImages(prev => {
+      const newSet = new Set(prev);
+      let hasNewItems = false;
+      indicesToLoad.forEach(index => {
+        if (!newSet.has(index)) {
+          newSet.add(index);
+          hasNewItems = true;
+        }
+      });
+      return hasNewItems ? newSet : prev;
+    });
+  }, [currentSlide, optimizedAds.length]);
 
+  const handleGetMoreInfo = (adId: string, linkUrl: string) => {
+    // Track click before opening link
+    trackClick(adId);
+    
+    // Log performance data for debugging
+    const performance = getAdPerformance(adId, 7);
+    console.log(`Ad Performance for ${adId} (last 7 days):`, performance);
+    
+    window.open(linkUrl, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleSlideChange = (index: number) => {
+    if (api) {
+      api.scrollTo(index);
+    }
+  };
+
+  const handleShare = (ad: Ad) => {
+    setSelectedAd(ad);
+    setShareDialog(true);
+  };
+
+  const handleShareComplete = () => {
+    if (selectedAd) {
+      setShareCounts(prev => ({
+        ...prev,
+        [selectedAd.id]: (prev[selectedAd.id] || 0) + 1
+      }));
+    }
+    setShareDialog(false);
+  };
+  
   return (
-    <div className="relative w-full overflow-hidden rounded-xl bg-gradient-to-br from-background to-muted/30">
-      <Carousel
-        setApi={setApi}
-        className="w-full"
-        opts={{
-          align: "start",
+    <div className="relative bg-bee-blue/90 text-white overflow-visible flex justify-center">
+      <Carousel 
+        className="w-full max-w-7xl mx-auto py-8" 
+        opts={{ 
           loop: true,
+          align: "center",
         }}
-        onMouseEnter={() => setAutoplay(false)}
-        onMouseLeave={() => setAutoplay(true)}
+        setApi={setApi}
       >
-        <CarouselContent>
-          {ads.map((ad, index) => (
-            <CarouselItem key={ad.id}>
-              <div className="relative aspect-[21/9] sm:aspect-[21/8] md:aspect-[21/7] overflow-hidden rounded-xl">
-                {/* Media Content */}
-                {loadedMedia.has(index) ? (
-                  ad.type === 'video' && ad.videoUrl ? (
-                    <div className="relative w-full h-full">
-                      <video
-                        ref={(el) => handleVideoRef(ad.id, el)}
-                        src={ad.videoUrl}
-                        className="w-full h-full object-cover"
-                        loop
-                        muted={mutedVideos.has(ad.id)}
-                        playsInline
-                        onPlay={() => setPlayingVideos(prev => new Set([...prev, ad.id]))}
-                        onPause={() => setPlayingVideos(prev => {
-                          const newSet = new Set(prev);
-                          newSet.delete(ad.id);
-                          return newSet;
-                        })}
+        <CarouselContent className="-ml-2 md:-ml-4">
+          {optimizedAds.map((ad, index) => (
+            <CarouselItem key={ad.id} className="pl-2 md:pl-4 basis-[80%] md:basis-[85%]">
+              <div 
+                className={`flex flex-col md:flex-row items-center gap-8 px-4 will-change-transform transform-gpu ${
+                  isReady ? 'transition-transform duration-500' : ''
+                } ${
+                  index === currentSlide 
+                    ? 'scale-100' 
+                    : isReady ? 'scale-95' : 'scale-100'
+                }`}
+              >
+                <div className="w-full md:w-1/2 relative group">
+                  {loadedImages.has(index) ? (
+                    <div className="relative overflow-hidden rounded-2xl">
+                      {/* Gradient overlay for depth */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-accent/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      
+                      {/* Decorative border glow */}
+                      <div className="absolute inset-0 rounded-2xl border-2 border-white/20 group-hover:border-white/40 transition-colors duration-300" />
+                      
+                      <img 
+                        src={ad.imageUrl} 
+                        alt={ad.title} 
+                        className="rounded-2xl w-full h-64 md:h-80 lg:h-96 object-cover transform-gpu will-change-transform transition-transform duration-700 group-hover:scale-110 shadow-2xl shadow-primary/30"
+                        loading={index === 0 ? "eager" : "lazy"}
+                        decoding="async"
+                        fetchPriority={index === 0 ? "high" : "auto"}
                       />
-                      {/* Video Controls */}
-                      <div className="absolute bottom-4 right-4 flex gap-2 z-20">
-                        <Button
-                          variant="secondary"
-                          size="icon"
-                          className="h-10 w-10 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm"
-                          onClick={() => togglePlayPause(ad.id)}
-                        >
-                          {playingVideos.has(ad.id) ? (
-                            <Pause className="h-5 w-5 text-white" />
-                          ) : (
-                            <Play className="h-5 w-5 text-white" />
-                          )}
-                        </Button>
-                        <Button
-                          variant="secondary"
-                          size="icon"
-                          className="h-10 w-10 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm"
-                          onClick={() => toggleMute(ad.id)}
-                        >
-                          {mutedVideos.has(ad.id) ? (
-                            <VolumeX className="h-5 w-5 text-white" />
-                          ) : (
-                            <Volume2 className="h-5 w-5 text-white" />
-                          )}
-                        </Button>
-                      </div>
+                      
+                      {/* Shine effect on hover */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
                     </div>
                   ) : (
-                    <img
-                      src={ad.imageUrl}
-                      alt={ad.title}
-                      className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                      loading={index === 0 ? "eager" : "lazy"}
-                    />
-                  )
-                ) : (
-                  <div className="w-full h-full bg-muted animate-pulse" />
-                )}
-                
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                
-                {/* Content Overlay */}
-                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8">
-                  <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        {ad.type === 'video' && (
-                          <span className="px-2 py-0.5 text-xs font-medium bg-primary/80 text-primary-foreground rounded-full">
-                            VIDEO
-                          </span>
-                        )}
-                        <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white drop-shadow-lg">
-                          {ad.title}
-                        </h3>
-                      </div>
-                      <p className="text-sm sm:text-base text-white/90 max-w-lg drop-shadow">
-                        {ad.description}
-                      </p>
+                    <div className="rounded-2xl w-full h-64 md:h-80 lg:h-96 bg-gradient-to-br from-muted/50 to-muted animate-pulse flex items-center justify-center shadow-2xl">
+                      <span className="text-muted-foreground text-sm">Loading...</span>
                     </div>
-                    
-                    <div className="flex gap-2">
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        className="bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm"
-                        onClick={() => handleShare(ad)}
-                      >
-                        <Share2 className="h-4 w-4 mr-2" />
-                        Share
-                      </Button>
-                      <Button
-                        size="sm"
-                        className="bg-primary hover:bg-primary/90"
-                        onClick={() => handleGetMoreInfo(ad)}
-                      >
-                        <ExternalLink className="h-4 w-4 mr-2" />
-                        Learn More
-                      </Button>
-                    </div>
+                  )}
+                </div>
+                <div className="w-full md:w-1/2">
+                  <h3 className="text-2xl md:text-3xl font-bold mb-4">{ad.title}</h3>
+                  <p className="text-lg mb-6 leading-relaxed">{ad.description}</p>
+                  <div className="flex flex-wrap gap-3 items-center">
+                    <button 
+                      onClick={() => handleGetMoreInfo(ad.id, ad.linkUrl)}
+                      className="bg-bee-yellow text-bee-black px-6 py-3 rounded-lg font-semibold text-lg hover:bg-bee-yellow/90 active:scale-95 transition-all cursor-pointer shadow-md touch-manipulation min-h-[44px]"
+                    >
+                      Get More Info
+                    </button>
+                    <Button
+                      variant="ghost"
+                      size="lg"
+                      onClick={() => handleShare(ad)}
+                      className="text-white hover:bg-white/10 border border-white/20 hover:border-white/40 backdrop-blur-sm min-h-[44px] gap-2 px-5 transition-all active:scale-95 font-medium"
+                    >
+                      <Share2 size={18} className="transition-transform group-hover:scale-110" />
+                      <span>Share</span>
+                      {shareCounts[ad.id] > 0 && (
+                        <span className="ml-0.5 text-sm opacity-80">· {shareCounts[ad.id]}</span>
+                      )}
+                    </Button>
                   </div>
                 </div>
               </div>
             </CarouselItem>
           ))}
         </CarouselContent>
+        <CarouselPrevious className="left-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30 z-20" />
+        <CarouselNext className="right-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30 z-20" />
         
-        {/* Navigation */}
-        <CarouselPrevious className="left-2 sm:left-4 h-10 w-10 bg-black/30 hover:bg-black/50 border-0 text-white" />
-        <CarouselNext className="right-2 sm:right-4 h-10 w-10 bg-black/30 hover:bg-black/50 border-0 text-white" />
+        {/* Swipe indicator - Mobile hint */}
+        <div className="md:hidden flex items-center justify-center mt-6 gap-2 animate-pulse">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-white/60">
+            <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="text-white/60 text-sm font-medium">Swipe to explore ads</span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-white/60">
+            <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+        
+        {/* Slide indicators */}
+        <div className="flex justify-center mt-4 space-x-2">
+          {optimizedAds.map((_, index) => (
+            <button
+              key={index}
+              className={`h-2 rounded-full transition-all duration-300 active:scale-90 touch-manipulation ${
+                index === currentSlide 
+                  ? 'bg-white w-8' 
+                  : 'bg-white/40 w-2 hover:bg-white/60'
+              }`}
+              onClick={() => handleSlideChange(index)}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
       </Carousel>
-      
-      {/* Slide Indicators */}
-      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-        {ads.map((ad, index) => (
-          <button
-            key={ad.id}
-            onClick={() => api?.scrollTo(index)}
-            className={`h-2 rounded-full transition-all duration-300 ${
-              current === index 
-                ? 'w-8 bg-primary' 
-                : 'w-2 bg-white/50 hover:bg-white/70'
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
-      </div>
 
+      {/* Share Dialog */}
       {selectedAd && (
         <ShareDialog
-          open={shareDialogOpen}
-          onOpenChange={setShareDialogOpen}
+          open={shareDialog}
+          onOpenChange={setShareDialog}
           postId={selectedAd.id}
           postContent={`${selectedAd.title} - ${selectedAd.description}`}
+          onShareComplete={handleShareComplete}
         />
       )}
     </div>
