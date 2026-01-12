@@ -3,9 +3,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Calendar, Star, Users, Settings, Edit } from "lucide-react";
+import { MapPin, Calendar, Star, Users, Settings, Edit, Building2, User, Briefcase, Globe } from "lucide-react";
 import { Link } from "react-router-dom";
 import ProfileEditDialog from "./ProfileEditDialog";
+import { cn } from "@/lib/utils";
 
 export interface UserProfileProps {
   name: string;
@@ -70,27 +71,83 @@ const UserProfile: React.FC<UserProfileProps> = ({
 
   return (
     <>
-      <Card className="w-full">
+      <Card className={cn(
+        "w-full overflow-hidden transition-all duration-300",
+        businessOwner 
+          ? "border-amber-200 dark:border-amber-800 bg-gradient-to-br from-amber-50/50 to-orange-50/30 dark:from-amber-950/20 dark:to-orange-950/10" 
+          : "border-border"
+      )}>
+        {/* Profile Type Banner */}
+        <div className={cn(
+          "px-4 py-2 flex items-center gap-2 text-xs font-medium",
+          businessOwner 
+            ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white" 
+            : "bg-gradient-to-r from-primary/10 to-secondary/10 text-foreground"
+        )}>
+          {businessOwner ? (
+            <>
+              <Building2 size={14} />
+              <span>Business Profile</span>
+            </>
+          ) : (
+            <>
+              <User size={14} />
+              <span>Personal Profile</span>
+            </>
+          )}
+        </div>
+
         <CardHeader className="pb-3">
           <div className="flex items-center space-x-3">
-            <Avatar className="h-12 w-12">
-              <AvatarImage src={avatarUrl} />
-              <AvatarFallback>{avatarFallback}</AvatarFallback>
-            </Avatar>
+            <div className="relative">
+              <Avatar className={cn(
+                "h-14 w-14 ring-2 ring-offset-2 ring-offset-background",
+                businessOwner 
+                  ? "ring-amber-500" 
+                  : "ring-primary/30"
+              )}>
+                <AvatarImage src={avatarUrl} />
+                <AvatarFallback className={cn(
+                  businessOwner 
+                    ? "bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300" 
+                    : "bg-primary/10 text-primary"
+                )}>
+                  {avatarFallback}
+                </AvatarFallback>
+              </Avatar>
+              {businessOwner && (
+                <div className="absolute -bottom-1 -right-1 bg-amber-500 rounded-full p-1">
+                  <Briefcase size={10} className="text-white" />
+                </div>
+              )}
+            </div>
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <h3 className="font-semibold text-sm truncate">{name}</h3>
                 {isVerified && (
-                  <Badge variant="secondary" className="text-xs px-1.5 py-0.5">
+                  <Badge 
+                    variant="secondary" 
+                    className={cn(
+                      "text-xs px-1.5 py-0.5",
+                      businessOwner 
+                        ? "bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300" 
+                        : ""
+                    )}
+                  >
                     <Star size={10} className="mr-1" />
                     Verified
                   </Badge>
                 )}
               </div>
-              {businessOwner && (
-                <Badge variant="outline" className="text-xs mt-1">
-                  Business Owner
-                </Badge>
+              {businessOwner ? (
+                <div className="flex items-center gap-1 mt-1">
+                  <Badge className="text-xs bg-amber-500 hover:bg-amber-600 text-white">
+                    <Building2 size={10} className="mr-1" />
+                    Business Owner
+                  </Badge>
+                </div>
+              ) : (
+                <p className="text-xs text-muted-foreground mt-1">Community Member</p>
               )}
             </div>
             {isCurrentUser && (
@@ -108,31 +165,46 @@ const UserProfile: React.FC<UserProfileProps> = ({
         
         <CardContent className="pt-0 space-y-3">
           {bio && (
-            <p className="text-xs text-gray-700 dark:text-gray-300">{bio}</p>
+            <p className="text-xs text-muted-foreground">{bio}</p>
+          )}
+
+          {/* Business-specific info */}
+          {businessOwner && website && (
+            <div className="flex items-center text-xs text-amber-600 dark:text-amber-400">
+              <Globe size={12} className="mr-1" />
+              <a href={website} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                {website}
+              </a>
+            </div>
           )}
           
-          <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
+          <div className="flex items-center text-xs text-muted-foreground">
             <MapPin size={12} className="mr-1" />
             {location}
           </div>
           
-          <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
+          <div className="flex items-center text-xs text-muted-foreground">
             <Calendar size={12} className="mr-1" />
             Member since {memberSince}
           </div>
           
-          <div className="grid grid-cols-3 gap-2 text-center text-xs">
+          <div className={cn(
+            "grid grid-cols-3 gap-2 text-center text-xs p-3 rounded-lg",
+            businessOwner 
+              ? "bg-amber-50 dark:bg-amber-950/30" 
+              : "bg-muted/50"
+          )}>
             <div>
-              <div className="font-semibold text-gray-900 dark:text-gray-100">{postsCount}</div>
-              <div className="text-gray-600 dark:text-gray-400">Posts</div>
+              <div className="font-semibold text-foreground">{postsCount}</div>
+              <div className="text-muted-foreground">{businessOwner ? "Listings" : "Posts"}</div>
             </div>
             <div>
-              <div className="font-semibold text-gray-900 dark:text-gray-100">{followersCount}</div>
-              <div className="text-gray-600 dark:text-gray-400">Followers</div>
+              <div className="font-semibold text-foreground">{followersCount}</div>
+              <div className="text-muted-foreground">{businessOwner ? "Customers" : "Followers"}</div>
             </div>
             <div>
-              <div className="font-semibold text-gray-900 dark:text-gray-100">{followingCount}</div>
-              <div className="text-gray-600 dark:text-gray-400">Following</div>
+              <div className="font-semibold text-foreground">{followingCount}</div>
+              <div className="text-muted-foreground">Following</div>
             </div>
           </div>
           
