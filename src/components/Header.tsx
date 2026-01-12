@@ -1,9 +1,5 @@
-
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ChevronDown, Menu } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Menu } from "lucide-react";
 import Logo from "./Logo";
 import BurgerAdWidget from "./BurgerAdWidget";
 import { useNotifications } from "../contexts/NotificationContext";
@@ -17,43 +13,35 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
   const hasAnyNotifications = hasNewBusinessVideos || hasNewEventsVideos || hasNewEcommerceItems;
 
   return (
-    <header className="sticky top-0 z-50 w-full glass-nav">
-      <div className="flex items-center w-full px-2 sm:px-4 py-3 gap-2 sm:gap-3 md:gap-4 min-h-[70px] sm:min-h-[90px] md:min-h-[110px]">
-        {/* Logo - mobile optimized */}
+    <header className="sticky top-0 z-50 w-full bg-card/95 backdrop-blur-md border-b border-border">
+      <div className="flex items-center w-full px-4 py-3 gap-4 min-h-[72px] md:min-h-[80px]">
+        {/* Logo */}
         <div className="flex-shrink-0">
-          <Logo className="scale-110 sm:scale-100" />
+          <Logo className="scale-100" />
         </div>
         
         {/* Ad widget - full width on mobile, constrained on desktop */}
-        <div className="flex-1 min-w-0 md:max-w-sm lg:max-w-lg xl:max-w-xl">
+        <div className="flex-1 min-w-0 md:max-w-lg lg:max-w-xl">
           <BurgerAdWidget />
         </div>
         
-        {/* Mobile menu button - touch-friendly */}
-        <div className="flex-shrink-0">
+        {/* Mobile menu button */}
+        <div className="flex-shrink-0 md:hidden">
           <Button
             variant="ghost"
             size="icon"
-            className="relative min-w-[44px] min-h-[44px] w-11 h-11 flex-shrink-0 touch-manipulation active:scale-90 transition-transform"
+            className="relative w-10 h-10 rounded-lg hover:bg-accent transition-colors"
             onClick={toggleMobileSidebar}
           >
-            <Menu size={24} className="transition-transform" />
+            <Menu size={22} className="text-foreground" />
             {hasAnyNotifications && (
-              <div className="absolute -top-1 -right-1">
-                <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
-                <div className="absolute inset-0 w-3 h-3 bg-red-500 rounded-full animate-ping opacity-75" />
-              </div>
+              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-destructive rounded-full" />
             )}
-            <span className="sr-only">© 2024 B.E.E App Bahamas</span>
+            <span className="sr-only">Open menu</span>
           </Button>
         </div>
-  </div>
-
-  {/* Copyright Watermark */}
-  <div className="absolute top-2 right-4 text-xs text-muted-foreground/30 pointer-events-none select-none">
-    © B.E.E App
-  </div>
-</header>
+      </div>
+    </header>
   );
 };
 

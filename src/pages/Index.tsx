@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
@@ -11,7 +10,6 @@ import McdonaldsAdWidget from "../components/McdonaldsAdWidget";
 import AnimatedBackground from "../components/AnimatedBackground";
 import EnhancedCard from "../components/EnhancedCard";
 import ScrollReveal from "../components/ScrollReveal";
-import LazyImage from "../components/LazyImage";
 import Footer from "../components/Footer";
 import CopyrightWatermark from "../components/CopyrightWatermark";
 import { useNavigate } from "react-router-dom";
@@ -32,15 +30,13 @@ const Index = () => {
     setPosts([newPost, ...posts]);
   };
 
-  // Simulate loading state
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1200);
+    }, 800);
     return () => clearTimeout(timer);
   }, []);
 
-  // Sample posts for demonstration
   const samplePosts = [
     {
       id: "1",
@@ -74,7 +70,7 @@ const Index = () => {
   ];
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-accent/5 pattern-bee-subtle transition-colors relative">
+    <div className="min-h-screen bg-background transition-colors relative">
       <AnimatedBackground />
       
       {/* Copyright Watermark */}
@@ -96,23 +92,23 @@ const Index = () => {
         {/* Mobile Sidebar Overlay */}
         {mobileSidebarOpen && (
           <div 
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden animate-in fade-in duration-300"
+            className="fixed inset-0 bg-foreground/40 backdrop-blur-sm z-40 md:hidden animate-in fade-in duration-200"
             onClick={toggleMobileSidebar}
           />
         )}
         
         {/* Mobile Sidebar */}
-        <div className={`fixed inset-y-0 left-0 z-50 w-64 glass-sidebar shadow-2xl transform ${
+        <div className={`fixed inset-y-0 left-0 z-50 w-72 bg-card shadow-2xl transform ${
           mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } transition-transform duration-300 ease-out md:hidden`}>
-          <div className="flex justify-between items-center p-4 border-b border-border/50">
-            <h2 className="text-lg font-semibold">Menu</h2>
+          <div className="flex justify-between items-center p-4 border-b border-border">
+            <h2 className="text-lg font-semibold text-foreground">Menu</h2>
             <button
               onClick={toggleMobileSidebar}
-              className="p-2 hover:bg-accent rounded-lg transition-colors active:scale-90 touch-manipulation"
+              className="p-2 hover:bg-accent rounded-lg transition-colors"
               aria-label="Close menu"
             >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
@@ -124,23 +120,23 @@ const Index = () => {
         <Sidebar className="hidden md:block" />
         
         {/* Main Content */}
-        <main className="flex-1 w-full max-w-5xl mx-auto py-6 px-4 relative z-10" role="main" id="main-content">
-          <ScrollReveal direction="up" delay={100}>
+        <main className="flex-1 w-full max-w-3xl mx-auto py-8 px-4 md:px-6 relative z-10" role="main" id="main-content">
+          <ScrollReveal direction="up" delay={50}>
             <section aria-label="Create new post">
               <CreatePost onPostCreated={handleNewPost} />
             </section>
           </ScrollReveal>
           
           {/* Video Upload Button */}
-          <ScrollReveal direction="up" delay={150}>
-            <section aria-label="Upload video content" className="my-4">
+          <ScrollReveal direction="up" delay={100}>
+            <section aria-label="Upload video content" className="my-6">
               <Card 
-                className="p-4 cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border-primary/20 w-fit mx-auto"
+                className="p-4 cursor-pointer hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 bg-card border-primary/15 w-fit mx-auto group"
                 onClick={() => navigate('/upload-video')}
               >
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center hover:bg-primary/30 transition-colors">
-                    <Plus size={28} className="text-primary" />
+                  <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                    <Plus size={24} className="text-primary" />
                   </div>
                   <span className="text-sm font-medium text-primary">Upload Video</span>
                 </div>
@@ -148,43 +144,41 @@ const Index = () => {
             </section>
           </ScrollReveal>
           
-          {/* Ad Widget between CreatePost and posts */}
-          <ScrollReveal direction="fade" delay={200}>
+          {/* Ad Widget */}
+          <ScrollReveal direction="fade" delay={150}>
             <section className="my-6" aria-label="Sponsored content">
-              <div className="text-xs text-muted-foreground mb-2 text-center font-medium">Sponsored</div>
-              <EnhancedCard variant="glow" className="p-3">
+              <p className="text-xs text-muted-foreground mb-3 text-center font-medium tracking-wide uppercase">Sponsored</p>
+              <EnhancedCard variant="default" className="p-4">
                 <McdonaldsAdWidget />
               </EnhancedCard>
             </section>
           </ScrollReveal>
           
           {/* Posts Section */}
-          <section aria-label="Social media posts">
+          <section aria-label="Social media posts" className="space-y-4">
             {isLoading ? (
               <PageLoader type="posts" />
             ) : (
-              <div className="space-y-4">
-                {/* Sample Posts */}
+              <>
                 {samplePosts.map((post, index) => (
                   <ScrollReveal 
                     key={post.id}
                     direction="up"
-                    delay={300 + (index * 150)}
+                    delay={200 + (index * 100)}
                   >
                     <article>
-                      <EnhancedCard variant="floating" hover>
+                      <EnhancedCard variant="default" hover>
                         <Post {...post} />
                       </EnhancedCard>
                     </article>
                   </ScrollReveal>
                 ))}
                 
-                {/* User Created Posts */}
                 {posts.map((post, index) => (
                   <ScrollReveal 
                     key={`user-${index}`}
                     direction="up"
-                    delay={100}
+                    delay={50}
                   >
                     <article>
                       <EnhancedCard variant="premium" hover>
@@ -193,18 +187,17 @@ const Index = () => {
                     </article>
                   </ScrollReveal>
                 ))}
-              </div>
+              </>
             )}
           </section>
         </main>
         
-        {/* Right Sidebar - now visible on larger mobile screens */}
+        {/* Right Sidebar */}
         <aside aria-label="Additional content and widgets">
           <RightSidebar />
         </aside>
       </div>
       
-      {/* Footer with Copyright */}
       <Footer />
     </div>
   );
