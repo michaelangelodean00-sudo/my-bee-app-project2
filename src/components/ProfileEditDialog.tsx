@@ -12,8 +12,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Upload } from "lucide-react";
-
+import { Upload, Building2, User, Check } from "lucide-react";
+import { cn } from "@/lib/utils";
 interface ProfileEditDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -124,16 +124,76 @@ const ProfileEditDialog = ({ open, onOpenChange, currentUser, onSave }: ProfileE
             />
           </div>
 
-          {/* Business Owner Toggle */}
-          <div className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              id="businessOwner"
-              checked={formData.businessOwner}
-              onChange={(e) => setFormData(prev => ({ ...prev, businessOwner: e.target.checked }))}
-              className="rounded"
-            />
-            <Label htmlFor="businessOwner">I'm a business owner</Label>
+          {/* Profile Type Selection */}
+          <div className="space-y-3">
+            <Label>Profile Type</Label>
+            <div className="grid grid-cols-2 gap-3">
+              {/* Personal Profile Option */}
+              <button
+                type="button"
+                onClick={() => setFormData(prev => ({ ...prev, businessOwner: false }))}
+                className={cn(
+                  "relative flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-200",
+                  !formData.businessOwner 
+                    ? "border-primary bg-primary/5 ring-2 ring-primary/20" 
+                    : "border-border hover:border-muted-foreground/50"
+                )}
+              >
+                {!formData.businessOwner && (
+                  <div className="absolute top-2 right-2 bg-primary rounded-full p-0.5">
+                    <Check size={12} className="text-primary-foreground" />
+                  </div>
+                )}
+                <div className={cn(
+                  "p-3 rounded-full",
+                  !formData.businessOwner ? "bg-primary/10" : "bg-muted"
+                )}>
+                  <User size={24} className={!formData.businessOwner ? "text-primary" : "text-muted-foreground"} />
+                </div>
+                <span className={cn(
+                  "font-medium text-sm",
+                  !formData.businessOwner ? "text-primary" : "text-muted-foreground"
+                )}>
+                  Personal
+                </span>
+                <span className="text-xs text-muted-foreground text-center">
+                  Share posts & connect
+                </span>
+              </button>
+
+              {/* Business Profile Option */}
+              <button
+                type="button"
+                onClick={() => setFormData(prev => ({ ...prev, businessOwner: true }))}
+                className={cn(
+                  "relative flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-200",
+                  formData.businessOwner 
+                    ? "border-amber-500 bg-amber-50 dark:bg-amber-950/30 ring-2 ring-amber-500/20" 
+                    : "border-border hover:border-muted-foreground/50"
+                )}
+              >
+                {formData.businessOwner && (
+                  <div className="absolute top-2 right-2 bg-amber-500 rounded-full p-0.5">
+                    <Check size={12} className="text-white" />
+                  </div>
+                )}
+                <div className={cn(
+                  "p-3 rounded-full",
+                  formData.businessOwner ? "bg-amber-500/10" : "bg-muted"
+                )}>
+                  <Building2 size={24} className={formData.businessOwner ? "text-amber-500" : "text-muted-foreground"} />
+                </div>
+                <span className={cn(
+                  "font-medium text-sm",
+                  formData.businessOwner ? "text-amber-600 dark:text-amber-400" : "text-muted-foreground"
+                )}>
+                  Business
+                </span>
+                <span className="text-xs text-muted-foreground text-center">
+                  Promote & sell products
+                </span>
+              </button>
+            </div>
           </div>
 
           <DialogFooter>
