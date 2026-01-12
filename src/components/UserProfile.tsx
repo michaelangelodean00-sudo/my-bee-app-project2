@@ -77,7 +77,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
           ? "border-amber-200 dark:border-amber-800 bg-gradient-to-br from-amber-50/50 to-orange-50/30 dark:from-amber-950/20 dark:to-orange-950/10" 
           : "border-border"
       )}>
-        {/* Profile Type Banner */}
+        {/* Account Type Banner */}
         <div className={cn(
           "px-4 py-2 flex items-center gap-2 text-xs font-medium",
           businessOwner 
@@ -87,12 +87,12 @@ const UserProfile: React.FC<UserProfileProps> = ({
           {businessOwner ? (
             <>
               <Building2 size={14} />
-              <span>Business Profile</span>
+              <span>Business Account</span>
             </>
           ) : (
             <>
               <User size={14} />
-              <span>Personal Profile</span>
+              <span>Personal Account</span>
             </>
           )}
         </div>

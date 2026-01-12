@@ -124,11 +124,11 @@ const ProfileEditDialog = ({ open, onOpenChange, currentUser, onSave }: ProfileE
             />
           </div>
 
-          {/* Profile Type Selection */}
+          {/* Account Type Selection */}
           <div className="space-y-3">
-            <Label>Profile Type</Label>
+            <Label>Account Type</Label>
             <div className="grid grid-cols-2 gap-3">
-              {/* Personal Profile Option */}
+              {/* Personal Account Option */}
               <button
                 type="button"
                 onClick={() => setFormData(prev => ({ ...prev, businessOwner: false }))}
@@ -154,14 +154,14 @@ const ProfileEditDialog = ({ open, onOpenChange, currentUser, onSave }: ProfileE
                   "font-medium text-sm",
                   !formData.businessOwner ? "text-primary" : "text-muted-foreground"
                 )}>
-                  Personal
+                  Personal Account
                 </span>
                 <span className="text-xs text-muted-foreground text-center">
                   Share posts & connect
                 </span>
               </button>
 
-              {/* Business Profile Option */}
+              {/* Business Account Option */}
               <button
                 type="button"
                 onClick={() => setFormData(prev => ({ ...prev, businessOwner: true }))}
@@ -187,7 +187,7 @@ const ProfileEditDialog = ({ open, onOpenChange, currentUser, onSave }: ProfileE
                   "font-medium text-sm",
                   formData.businessOwner ? "text-amber-600 dark:text-amber-400" : "text-muted-foreground"
                 )}>
-                  Business
+                  Business Account
                 </span>
                 <span className="text-xs text-muted-foreground text-center">
                   Promote & sell products
