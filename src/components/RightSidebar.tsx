@@ -6,6 +6,8 @@ import BurgerAdWidget from "./BurgerAdWidget";
 
 const RightSidebar = () => {
   // Default user data for the sidebar profile
+  // In a real app, this would come from authentication context
+  // role can be 'user' or 'admin' - admin has access to Admin Panel
   const defaultUser = {
     name: "My Profile",
     avatarUrl: "https://i.pravatar.cc/150?u=current_user",
@@ -17,6 +19,7 @@ const RightSidebar = () => {
     followingCount: 89,
     isVerified: true,
     businessOwner: false,
+    role: 'admin' as const, // Change to 'user' for regular users
     bio: "Welcome to B.E.E App! Connect with local businesses and community.",
     isCurrentUser: true
   };
