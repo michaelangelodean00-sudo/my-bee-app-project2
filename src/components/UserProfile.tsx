@@ -3,10 +3,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Calendar, Star, Users, Settings, Edit, Building2, User, Briefcase, Globe } from "lucide-react";
+import { MapPin, Calendar, Star, Users, Settings, Edit, Building2, User, Briefcase, Globe, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
 import ProfileEditDialog from "./ProfileEditDialog";
 import { cn } from "@/lib/utils";
+
+export type UserRole = 'user' | 'admin';
 
 export interface UserProfileProps {
   name: string;
@@ -19,6 +21,7 @@ export interface UserProfileProps {
   followingCount: number;
   isVerified: boolean;
   businessOwner: boolean;
+  role?: UserRole;
   bio?: string;
   website?: string;
   isCurrentUser?: boolean;
@@ -35,12 +38,15 @@ const UserProfile: React.FC<UserProfileProps> = ({
   followingCount,
   isVerified,
   businessOwner,
+  role = 'user',
   bio,
   website,
   isCurrentUser = false
 }) => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
+  
+  const isAdmin = role === 'admin';
   
   // This local state is for the edit dialog, 
   // but the source of truth is passed in as props.
@@ -79,21 +85,31 @@ const UserProfile: React.FC<UserProfileProps> = ({
       )}>
         {/* Account Type Banner */}
         <div className={cn(
-          "px-4 py-2 flex items-center gap-2 text-xs font-medium",
-          businessOwner 
-            ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white" 
-            : "bg-gradient-to-r from-primary/10 to-secondary/10 text-foreground"
+          "px-4 py-2 flex items-center justify-between text-xs font-medium",
+          isAdmin
+            ? "bg-gradient-to-r from-red-500 to-rose-500 text-white"
+            : businessOwner 
+              ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white" 
+              : "bg-gradient-to-r from-primary/10 to-secondary/10 text-foreground"
         )}>
-          {businessOwner ? (
-            <>
-              <Building2 size={14} />
-              <span>Business Account</span>
-            </>
-          ) : (
-            <>
-              <User size={14} />
-              <span>Personal Account</span>
-            </>
+          <div className="flex items-center gap-2">
+            {businessOwner ? (
+              <>
+                <Building2 size={14} />
+                <span>Business Account</span>
+              </>
+            ) : (
+              <>
+                <User size={14} />
+                <span>Personal Account</span>
+              </>
+            )}
+          </div>
+          {isAdmin && (
+            <Badge className="bg-white/20 text-white border-white/30 text-xs">
+              <Shield size={10} className="mr-1" />
+              Admin
+            </Badge>
           )}
         </div>
 
@@ -124,6 +140,12 @@ const UserProfile: React.FC<UserProfileProps> = ({
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <h3 className="font-semibold text-sm truncate">{name}</h3>
+                {isAdmin && (
+                  <Badge className="text-xs px-1.5 py-0.5 bg-red-500 hover:bg-red-600 text-white">
+                    <Shield size={10} className="mr-1" />
+                    Admin
+                  </Badge>
+                )}
                 {isVerified && (
                   <Badge 
                     variant="secondary" 
@@ -209,19 +231,29 @@ const UserProfile: React.FC<UserProfileProps> = ({
           </div>
           
           {isCurrentUser ? (
-            <div className="flex gap-2">
-              <Button asChild variant="outline" size="sm" className="flex-1">
-                <Link to="/profile">
-                  <Users size={14} className="mr-1" />
-                  Profile
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="sm" className="flex-1">
-                <Link to="/settings">
-                  <Settings size={14} className="mr-1" />
-                  Settings
-                </Link>
-              </Button>
+            <div className="flex flex-col gap-2">
+              <div className="flex gap-2">
+                <Button asChild variant="outline" size="sm" className="flex-1">
+                  <Link to="/profile">
+                    <Users size={14} className="mr-1" />
+                    Profile
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="sm" className="flex-1">
+                  <Link to="/settings">
+                    <Settings size={14} className="mr-1" />
+                    Settings
+                  </Link>
+                </Button>
+              </div>
+              {isAdmin && (
+                <Button asChild variant="default" size="sm" className="w-full bg-red-500 hover:bg-red-600">
+                  <Link to="/admin">
+                    <Shield size={14} className="mr-1" />
+                    Admin Panel
+                  </Link>
+                </Button>
+              )}
             </div>
           ) : (
             <div className="mt-4">
