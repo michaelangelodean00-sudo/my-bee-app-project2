@@ -1,9 +1,9 @@
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Play, Heart, MessageCircle, Share, MoreHorizontal, ExternalLink, Star, Crown } from "lucide-react";
+import { Play, Pause, Heart, MessageCircle, Share, MoreHorizontal, ExternalLink, Star, Crown } from "lucide-react";
 import { VideoAd, SponsoredContent } from "@/types/ads";
 import ContentFilterControls from "./ContentFilterControls";
 
@@ -20,6 +20,8 @@ interface VideoPlayerWithAdsProps {
   contentType?: 'business' | 'event';
   onAdImpression?: (adId: string) => void;
   onAdClick?: (adId: string) => void;
+  autoPlay?: boolean;
+  isVisible?: boolean;
 }
 
 const VideoPlayerWithAds = ({ 
@@ -34,11 +36,27 @@ const VideoPlayerWithAds = ({
   sponsoredData,
   contentType = 'business',
   onAdImpression,
-  onAdClick
+  onAdClick,
+  autoPlay = true,
+  isVisible = false
 }: VideoPlayerWithAdsProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(Math.floor(Math.random() * 1000));
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const hasTrackedImpression = useRef(false);
+
+  // Auto-play when visible
+  useEffect(() => {
+    if (isVisible && autoPlay && !isPlaying) {
+      handlePlay();
+    } else if (!isVisible && isPlaying) {
+      setIsPlaying(false);
+      if (videoRef.current) {
+        videoRef.current.pause();
+      }
+    }
+  }, [isVisible, autoPlay]);
 
   const handleAdClick = () => {
     if (isAd && adData && onAdClick) {
@@ -51,8 +69,27 @@ const VideoPlayerWithAds = ({
 
   const handlePlay = () => {
     setIsPlaying(true);
-    if (isAd && adData && onAdImpression) {
+    if (isAd && adData && onAdImpression && !hasTrackedImpression.current) {
       onAdImpression(adData.id);
+      hasTrackedImpression.current = true;
+    }
+    if (videoRef.current) {
+      videoRef.current.play();
+    }
+  };
+
+  const handlePause = () => {
+    setIsPlaying(false);
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
+  };
+
+  const togglePlayPause = () => {
+    if (isPlaying) {
+      handlePause();
+    } else {
+      handlePlay();
     }
   };
 
@@ -111,14 +148,37 @@ const VideoPlayerWithAds = ({
   return (
     <div className="relative w-full h-full bg-black overflow-hidden snap-start">
       {/* Video Area */}
-      <div className="relative w-full h-full">
+      <div className="relative w-full h-full" onClick={togglePlayPause}>
+        {/* For YouTube/Vimeo embeds */}
         {embedUrl && isPlaying ? (
           <iframe
-            src={embedUrl}
+            src={`${embedUrl}?autoplay=1&mute=1`}
             className="w-full h-full object-cover"
             allowFullScreen
+            allow="autoplay"
             title={title}
           />
+        ) : platform === 'mp4' || videoUrl.endsWith('.mp4') || videoUrl.endsWith('.webm') ? (
+          /* For direct video files */
+          <div className="w-full h-full relative">
+            <video
+              ref={videoRef}
+              src={videoUrl}
+              className="w-full h-full object-cover"
+              loop
+              muted
+              playsInline
+              autoPlay={isVisible && autoPlay}
+            />
+            {/* Play/Pause overlay indicator */}
+            {!isPlaying && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                <div className="bg-white/20 backdrop-blur-sm rounded-full w-14 h-14 border-2 border-white/50 flex items-center justify-center">
+                  <Play size={28} fill="white" className="text-white" />
+                </div>
+              </div>
+            )}
+          </div>
         ) : (
           <div 
             className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center relative cursor-pointer"
@@ -132,13 +192,13 @@ const VideoPlayerWithAds = ({
             {/* Dark overlay */}
             <div className="absolute inset-0 bg-black/40" />
             
-            {/* Play button */}
+            {/* Play/Pause button */}
             <Button
-              onClick={handlePlay}
+              onClick={(e) => { e.stopPropagation(); togglePlayPause(); }}
               className="relative z-10 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white rounded-full w-14 h-14 border-2 border-white/50"
               size="icon"
             >
-              <Play size={28} fill="white" />
+              {isPlaying ? <Pause size={28} fill="white" /> : <Play size={28} fill="white" />}
             </Button>
           </div>
         )}
