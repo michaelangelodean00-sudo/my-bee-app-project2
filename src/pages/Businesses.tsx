@@ -178,13 +178,28 @@ const Businesses = () => {
     }
   };
 
+  // Track scroll to detect visible video
   useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const scrollTop = container.scrollTop;
+      const videoHeight = window.innerHeight;
+      const newIndex = Math.round(scrollTop / videoHeight);
+      if (newIndex !== currentVideoIndex && newIndex >= 0 && newIndex < videosWithAds.length) {
+        setCurrentVideoIndex(newIndex);
+      }
+    };
+
+    container.addEventListener('scroll', handleScroll);
     return () => {
+      container.removeEventListener('scroll', handleScroll);
       if (autoScrollInterval.current) {
         clearInterval(autoScrollInterval.current);
       }
     };
-  }, []);
+  }, [currentVideoIndex, videosWithAds.length]);
 
   const isAd = (item: FeedItem): item is VideoWithAd => {
     return 'isAd' in item && item.isAd === true;
@@ -277,6 +292,8 @@ const Businesses = () => {
                     contentType="business"
                     onAdImpression={trackImpression}
                     onAdClick={trackClick}
+                    autoPlay={true}
+                    isVisible={currentVideoIndex === index}
                   />
                 </div>
               );
