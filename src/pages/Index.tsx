@@ -70,7 +70,7 @@ const Index = () => {
   ];
   
   return (
-    <div className="min-h-screen bg-background transition-colors relative">
+    <div className="min-h-screen bg-background transition-colors relative overflow-hidden">
       <AnimatedBackground />
       
       {/* Copyright Watermark */}
