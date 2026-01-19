@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import AdSplash from "../components/AdSplash";
@@ -12,9 +12,11 @@ import EnhancedCard from "../components/EnhancedCard";
 import ScrollReveal from "../components/ScrollReveal";
 import Footer from "../components/Footer";
 import CopyrightWatermark from "../components/CopyrightWatermark";
+import PullToRefresh from "../components/PullToRefresh";
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { toast } from "sonner";
 
 const Index = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -29,6 +31,15 @@ const Index = () => {
   const handleNewPost = (newPost) => {
     setPosts([newPost, ...posts]);
   };
+
+  const handleRefresh = useCallback(async () => {
+    // Simulate a refresh delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    toast.success("Feed refreshed!", {
+      description: "You're all caught up with the latest posts.",
+      duration: 2000
+    });
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -120,7 +131,8 @@ const Index = () => {
         <Sidebar className="hidden md:block" />
         
         {/* Main Content */}
-        <main className="flex-1 w-full max-w-3xl mx-auto py-8 px-4 md:px-6 relative z-10" role="main" id="main-content">
+        <PullToRefresh onRefresh={handleRefresh} className="flex-1 h-[calc(100vh-4rem)]">
+          <main className="w-full max-w-3xl mx-auto py-8 px-4 md:px-6 relative z-10" role="main" id="main-content">
           <ScrollReveal direction="up" delay={50}>
             <section aria-label="Create new post">
               <CreatePost onPostCreated={handleNewPost} />
@@ -190,7 +202,8 @@ const Index = () => {
               </>
             )}
           </section>
-        </main>
+          </main>
+        </PullToRefresh>
         
         {/* Right Sidebar */}
         <aside aria-label="Additional content and widgets">
