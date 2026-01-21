@@ -5,6 +5,9 @@
   - Set up authentication system
   - Configure database
   - Enable file storage
+  - **Persistent ad storage and management**
+  - **Real-time ad analytics dashboard**
+  - **Stripe payment processing for ad purchases**
 
 ## Authentication & User Management
 - [ ] **User Authentication System**
