@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -95,6 +95,101 @@ const AdSplash = () => {
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null);
   const [shareCounts, setShareCounts] = useState<Record<string, number>>({});
   const [magnifyAd, setMagnifyAd] = useState<Ad | null>(null);
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const lastTouchDistance = useRef<number | null>(null);
+  const lastTouchCenter = useRef<{ x: number; y: number } | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Calculate distance between two touch points
+  const getTouchDistance = useCallback((touches: React.TouchList) => {
+    if (touches.length < 2) return null;
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }, []);
+
+  // Calculate center point between two touches
+  const getTouchCenter = useCallback((touches: React.TouchList) => {
+    if (touches.length < 2) return null;
+    return {
+      x: (touches[0].clientX + touches[1].clientX) / 2,
+      y: (touches[0].clientY + touches[1].clientY) / 2
+    };
+  }, []);
+
+  // Handle touch start for pinch-to-zoom
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      lastTouchDistance.current = getTouchDistance(e.touches);
+      lastTouchCenter.current = getTouchCenter(e.touches);
+    }
+  }, [getTouchDistance, getTouchCenter]);
+
+  // Handle touch move for pinch-to-zoom
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length === 2 && lastTouchDistance.current !== null) {
+      e.preventDefault();
+      const newDistance = getTouchDistance(e.touches);
+      const newCenter = getTouchCenter(e.touches);
+      
+      if (newDistance && newCenter) {
+        // Calculate zoom scale change
+        const scale = newDistance / lastTouchDistance.current;
+        const newZoom = Math.min(Math.max(zoomLevel * scale, 1), 4); // Clamp between 1x and 4x
+        
+        // Calculate pan offset based on zoom center
+        if (lastTouchCenter.current && containerRef.current) {
+          const rect = containerRef.current.getBoundingClientRect();
+          const centerX = newCenter.x - rect.left - rect.width / 2;
+          const centerY = newCenter.y - rect.top - rect.height / 2;
+          
+          const deltaX = (newCenter.x - lastTouchCenter.current.x);
+          const deltaY = (newCenter.y - lastTouchCenter.current.y);
+          
+          setPosition(prev => ({
+            x: prev.x + deltaX,
+            y: prev.y + deltaY
+          }));
+        }
+        
+        setZoomLevel(newZoom);
+        lastTouchDistance.current = newDistance;
+        lastTouchCenter.current = newCenter;
+      }
+    }
+  }, [zoomLevel, getTouchDistance, getTouchCenter]);
+
+  // Handle touch end
+  const handleTouchEnd = useCallback(() => {
+    lastTouchDistance.current = null;
+    lastTouchCenter.current = null;
+  }, []);
+
+  // Reset zoom when dialog closes
+  useEffect(() => {
+    if (!magnifyAd) {
+      setZoomLevel(1);
+      setPosition({ x: 0, y: 0 });
+    }
+  }, [magnifyAd]);
+
+  // Double-tap to zoom
+  const lastTap = useRef<number>(0);
+  const handleDoubleTap = useCallback((e: React.TouchEvent) => {
+    const now = Date.now();
+    if (now - lastTap.current < 300) {
+      e.preventDefault();
+      if (zoomLevel > 1) {
+        setZoomLevel(1);
+        setPosition({ x: 0, y: 0 });
+      } else {
+        setZoomLevel(2.5);
+      }
+    }
+    lastTap.current = now;
+  }, [zoomLevel]);
   
   // Analytics tracking
   const { trackImpression, trackClick, getAdPerformance } = useAdAnalytics();
@@ -360,45 +455,71 @@ const AdSplash = () => {
           
           {magnifyAd && (
             <div className="relative w-full h-[95vh] flex flex-col">
-              {/* Scrollable image container - pan in all directions */}
+              {/* Pinch-to-zoom image container */}
               <div 
-                className="flex-1 overflow-auto touch-pan-x touch-pan-y overscroll-contain cursor-grab active:cursor-grabbing"
-                style={{ 
-                  scrollbarWidth: 'thin',
-                  scrollbarColor: 'rgba(255,255,255,0.3) transparent'
-                }}
+                ref={containerRef}
+                className="flex-1 overflow-hidden touch-none overscroll-contain cursor-grab active:cursor-grabbing relative"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+                onTouchCancel={handleTouchEnd}
               >
-                <div className="min-w-[150vw] min-h-[120vh] flex items-center justify-center p-8">
+                <div 
+                  className="w-full h-full flex items-center justify-center transition-transform duration-75"
+                  style={{ 
+                    transform: `scale(${zoomLevel}) translate(${position.x / zoomLevel}px, ${position.y / zoomLevel}px)`,
+                  }}
+                  onTouchEnd={handleDoubleTap}
+                >
                   <img 
                     src={magnifyAd.imageUrl} 
                     alt={magnifyAd.title}
-                    className="w-[140vw] md:w-[120vw] h-auto object-contain rounded-lg animate-scale-in select-none pointer-events-none"
+                    className="max-w-[95vw] max-h-[75vh] object-contain rounded-lg animate-scale-in select-none"
                     draggable={false}
                   />
                 </div>
               </div>
               
-              {/* Scroll hint indicator */}
-              <div className="absolute top-1/2 left-4 -translate-y-1/2 text-white/50 animate-pulse hidden md:block">
-                <span className="text-xs">← Scroll</span>
-              </div>
-              <div className="absolute top-1/2 right-12 -translate-y-1/2 text-white/50 animate-pulse hidden md:block">
-                <span className="text-xs">Scroll →</span>
+              {/* Zoom level indicator */}
+              {zoomLevel > 1 && (
+                <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
+                  {zoomLevel.toFixed(1)}x
+                </div>
+              )}
+              
+              {/* Gesture hints */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white/40 text-center pointer-events-none">
+                {zoomLevel === 1 && (
+                  <p className="text-xs animate-pulse">Pinch to zoom • Double-tap to zoom</p>
+                )}
               </div>
               
               {/* Ad info overlay - fixed at bottom */}
               <div className="shrink-0 p-4 bg-gradient-to-t from-black via-black/80 to-transparent text-center text-white">
                 <h3 className="text-lg md:text-xl font-bold mb-1">{magnifyAd.title}</h3>
                 <p className="text-xs md:text-sm text-white/80 max-w-lg mx-auto line-clamp-2">{magnifyAd.description}</p>
-                <button 
-                  onClick={() => {
-                    handleGetMoreInfo(magnifyAd.id, magnifyAd.linkUrl);
-                    setMagnifyAd(null);
-                  }}
-                  className="mt-3 bg-bee-yellow text-bee-black px-5 py-2 rounded-lg font-semibold hover:bg-bee-yellow/90 active:scale-95 transition-all text-sm"
-                >
-                  Get More Info
-                </button>
+                <div className="flex items-center justify-center gap-3 mt-3">
+                  {zoomLevel > 1 && (
+                    <button 
+                      onClick={() => {
+                        setZoomLevel(1);
+                        setPosition({ x: 0, y: 0 });
+                      }}
+                      className="bg-white/20 text-white px-4 py-2 rounded-lg font-medium hover:bg-white/30 active:scale-95 transition-all text-sm"
+                    >
+                      Reset Zoom
+                    </button>
+                  )}
+                  <button 
+                    onClick={() => {
+                      handleGetMoreInfo(magnifyAd.id, magnifyAd.linkUrl);
+                      setMagnifyAd(null);
+                    }}
+                    className="bg-bee-yellow text-bee-black px-5 py-2 rounded-lg font-semibold hover:bg-bee-yellow/90 active:scale-95 transition-all text-sm"
+                  >
+                    Get More Info
+                  </button>
+                </div>
               </div>
             </div>
           )}
