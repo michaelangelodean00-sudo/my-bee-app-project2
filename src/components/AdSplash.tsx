@@ -359,27 +359,43 @@ const AdSplash = () => {
           </DialogClose>
           
           {magnifyAd && (
-            <div className="relative w-full h-full flex flex-col items-center justify-center p-4">
-              {/* Pinch-to-zoom container */}
-              <div className="relative overflow-auto max-w-full max-h-[80vh] touch-pan-x touch-pan-y">
-                <img 
-                  src={magnifyAd.imageUrl} 
-                  alt={magnifyAd.title}
-                  className="max-w-none w-auto h-auto max-h-[75vh] md:max-h-[80vh] object-contain rounded-lg animate-scale-in"
-                  style={{ minWidth: '100%' }}
-                />
+            <div className="relative w-full h-[95vh] flex flex-col">
+              {/* Scrollable image container - pan in all directions */}
+              <div 
+                className="flex-1 overflow-auto touch-pan-x touch-pan-y overscroll-contain cursor-grab active:cursor-grabbing"
+                style={{ 
+                  scrollbarWidth: 'thin',
+                  scrollbarColor: 'rgba(255,255,255,0.3) transparent'
+                }}
+              >
+                <div className="min-w-[150vw] min-h-[120vh] flex items-center justify-center p-8">
+                  <img 
+                    src={magnifyAd.imageUrl} 
+                    alt={magnifyAd.title}
+                    className="w-[140vw] md:w-[120vw] h-auto object-contain rounded-lg animate-scale-in select-none pointer-events-none"
+                    draggable={false}
+                  />
+                </div>
               </div>
               
-              {/* Ad info overlay */}
-              <div className="mt-4 text-center text-white">
-                <h3 className="text-xl md:text-2xl font-bold mb-2">{magnifyAd.title}</h3>
-                <p className="text-sm md:text-base text-white/80 max-w-lg">{magnifyAd.description}</p>
+              {/* Scroll hint indicator */}
+              <div className="absolute top-1/2 left-4 -translate-y-1/2 text-white/50 animate-pulse hidden md:block">
+                <span className="text-xs">← Scroll</span>
+              </div>
+              <div className="absolute top-1/2 right-12 -translate-y-1/2 text-white/50 animate-pulse hidden md:block">
+                <span className="text-xs">Scroll →</span>
+              </div>
+              
+              {/* Ad info overlay - fixed at bottom */}
+              <div className="shrink-0 p-4 bg-gradient-to-t from-black via-black/80 to-transparent text-center text-white">
+                <h3 className="text-lg md:text-xl font-bold mb-1">{magnifyAd.title}</h3>
+                <p className="text-xs md:text-sm text-white/80 max-w-lg mx-auto line-clamp-2">{magnifyAd.description}</p>
                 <button 
                   onClick={() => {
                     handleGetMoreInfo(magnifyAd.id, magnifyAd.linkUrl);
                     setMagnifyAd(null);
                   }}
-                  className="mt-4 bg-bee-yellow text-bee-black px-6 py-3 rounded-lg font-semibold hover:bg-bee-yellow/90 active:scale-95 transition-all"
+                  className="mt-3 bg-bee-yellow text-bee-black px-5 py-2 rounded-lg font-semibold hover:bg-bee-yellow/90 active:scale-95 transition-all text-sm"
                 >
                   Get More Info
                 </button>
