@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import {
   Carousel,
@@ -13,8 +12,13 @@ import { optimizeAds, preloadImage } from "@/utils/adUtils";
 import type { Ad } from "@/utils/adUtils";
 import { useAdAnalytics } from "@/hooks/useAdAnalytics";
 import ShareDialog from "./ShareDialog";
-import { Share2 } from "lucide-react";
+import { Share2, X, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 
 // Expanded ads array with more examples
@@ -90,6 +94,7 @@ const AdSplash = () => {
   const [shareDialog, setShareDialog] = useState(false);
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null);
   const [shareCounts, setShareCounts] = useState<Record<string, number>>({});
+  const [magnifyAd, setMagnifyAd] = useState<Ad | null>(null);
   
   // Analytics tracking
   const { trackImpression, trackClick, getAdPerformance } = useAdAnalytics();
@@ -238,7 +243,14 @@ const AdSplash = () => {
               >
                 <div className="w-full md:w-1/2 relative group">
                   {loadedImages.has(index) ? (
-                    <div className="relative overflow-hidden rounded-2xl">
+                    <div 
+                      className="relative overflow-hidden rounded-2xl cursor-zoom-in"
+                      onClick={() => setMagnifyAd(ad)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => e.key === 'Enter' && setMagnifyAd(ad)}
+                      aria-label={`Tap to magnify ${ad.title} image`}
+                    >
                       {/* Gradient overlay for depth */}
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-accent/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       
@@ -253,6 +265,11 @@ const AdSplash = () => {
                         decoding="async"
                         fetchPriority={index === 0 ? "high" : "auto"}
                       />
+                      
+                      {/* Magnify icon hint */}
+                      <div className="absolute bottom-3 right-3 z-20 bg-black/50 backdrop-blur-sm rounded-full p-2 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+                        <ZoomIn size={20} className="text-white" />
+                      </div>
                       
                       {/* Shine effect on hover */}
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
@@ -332,6 +349,45 @@ const AdSplash = () => {
           onShareComplete={handleShareComplete}
         />
       )}
+
+      {/* Magnify Dialog */}
+      <Dialog open={!!magnifyAd} onOpenChange={(open) => !open && setMagnifyAd(null)}>
+        <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 bg-black/95 border-none overflow-hidden">
+          <DialogClose className="absolute top-4 right-4 z-50 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm p-2 transition-colors">
+            <X size={24} className="text-white" />
+            <span className="sr-only">Close</span>
+          </DialogClose>
+          
+          {magnifyAd && (
+            <div className="relative w-full h-full flex flex-col items-center justify-center p-4">
+              {/* Pinch-to-zoom container */}
+              <div className="relative overflow-auto max-w-full max-h-[80vh] touch-pan-x touch-pan-y">
+                <img 
+                  src={magnifyAd.imageUrl} 
+                  alt={magnifyAd.title}
+                  className="max-w-none w-auto h-auto max-h-[75vh] md:max-h-[80vh] object-contain rounded-lg animate-scale-in"
+                  style={{ minWidth: '100%' }}
+                />
+              </div>
+              
+              {/* Ad info overlay */}
+              <div className="mt-4 text-center text-white">
+                <h3 className="text-xl md:text-2xl font-bold mb-2">{magnifyAd.title}</h3>
+                <p className="text-sm md:text-base text-white/80 max-w-lg">{magnifyAd.description}</p>
+                <button 
+                  onClick={() => {
+                    handleGetMoreInfo(magnifyAd.id, magnifyAd.linkUrl);
+                    setMagnifyAd(null);
+                  }}
+                  className="mt-4 bg-bee-yellow text-bee-black px-6 py-3 rounded-lg font-semibold hover:bg-bee-yellow/90 active:scale-95 transition-all"
+                >
+                  Get More Info
+                </button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
