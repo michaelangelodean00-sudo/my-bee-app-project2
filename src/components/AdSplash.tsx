@@ -97,9 +97,14 @@ const AdSplash = () => {
   const [magnifyAd, setMagnifyAd] = useState<Ad | null>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isGesturing, setIsGesturing] = useState(false);
   const lastTouchDistance = useRef<number | null>(null);
   const lastTouchCenter = useRef<{ x: number; y: number } | null>(null);
+  const lastSingleTouch = useRef<{ x: number; y: number } | null>(null);
+  const velocity = useRef({ x: 0, y: 0 });
+  const animationFrame = useRef<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const initialZoomRef = useRef(1);
 
   // Calculate distance between two touch points
   const getTouchDistance = useCallback((touches: React.TouchList) => {
@@ -118,16 +123,53 @@ const AdSplash = () => {
     };
   }, []);
 
-  // Handle touch start for pinch-to-zoom
+  // Smooth momentum animation for panning
+  const applyMomentum = useCallback(() => {
+    const friction = 0.92;
+    const minVelocity = 0.5;
+    
+    if (Math.abs(velocity.current.x) < minVelocity && Math.abs(velocity.current.y) < minVelocity) {
+      velocity.current = { x: 0, y: 0 };
+      return;
+    }
+    
+    velocity.current.x *= friction;
+    velocity.current.y *= friction;
+    
+    setPosition(prev => ({
+      x: prev.x + velocity.current.x,
+      y: prev.y + velocity.current.y
+    }));
+    
+    animationFrame.current = requestAnimationFrame(applyMomentum);
+  }, []);
+
+  // Handle touch start for pinch-to-zoom and pan
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    // Cancel any ongoing momentum animation
+    if (animationFrame.current) {
+      cancelAnimationFrame(animationFrame.current);
+      animationFrame.current = null;
+    }
+    velocity.current = { x: 0, y: 0 };
+    
     if (e.touches.length === 2) {
       e.preventDefault();
+      setIsGesturing(true);
       lastTouchDistance.current = getTouchDistance(e.touches);
       lastTouchCenter.current = getTouchCenter(e.touches);
+      initialZoomRef.current = zoomLevel;
+    } else if (e.touches.length === 1 && zoomLevel > 1) {
+      // Single finger pan when zoomed in
+      lastSingleTouch.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+      };
+      setIsGesturing(true);
     }
-  }, [getTouchDistance, getTouchCenter]);
+  }, [getTouchDistance, getTouchCenter, zoomLevel]);
 
-  // Handle touch move for pinch-to-zoom
+  // Handle touch move for pinch-to-zoom and pan
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (e.touches.length === 2 && lastTouchDistance.current !== null) {
       e.preventDefault();
@@ -135,18 +177,17 @@ const AdSplash = () => {
       const newCenter = getTouchCenter(e.touches);
       
       if (newDistance && newCenter) {
-        // Calculate zoom scale change
-        const scale = newDistance / lastTouchDistance.current;
-        const newZoom = Math.min(Math.max(zoomLevel * scale, 1), 4); // Clamp between 1x and 4x
+        // Smoother zoom scaling with dampening
+        const rawScale = newDistance / lastTouchDistance.current;
+        const dampedScale = 1 + (rawScale - 1) * 0.6; // Dampen the scale change for smoother feel
+        const newZoom = Math.min(Math.max(zoomLevel * dampedScale, 1), 4);
         
-        // Calculate pan offset based on zoom center
-        if (lastTouchCenter.current && containerRef.current) {
-          const rect = containerRef.current.getBoundingClientRect();
-          const centerX = newCenter.x - rect.left - rect.width / 2;
-          const centerY = newCenter.y - rect.top - rect.height / 2;
+        // Calculate pan offset with smoother transitions
+        if (lastTouchCenter.current) {
+          const deltaX = (newCenter.x - lastTouchCenter.current.x) * 1.2;
+          const deltaY = (newCenter.y - lastTouchCenter.current.y) * 1.2;
           
-          const deltaX = (newCenter.x - lastTouchCenter.current.x);
-          const deltaY = (newCenter.y - lastTouchCenter.current.y);
+          velocity.current = { x: deltaX, y: deltaY };
           
           setPosition(prev => ({
             x: prev.x + deltaX,
@@ -158,13 +199,52 @@ const AdSplash = () => {
         lastTouchDistance.current = newDistance;
         lastTouchCenter.current = newCenter;
       }
+    } else if (e.touches.length === 1 && lastSingleTouch.current && zoomLevel > 1) {
+      // Single finger pan when zoomed
+      e.preventDefault();
+      const touch = e.touches[0];
+      const deltaX = (touch.clientX - lastSingleTouch.current.x) * 1.5;
+      const deltaY = (touch.clientY - lastSingleTouch.current.y) * 1.5;
+      
+      velocity.current = { x: deltaX * 0.8, y: deltaY * 0.8 };
+      
+      setPosition(prev => ({
+        x: prev.x + deltaX,
+        y: prev.y + deltaY
+      }));
+      
+      lastSingleTouch.current = {
+        x: touch.clientX,
+        y: touch.clientY
+      };
     }
   }, [zoomLevel, getTouchDistance, getTouchCenter]);
 
-  // Handle touch end
-  const handleTouchEnd = useCallback(() => {
-    lastTouchDistance.current = null;
-    lastTouchCenter.current = null;
+  // Handle touch end with momentum
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    // Apply momentum if there's remaining velocity
+    if ((Math.abs(velocity.current.x) > 2 || Math.abs(velocity.current.y) > 2) && zoomLevel > 1) {
+      animationFrame.current = requestAnimationFrame(applyMomentum);
+    }
+    
+    // Reset refs based on remaining touches
+    if (e.touches.length < 2) {
+      lastTouchDistance.current = null;
+      lastTouchCenter.current = null;
+    }
+    if (e.touches.length < 1) {
+      lastSingleTouch.current = null;
+      setIsGesturing(false);
+    }
+  }, [zoomLevel, applyMomentum]);
+
+  // Cleanup animation frame on unmount
+  useEffect(() => {
+    return () => {
+      if (animationFrame.current) {
+        cancelAnimationFrame(animationFrame.current);
+      }
+    };
   }, []);
 
   // Reset zoom when dialog closes
@@ -465,16 +545,19 @@ const AdSplash = () => {
                 onTouchCancel={handleTouchEnd}
               >
                 <div 
-                  className="w-full h-full flex items-center justify-center transition-transform duration-75"
+                  className={`w-full h-full flex items-center justify-center ${
+                    isGesturing ? '' : 'transition-transform duration-200 ease-out'
+                  }`}
                   style={{ 
                     transform: `scale(${zoomLevel}) translate(${position.x / zoomLevel}px, ${position.y / zoomLevel}px)`,
+                    willChange: isGesturing ? 'transform' : 'auto',
                   }}
                   onTouchEnd={handleDoubleTap}
                 >
                   <img 
                     src={magnifyAd.imageUrl} 
                     alt={magnifyAd.title}
-                    className="max-w-[95vw] max-h-[75vh] object-contain rounded-lg animate-scale-in select-none"
+                    className="max-w-[95vw] max-h-[75vh] object-contain rounded-lg animate-scale-in select-none pointer-events-none"
                     draggable={false}
                   />
                 </div>
