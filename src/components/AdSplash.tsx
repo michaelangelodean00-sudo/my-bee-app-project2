@@ -220,11 +220,12 @@ const AdSplash = () => {
     }
   }, [zoomLevel, getTouchDistance, getTouchCenter]);
 
-  // Handle touch end with momentum
+  // Handle touch end with auto-reset
   const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    // Apply momentum if there's remaining velocity
-    if ((Math.abs(velocity.current.x) > 2 || Math.abs(velocity.current.y) > 2) && zoomLevel > 1) {
-      animationFrame.current = requestAnimationFrame(applyMomentum);
+    // Cancel any ongoing momentum animation
+    if (animationFrame.current) {
+      cancelAnimationFrame(animationFrame.current);
+      animationFrame.current = null;
     }
     
     // Reset refs based on remaining touches
@@ -235,8 +236,14 @@ const AdSplash = () => {
     if (e.touches.length < 1) {
       lastSingleTouch.current = null;
       setIsGesturing(false);
+      
+      // Auto-reset zoom after a brief moment
+      setTimeout(() => {
+        setZoomLevel(1);
+        setPosition({ x: 0, y: 0 });
+      }, 800);
     }
-  }, [zoomLevel, applyMomentum]);
+  }, []);
 
   // Cleanup animation frame on unmount
   useEffect(() => {
