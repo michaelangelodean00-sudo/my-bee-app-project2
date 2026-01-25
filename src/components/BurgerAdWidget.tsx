@@ -118,16 +118,16 @@ const BurgerAdWidget = () => {
         
         {/* Text content */}
         <div className="min-w-0 flex-1 overflow-hidden">
-          <div className="flex items-center gap-1.5 mb-0.5">
-            <Sparkles size={12} className="text-white/70 flex-shrink-0" />
-            <span className="text-[10px] sm:text-xs font-semibold text-white/80 uppercase tracking-wider">
+          <div className="flex items-center gap-1 mb-0.5">
+            <Sparkles size={10} className="text-white/80 flex-shrink-0 sm:w-3 sm:h-3" />
+            <span className="text-[9px] sm:text-[10px] font-semibold text-white/90 uppercase tracking-wider">
               Sponsored
             </span>
           </div>
-          <div className="text-white text-sm sm:text-base md:text-lg font-bold leading-tight truncate drop-shadow-sm">
+          <div className="text-white text-base sm:text-lg md:text-xl font-bold leading-snug drop-shadow-md">
             {currentAd.title}
           </div>
-          <div className={`${currentAd.highlightColor} text-sm sm:text-base md:text-lg font-extrabold leading-tight truncate drop-shadow-sm`}>
+          <div className={`${currentAd.highlightColor} text-base sm:text-lg md:text-xl font-extrabold leading-snug drop-shadow-md`}>
             {currentAd.highlight}
           </div>
         </div>
