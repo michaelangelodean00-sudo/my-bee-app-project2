@@ -12,7 +12,7 @@ import { optimizeAds, preloadImage } from "@/utils/adUtils";
 import type { Ad } from "@/utils/adUtils";
 import { useAdAnalytics } from "@/hooks/useAdAnalytics";
 import ShareDialog from "./ShareDialog";
-import { Share2, X, ZoomIn } from "lucide-react";
+import { Share2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -448,10 +448,6 @@ const AdSplash = () => {
                         fetchPriority={index === 0 ? "high" : "auto"}
                       />
                       
-                      {/* Magnify icon hint */}
-                      <div className="absolute bottom-3 right-3 z-20 bg-black/50 backdrop-blur-sm rounded-full p-2 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
-                        <ZoomIn size={20} className="text-white" />
-                      </div>
                       
                       {/* Shine effect on hover */}
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
