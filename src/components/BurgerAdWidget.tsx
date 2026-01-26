@@ -96,7 +96,7 @@ const BurgerAdWidget = () => {
       <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_30%_50%,white_1px,transparent_1px)] bg-[length:20px_20px]" />
       
       {/* Content */}
-      <div className="relative z-10 flex items-center w-full gap-3">
+      <div className="relative z-10 flex items-center w-full gap-2 sm:gap-3">
         {/* Image with glow ring */}
         <div className="relative flex-shrink-0">
           <div className={`absolute inset-0 rounded-xl bg-white/30 blur-md scale-110 opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
@@ -104,7 +104,7 @@ const BurgerAdWidget = () => {
             src={currentAd.imageSrc}
             alt={currentAd.altText} 
             className={`
-              relative w-11 h-11 sm:w-13 sm:h-13 md:w-14 md:h-14 
+              relative w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 
               rounded-xl object-cover 
               border-2 border-white/30
               shadow-lg
@@ -116,18 +116,18 @@ const BurgerAdWidget = () => {
           />
         </div>
         
-        {/* Text content */}
-        <div className="min-w-0 flex-1">
+        {/* Text content with dark backdrop for mobile readability */}
+        <div className="min-w-0 flex-1 bg-black/20 sm:bg-transparent rounded-lg px-2 py-1 sm:p-0">
           <div className="flex items-center gap-1 mb-0.5">
-            <Sparkles size={10} className="text-white/90 flex-shrink-0" />
-            <span className="text-[9px] sm:text-[10px] font-bold text-white/90 uppercase tracking-wide">
+            <Sparkles size={10} className="text-white flex-shrink-0" />
+            <span className="text-[9px] sm:text-[10px] font-bold text-white uppercase tracking-wide">
               Sponsored
             </span>
           </div>
-          <div className="text-white text-[15px] sm:text-base md:text-lg font-bold leading-tight truncate drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]">
+          <div className="text-white text-[13px] sm:text-sm md:text-base font-bold leading-tight truncate drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
             {currentAd.title}
           </div>
-          <div className={`${currentAd.highlightColor} text-[15px] sm:text-base md:text-lg font-extrabold leading-tight truncate drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]`}>
+          <div className={`${currentAd.highlightColor} text-[13px] sm:text-sm md:text-base font-extrabold leading-tight truncate drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]`}>
             {currentAd.highlight}
           </div>
         </div>
