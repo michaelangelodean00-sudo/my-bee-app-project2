@@ -1,12 +1,12 @@
-
 import { useState } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import RightSidebar from "../components/RightSidebar";
 import AdminVideoReview from "../components/AdminVideoReview";
 import AdManagement from "../components/admin/AdManagement";
+import GreetingManagement from "../components/admin/GreetingManagement";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Shield, Video, Users, Settings, Play } from "lucide-react";
+import { Shield, Video, Users, Settings, Play, MessageSquare } from "lucide-react";
 
 const Admin = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -45,14 +45,21 @@ const Admin = () => {
             </div>
             
             <Tabs defaultValue="videos" className="w-full">
-              <TabsList className="grid w-full grid-cols-5">
+              <TabsList className="grid w-full grid-cols-6">
                 <TabsTrigger value="videos" className="flex items-center gap-2">
                   <Video size={16} />
-                  Video Review
+                  <span className="hidden sm:inline">Video Review</span>
+                  <span className="sm:hidden">Videos</span>
                 </TabsTrigger>
                 <TabsTrigger value="ads" className="flex items-center gap-2">
                   <Play size={16} />
-                  Video Ads
+                  <span className="hidden sm:inline">Video Ads</span>
+                  <span className="sm:hidden">Ads</span>
+                </TabsTrigger>
+                <TabsTrigger value="greetings" className="flex items-center gap-2">
+                  <MessageSquare size={16} />
+                  <span className="hidden sm:inline">Greetings</span>
+                  <span className="sm:hidden">Greet</span>
                 </TabsTrigger>
                 <TabsTrigger value="users" className="flex items-center gap-2">
                   <Users size={16} />
@@ -74,6 +81,10 @@ const Admin = () => {
               
               <TabsContent value="ads" className="mt-6">
                 <AdManagement />
+              </TabsContent>
+              
+              <TabsContent value="greetings" className="mt-6">
+                <GreetingManagement />
               </TabsContent>
               
               <TabsContent value="users" className="mt-6">
