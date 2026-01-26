@@ -110,7 +110,7 @@ const Index = () => {
           />
         )}
         
-        {/* Mobile Sidebar */}
+        {/* Mobile Sidebar - Fixed position */}
         <div className={`fixed inset-y-0 left-0 z-50 w-72 bg-card shadow-2xl transform ${
           mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } transition-transform duration-300 ease-out md:hidden`}>
@@ -126,10 +126,12 @@ const Index = () => {
               </svg>
             </button>
           </div>
-          <Sidebar />
+          <div className="h-[calc(100%-65px)] overflow-y-auto">
+            <Sidebar />
+          </div>
         </div>
         
-        {/* Desktop Sidebar - Fixed position */}
+        {/* Tablet & Desktop Sidebar - Fixed position */}
         <div className="hidden md:block md:w-64 flex-shrink-0">
           <div className="fixed top-16 left-0 w-64 h-[calc(100vh-4rem)] overflow-y-auto bg-card/80 backdrop-blur-sm border-r border-border">
             <Sidebar className="h-full" />
