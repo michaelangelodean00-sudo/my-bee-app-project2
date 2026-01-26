@@ -402,7 +402,7 @@ const AdSplash = () => {
   };
   
   return (
-    <div className="relative bg-bee-blue/90 text-white overflow-visible flex justify-center">
+    <div className="relative bg-bee-blue/90 text-white overflow-hidden flex justify-center z-0">
       <Carousel 
         className="w-full max-w-7xl mx-auto py-8" 
         opts={{ 
