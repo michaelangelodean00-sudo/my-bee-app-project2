@@ -433,10 +433,10 @@ const AdSplash = () => {
                       onKeyDown={(e) => e.key === 'Enter' && setMagnifyAd(ad)}
                       aria-label={`Tap to magnify ${ad.title} image`}
                     >
-                      {/* Sponsored badge */}
-                      <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 shadow-lg">
-                        <Sparkles size={12} className="text-bee-yellow" />
-                        <span className="text-[11px] font-bold text-white uppercase tracking-wide">Sponsored</span>
+                      {/* Sponsored badge - discreet placement */}
+                      <div className="absolute bottom-3 right-3 z-20 flex items-center gap-1 bg-black/30 backdrop-blur-sm px-2 py-1 rounded-md border border-white/10">
+                        <Sparkles size={10} className="text-white/70" />
+                        <span className="text-[9px] font-medium text-white/70 uppercase tracking-wide">Sponsored</span>
                       </div>
                       
                       {/* Gradient overlay for depth */}
