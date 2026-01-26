@@ -73,7 +73,7 @@ const BurgerAdWidget = () => {
       className={`
         relative group cursor-pointer w-full overflow-hidden
         bg-gradient-to-r ${currentAd.gradientFrom} ${currentAd.gradientTo}
-        rounded-2xl min-h-[60px] px-4 py-3
+        rounded-xl sm:rounded-2xl min-h-[48px] sm:min-h-[60px] px-2 sm:px-4 py-2 sm:py-3
         shadow-lg ${currentAd.accentGlow}
         border border-white/20
         transition-all duration-500 ease-out
@@ -117,17 +117,17 @@ const BurgerAdWidget = () => {
         </div>
         
         {/* Text content with dark backdrop for mobile readability */}
-        <div className="min-w-0 flex-1 bg-black/30 sm:bg-transparent rounded-lg px-2 py-1.5 sm:p-0">
-          <div className="flex items-center gap-1 mb-0.5">
-            <Sparkles size={10} className="text-white flex-shrink-0" />
-            <span className="text-[10px] sm:text-[10px] font-bold text-white uppercase tracking-wide">
+        <div className="min-w-0 flex-1 bg-black/30 sm:bg-transparent rounded-md sm:rounded-lg px-1.5 sm:px-2 py-1 sm:py-1.5 sm:p-0">
+          <div className="flex items-center gap-0.5 sm:gap-1 mb-0.5">
+            <Sparkles size={8} className="text-white flex-shrink-0 sm:w-[10px] sm:h-[10px]" />
+            <span className="text-[8px] sm:text-[10px] font-bold text-white uppercase tracking-wide">
               Sponsored
             </span>
           </div>
-          <div className="text-white text-sm sm:text-sm md:text-base font-bold leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+          <div className="text-white text-xs sm:text-sm md:text-base font-bold leading-tight sm:leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
             {currentAd.title}
           </div>
-          <div className={`${currentAd.highlightColor} text-sm sm:text-sm md:text-base font-extrabold leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]`}>
+          <div className={`${currentAd.highlightColor} text-xs sm:text-sm md:text-base font-extrabold leading-tight sm:leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]`}>
             {currentAd.highlight}
           </div>
         </div>
