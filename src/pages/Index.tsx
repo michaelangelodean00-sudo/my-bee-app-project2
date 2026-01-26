@@ -101,7 +101,7 @@ const Index = () => {
       <GreetingBanner />
       <AdSplash />
       
-      <div className="flex">
+      <div className="flex relative">
         {/* Mobile Sidebar Overlay */}
         {mobileSidebarOpen && (
           <div 
@@ -129,8 +129,12 @@ const Index = () => {
           <Sidebar />
         </div>
         
-        {/* Desktop Sidebar */}
-        <Sidebar className="hidden md:block" />
+        {/* Desktop Sidebar - Fixed position */}
+        <div className="hidden md:block md:w-64 flex-shrink-0">
+          <div className="fixed top-16 left-0 w-64 h-[calc(100vh-4rem)] overflow-y-auto bg-card/80 backdrop-blur-sm border-r border-border">
+            <Sidebar className="h-full" />
+          </div>
+        </div>
         
         {/* Main Content */}
         <PullToRefresh onRefresh={handleRefresh} className="flex-1 h-[calc(100vh-4rem)]">
