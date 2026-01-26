@@ -30,7 +30,7 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
         </div>
         
         <nav className="space-y-1">
-          {navigationItems.map((item) => {
+          {navigationItems.map((item, index) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
             
@@ -39,24 +39,25 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
                 key={item.path}
                 to={item.path}
                 className={cn(
-                  "flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-200 min-h-[48px] group",
+                  "flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-200 min-h-[48px] group animate-slide-in-left opacity-0",
                   isActive
                     ? "bg-primary/10 text-primary border border-primary/20"
-                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground hover:translate-x-1"
                 )}
+                style={{ animationDelay: `${index * 0.05}s`, animationFillMode: 'forwards' }}
               >
                 <div className="flex items-center gap-3 min-w-0 flex-1">
                   <Icon size={20} className={cn(
-                    "flex-shrink-0 transition-colors",
+                    "flex-shrink-0 transition-all duration-200 group-hover:scale-110",
                     isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
                   )} />
                   <div className="flex items-center gap-2 min-w-0 flex-1">
                     <span className={cn(
-                      "font-medium text-sm truncate",
+                      "font-heading font-medium text-sm truncate tracking-tight",
                       isActive && "text-primary"
                     )}>{item.label}</span>
                     {item.hasNotification && (
-                      <Badge className="text-[10px] px-1.5 py-0.5 bg-destructive text-destructive-foreground font-semibold">
+                      <Badge className="text-[10px] px-1.5 py-0.5 bg-destructive text-destructive-foreground font-semibold animate-pulse">
                         NEW
                       </Badge>
                     )}
@@ -64,7 +65,7 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
                 </div>
                 {item.hasNotification && (
                   <div className="relative flex-shrink-0">
-                    <div className="w-2 h-2 bg-destructive rounded-full" />
+                    <div className="w-2 h-2 bg-destructive rounded-full animate-pulse" />
                   </div>
                 )}
               </Link>
