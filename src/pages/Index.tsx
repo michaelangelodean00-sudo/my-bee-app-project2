@@ -139,13 +139,18 @@ const Index = () => {
         </div>
         
         {/* Main Content */}
-        <PullToRefresh onRefresh={handleRefresh} className="flex-1 h-[calc(100vh-4rem)]">
-          <main className="w-full max-w-3xl mx-auto py-8 px-4 md:px-6 relative z-10" role="main" id="main-content">
-          <ScrollReveal direction="up" delay={50}>
-            <section aria-label="Create new post">
-              <CreatePost onPostCreated={handleNewPost} />
-            </section>
-          </ScrollReveal>
+        {/* Sticky Navigation Section - Business, Events, E-commerce */}
+        <div className="flex-1 flex flex-col h-[calc(100vh-4rem)]">
+          <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border">
+            <div className="w-full max-w-3xl mx-auto px-4 md:px-6 py-4">
+              <section aria-label="Navigate to sections">
+                <CreatePost onPostCreated={handleNewPost} />
+              </section>
+            </div>
+          </div>
+          
+          <PullToRefresh onRefresh={handleRefresh} className="flex-1 overflow-y-auto">
+            <main className="w-full max-w-3xl mx-auto py-8 px-4 md:px-6 relative z-10" role="main" id="main-content">
           
           {/* Video Upload Button */}
           <ScrollReveal direction="up" delay={100}>
@@ -212,6 +217,7 @@ const Index = () => {
           </section>
           </main>
         </PullToRefresh>
+        </div>
         
         {/* Right Sidebar */}
         <aside aria-label="Additional content and widgets">

@@ -224,8 +224,13 @@ const Events = () => {
     <div className="min-h-screen bg-black">
       <Header toggleMobileSidebar={() => {}} />
       
-      <div className="flex">
-        <Sidebar className="hidden md:block" />
+      <div className="flex relative">
+        {/* Desktop Sidebar - Fixed position */}
+        <div className="hidden md:block md:w-64 flex-shrink-0">
+          <div className="fixed top-16 left-0 w-64 h-[calc(100vh-4rem)] overflow-y-auto bg-card/80 backdrop-blur-sm border-r border-border z-20">
+            <Sidebar className="h-full" />
+          </div>
+        </div>
         
         {/* Main Content - TikTok Style Feed */}
         <div className="flex-1 overflow-y-auto h-screen snap-y snap-mandatory" ref={containerRef}>
