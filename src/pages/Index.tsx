@@ -13,6 +13,7 @@ import ScrollReveal from "../components/ScrollReveal";
 import Footer from "../components/Footer";
 import CopyrightWatermark from "../components/CopyrightWatermark";
 import PullToRefresh from "../components/PullToRefresh";
+import GreetingBanner from "../components/GreetingBanner";
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -97,6 +98,7 @@ const Index = () => {
       </header>
       
       <Header toggleMobileSidebar={toggleMobileSidebar} />
+      <GreetingBanner />
       <AdSplash />
       
       <div className="flex">
