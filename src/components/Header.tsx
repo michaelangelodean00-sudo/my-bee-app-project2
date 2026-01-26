@@ -15,9 +15,9 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
   return (
     <header className="sticky top-0 z-50 w-full bg-card/95 backdrop-blur-md border-b border-border">
       <div className="flex items-center w-full px-2 sm:px-4 pt-8 pb-3 sm:py-3 gap-2 sm:gap-4 min-h-[80px] sm:min-h-[72px] md:min-h-[80px]">
-        {/* Logo - always visible, scaled down on mobile */}
+        {/* Logo - always visible, larger on mobile */}
         <div className="flex-shrink-0">
-          <Logo className="scale-75 sm:scale-100" />
+          <Logo className="scale-100 sm:scale-100" />
         </div>
         
         {/* Ad widget - constrained width on mobile to not push logo out */}
