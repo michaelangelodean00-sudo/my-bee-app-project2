@@ -22,7 +22,7 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
   ];
 
   return (
-    <aside className={`w-full md:w-64 bg-card/80 backdrop-blur-sm border-r border-border h-screen sticky top-0 transition-all duration-300 ${className}`}>
+    <aside className={`w-full bg-transparent transition-all duration-300 ${className}`}>
       <div className="p-4">
         {/* Mobile Search Bar */}
         <div className="md:hidden mb-4 pb-4 border-b border-border">
