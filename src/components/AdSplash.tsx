@@ -12,7 +12,7 @@ import { optimizeAds, preloadImage } from "@/utils/adUtils";
 import type { Ad } from "@/utils/adUtils";
 import { useAdAnalytics } from "@/hooks/useAdAnalytics";
 import ShareDialog from "./ShareDialog";
-import { Share2, X } from "lucide-react";
+import { Share2, X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -433,6 +433,12 @@ const AdSplash = () => {
                       onKeyDown={(e) => e.key === 'Enter' && setMagnifyAd(ad)}
                       aria-label={`Tap to magnify ${ad.title} image`}
                     >
+                      {/* Sponsored badge */}
+                      <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 shadow-lg">
+                        <Sparkles size={12} className="text-bee-yellow" />
+                        <span className="text-[11px] font-bold text-white uppercase tracking-wide">Sponsored</span>
+                      </div>
+                      
                       {/* Gradient overlay for depth */}
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-accent/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       
