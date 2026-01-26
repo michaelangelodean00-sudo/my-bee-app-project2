@@ -96,16 +96,16 @@ const BurgerAdWidget = () => {
       <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_30%_50%,white_1px,transparent_1px)] bg-[length:20px_20px]" />
       
       {/* Content */}
-      <div className="relative z-10 flex items-center w-full gap-2 sm:gap-3">
-        {/* Image with glow ring */}
+      <div className="relative z-10 flex items-center w-full gap-1.5 sm:gap-3">
+        {/* Image with glow ring - smaller on mobile */}
         <div className="relative flex-shrink-0">
-          <div className={`absolute inset-0 rounded-xl bg-white/30 blur-md scale-110 opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+          <div className={`absolute inset-0 rounded-lg sm:rounded-xl bg-white/30 blur-md scale-110 opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
           <img 
             src={currentAd.imageSrc}
             alt={currentAd.altText} 
             className={`
-              relative w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 
-              rounded-xl object-cover 
+              relative w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14 
+              rounded-lg sm:rounded-xl object-cover 
               border-2 border-white/30
               shadow-lg
               transition-transform duration-300
