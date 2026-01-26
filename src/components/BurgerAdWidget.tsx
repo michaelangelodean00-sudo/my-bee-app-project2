@@ -116,18 +116,18 @@ const BurgerAdWidget = () => {
           />
         </div>
         
-        {/* Text content */}
-        <div className="min-w-0 flex-1">
+        {/* Text content with dark backdrop for readability */}
+        <div className="min-w-0 flex-1 bg-black/20 backdrop-blur-[1px] rounded-lg px-2 py-1.5">
           <div className="flex items-center gap-1 mb-0.5">
-            <Sparkles size={10} className="text-white/90 flex-shrink-0" />
-            <span className="text-[9px] sm:text-[10px] font-bold text-white/90 uppercase tracking-wide">
+            <Sparkles size={10} className="text-white flex-shrink-0" />
+            <span className="text-[10px] sm:text-[11px] font-bold text-white uppercase tracking-wide">
               Sponsored
             </span>
           </div>
-          <div className="text-white text-[15px] sm:text-base md:text-lg font-bold leading-tight truncate drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]">
+          <div className="text-white text-[14px] sm:text-base md:text-lg font-bold leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
             {currentAd.title}
           </div>
-          <div className={`${currentAd.highlightColor} text-[15px] sm:text-base md:text-lg font-extrabold leading-tight truncate drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]`}>
+          <div className={`${currentAd.highlightColor} text-[14px] sm:text-base md:text-lg font-extrabold leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]`}>
             {currentAd.highlight}
           </div>
         </div>
