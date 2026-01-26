@@ -13,15 +13,15 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
   const hasAnyNotifications = hasNewBusinessVideos || hasNewEventsVideos || hasNewEcommerceItems;
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-card/95 backdrop-blur-md border-b border-border">
+    <header className="sticky top-0 z-50 w-full bg-card/95 backdrop-blur-md border-b border-border animate-fade-in-down">
       <div className="flex items-center w-full px-2 sm:px-4 pt-12 pb-3 sm:py-3 gap-2 sm:gap-4 min-h-[96px] sm:min-h-[72px] md:min-h-[80px]">
         {/* Logo - always visible, larger on mobile */}
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0 animate-logo-entrance">
           <Logo className="scale-100 sm:scale-100" />
         </div>
         
         {/* Ad widget - constrained width on mobile to not push logo out */}
-        <div className="flex-1 min-w-0 max-w-[180px] xs:max-w-[220px] sm:max-w-none md:max-w-lg lg:max-w-xl">
+        <div className="flex-1 min-w-0 max-w-[180px] xs:max-w-[220px] sm:max-w-none md:max-w-lg lg:max-w-xl animate-fade-in" style={{ animationDelay: '0.2s' }}>
           <BurgerAdWidget />
         </div>
         

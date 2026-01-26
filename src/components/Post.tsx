@@ -103,27 +103,27 @@ const Post = ({
   
   return (
     <>
-      <div className="bee-card p-4 mb-4 group relative overflow-hidden hover:animate-[morphism_3s_ease-in-out_infinite]">
+      <div className="bee-card p-4 mb-4 group relative overflow-hidden hover:animate-[morphism_3s_ease-in-out_infinite] animate-fade-in-up opacity-0" style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}>
         <div className="flex justify-between items-start">
           <div className="flex gap-3">
-            <Avatar>
+            <Avatar className="transition-transform duration-300 hover:scale-110">
               <AvatarImage src={author.avatarUrl} alt={author.name} />
-              <AvatarFallback>{author.avatarFallback}</AvatarFallback>
+              <AvatarFallback className="font-heading font-semibold">{author.avatarFallback}</AvatarFallback>
             </Avatar>
             <div>
-              <Link to={`/profile/${author.id}`} className="font-semibold hover:underline dark:text-white">
+              <Link to={`/profile/${author.id}`} className="font-heading font-semibold hover:underline text-foreground tracking-tight transition-colors hover:text-primary">
                 {author.name}
               </Link>
-              <p className="text-gray-500 dark:text-gray-400 text-sm">{timestamp}</p>
+              <p className="text-muted-foreground text-sm font-body">{timestamp}</p>
             </div>
           </div>
-          <Button variant="ghost" size="icon" className="text-gray-500 dark:text-gray-400">
+          <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground transition-colors">
             <MoreHorizontal size={18} />
           </Button>
         </div>
         
         <div className="mt-3">
-          <p className="text-gray-800 dark:text-gray-200">{content}</p>
+          <p className="text-foreground font-body leading-relaxed">{content}</p>
           {imageUrl && (
             <div className="mt-3 rounded-lg overflow-hidden group-hover:shadow-md transition-all duration-500 relative">
               <img 
@@ -136,7 +136,7 @@ const Post = ({
           )}
         </div>
         
-        <div className="mt-3 flex justify-between text-sm text-gray-500 dark:text-gray-400">
+        <div className="mt-3 flex justify-between text-sm text-muted-foreground font-body">
           <div className="flex items-center gap-2">
             {topReactions.length > 0 && (
               <div className="flex items-center gap-1">
@@ -152,13 +152,13 @@ const Post = ({
           </div>
         </div>
         
-        <Separator className="my-3 dark:border-gray-600" />
+        <Separator className="my-3" />
         
         <div className="flex justify-between relative">
           <div className="relative">
             <Button 
               variant="ghost" 
-              className={`flex-1 ${userReaction ? 'text-bee-blue' : 'text-gray-600 dark:text-gray-400'}`}
+              className={`flex-1 font-medium transition-all duration-200 ${userReaction ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}
               onClick={() => setShowReactions(!showReactions)}
               onMouseEnter={() => setShowReactions(true)}
             >
@@ -172,7 +172,7 @@ const Post = ({
             
             {showReactions && (
               <div 
-                className="absolute bottom-full left-0 mb-2 bg-white dark:bg-gray-800 border dark:border-gray-600 rounded-lg shadow-lg p-2 flex gap-2 z-10"
+                className="absolute bottom-full left-0 mb-2 bg-card border border-border rounded-xl shadow-lg p-2 flex gap-2 z-10 animate-pop-in"
                 onMouseLeave={() => setShowReactions(false)}
               >
                 {reactions.map((reaction) => (
@@ -189,11 +189,11 @@ const Post = ({
             )}
           </div>
           
-          <Button variant="ghost" className="flex-1 text-gray-600 dark:text-gray-400" onClick={handleMessageUser}>
+          <Button variant="ghost" className="flex-1 text-muted-foreground hover:text-foreground font-medium transition-all duration-200" onClick={handleMessageUser}>
             <MessageSquare size={18} className="mr-2" />
             Message
           </Button>
-          <Button variant="ghost" className="flex-1 text-gray-600 dark:text-gray-400" onClick={() => setShareDialog(true)}>
+          <Button variant="ghost" className="flex-1 text-muted-foreground hover:text-foreground font-medium transition-all duration-200" onClick={() => setShareDialog(true)}>
             <Share2 size={18} className="mr-2" />
             Share
           </Button>
