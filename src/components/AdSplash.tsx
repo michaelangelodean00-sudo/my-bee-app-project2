@@ -416,11 +416,11 @@ const AdSplash = () => {
             <CarouselItem key={ad.id} className="pl-2 md:pl-4 basis-[80%] md:basis-[85%]">
               <div 
                 className={`flex flex-col md:flex-row items-center gap-8 px-4 will-change-transform transform-gpu ${
-                  isReady ? 'transition-transform duration-500' : ''
+                  isReady ? 'transition-transform duration-200' : ''
                 } ${
                   index === currentSlide 
                     ? 'scale-100' 
-                    : isReady ? 'scale-95' : 'scale-100'
+                    : isReady ? 'scale-[0.97]' : 'scale-100'
                 }`}
               >
                 <div className="w-full md:w-1/2 relative group">
@@ -440,23 +440,22 @@ const AdSplash = () => {
                       </div>
                       
                       {/* Gradient overlay for depth */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-accent/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-accent/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                       
                       {/* Decorative border glow */}
-                      <div className="absolute inset-0 rounded-2xl border-2 border-white/20 group-hover:border-white/40 transition-colors duration-300" />
+                      <div className="absolute inset-0 rounded-2xl border-2 border-white/20 group-hover:border-white/40 transition-colors duration-150" />
                       
                       <img 
                         src={ad.imageUrl} 
                         alt={ad.title} 
-                        className="rounded-2xl w-full h-64 md:h-80 lg:h-96 object-cover transform-gpu will-change-transform transition-transform duration-700 group-hover:scale-110 shadow-2xl shadow-primary/30"
+                        className="rounded-2xl w-full h-64 md:h-80 lg:h-96 object-cover transform-gpu will-change-transform transition-transform duration-300 group-hover:scale-105 shadow-2xl shadow-primary/30"
                         loading={index === 0 ? "eager" : "lazy"}
                         decoding="async"
                         fetchPriority={index === 0 ? "high" : "auto"}
                       />
                       
-                      
                       {/* Shine effect on hover */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-400 ease-out" />
                     </div>
                   ) : (
                     <div className="rounded-2xl w-full h-64 md:h-80 lg:h-96 bg-gradient-to-br from-muted/50 to-muted animate-pulse flex items-center justify-center shadow-2xl">
