@@ -291,6 +291,11 @@ export default {
           '50%': { opacity: '1' },
           '100%': { transform: 'translateY(100%)', opacity: '0' }
         },
+        'shimmer-vertical-slow': {
+          '0%': { transform: 'translateY(-100%) scale(1.2)', opacity: '0' },
+          '50%': { opacity: '0.8', transform: 'translateY(0%) scale(1)' },
+          '100%': { transform: 'translateY(100%) scale(1.2)', opacity: '0' }
+        },
         'slide-in-from-bottom': {
           '0%': { opacity: '0', transform: 'translateY(24px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' }
@@ -342,7 +347,8 @@ export default {
         'bee-hover': 'bee-hover 0.3s ease-in-out',
         'micro-bounce': 'micro-bounce 0.1s ease-in-out',
         'shimmer': 'shimmer 1.2s linear infinite',
-        'shimmer-vertical': 'shimmer-vertical 2s ease-in-out infinite',
+        'shimmer-vertical': 'shimmer-vertical 1.5s ease-in-out infinite',
+        'shimmer-vertical-slow': 'shimmer-vertical-slow 3s ease-in-out infinite',
         'content-fade-in': 'content-fade-in 0.25s ease-out',
         'stagger-fade': 'stagger-fade 0.2s ease-out forwards',
         'slide-in-bottom': 'slide-in-from-bottom 0.25s ease-out forwards',
