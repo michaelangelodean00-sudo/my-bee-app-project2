@@ -20,6 +20,13 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
           <Logo className="scale-100 sm:scale-100" />
         </div>
         
+        {/* Animated separator */}
+        <div className="flex-shrink-0 h-10 sm:h-12 md:h-14 w-px relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-400/70 to-transparent animate-shimmer-vertical" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_8px_2px_rgba(251,191,36,0.6)] animate-pulse" />
+        </div>
+        
         {/* Ad widget - constrained width on mobile to not push logo out */}
         <div className="flex-1 min-w-0 max-w-[180px] xs:max-w-[220px] sm:max-w-none md:max-w-lg lg:max-w-xl animate-fade-in" style={{ animationDelay: '0.2s' }}>
           <BurgerAdWidget />
