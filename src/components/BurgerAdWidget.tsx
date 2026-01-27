@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, MouseEvent } from "react";
 import { ExternalLink, Sparkles } from "lucide-react";
 import { isValidUrl } from "../utils/security";
 
@@ -44,6 +44,8 @@ const BurgerAdWidget = () => {
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Rotate ads every 6 seconds
   useEffect(() => {
@@ -60,6 +62,25 @@ const BurgerAdWidget = () => {
 
   const currentAd = ads[currentAdIndex];
 
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    
+    const rect = containerRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    // Calculate tilt based on mouse position relative to center
+    const rotateX = ((e.clientY - centerY) / (rect.height / 2)) * -8;
+    const rotateY = ((e.clientX - centerX) / (rect.width / 2)) * 8;
+    
+    setTilt({ x: rotateX, y: rotateY });
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setTilt({ x: 0, y: 0 });
+  };
+
   const handleAdClick = () => {
     if (isValidUrl(currentAd.linkUrl)) {
       window.open(currentAd.linkUrl, '_blank', 'noopener,noreferrer');
@@ -70,21 +91,27 @@ const BurgerAdWidget = () => {
 
   return (
     <div 
+      ref={containerRef}
       className={`
         relative group cursor-pointer w-full overflow-hidden
         bg-gradient-to-r ${currentAd.gradientFrom} ${currentAd.gradientTo}
         rounded-xl sm:rounded-2xl min-h-[48px] sm:min-h-[60px] px-2 sm:px-4 py-2 sm:py-3
-        shadow-lg ${currentAd.accentGlow}
         border border-white/20
-        transition-all duration-500 ease-out
+        transition-all duration-300 ease-out
         ${isTransitioning ? 'scale-[0.98] opacity-80' : 'scale-100 opacity-100'}
-        ${isHovered ? 'shadow-2xl scale-[1.02]' : ''}
-        hover:shadow-2xl hover:scale-[1.02]
         active:scale-[0.98]
       `}
+      style={{
+        transform: `perspective(800px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) ${isHovered ? 'scale(1.02)' : 'scale(1)'}`,
+        boxShadow: isHovered 
+          ? `0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 0 30px ${currentAd.gradientFrom === 'from-amber-500' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(59, 130, 246, 0.3)'}`
+          : `0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)`,
+        transformStyle: 'preserve-3d',
+      }}
       onClick={handleAdClick}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
     >
       {/* Glassmorphism overlay */}
       <div className="absolute inset-0 bg-white/5 backdrop-blur-[2px] rounded-2xl" />
@@ -97,8 +124,8 @@ const BurgerAdWidget = () => {
       
       {/* Content */}
       <div className="relative z-10 flex items-center w-full gap-1.5 sm:gap-3">
-        {/* Image with glow ring - smaller on mobile */}
-        <div className="relative flex-shrink-0">
+        {/* Image with glow ring and 3D lift effect */}
+        <div className="relative flex-shrink-0" style={{ transform: 'translateZ(20px)' }}>
           <div className={`absolute inset-0 rounded-lg sm:rounded-xl bg-white/30 blur-md scale-110 opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
           <img 
             src={currentAd.imageSrc}
@@ -108,16 +135,19 @@ const BurgerAdWidget = () => {
               rounded-lg sm:rounded-xl object-cover 
               border-2 border-white/30
               shadow-lg
-              transition-transform duration-300
-              ${isHovered ? 'scale-105' : 'scale-100'}
+              transition-all duration-300
+              ${isHovered ? 'scale-110 shadow-xl' : 'scale-100'}
             `}
             loading="lazy"
             decoding="async"
           />
         </div>
         
-        {/* Text content with dark backdrop for mobile readability */}
-        <div className="min-w-0 flex-1 bg-black/30 sm:bg-transparent rounded-md sm:rounded-lg px-1.5 sm:px-2 py-1 sm:py-1.5 sm:p-0">
+        {/* Text content with 3D lift */}
+        <div 
+          className="min-w-0 flex-1 bg-black/30 sm:bg-transparent rounded-md sm:rounded-lg px-1.5 sm:px-2 py-1 sm:py-1.5 sm:p-0"
+          style={{ transform: 'translateZ(15px)' }}
+        >
           <div className="flex items-center gap-0.5 sm:gap-1 mb-0.5">
             <Sparkles size={8} className="text-white flex-shrink-0 sm:w-[10px] sm:h-[10px]" />
             <span className="text-[8px] sm:text-[10px] font-bold text-white uppercase tracking-wide">
