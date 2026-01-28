@@ -16,33 +16,12 @@ const LogoImage = ({ className, size = 'default' }: LogoImageProps) => {
   };
 
   return (
-    <div className="relative inline-block">
-      {/* Animated glow effect */}
-      <div 
-        className="absolute inset-0 rounded-full bg-amber-400/40 blur-2xl animate-pulse scale-75 -z-10"
-        style={{ 
-          animation: 'glow-pulse 3s ease-in-out infinite',
-        }}
-      />
-      <div 
-        className="absolute inset-0 rounded-full bg-amber-500/20 blur-3xl scale-110 -z-20"
-        style={{ 
-          animation: 'glow-pulse 4s ease-in-out infinite reverse',
-        }}
-      />
-      <img 
-        src="/lovable-uploads/bee-mascot-logo.png" 
-        alt="B.E.E App Bahamas Logo - © 2024 All Rights Reserved"
-        className={`object-contain ${sizeClasses[size]} ${className ?? ''} relative z-10`}
-        data-copyright-protected="true"
-      />
-      <style>{`
-        @keyframes glow-pulse {
-          0%, 100% { opacity: 0.4; transform: scale(0.75); }
-          50% { opacity: 0.7; transform: scale(0.9); }
-        }
-      `}</style>
-    </div>
+    <img 
+      src="/lovable-uploads/bee-mascot-logo.png" 
+      alt="B.E.E App Bahamas Logo - © 2024 All Rights Reserved"
+      className={`object-contain ${sizeClasses[size]} ${className ?? ''}`}
+      data-copyright-protected="true"
+    />
   );
 };
 
