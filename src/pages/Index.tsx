@@ -14,6 +14,7 @@ import Footer from "../components/Footer";
 import CopyrightWatermark from "../components/CopyrightWatermark";
 import PullToRefresh from "../components/PullToRefresh";
 import GreetingBanner from "../components/GreetingBanner";
+import DecorativeDivider from "../components/DecorativeDivider";
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -149,35 +150,42 @@ const Index = () => {
             </div>
           </div>
           
-          <PullToRefresh onRefresh={handleRefresh} className="flex-1 overflow-y-auto">
-            <main className="w-full max-w-3xl mx-auto py-6 md:py-10 px-4 md:px-6 relative z-10 space-y-6 md:space-y-8" role="main" id="main-content">
+        <PullToRefresh onRefresh={handleRefresh} className="flex-1 overflow-y-auto">
+            <main className="w-full max-w-3xl mx-auto py-4 md:py-10 px-4 md:px-6 relative z-10 space-y-4 md:space-y-8" role="main" id="main-content">
           
           {/* Video Upload Button */}
           <ScrollReveal direction="up" delay={100}>
             <section aria-label="Upload video content">
               <Card 
-                className="p-4 cursor-pointer hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 bg-card border-primary/15 w-fit mx-auto group"
+                className="p-3 md:p-4 cursor-pointer hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 bg-card border-primary/15 w-fit mx-auto group"
                 onClick={() => navigate('/upload-video')}
               >
-                <div className="flex flex-col items-center gap-2">
-                  <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                    <Plus size={24} className="text-primary" />
+                <div className="flex flex-col items-center gap-1.5 md:gap-2">
+                  <div className="w-9 h-9 md:w-11 md:h-11 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                    <Plus size={20} className="md:hidden text-primary" />
+                    <Plus size={24} className="hidden md:block text-primary" />
                   </div>
-                  <span className="text-sm font-medium text-primary">Upload Video</span>
+                  <span className="text-xs md:text-sm font-medium text-primary">Upload Video</span>
                 </div>
               </Card>
             </section>
           </ScrollReveal>
           
+          {/* Decorative Divider - Mobile Only */}
+          <DecorativeDivider className="md:hidden" variant="honeycomb" />
+          
           {/* Ad Widget */}
           <ScrollReveal direction="fade" delay={150}>
             <section aria-label="Sponsored content">
-              <p className="text-xs text-muted-foreground mb-3 md:mb-4 text-center font-medium tracking-wide uppercase">Sponsored</p>
-              <EnhancedCard variant="default" className="p-4 md:p-5">
+              <p className="text-[10px] md:text-xs text-muted-foreground mb-2 md:mb-4 text-center font-medium tracking-wide uppercase">Sponsored</p>
+              <EnhancedCard variant="default" className="p-3 md:p-5">
                 <McdonaldsAdWidget />
               </EnhancedCard>
             </section>
           </ScrollReveal>
+          
+          {/* Decorative Divider - Mobile Only */}
+          <DecorativeDivider className="md:hidden" variant="dots" />
           
           {/* Posts Section */}
           <section aria-label="Social media posts" className="space-y-5 md:space-y-6">
