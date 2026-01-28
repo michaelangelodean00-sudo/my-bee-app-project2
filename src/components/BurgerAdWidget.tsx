@@ -148,16 +148,16 @@ const BurgerAdWidget = () => {
           className="min-w-0 flex-1 bg-black/30 sm:bg-transparent rounded-md sm:rounded-lg px-1.5 sm:px-2 py-1 sm:py-1.5 sm:p-0"
           style={{ transform: 'translateZ(15px)' }}
         >
-          <div className="flex items-center gap-0.5 sm:gap-1 mb-0.5">
-            <Sparkles size={8} className="text-white flex-shrink-0 sm:w-[10px] sm:h-[10px]" />
-            <span className="text-[8px] sm:text-[10px] font-bold text-white uppercase tracking-wide">
+          <div className="flex items-center gap-1 sm:gap-1.5 mb-0.5 sm:mb-1">
+            <Sparkles size={10} className="text-white flex-shrink-0 sm:w-3 sm:h-3" />
+            <span className="text-[10px] sm:text-xs font-extrabold text-white uppercase tracking-wider drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
               Sponsored
             </span>
           </div>
-          <div className="text-white text-xs sm:text-sm md:text-base font-bold leading-tight sm:leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+          <div className="text-white text-sm sm:text-base md:text-lg font-extrabold leading-tight sm:leading-snug drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] [text-shadow:_0_1px_0_rgb(0_0_0_/_80%)]">
             {currentAd.title}
           </div>
-          <div className={`${currentAd.highlightColor} text-xs sm:text-sm md:text-base font-extrabold leading-tight sm:leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]`}>
+          <div className={`${currentAd.highlightColor} text-sm sm:text-base md:text-lg font-black leading-tight sm:leading-snug drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] [text-shadow:_0_1px_0_rgb(0_0_0_/_80%)]`}>
             {currentAd.highlight}
           </div>
         </div>
