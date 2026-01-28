@@ -13,10 +13,10 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
   };
   
   return (
-    <div className="bee-card-premium p-4 mb-4 max-w-4xl mx-auto animate-pop-in">
-      <Separator className="my-4" />
+    <div className="bee-card-premium p-5 md:p-6 mb-4 max-w-4xl mx-auto animate-pop-in">
+      <Separator className="my-4 md:my-5" />
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-2 sm:px-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 px-2 sm:px-4">
         <Button 
           onClick={() => navigateTo("/businesses")}
           variant="outline" 

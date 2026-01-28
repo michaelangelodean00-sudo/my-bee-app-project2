@@ -103,7 +103,7 @@ const Post = ({
   
   return (
     <>
-      <div className="bee-card p-4 mb-4 group relative overflow-hidden hover:animate-[morphism_3s_ease-in-out_infinite] animate-fade-in-up opacity-0" style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}>
+      <div className="bee-card p-4 md:p-5 mb-4 group relative overflow-hidden hover:animate-[morphism_3s_ease-in-out_infinite] animate-fade-in-up opacity-0" style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}>
         <div className="flex justify-between items-start">
           <div className="flex gap-3">
             <Avatar className="transition-transform duration-300 hover:scale-110">
@@ -152,7 +152,7 @@ const Post = ({
           </div>
         </div>
         
-        <Separator className="my-3" />
+        <Separator className="my-3 md:my-4" />
         
         <div className="flex justify-between relative">
           <div className="relative">
