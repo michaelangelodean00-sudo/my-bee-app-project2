@@ -18,7 +18,7 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
       <div className="flex flex-col sm:hidden px-3 pt-10 pb-2 gap-2">
         <div className="flex items-center justify-between">
           <div className="flex-shrink-0 animate-logo-entrance">
-            <Logo className="scale-90" />
+            <Logo className="scale-100" />
           </div>
           <Button
             variant="ghost"
