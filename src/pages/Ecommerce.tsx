@@ -227,7 +227,7 @@ const Ecommerce = () => {
   };
   
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <Header toggleMobileSidebar={() => {}} />
       
       <div className="flex">
@@ -236,9 +236,9 @@ const Ecommerce = () => {
         <div className="flex-1 max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold text-bee-black">Marketplace</h1>
+              <h1 className="heading-small">Marketplace</h1>
               {isAdmin && (
-                <Badge variant="secondary" className="bg-red-100 text-red-800">
+                <Badge variant="secondary" className="bg-destructive/10 text-destructive">
                   <Shield size={14} className="mr-1" />
                   Admin Mode
                 </Badge>
@@ -246,7 +246,7 @@ const Ecommerce = () => {
             </div>
             <Dialog open={openDialog} onOpenChange={setOpenDialog}>
               <DialogTrigger asChild>
-                <Button className="bg-bee-blue hover:bg-bee-blue/90">
+                <Button variant="premium">
                   <Upload size={16} className="mr-2" />
                   List an Item
                 </Button>
@@ -393,7 +393,7 @@ const Ecommerce = () => {
                     </FormItem>
                     
                     <DialogFooter>
-                      <Button type="submit" className="w-full bg-bee-blue hover:bg-bee-blue/90">
+                      <Button type="submit" className="w-full" variant="premium">
                         List Product
                       </Button>
                     </DialogFooter>
@@ -424,7 +424,7 @@ const Ecommerce = () => {
                 <Button variant="outline" onClick={() => setMessageDialog(false)}>
                   Cancel
                 </Button>
-                <Button onClick={sendMessage} className="bg-bee-blue hover:bg-bee-blue/90">
+                <Button onClick={sendMessage} variant="premium">
                   <MessageCircle size={16} className="mr-2" />
                   Send Message
                 </Button>
@@ -475,15 +475,15 @@ const Ecommerce = () => {
                     )}
                   />
                   
-                  <DialogFooter>
-                    <Button variant="outline" onClick={() => setEditDialog(false)}>
-                      Cancel
-                    </Button>
-                    <Button type="submit" className="bg-bee-blue hover:bg-bee-blue/90">
-                      <Edit size={16} className="mr-2" />
-                      Update Product
-                    </Button>
-                  </DialogFooter>
+                    <DialogFooter>
+                      <Button variant="outline" onClick={() => setEditDialog(false)}>
+                        Cancel
+                      </Button>
+                      <Button type="submit" variant="premium">
+                        <Edit size={16} className="mr-2" />
+                        Update Product
+                      </Button>
+                    </DialogFooter>
                 </form>
               </Form>
             </DialogContent>
@@ -531,14 +531,15 @@ const Ecommerce = () => {
                 </div>
               ) : (
                 <div className="text-center py-12 px-4">
-                  <div className="bg-gray-100 rounded-xl p-8 max-w-lg mx-auto">
-                    <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                    <h3 className="mt-4 text-lg font-medium text-gray-900">No products listed yet</h3>
-                    <p className="mt-2 text-sm text-gray-500">
+                  <div className="bg-muted rounded-xl p-8 max-w-lg mx-auto">
+                    <Upload className="mx-auto h-12 w-12 text-muted-foreground" />
+                    <h3 className="mt-4 heading-xs">No products listed yet</h3>
+                    <p className="mt-2 body-small text-muted-foreground">
                       Get started by listing your first item on the marketplace.
                     </p>
                     <Button 
-                      className="mt-6 bg-bee-blue hover:bg-bee-blue/90"
+                      className="mt-6"
+                      variant="premium"
                       onClick={() => setOpenDialog(true)}
                     >
                       List an Item
@@ -620,14 +621,15 @@ const Ecommerce = () => {
                              </div>
                            ) : (
                             <div className="text-center py-12 px-4">
-                              <div className="bg-gray-100 rounded-xl p-8 max-w-lg mx-auto">
-                                {subCategory.icon && React.cloneElement(subCategory.icon, { className: "mx-auto h-12 w-12 text-gray-400" })}
-                                <h3 className="mt-4 text-lg font-medium text-gray-900">No {subCategory.name} listed yet</h3>
-                                <p className="mt-2 text-sm text-gray-500">
+                              <div className="bg-muted rounded-xl p-8 max-w-lg mx-auto">
+                                {subCategory.icon && React.cloneElement(subCategory.icon, { className: "mx-auto h-12 w-12 text-muted-foreground" })}
+                                <h3 className="mt-4 heading-xs">No {subCategory.name} listed yet</h3>
+                                <p className="mt-2 body-small text-muted-foreground">
                                   Be the first to list a {subCategory.name.toLowerCase()} item on the marketplace.
                                 </p>
                                 <Button 
-                                  className="mt-6 bg-bee-blue hover:bg-bee-blue/90"
+                                  className="mt-6"
+                                  variant="premium"
                                   onClick={() => setOpenDialog(true)}
                                 >
                                   List an Item
@@ -662,14 +664,15 @@ const Ecommerce = () => {
                      </div>
                    ) : (
                     <div className="text-center py-12 px-4">
-                      <div className="bg-gray-100 rounded-xl p-8 max-w-lg mx-auto">
-                        {category.icon && React.cloneElement(category.icon, { className: "mx-auto h-12 w-12 text-gray-400" })}
-                        <h3 className="mt-4 text-lg font-medium text-gray-900">No {category.name} listed yet</h3>
-                        <p className="mt-2 text-sm text-gray-500">
+                      <div className="bg-muted rounded-xl p-8 max-w-lg mx-auto">
+                        {category.icon && React.cloneElement(category.icon, { className: "mx-auto h-12 w-12 text-muted-foreground" })}
+                        <h3 className="mt-4 heading-xs">No {category.name} listed yet</h3>
+                        <p className="mt-2 body-small text-muted-foreground">
                           Be the first to list a {category.name.toLowerCase()} item on the marketplace.
                         </p>
                         <Button 
-                          className="mt-6 bg-bee-blue hover:bg-bee-blue/90"
+                          className="mt-6"
+                          variant="premium"
                           onClick={() => setOpenDialog(true)}
                         >
                           List an Item
@@ -739,17 +742,17 @@ const ProductCard = ({
           className="w-full h-full object-cover"
         />
         {product.isFeatured && (
-          <Badge className="absolute top-2 left-2 bg-bee-yellow text-bee-black">
+          <Badge className="absolute top-2 left-2 bg-primary text-primary-foreground">
             Featured
           </Badge>
         )}
         {product.isUserProduct && (
-          <Badge className="absolute top-2 left-2 bg-bee-blue text-white">
+          <Badge className="absolute top-2 left-2 bg-secondary text-secondary-foreground">
             New Listing
           </Badge>
         )}
         {isUserBlocked && (
-          <Badge className="absolute top-2 left-16 bg-red-500 text-white">
+          <Badge className="absolute top-2 left-16 bg-destructive text-destructive-foreground">
             Blocked User
           </Badge>
         )}
@@ -815,11 +818,11 @@ const ProductCard = ({
           )}
           <button 
             onClick={() => onToggleWishlist?.(product.id)}
-            className="bg-white p-2 rounded-full hover:bg-gray-100"
+            className="bg-card p-2 rounded-full hover:bg-accent"
           >
             <Heart 
               size={16} 
-              className={isInWishlist ? "text-red-500 fill-red-500" : "text-gray-600"} 
+              className={isInWishlist ? "text-destructive fill-destructive" : "text-muted-foreground"} 
             />
           </button>
         </div>
@@ -829,18 +832,18 @@ const ProductCard = ({
         
         {/* Enhanced category display */}
         <div className="flex items-center justify-between mt-2">
-          <div className="flex items-center bg-gray-100 px-3 py-1.5 rounded-full">
+          <div className="flex items-center bg-muted px-3 py-1.5 rounded-full">
             {categoryIcon && React.cloneElement(categoryIcon, { 
               size: 16, 
-              className: "text-bee-blue mr-2" 
+              className: "text-primary mr-2" 
             })}
-            <span className="text-sm font-medium text-gray-700">
+            <span className="body-small text-muted-foreground">
               {categoryName}
             </span>
           </div>
           
           {/* Price moved to the right for better balance */}
-          <div className="text-lg font-bold text-bee-blue">
+          <div className="text-lg font-bold text-primary">
             ${product.price.toFixed(2)}
           </div>
         </div>
@@ -851,16 +854,16 @@ const ProductCard = ({
             <Star 
               key={i} 
               size={14} 
-              className={i < Math.floor(product.rating) ? "text-bee-yellow fill-bee-yellow" : "text-gray-300"} 
+              className={i < Math.floor(product.rating) ? "text-primary fill-primary" : "text-muted-foreground/30"} 
             />
           ))}
-          <span className="ml-1 text-sm text-gray-600">{product.rating}</span>
+          <span className="ml-1 body-small text-muted-foreground">{product.rating}</span>
         </div>
         
         {product.description && showDetails && (
           <div className="mt-2">
-            <h4 className="font-semibold text-sm">Description:</h4>
-            <p className="text-sm text-gray-600 mt-1">{product.description}</p>
+            <h4 className="label-large">Description:</h4>
+            <p className="body-small text-muted-foreground mt-1">{product.description}</p>
           </div>
         )}
       </CardContent>

@@ -95,20 +95,20 @@ const ProfileSettings = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+    <div className="min-h-screen bg-background transition-colors">
       <Header toggleMobileSidebar={toggleMobileSidebar} />
       
       <div className="flex">
         {/* Mobile Sidebar Overlay */}
         {mobileSidebarOpen && (
           <div 
-            className="fixed inset-0 bg-black/50 z-40 md:hidden"
+            className="fixed inset-0 bg-foreground/40 backdrop-blur-sm z-40 md:hidden"
             onClick={toggleMobileSidebar}
           />
         )}
         
         {/* Mobile Sidebar */}
-        <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 transform ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 ease-in-out md:hidden`}>
+        <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-card transform ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 ease-in-out md:hidden`}>
           <Sidebar />
         </div>
         
@@ -118,7 +118,7 @@ const ProfileSettings = () => {
         {/* Main Content */}
         <div className="flex-1 max-w-6xl mx-auto py-6 px-4">
           <Tabs defaultValue="general" orientation="vertical" className="flex flex-col md:flex-row gap-10">
-            <TabsList className="sticky top-36 self-start flex flex-col items-start h-auto bg-transparent p-0 border-r dark:border-gray-800 w-full md:w-48 shrink-0 space-y-1">
+            <TabsList className="sticky top-36 self-start flex flex-col items-start h-auto bg-transparent p-0 border-r border-border w-full md:w-48 shrink-0 space-y-1">
               <TabsTrigger value="general" className="w-full justify-start">
                 <User size={16} className="mr-2" />
                 General
@@ -147,8 +147,8 @@ const ProfileSettings = () => {
 
             <div className="flex-1">
               <div className="mb-6">
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Settings</h1>
-                <p className="text-gray-600 dark:text-gray-400">Manage your account settings and preferences</p>
+                <h1 className="heading-large">Settings</h1>
+                <p className="body-medium text-muted-foreground">Manage your account settings and preferences</p>
               </div>
               {/* General Settings */}
               <TabsContent value="general" className="space-y-6 mt-0">

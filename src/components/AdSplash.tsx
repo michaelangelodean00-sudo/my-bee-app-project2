@@ -443,7 +443,7 @@ const AdSplash = () => {
   };
   
   return (
-    <div className="relative bg-bee-blue/90 text-white overflow-hidden flex justify-center z-0">
+    <div className="relative bg-secondary text-secondary-foreground overflow-hidden flex justify-center z-0">
       <Carousel 
         className="w-full max-w-7xl mx-auto py-8" 
         opts={{ 
@@ -510,7 +510,7 @@ const AdSplash = () => {
                   <div className="flex flex-wrap gap-3 items-center">
                     <button 
                       onClick={() => handleGetMoreInfo(ad.id, ad.linkUrl)}
-                      className="bg-bee-yellow text-bee-black px-6 py-3 rounded-lg font-semibold text-lg hover:bg-bee-yellow/90 active:scale-95 transition-all cursor-pointer shadow-md touch-manipulation min-h-[44px]"
+                      className="bg-primary text-primary-foreground px-6 py-3 rounded-lg font-semibold text-lg hover:bg-primary/90 active:scale-95 transition-all cursor-pointer shadow-md touch-manipulation min-h-[44px]"
                     >
                       Get More Info
                     </button>
@@ -647,7 +647,7 @@ const AdSplash = () => {
                       handleGetMoreInfo(magnifyAd.id, magnifyAd.linkUrl);
                       setMagnifyAd(null);
                     }}
-                    className="bg-bee-yellow text-bee-black px-5 py-2 rounded-lg font-semibold hover:bg-bee-yellow/90 active:scale-95 transition-all text-sm"
+                    className="bg-primary text-primary-foreground px-5 py-2 rounded-lg font-semibold hover:bg-primary/90 active:scale-95 transition-all text-sm"
                   >
                     Get More Info
                   </button>

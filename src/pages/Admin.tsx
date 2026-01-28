@@ -16,20 +16,20 @@ const Admin = () => {
   };
   
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <Header toggleMobileSidebar={toggleMobileSidebar} />
       
       <div className="flex">
         {/* Mobile Sidebar Overlay */}
         {mobileSidebarOpen && (
           <div 
-            className="fixed inset-0 bg-black/50 z-40 md:hidden"
+            className="fixed inset-0 bg-foreground/40 backdrop-blur-sm z-40 md:hidden"
             onClick={toggleMobileSidebar}
           />
         )}
         
         {/* Mobile Sidebar */}
-        <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white transform ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 ease-in-out md:hidden`}>
+        <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-card transform ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 ease-in-out md:hidden`}>
           <Sidebar />
         </div>
         
@@ -40,8 +40,8 @@ const Admin = () => {
         <div className="flex-1 w-full max-w-5xl mx-auto py-6 px-4">
           <div className="bee-card p-6">
             <div className="flex items-center gap-3 mb-6">
-              <Shield className="h-8 w-8 text-bee-blue" />
-              <h1 className="text-3xl font-bold text-gray-900">Admin Panel</h1>
+              <Shield className="h-8 w-8 text-primary" />
+              <h1 className="heading-large">Admin Panel</h1>
             </div>
             
             <Tabs defaultValue="videos" className="w-full">
@@ -88,19 +88,19 @@ const Admin = () => {
               </TabsContent>
               
               <TabsContent value="users" className="mt-6">
-                <div className="text-center py-8 text-gray-500">
+                <div className="text-center py-8 text-muted-foreground">
                   User management coming soon...
                 </div>
               </TabsContent>
               
               <TabsContent value="posts" className="mt-6">
-                <div className="text-center py-8 text-gray-500">
+                <div className="text-center py-8 text-muted-foreground">
                   Post management coming soon...
                 </div>
               </TabsContent>
               
               <TabsContent value="settings" className="mt-6">
-                <div className="text-center py-8 text-gray-500">
+                <div className="text-center py-8 text-muted-foreground">
                   Admin settings coming soon...
                 </div>
               </TabsContent>
