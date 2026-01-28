@@ -13,48 +13,8 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
   const hasAnyNotifications = hasNewBusinessVideos || hasNewEventsVideos || hasNewEcommerceItems;
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-card/95 backdrop-blur-md border-b border-border animate-fade-in-down overflow-hidden">
-      {/* Honeycomb pattern backdrop */}
-      <div className="absolute inset-0 -z-10 opacity-[0.04] dark:opacity-[0.06]">
-        <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="honeycomb-header" x="0" y="0" width="56" height="100" patternUnits="userSpaceOnUse">
-              <path 
-                d="M28 66L0 50L0 16L28 0L56 16L56 50L28 66Z" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="1"
-                className="text-amber-500"
-              />
-              <path 
-                d="M28 166L0 150L0 116L28 100L56 116L56 150L28 166Z" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="1"
-                className="text-amber-500"
-              />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#honeycomb-header)" />
-        </svg>
-      </div>
-      
-      {/* Animated gradient overlay */}
-      <div 
-        className="absolute inset-0 -z-10 bg-gradient-to-r from-amber-500/5 via-transparent to-amber-500/5"
-        style={{
-          animation: 'gradient-shift 8s ease-in-out infinite',
-        }}
-      />
-      
-      <style>{`
-        @keyframes gradient-shift {
-          0%, 100% { opacity: 0.3; background-position: 0% 50%; }
-          50% { opacity: 0.6; background-position: 100% 50%; }
-        }
-      `}</style>
-      
-      <div className="flex items-center w-full px-2 sm:px-4 pt-12 pb-3 sm:py-3 gap-2 sm:gap-4 min-h-[96px] sm:min-h-[72px] md:min-h-[80px] relative">
+    <header className="sticky top-0 z-50 w-full bg-card/95 backdrop-blur-md border-b border-border animate-fade-in-down">
+      <div className="flex items-center w-full px-2 sm:px-4 pt-12 pb-3 sm:py-3 gap-2 sm:gap-4 min-h-[96px] sm:min-h-[72px] md:min-h-[80px]">
         {/* Logo - always visible, larger on mobile */}
         <div className="flex-shrink-0 animate-logo-entrance">
           <Logo className="scale-100 sm:scale-100" />
