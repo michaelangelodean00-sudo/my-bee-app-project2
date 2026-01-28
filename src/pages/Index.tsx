@@ -99,7 +99,6 @@ const Index = () => {
       
       <Header toggleMobileSidebar={toggleMobileSidebar} />
       <GreetingBanner />
-      <AdSplash />
       
       <div className="flex relative">
         {/* Mobile Sidebar Overlay */}
@@ -141,8 +140,14 @@ const Index = () => {
         {/* Main Content */}
         {/* Sticky Navigation Section - Business, Events, E-commerce */}
         <div className="flex-1 flex flex-col min-h-0">
+          {/* Primary: Ad Carousel */}
+          <div className="w-full">
+            <AdSplash />
+          </div>
+          
+          {/* Secondary: Category Navigation */}
           <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border flex-shrink-0">
-            <div className="w-full max-w-3xl mx-auto px-4 md:px-6 py-4">
+            <div className="w-full max-w-3xl mx-auto px-4 md:px-6 py-3">
               <section aria-label="Navigate to sections">
                 <CreatePost onPostCreated={handleNewPost} />
               </section>
