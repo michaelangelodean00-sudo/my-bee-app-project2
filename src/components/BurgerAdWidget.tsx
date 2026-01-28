@@ -131,7 +131,7 @@ const BurgerAdWidget = () => {
             src={currentAd.imageSrc}
             alt={currentAd.altText} 
             className={`
-              relative w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 
+              relative w-24 h-14 sm:w-28 sm:h-16 md:w-32 md:h-20 
               rounded-lg sm:rounded-xl object-cover
               border-2 border-white/30
               shadow-lg
