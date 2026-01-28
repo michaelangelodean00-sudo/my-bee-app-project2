@@ -14,34 +14,24 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-card/95 backdrop-blur-md border-b border-border animate-fade-in-down">
-      {/* Mobile: Compact layout with bee accent */}
-      <div className="flex flex-col sm:hidden px-3 pt-8 pb-2 gap-1">
+      {/* Mobile: Stacked layout for better ad readability */}
+      <div className="flex flex-col sm:hidden px-3 pt-10 pb-2 gap-2">
         <div className="flex items-center justify-between">
           <div className="flex-shrink-0 animate-logo-entrance">
             <Logo className="scale-100" />
           </div>
-          
-          {/* Decorative bee honeycomb accent */}
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-0.5 opacity-60">
-              <div className="w-2 h-2 bg-primary/40 rotate-45 rounded-[2px]" />
-              <div className="w-2.5 h-2.5 bg-primary/60 rotate-45 rounded-[2px]" />
-              <div className="w-2 h-2 bg-primary/40 rotate-45 rounded-[2px]" />
-            </div>
-            
-            <Button
-              variant="ghost"
-              size="icon"
-              className="relative w-10 h-10 rounded-lg hover:bg-accent transition-colors"
-              onClick={toggleMobileSidebar}
-            >
-              <Menu size={22} className="text-foreground" />
-              {hasAnyNotifications && (
-                <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-destructive rounded-full" />
-              )}
-              <span className="sr-only">Open menu</span>
-            </Button>
-          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="relative w-10 h-10 rounded-lg hover:bg-accent transition-colors"
+            onClick={toggleMobileSidebar}
+          >
+            <Menu size={22} className="text-foreground" />
+            {hasAnyNotifications && (
+              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-destructive rounded-full" />
+            )}
+            <span className="sr-only">Open menu</span>
+          </Button>
         </div>
         <div className="w-full animate-fade-in" style={{ animationDelay: '0.1s' }}>
           <BurgerAdWidget />
