@@ -22,7 +22,7 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
         
         
         {/* Ad widget - constrained width on mobile to not push logo out */}
-        <div className="flex-1 min-w-0 max-w-[180px] xs:max-w-[220px] sm:max-w-none md:max-w-lg lg:max-w-xl animate-fade-in" style={{ animationDelay: '0.2s' }}>
+        <div className="flex-1 min-w-0 max-w-[220px] xs:max-w-[280px] sm:max-w-none md:max-w-lg lg:max-w-xl animate-fade-in" style={{ animationDelay: '0.2s' }}>
           <BurgerAdWidget />
         </div>
         
