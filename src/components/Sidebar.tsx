@@ -22,8 +22,8 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
   ];
 
   return (
-    <aside className={`w-full bg-transparent transition-all duration-300 ${className}`}>
-      <div className="p-4">
+    <aside className={`w-full bg-card transition-all duration-300 ${className}`}>
+      <div className="p-4 pt-2">
         {/* Mobile Search Bar */}
         <div className="md:hidden mb-4 pb-4 border-b border-border">
           <SearchBar />
@@ -39,12 +39,11 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
                 key={item.path}
                 to={item.path}
                 className={cn(
-                  "flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-200 min-h-[48px] group animate-slide-in-left opacity-0",
+                  "flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-200 min-h-[48px] group",
                   isActive
                     ? "bg-primary/10 text-primary border border-primary/20"
                     : "text-muted-foreground hover:bg-accent hover:text-foreground hover:translate-x-1"
                 )}
-                style={{ animationDelay: `${index * 0.05}s`, animationFillMode: 'forwards' }}
               >
                 <div className="flex items-center gap-3 min-w-0 flex-1">
                   <Icon size={20} className={cn(

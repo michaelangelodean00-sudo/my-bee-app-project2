@@ -131,12 +131,12 @@ const Index = () => {
           </div>
         </div>
         
-        {/* Tablet & Desktop Sidebar - Fixed position */}
-        <div className="hidden md:block md:w-64 flex-shrink-0">
-          <div className="fixed top-16 left-0 w-64 h-[calc(100vh-4rem)] overflow-y-auto bg-card/80 backdrop-blur-sm border-r border-border">
+        {/* Tablet & Desktop Sidebar - Sticky position relative to flex container */}
+        <aside className="hidden md:block w-64 flex-shrink-0 sticky top-0 self-start h-fit">
+          <div className="bg-card border-r border-border overflow-y-auto max-h-[calc(100vh-2rem)]">
             <Sidebar className="h-full" />
           </div>
-        </div>
+        </aside>
         
         {/* Main Content */}
         {/* Sticky Navigation Section - Business, Events, E-commerce */}
