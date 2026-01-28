@@ -150,11 +150,11 @@ const Index = () => {
           </div>
           
           <PullToRefresh onRefresh={handleRefresh} className="flex-1 overflow-y-auto">
-            <main className="w-full max-w-3xl mx-auto py-8 px-4 md:px-6 relative z-10" role="main" id="main-content">
+            <main className="w-full max-w-3xl mx-auto py-6 md:py-10 px-4 md:px-6 relative z-10 space-y-6 md:space-y-8" role="main" id="main-content">
           
           {/* Video Upload Button */}
           <ScrollReveal direction="up" delay={100}>
-            <section aria-label="Upload video content" className="my-6">
+            <section aria-label="Upload video content">
               <Card 
                 className="p-4 cursor-pointer hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 bg-card border-primary/15 w-fit mx-auto group"
                 onClick={() => navigate('/upload-video')}
@@ -171,16 +171,16 @@ const Index = () => {
           
           {/* Ad Widget */}
           <ScrollReveal direction="fade" delay={150}>
-            <section className="my-6" aria-label="Sponsored content">
-              <p className="text-xs text-muted-foreground mb-3 text-center font-medium tracking-wide uppercase">Sponsored</p>
-              <EnhancedCard variant="default" className="p-4">
+            <section aria-label="Sponsored content">
+              <p className="text-xs text-muted-foreground mb-3 md:mb-4 text-center font-medium tracking-wide uppercase">Sponsored</p>
+              <EnhancedCard variant="default" className="p-4 md:p-5">
                 <McdonaldsAdWidget />
               </EnhancedCard>
             </section>
           </ScrollReveal>
           
           {/* Posts Section */}
-          <section aria-label="Social media posts" className="space-y-4">
+          <section aria-label="Social media posts" className="space-y-5 md:space-y-6">
             {isLoading ? (
               <PageLoader type="posts" />
             ) : (
