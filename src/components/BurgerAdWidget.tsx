@@ -37,6 +37,50 @@ const ads: AdContent[] = [
     highlightColor: "text-sky-200",
     linkUrl: "https://www.toyota.com",
     accentGlow: "shadow-blue-500/30"
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=640&h=360&q=90&fm=webp&fit=crop",
+    altText: "Restaurant Special",
+    title: "Tonight only",
+    highlight: "50% Off Dinner",
+    gradientFrom: "from-rose-500",
+    gradientTo: "to-pink-600",
+    highlightColor: "text-rose-200",
+    linkUrl: "https://www.opentable.com",
+    accentGlow: "shadow-rose-500/30"
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=640&h=360&q=90&fm=webp&fit=crop",
+    altText: "Spa Retreat",
+    title: "Relax & unwind",
+    highlight: "Spa Day Packages",
+    gradientFrom: "from-teal-500",
+    gradientTo: "to-emerald-600",
+    highlightColor: "text-teal-200",
+    linkUrl: "https://www.spafinder.com",
+    accentGlow: "shadow-teal-500/30"
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=640&h=360&q=90&fm=webp&fit=crop",
+    altText: "Water Sports",
+    title: "Adventure awaits",
+    highlight: "Water Sports 20% Off",
+    gradientFrom: "from-cyan-500",
+    gradientTo: "to-blue-600",
+    highlightColor: "text-cyan-200",
+    linkUrl: "https://www.watersports.com",
+    accentGlow: "shadow-cyan-500/30"
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=640&h=360&q=90&fm=webp&fit=crop",
+    altText: "Coffee Shop",
+    title: "Fresh brewed",
+    highlight: "Free Coffee Today",
+    gradientFrom: "from-stone-600",
+    gradientTo: "to-amber-700",
+    highlightColor: "text-amber-200",
+    linkUrl: "https://www.starbucks.com",
+    accentGlow: "shadow-stone-500/30"
   }
 ];
 
