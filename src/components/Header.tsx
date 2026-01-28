@@ -15,7 +15,7 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
   return (
     <header className="sticky top-0 z-50 w-full bg-card/95 backdrop-blur-md border-b border-border animate-fade-in-down">
       {/* Mobile: Stacked layout for better ad readability */}
-      <div className="flex flex-col sm:hidden px-3 pt-10 pb-2 gap-1">
+      <div className="flex flex-col sm:hidden px-3 pt-10 pb-2 gap-2">
         <div className="flex items-center justify-between">
           <div className="flex-shrink-0 animate-logo-entrance">
             <Logo className="scale-100" />
@@ -32,12 +32,6 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
             )}
             <span className="sr-only">Open menu</span>
           </Button>
-        </div>
-        {/* Decorative honey-themed divider */}
-        <div className="flex items-center gap-2 py-1">
-          <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-primary/50" />
-          <div className="w-1.5 h-1.5 rounded-full bg-primary/40" />
-          <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent via-primary/30 to-primary/50" />
         </div>
         <div className="w-full animate-fade-in" style={{ animationDelay: '0.1s' }}>
           <BurgerAdWidget />
