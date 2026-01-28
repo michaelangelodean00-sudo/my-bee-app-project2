@@ -221,7 +221,7 @@ const Post = ({
             <Button variant="outline" onClick={() => setMessageDialog(false)}>
               Cancel
             </Button>
-            <Button onClick={sendMessage} className="bg-bee-blue hover:bg-bee-blue/90">
+            <Button onClick={sendMessage} variant="premium">
               <MessageSquare size={16} className="mr-2" />
               Send Message
             </Button>

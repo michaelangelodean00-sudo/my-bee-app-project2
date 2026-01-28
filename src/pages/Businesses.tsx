@@ -206,7 +206,7 @@ const Businesses = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background">
       <Header toggleMobileSidebar={() => {}} />
       
       <div className="flex relative">
@@ -219,14 +219,13 @@ const Businesses = () => {
         
         {/* Main Content - TikTok Style Feed */}
         <div className="flex-1 overflow-y-auto h-screen snap-y snap-mandatory" ref={containerRef}>
-          <div className="sticky top-0 bg-black z-10">
+          <div className="sticky top-0 bg-card/95 backdrop-blur-sm z-10 border-b border-border">
             <div className="flex items-center justify-between px-4 py-4">
-              <h1 className="text-2xl font-bold text-white">Business Videos</h1>
+              <h1 className="heading-small">Business Videos</h1>
               <Button
                 onClick={toggleAutoScroll}
                 variant="outline"
                 size="sm"
-                className="bg-black text-white border-gray-600 hover:bg-gray-800"
               >
                 {isAutoScrolling ? (
                   <>
@@ -245,18 +244,18 @@ const Businesses = () => {
             <div className="px-4 pb-2 flex gap-2">
               <span className={`font-semibold px-3 py-1 rounded ${(() => {
                 const currentVideo = videosWithAds[currentVideoIndex];
-                if (!currentVideo) return 'bg-gray-600 text-white';
+                if (!currentVideo) return 'bg-muted text-muted-foreground';
                 
                 const currentIsAd = isAd(currentVideo);
                 const platform = currentIsAd ? 'ad' : currentVideo.platform;
                 
                 switch (platform) {
-                  case 'youtube': return 'bg-red-500 text-white';
+                  case 'youtube': return 'bg-destructive text-destructive-foreground';
                   case 'instagram': return 'bg-gradient-to-r from-purple-500 to-pink-500 text-white';
                   case 'tiktok': return 'bg-gradient-to-r from-blue-500 via-purple-500 to-red-500 text-white';
-                  case 'facebook': return 'bg-blue-600 text-white';
-                  case 'ad': return 'bg-green-500 text-white';
-                  default: return 'bg-gray-600 text-white';
+                  case 'facebook': return 'bg-secondary text-secondary-foreground';
+                  case 'ad': return 'bg-primary text-primary-foreground';
+                  default: return 'bg-muted text-muted-foreground';
                 }
               })()}`}>
                 {(() => {
@@ -267,11 +266,11 @@ const Businesses = () => {
                 })()}
               </span>
               {videosWithAds[currentVideoIndex] && !isAd(videosWithAds[currentVideoIndex]) && (videosWithAds[currentVideoIndex] as BusinessVideo).isNew && (
-                <span className="bg-green-500 text-white font-semibold px-3 py-1 rounded animate-pulse">NEW</span>
+                <span className="bg-primary text-primary-foreground font-semibold px-3 py-1 rounded animate-pulse">NEW</span>
               )}
             </div>
             <div className="px-4 pb-4">
-              <p className="text-sm text-gray-300 text-center italic">
+              <p className="body-small text-muted-foreground text-center italic">
                 * Videos are subject to approval by Bee App admin before posting
               </p>
             </div>

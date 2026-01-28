@@ -15,17 +15,17 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4">
       <img 
         src="/lovable-uploads/new-bee-logo.png" 
         alt="B.E.E App Bahamas Logo" 
         className="h-24 mb-6"
       />
-      <h1 className="text-4xl font-bold mb-4 text-bee-black">Page Not Found</h1>
-      <p className="text-xl text-gray-600 mb-8 text-center">
+      <h1 className="heading-large mb-4">Page Not Found</h1>
+      <p className="body-large text-muted-foreground mb-8 text-center">
         Oops! We couldn't find the page you're looking for.
       </p>
-      <Button asChild className="bg-bee-yellow text-bee-black hover:bg-bee-yellow/90">
+      <Button asChild variant="premium">
         <Link to="/">Return to Home</Link>
       </Button>
     </div>

@@ -62,11 +62,11 @@ const VideoUploadForm = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="w-full h-36 flex flex-col items-center justify-center gap-4 text-lg font-semibold border-bee-blue hover:bg-bee-blue/10 py-6">
-          <div className="rounded-full bg-gradient-to-br from-red-400 to-red-600 p-4 mb-2">
-            <Video size={48} className="text-white" />
+        <Button variant="outline" className="w-full h-36 flex flex-col items-center justify-center gap-4 text-lg font-semibold border-primary/30 hover:bg-destructive/10 py-6">
+          <div className="rounded-full bg-gradient-to-br from-destructive/80 to-destructive p-4 mb-2">
+            <Video size={48} className="text-destructive-foreground" />
           </div>
-          <span className="text-2xl sm:text-2xl lg:text-lg font-extrabold text-[#DC2626] tracking-wide">Video Upload</span>
+          <span className="text-2xl sm:text-2xl lg:text-lg font-extrabold text-destructive tracking-wide">Video Upload</span>
         </Button>
       </DialogTrigger>
       

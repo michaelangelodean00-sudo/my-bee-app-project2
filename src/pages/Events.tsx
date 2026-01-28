@@ -221,7 +221,7 @@ const Events = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background">
       <Header toggleMobileSidebar={() => {}} />
       
       <div className="flex relative">
@@ -234,14 +234,13 @@ const Events = () => {
         
         {/* Main Content - TikTok Style Feed */}
         <div className="flex-1 overflow-y-auto h-screen snap-y snap-mandatory" ref={containerRef}>
-          <div className="sticky top-0 bg-black z-10">
+          <div className="sticky top-0 bg-card/95 backdrop-blur-sm z-10 border-b border-border">
             <div className="flex items-center justify-between px-4 py-4">
-              <h1 className="text-2xl font-bold text-white">Bahamas Event Videos</h1>
+              <h1 className="heading-small">Bahamas Event Videos</h1>
               <Button
                 onClick={toggleAutoScroll}
                 variant="outline"
                 size="sm"
-                className="bg-black text-white border-gray-600 hover:bg-gray-800"
               >
                 {isAutoScrolling ? (
                   <>
@@ -257,7 +256,7 @@ const Events = () => {
               </Button>
             </div>
             <div className="px-4 pb-4">
-              <p className="text-sm text-gray-300 text-center italic">
+              <p className="body-small text-muted-foreground text-center italic">
                 * Videos are subject to approval by Bee App admin before posting
               </p>
             </div>
