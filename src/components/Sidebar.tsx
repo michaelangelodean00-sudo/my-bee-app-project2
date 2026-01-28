@@ -50,13 +50,13 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
                     "flex-shrink-0 transition-all duration-200 group-hover:scale-110 lg:w-5 lg:h-5",
                     isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
                   )} />
-                  <div className="flex items-center gap-2 min-w-0 flex-1">
+                  <div className="flex items-center gap-1 lg:gap-2 min-w-0 flex-1">
                     <span className={cn(
-                      "font-heading font-medium text-[10px] lg:text-sm truncate tracking-tight",
+                      "font-heading font-medium text-[9px] lg:text-sm truncate tracking-tight",
                       isActive && "text-primary"
                     )}>{item.label}</span>
                     {item.hasNotification && (
-                      <Badge className="text-[10px] px-1.5 py-0.5 bg-destructive text-destructive-foreground font-semibold animate-pulse">
+                      <Badge className="hidden lg:inline-flex text-[10px] px-1.5 py-0.5 bg-destructive text-destructive-foreground font-semibold animate-pulse">
                         NEW
                       </Badge>
                     )}
