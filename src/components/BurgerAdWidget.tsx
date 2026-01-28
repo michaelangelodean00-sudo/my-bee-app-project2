@@ -17,7 +17,7 @@ interface AdContent {
 
 const ads: AdContent[] = [
   {
-    imageSrc: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=256&h=256&q=90&fm=webp&fit=crop",
+    imageSrc: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=640&h=360&q=90&fm=webp&fit=crop",
     altText: "Burger Promotion",
     title: "Try the new",
     highlight: "Deluxe Burger",
@@ -28,7 +28,7 @@ const ads: AdContent[] = [
     accentGlow: "shadow-amber-500/30"
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1525328437458-0c4d4db7cab4?w=256&h=256&q=90&fm=webp&fit=crop",
+    imageSrc: "https://images.unsplash.com/photo-1525328437458-0c4d4db7cab4?w=640&h=360&q=90&fm=webp&fit=crop",
     altText: "Car Promotion",
     title: "New model",
     highlight: "Test drive today",
