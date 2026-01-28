@@ -16,8 +16,8 @@ const AnimatedBackground = () => {
 
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-      {/* Honeycomb pattern overlay */}
-      <div className="absolute inset-0 pattern-honeycomb-lg pattern-honeycomb-animated opacity-60" />
+      {/* Subtle gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
       
       {/* Gradient mask for depth */}
       <div 
@@ -47,18 +47,17 @@ const AnimatedBackground = () => {
         }}
       />
       
-      {/* Hexagonal floating particles */}
+      {/* Floating circular particles */}
       {particles.map((particle) => (
         <div
           key={particle.id}
-          className="absolute animate-float"
+          className="absolute animate-float rounded-full"
           style={{
             left: `${particle.x}%`,
             top: `${particle.y}%`,
             width: `${particle.size * 1.2}rem`,
             height: `${particle.size * 1.2}rem`,
-            background: 'hsl(var(--primary) / 0.1)',
-            clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
+            background: 'hsl(var(--primary) / 0.08)',
             animationDelay: `${particle.delay}s`,
             animationDuration: `${8 + Math.random() * 4}s`
           }}
