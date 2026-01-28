@@ -123,7 +123,7 @@ const BurgerAdWidget = () => {
       <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_30%_50%,white_1px,transparent_1px)] bg-[length:20px_20px]" />
       
       {/* Content */}
-      <div className="relative z-10 flex items-center w-full gap-1.5 sm:gap-3">
+      <div className="relative z-10 flex items-center w-full gap-2 sm:gap-3">
         {/* Image with glow ring and 3D lift effect */}
         <div className="relative flex-shrink-0" style={{ transform: 'translateZ(20px)' }}>
           <div className={`absolute inset-0 rounded-lg sm:rounded-xl bg-white/30 blur-md scale-110 opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
@@ -131,7 +131,7 @@ const BurgerAdWidget = () => {
             src={currentAd.imageSrc}
             alt={currentAd.altText} 
             className={`
-              relative w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14 
+              relative w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 
               rounded-lg sm:rounded-xl object-cover 
               border-2 border-white/30
               shadow-lg
@@ -145,19 +145,19 @@ const BurgerAdWidget = () => {
         
         {/* Text content with 3D lift */}
         <div 
-          className="min-w-0 flex-1 bg-black/30 sm:bg-transparent rounded-md sm:rounded-lg px-1.5 sm:px-2 py-1 sm:py-1.5 sm:p-0"
+          className="min-w-0 flex-1 rounded-md sm:rounded-lg px-2 sm:px-2 py-1.5 sm:py-1.5 sm:p-0"
           style={{ transform: 'translateZ(15px)' }}
         >
-          <div className="flex items-center gap-0.5 sm:gap-1 mb-0.5 overflow-hidden">
-            <Sparkles size={8} className="text-white flex-shrink-0 sm:w-[10px] sm:h-[10px]" />
-            <span className="text-[8px] sm:text-[10px] font-bold text-white uppercase tracking-normal sm:tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] truncate">
+          <div className="flex items-center gap-1 sm:gap-1 mb-1 overflow-hidden">
+            <Sparkles size={10} className="text-white flex-shrink-0 sm:w-[12px] sm:h-[12px]" />
+            <span className="text-[10px] sm:text-[11px] font-bold text-white uppercase tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
               Ad
             </span>
           </div>
-          <div className="text-white text-xs sm:text-sm md:text-base font-bold leading-tight sm:leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] [text-shadow:_0_1px_0_rgb(0_0_0_/_80%)]">
+          <div className="text-white text-sm sm:text-base md:text-lg font-bold leading-snug sm:leading-normal drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] [text-shadow:_0_1px_0_rgb(0_0_0_/_80%)]">
             {currentAd.title}
           </div>
-          <div className={`${currentAd.highlightColor} text-xs sm:text-sm md:text-base font-extrabold leading-tight sm:leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] [text-shadow:_0_1px_0_rgb(0_0_0_/_80%)]`}>
+          <div className={`${currentAd.highlightColor} text-sm sm:text-base md:text-lg font-extrabold leading-snug sm:leading-normal drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] [text-shadow:_0_1px_0_rgb(0_0_0_/_80%)]`}>
             {currentAd.highlight}
           </div>
         </div>
