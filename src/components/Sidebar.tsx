@@ -16,7 +16,7 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
     { icon: Home, label: "Home", path: "/" },
     { icon: Building2, label: "Business", path: "/businesses", hasNotification: hasNewBusinessVideos },
     { icon: Calendar, label: "Events", path: "/events", hasNotification: hasNewEventsVideos },
-    { icon: ShoppingCart, label: "E-commerce", path: "/ecommerce", hasNotification: hasNewEcommerceItems },
+    { icon: ShoppingCart, label: "Shop", path: "/ecommerce", hasNotification: hasNewEcommerceItems },
     { icon: Settings, label: "Settings", path: "/settings" },
     { icon: UserCircle, label: "Profile", path: "/profile" },
   ];
