@@ -145,7 +145,7 @@ const BurgerAdWidget = () => {
         
         {/* Text content with 3D lift */}
         <div 
-          className="min-w-0 flex-1 ml-6 sm:ml-8"
+          className="min-w-0 flex-1 ml-8 sm:ml-10"
           style={{ transform: 'translateZ(15px)' }}
         >
           <div className="flex items-center gap-1.5 mb-1.5">
