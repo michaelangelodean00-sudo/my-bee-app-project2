@@ -50,7 +50,7 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
           <div className="rounded-full bg-gradient-to-br from-green-400 to-green-600 p-4 mb-2 group-hover:animate-bounce group-active:animate-button-press">
             <ShoppingCart size={48} className="text-white transition-transform duration-300 group-hover:scale-110" />
           </div>
-          <span className="font-heading text-2xl sm:text-2xl lg:text-xl font-bold text-primary tracking-tight">E-commerce</span>
+          <span className="font-heading text-xl md:text-lg lg:text-xl font-bold text-primary tracking-tight">E-commerce</span>
         </Button>
       </div>
     </div>
