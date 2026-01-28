@@ -50,7 +50,6 @@ const ads: Ad[] = [
     description: "Taste the best of the Bahamas! Visit Bamboo Shack for delicious local cuisine and unbeatable deals.",
     imageUrl: bambooAd,
     linkUrl: "https://www.bambooshackbahamas.com"
-    
   },
   {
     id: "ad5",
@@ -58,6 +57,13 @@ const ads: Ad[] = [
     description: "Try kayaking, snorkeling, and diving with professional instructors. Equipment provided.",
     imageUrl: "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=1920&h=1080&q=90&fm=webp&fit=crop",
     linkUrl: "https://www.adventuresports.com"
+  },
+  {
+    id: "ad6",
+    title: "Beachfront Yoga Retreat",
+    description: "Find your zen with sunrise yoga sessions on pristine beaches. All skill levels welcome.",
+    imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1920&h=1080&q=90&fm=webp&fit=crop",
+    linkUrl: "https://www.beachyoga.com"
   },
   {
     id: "ad7",
@@ -79,6 +85,41 @@ const ads: Ad[] = [
     description: "Experience fine dining with breathtaking ocean views. Fresh seafood and local cuisine daily.",
     imageUrl: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&h=1080&q=90&fm=webp&fit=crop",
     linkUrl: "https://www.oceanfrontdining.com"
+  },
+  {
+    id: "ad10",
+    title: "Caribbean Boat Charters",
+    description: "Private yacht and catamaran rentals for unforgettable ocean adventures. Captain included.",
+    imageUrl: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1920&h=1080&q=90&fm=webp&fit=crop",
+    linkUrl: "https://www.caribbeanboats.com"
+  },
+  {
+    id: "ad11",
+    title: "Island Fitness Club",
+    description: "State-of-the-art gym with ocean views. Personal training and group classes available.",
+    imageUrl: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&h=1080&q=90&fm=webp&fit=crop",
+    linkUrl: "https://www.islandfitness.com"
+  },
+  {
+    id: "ad12",
+    title: "Sunset Cruise Experience",
+    description: "Sail into the sunset with live music, cocktails, and breathtaking Caribbean views.",
+    imageUrl: "https://images.unsplash.com/photo-1502680390725-be18f3d49a3a?w=1920&h=1080&q=90&fm=webp&fit=crop",
+    linkUrl: "https://www.sunsetcruise.com"
+  },
+  {
+    id: "ad13",
+    title: "Local Coffee Roasters",
+    description: "Freshly roasted Caribbean coffee beans. Visit our café or order online for delivery.",
+    imageUrl: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1920&h=1080&q=90&fm=webp&fit=crop",
+    linkUrl: "https://www.islandcoffee.com"
+  },
+  {
+    id: "ad14",
+    title: "Scuba Diving Adventures",
+    description: "Explore vibrant coral reefs and underwater caves. PADI certified instructors on staff.",
+    imageUrl: "https://images.unsplash.com/photo-1544551763-77ef2d0cfc6c?w=1920&h=1080&q=90&fm=webp&fit=crop",
+    linkUrl: "https://www.divebahamas.com"
   }
 ];
 
