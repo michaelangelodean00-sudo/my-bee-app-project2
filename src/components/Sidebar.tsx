@@ -16,7 +16,7 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
     { icon: Home, label: "Home", path: "/" },
     { icon: Building2, label: "Business", path: "/businesses", hasNotification: hasNewBusinessVideos },
     { icon: Calendar, label: "Events", path: "/events", hasNotification: hasNewEventsVideos },
-    { icon: ShoppingCart, label: "Shop", path: "/ecommerce", hasNotification: hasNewEcommerceItems },
+    { icon: ShoppingCart, label: "E-commerce", path: "/ecommerce", hasNotification: hasNewEcommerceItems },
     { icon: Settings, label: "Settings", path: "/settings" },
     { icon: UserCircle, label: "Profile", path: "/profile" },
   ];
@@ -52,7 +52,7 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
                   )} />
                   <div className="flex items-center gap-2 min-w-0 flex-1">
                     <span className={cn(
-                      "font-heading font-medium text-sm truncate tracking-tight",
+                      "font-heading font-medium text-xs md:text-sm truncate tracking-tight",
                       isActive && "text-primary"
                     )}>{item.label}</span>
                     {item.hasNotification && (
