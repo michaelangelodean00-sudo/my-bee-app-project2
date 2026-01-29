@@ -27,6 +27,7 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
             <Handshake size={48} className="text-secondary-foreground transition-transform duration-300 group-hover:scale-110" />
           </div>
           <span className="font-heading text-2xl sm:text-2xl lg:text-xl font-bold text-primary tracking-tight">Business</span>
+          <span className="text-sm text-muted-foreground">See 👉🏾</span>
         </Button>
         
         <Button 
@@ -39,6 +40,7 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
             <Calendar size={48} className="text-white transition-transform duration-300 group-hover:scale-110" />
           </div>
           <span className="font-heading text-2xl sm:text-2xl lg:text-xl font-bold text-secondary tracking-tight">Events</span>
+          <span className="text-sm text-muted-foreground">See 👉🏾</span>
         </Button>
         
         <Button 
@@ -51,6 +53,7 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
             <ShoppingCart size={48} className="text-white transition-transform duration-300 group-hover:scale-110" />
           </div>
           <span className="font-heading text-xl md:text-lg lg:text-xl font-bold text-primary tracking-tight">E-commerce</span>
+          <span className="text-sm text-muted-foreground">See 👉🏾</span>
         </Button>
       </div>
     </div>
