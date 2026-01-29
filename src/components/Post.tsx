@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { memo, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { ThumbsUp, MessageSquare, Share2, MoreHorizontal } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -32,7 +31,16 @@ interface Reaction {
   count: number;
 }
 
-const Post = ({
+const initialReactions = (likes: number): Reaction[] => [
+  { emoji: "👍", label: "Like", count: likes },
+  { emoji: "❤️", label: "Love", count: 0 },
+  { emoji: "😂", label: "Laugh", count: 0 },
+  { emoji: "😮", label: "Wow", count: 0 },
+  { emoji: "😢", label: "Sad", count: 0 },
+  { emoji: "😡", label: "Angry", count: 0 },
+];
+
+const Post = memo(({
   id,
   author,
   content,
@@ -42,15 +50,7 @@ const Post = ({
   comments,
   shares,
 }: PostProps) => {
-  const [reactions, setReactions] = useState<Reaction[]>([
-    { emoji: "👍", label: "Like", count: likes },
-    { emoji: "❤️", label: "Love", count: 0 },
-    { emoji: "😂", label: "Laugh", count: 0 },
-    { emoji: "😮", label: "Wow", count: 0 },
-    { emoji: "😢", label: "Sad", count: 0 },
-    { emoji: "😡", label: "Angry", count: 0 },
-  ]);
-  
+  const [reactions, setReactions] = useState<Reaction[]>(() => initialReactions(likes));
   const [shareCount, setShareCount] = useState(shares);
   const [userReaction, setUserReaction] = useState<string | null>(null);
   const [showReactions, setShowReactions] = useState(false);
@@ -58,56 +58,52 @@ const Post = ({
   const [shareDialog, setShareDialog] = useState(false);
   const [messageText, setMessageText] = useState("");
   
-  const handleReaction = (emoji: string) => {
+  const handleReaction = useCallback((emoji: string) => {
     setReactions(prev => prev.map(reaction => {
       if (reaction.emoji === emoji) {
         if (userReaction === emoji) {
-          // Remove reaction
-          setUserReaction(null);
           return { ...reaction, count: Math.max(0, reaction.count - 1) };
         } else {
-          // Add new reaction
           const newCount = userReaction ? reaction.count : reaction.count + 1;
           return { ...reaction, count: newCount };
         }
       } else if (reaction.emoji === userReaction) {
-        // Remove old reaction
         return { ...reaction, count: Math.max(0, reaction.count - 1) };
       }
       return reaction;
     }));
     
-    setUserReaction(userReaction === emoji ? null : emoji);
+    setUserReaction(prev => prev === emoji ? null : emoji);
     setShowReactions(false);
-  };
+  }, [userReaction]);
 
-  const handleMessageUser = () => {
+  const handleMessageUser = useCallback(() => {
     setMessageDialog(true);
-  };
+  }, []);
 
-  const sendMessage = () => {
+  const sendMessage = useCallback(() => {
     if (messageText.trim()) {
       toast.success(`Message sent to ${author.name} through BEE messenger!`);
       setMessageDialog(false);
       setMessageText("");
     }
-  };
+  }, [messageText, author.name]);
 
-  const handleShareComplete = () => {
+  const handleShareComplete = useCallback(() => {
     setShareCount(prev => prev + 1);
     setShareDialog(false);
-  };
+  }, []);
 
   const totalReactions = reactions.reduce((sum, reaction) => sum + reaction.count, 0);
   const topReactions = reactions.filter(r => r.count > 0).slice(0, 3);
   
   return (
     <>
-      <div className="bee-card p-4 md:p-5 mb-4 group relative overflow-hidden hover:animate-[morphism_3s_ease-in-out_infinite] animate-fade-in-up opacity-0" style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}>
+      <div className="bee-card p-4 md:p-5 mb-4 group relative overflow-hidden animate-fade-in-up" style={{ contain: 'layout style' }}>
         <div className="flex justify-between items-start">
           <div className="flex gap-3">
             <Avatar className="transition-transform duration-300 hover:scale-110">
-              <AvatarImage src={author.avatarUrl} alt={author.name} />
+              <AvatarImage src={author.avatarUrl} alt={author.name} loading="lazy" />
               <AvatarFallback className="font-heading font-semibold">{author.avatarFallback}</AvatarFallback>
             </Avatar>
             <div>
@@ -125,13 +121,15 @@ const Post = ({
         <div className="mt-3">
           <p className="text-foreground font-body leading-relaxed">{content}</p>
           {imageUrl && (
-            <div className="mt-3 rounded-lg overflow-hidden group-hover:shadow-md transition-all duration-500 relative">
+            <div className="mt-3 rounded-lg overflow-hidden group-hover:shadow-md transition-shadow duration-300 relative">
               <img 
                 src={imageUrl} 
                 alt="Post" 
-                className="w-full h-auto object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
+                loading="lazy"
+                decoding="async"
+                className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
           )}
         </div>
@@ -140,7 +138,7 @@ const Post = ({
           <div className="flex items-center gap-2">
             {topReactions.length > 0 && (
               <div className="flex items-center gap-1">
-                {topReactions.map((reaction, index) => (
+                {topReactions.map((reaction) => (
                   <span key={reaction.emoji} className="text-base">{reaction.emoji}</span>
                 ))}
                 <span>{totalReactions}</span>
@@ -158,7 +156,7 @@ const Post = ({
           <div className="relative">
             <Button 
               variant="ghost" 
-              className={`flex-1 font-medium transition-all duration-200 ${userReaction ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}
+              className={`flex-1 font-medium transition-colors duration-200 ${userReaction ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}
               onClick={() => setShowReactions(!showReactions)}
               onMouseEnter={() => setShowReactions(true)}
             >
@@ -189,11 +187,11 @@ const Post = ({
             )}
           </div>
           
-          <Button variant="ghost" className="flex-1 text-muted-foreground hover:text-foreground font-medium transition-all duration-200" onClick={handleMessageUser}>
+          <Button variant="ghost" className="flex-1 text-muted-foreground hover:text-foreground font-medium transition-colors duration-200" onClick={handleMessageUser}>
             <MessageSquare size={18} className="mr-2" />
             Message
           </Button>
-          <Button variant="ghost" className="flex-1 text-muted-foreground hover:text-foreground font-medium transition-all duration-200" onClick={() => setShareDialog(true)}>
+          <Button variant="ghost" className="flex-1 text-muted-foreground hover:text-foreground font-medium transition-colors duration-200" onClick={() => setShareDialog(true)}>
             <Share2 size={18} className="mr-2" />
             Share
           </Button>
@@ -239,6 +237,8 @@ const Post = ({
       />
     </>
   );
-};
+});
+
+Post.displayName = 'Post';
 
 export default Post;

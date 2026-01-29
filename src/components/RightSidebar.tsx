@@ -1,13 +1,19 @@
-
-import WeatherWidget from "./WeatherWidget";
+import { memo, lazy, Suspense } from "react";
 import UserProfile from "./UserProfile";
-import TrendingSection from "./TrendingSection";
-import BurgerAdWidget from "./BurgerAdWidget";
+import { Skeleton } from "./ui/skeleton";
 
-const RightSidebar = () => {
-  // Default user data for the sidebar profile
-  // In a real app, this would come from authentication context
-  // role can be 'user' or 'admin' - admin has access to Admin Panel
+// Lazy load non-critical widgets
+const WeatherWidget = lazy(() => import("./WeatherWidget"));
+const TrendingSection = lazy(() => import("./TrendingSection"));
+
+const WidgetSkeleton = () => (
+  <div className="space-y-3">
+    <Skeleton className="h-4 w-24" />
+    <Skeleton className="h-20 w-full rounded-lg" />
+  </div>
+);
+
+const RightSidebar = memo(() => {
   const defaultUser = {
     name: "My Profile",
     avatarUrl: "https://i.pravatar.cc/150?u=current_user",
@@ -19,7 +25,7 @@ const RightSidebar = () => {
     followingCount: 89,
     isVerified: true,
     businessOwner: false,
-    role: 'admin' as const, // Change to 'user' for regular users
+    role: 'admin' as const,
     bio: "Welcome to B.E.E App! Connect with local businesses and community.",
     isCurrentUser: true
   };
@@ -28,10 +34,17 @@ const RightSidebar = () => {
     <div className="hidden xl:block w-80 p-6 space-y-6 glass-sidebar min-h-screen">
       <UserProfile {...defaultUser} />
       
-      <WeatherWidget />
-      <TrendingSection />
+      <Suspense fallback={<WidgetSkeleton />}>
+        <WeatherWidget />
+      </Suspense>
+      
+      <Suspense fallback={<WidgetSkeleton />}>
+        <TrendingSection />
+      </Suspense>
     </div>
   );
-};
+});
+
+RightSidebar.displayName = 'RightSidebar';
 
 export default RightSidebar;

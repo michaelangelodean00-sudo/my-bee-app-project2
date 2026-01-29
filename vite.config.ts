@@ -25,24 +25,36 @@ export default defineConfig(({ mode }) => ({
     // Optimize chunk splitting for better caching
     rollupOptions: {
       output: {
-        manualChunks: {
-          // Vendor chunks for better caching
-          'react-vendor': ['react', 'react-dom'],
-          'router': ['react-router-dom'],
-          'query': ['@tanstack/react-query'],
-          'ui-core': [
-            '@radix-ui/react-dialog',
-            '@radix-ui/react-dropdown-menu',
-            '@radix-ui/react-popover',
-            '@radix-ui/react-toast',
-          ],
-          'ui-forms': [
-            '@radix-ui/react-checkbox',
-            '@radix-ui/react-label',
-            '@radix-ui/react-select',
-            '@radix-ui/react-switch',
-          ],
-          'charts': ['recharts'],
+        manualChunks: (id) => {
+          // Core React - loaded first
+          if (id.includes('node_modules/react-dom')) return 'react-dom';
+          if (id.includes('node_modules/react/')) return 'react-core';
+          
+          // Router - essential for navigation
+          if (id.includes('react-router')) return 'router';
+          
+          // React Query - data fetching
+          if (id.includes('@tanstack/react-query')) return 'query';
+          
+          // UI components - split by usage frequency
+          if (id.includes('@radix-ui/react-dialog') || 
+              id.includes('@radix-ui/react-dropdown-menu') ||
+              id.includes('@radix-ui/react-popover')) return 'ui-core';
+          
+          if (id.includes('@radix-ui/react-toast') ||
+              id.includes('@radix-ui/react-tooltip')) return 'ui-feedback';
+          
+          if (id.includes('@radix-ui/')) return 'ui-misc';
+          
+          // Charts - only loaded on analytics pages
+          if (id.includes('recharts') || id.includes('d3-')) return 'charts';
+          
+          // Carousel - only for ad splash
+          if (id.includes('embla-carousel')) return 'carousel';
+          
+          // Utilities
+          if (id.includes('date-fns')) return 'date-utils';
+          if (id.includes('lucide-react')) return 'icons';
         },
       },
     },
