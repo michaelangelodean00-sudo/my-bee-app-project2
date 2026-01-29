@@ -20,7 +20,7 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
         {/* See pointer text */}
         <div className="flex-shrink-0 flex flex-col items-center justify-center">
           <span className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary font-heading tracking-tight">See</span>
-          <span className="text-4xl md:text-5xl lg:text-6xl">👉🏾</span>
+          <span className="text-4xl md:text-5xl lg:text-6xl animate-[bounce-x_1.5s_ease-in-out_infinite]">👉🏾</span>
         </div>
         
         {/* Category buttons */}
