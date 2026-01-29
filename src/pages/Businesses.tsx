@@ -218,7 +218,7 @@ const Businesses = () => {
         </div>
         
         {/* Main Content - TikTok Style Feed */}
-        <div className="flex-1 overflow-y-auto h-screen snap-y snap-mandatory" ref={containerRef}>
+        <div className="flex-1 overflow-y-auto h-screen snap-y snap-mandatory scroll-smooth overscroll-none" ref={containerRef} style={{ scrollBehavior: 'smooth' }}>
           <div className="sticky top-0 bg-card/95 backdrop-blur-sm z-10 border-b border-border">
             <div className="flex items-center justify-between px-4 py-4">
               <h1 className="heading-small">Business Videos</h1>
@@ -282,7 +282,7 @@ const Businesses = () => {
               const sponsoredData = getSponsoredData(video.id);
               
               return (
-                <div key={video.id} className="h-screen snap-start">
+                <div key={video.id} className="h-screen snap-start snap-always will-change-scroll">
                   <VideoPlayerWithAds
                     videoId={video.id}
                     videoUrl={video.videoUrl}
