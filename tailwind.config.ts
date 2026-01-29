@@ -324,6 +324,10 @@ export default {
         'ripple': {
           '0%': { transform: 'scale(0)', opacity: '0.5' },
           '100%': { transform: 'scale(4)', opacity: '0' }
+        },
+        'bounce-x': {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '50%': { transform: 'translateX(6px)' }
         }
       },
       animation: {
