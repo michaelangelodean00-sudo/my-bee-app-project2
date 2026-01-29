@@ -282,7 +282,7 @@ const Businesses = () => {
               const sponsoredData = getSponsoredData(video.id);
               
               return (
-                <div key={video.id} className="h-screen snap-start snap-always will-change-scroll">
+                <div key={video.id} className="h-screen snap-start snap-always will-change-scroll scroll-mt-36">
                   <VideoPlayerWithAds
                     videoId={video.id}
                     videoUrl={video.videoUrl}
