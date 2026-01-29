@@ -219,62 +219,6 @@ const Businesses = () => {
         
         {/* Main Content - TikTok Style Feed */}
         <div className="flex-1 overflow-y-auto h-screen snap-y snap-mandatory scroll-smooth overscroll-none" ref={containerRef} style={{ scrollBehavior: 'smooth' }}>
-          <div className="sticky top-0 bg-card/95 backdrop-blur-sm z-10 border-b border-border">
-            <div className="flex items-center justify-between px-4 py-4">
-              <h1 className="heading-small">Business Videos</h1>
-              <Button
-                onClick={toggleAutoScroll}
-                variant="outline"
-                size="sm"
-              >
-                {isAutoScrolling ? (
-                  <>
-                    <Pause size={16} className="mr-2" />
-                    Stop Auto
-                  </>
-                ) : (
-                  <>
-                    <Play size={16} className="mr-2" />
-                    Auto Scroll
-                  </>
-                )}
-              </Button>
-            </div>
-            {/* Platform badge below header, left-aligned */}
-            <div className="px-4 pb-2 flex gap-2">
-              <span className={`font-semibold px-3 py-1 rounded ${(() => {
-                const currentVideo = videosWithAds[currentVideoIndex];
-                if (!currentVideo) return 'bg-muted text-muted-foreground';
-                
-                const currentIsAd = isAd(currentVideo);
-                const platform = currentIsAd ? 'ad' : currentVideo.platform;
-                
-                switch (platform) {
-                  case 'youtube': return 'bg-destructive text-destructive-foreground';
-                  case 'instagram': return 'bg-gradient-to-r from-purple-500 to-pink-500 text-white';
-                  case 'tiktok': return 'bg-gradient-to-r from-blue-500 via-purple-500 to-red-500 text-white';
-                  case 'facebook': return 'bg-secondary text-secondary-foreground';
-                  case 'ad': return 'bg-primary text-primary-foreground';
-                  default: return 'bg-muted text-muted-foreground';
-                }
-              })()}`}>
-                {(() => {
-                  const currentVideo = videosWithAds[currentVideoIndex];
-                  if (!currentVideo) return 'UNKNOWN';
-                  const currentIsAd = isAd(currentVideo);
-                  return currentIsAd ? 'AD' : currentVideo.platform.toUpperCase();
-                })()}
-              </span>
-              {videosWithAds[currentVideoIndex] && !isAd(videosWithAds[currentVideoIndex]) && (videosWithAds[currentVideoIndex] as BusinessVideo).isNew && (
-                <span className="bg-primary text-primary-foreground font-semibold px-3 py-1 rounded animate-pulse">NEW</span>
-              )}
-            </div>
-            <div className="px-4 pb-4">
-              <p className="body-small text-muted-foreground text-center italic">
-                * Videos are subject to approval by Bee App admin before posting
-              </p>
-            </div>
-          </div>
           {/* Vertical TikTok-style feed */}
           <div>
             {videosWithAds.map((video, index) => {
@@ -282,7 +226,7 @@ const Businesses = () => {
               const sponsoredData = getSponsoredData(video.id);
               
               return (
-                <div key={video.id} className="h-screen snap-start snap-always will-change-scroll scroll-mt-36">
+                <div key={video.id} className="h-screen snap-start snap-always will-change-scroll">
                   <VideoPlayerWithAds
                     videoId={video.id}
                     videoUrl={video.videoUrl}

@@ -234,34 +234,6 @@ const Events = () => {
         
         {/* Main Content - TikTok Style Feed */}
         <div className="flex-1 overflow-y-auto h-screen snap-y snap-mandatory scroll-smooth overscroll-none" ref={containerRef} style={{ scrollBehavior: 'smooth' }}>
-          <div className="sticky top-0 bg-card/95 backdrop-blur-sm z-10 border-b border-border">
-            <div className="flex items-center justify-between px-4 py-4">
-              <h1 className="heading-small">Bahamas Event Videos</h1>
-              <Button
-                onClick={toggleAutoScroll}
-                variant="outline"
-                size="sm"
-              >
-                {isAutoScrolling ? (
-                  <>
-                    <Pause size={16} className="mr-2" />
-                    Stop Auto
-                  </>
-                ) : (
-                  <>
-                    <Play size={16} className="mr-2" />
-                    Auto Scroll
-                  </>
-                )}
-              </Button>
-            </div>
-            <div className="px-4 pb-4">
-              <p className="body-small text-muted-foreground text-center italic">
-                * Videos are subject to approval by Bee App admin before posting
-              </p>
-            </div>
-          </div>
-          
           {/* Vertical TikTok-style feed */}
           <div>
             {videosWithAds.map((video, index) => {
@@ -269,7 +241,7 @@ const Events = () => {
               const sponsoredData = getSponsoredData(video.id);
               
               return (
-                <div key={video.id} className="h-screen snap-start snap-always will-change-scroll scroll-mt-32">
+                <div key={video.id} className="h-screen snap-start snap-always will-change-scroll">
                   <VideoPlayerWithAds
                     videoId={video.id}
                     platform={videoIsAd ? 'ad' : video.platform}
