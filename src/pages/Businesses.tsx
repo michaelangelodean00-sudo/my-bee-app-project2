@@ -248,6 +248,21 @@ const Businesses = () => {
             })}
           </div>
         </div>
+        
+        {/* Floating Auto-Scroll Button */}
+        <Button
+          onClick={toggleAutoScroll}
+          variant="ghost"
+          size="icon"
+          className="fixed bottom-6 right-6 z-30 w-12 h-12 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm border border-white/20 shadow-lg transition-all duration-200"
+          aria-label={isAutoScrolling ? "Stop auto-scroll" : "Start auto-scroll"}
+        >
+          {isAutoScrolling ? (
+            <Pause size={20} className="text-white" />
+          ) : (
+            <Play size={20} className="text-white ml-0.5" />
+          )}
+        </Button>
       </div>
     </div>
   );
