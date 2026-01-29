@@ -146,7 +146,7 @@ const VideoPlayerWithAds = ({
   };
 
   return (
-    <div className="relative w-full h-full bg-black overflow-hidden snap-start">
+    <div className="relative w-full h-full bg-black overflow-hidden snap-start transition-transform duration-300 ease-out will-change-transform">
       {/* Video Area */}
       <div className="relative w-full h-full" onClick={togglePlayPause}>
         {/* For YouTube/Vimeo embeds */}
