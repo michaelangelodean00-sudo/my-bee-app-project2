@@ -203,15 +203,14 @@ const VideoPlayerWithAds = ({
           </div>
         )}
 
-        {/* Ad/Sponsored Badges */}
-        <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
-          {isAd && (
+        {/* Ad Badge */}
+        {isAd && (
+          <div className="absolute top-4 left-4 z-20">
             <Badge className="bg-green-500 text-white font-semibold px-3 py-1 rounded animate-pulse">
               AD
             </Badge>
-          )}
-          {getSponsorshipBadge()}
-        </div>
+          </div>
+        )}
 
         {/* Right Side Actions (TikTok style) */}
         <div className="absolute right-2 bottom-32 z-20 flex flex-col gap-4 sm:right-4 sm:bottom-32">
