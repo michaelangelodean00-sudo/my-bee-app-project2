@@ -269,7 +269,7 @@ const Events = () => {
               const sponsoredData = getSponsoredData(video.id);
               
               return (
-                <div key={video.id} className="h-screen snap-start snap-always will-change-scroll">
+                <div key={video.id} className="h-screen snap-start snap-always will-change-scroll scroll-mt-32">
                   <VideoPlayerWithAds
                     videoId={video.id}
                     platform={videoIsAd ? 'ad' : video.platform}
