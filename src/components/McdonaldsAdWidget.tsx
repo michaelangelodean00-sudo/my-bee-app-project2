@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { isValidUrl } from "../utils/security";
 
 interface AdContent {
@@ -33,9 +32,8 @@ const ads: AdContent[] = [
   }
 ];
 
-const McdonaldsAdWidget = () => {
+const McdonaldsAdWidget = memo(() => {
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
-  const [isRotating, setIsRotating] = useState(false);
 
   // Rotate ads every 10 seconds (reduced frequency)
   useEffect(() => {
@@ -59,8 +57,9 @@ const McdonaldsAdWidget = () => {
 
   return (
     <div 
-      className={`${currentAd.bgColor} text-white rounded-xl flex items-center transition-all duration-300 cursor-pointer hover:brightness-110 hover:scale-105 hover:shadow-xl w-full max-w-full min-h-[56px] px-3 py-3 shadow-lg border border-white/10 backdrop-blur-sm overflow-hidden animate-gentle-sway`}
+      className={`${currentAd.bgColor} text-white rounded-xl flex items-center transition-colors duration-300 cursor-pointer hover:brightness-110 hover:shadow-xl w-full max-w-full min-h-[56px] px-3 py-3 shadow-lg border border-white/10 backdrop-blur-sm overflow-hidden`}
       onClick={handleAdClick}
+      style={{ contain: 'layout style' }}
     >
       <div className="flex items-center w-full min-w-0 gap-2">
         <img 
@@ -82,6 +81,8 @@ const McdonaldsAdWidget = () => {
       </div>
     </div>
   );
-};
+});
+
+McdonaldsAdWidget.displayName = 'McdonaldsAdWidget';
 
 export default McdonaldsAdWidget;

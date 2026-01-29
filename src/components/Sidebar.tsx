@@ -1,25 +1,27 @@
+import { memo } from "react";
 import { Building2, Calendar, ShoppingCart, Settings, Home, UserCircle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useNotifications } from "../contexts/NotificationContext";
 import { Badge } from "./ui/badge";
 import SearchBar from "./SearchBar";
+import { cn } from "@/lib/utils";
 
 interface SidebarProps {
   className?: string;
 }
 
-const Sidebar = ({ className = "" }: SidebarProps) => {
-  const location = useLocation();
-  const { hasNewBusinessVideos, hasNewEventsVideos, hasNewEcommerceItems } = useNotifications();
+const navigationItems = [
+  { icon: Home, label: "Home", path: "/", notificationKey: null },
+  { icon: Building2, label: "Business", path: "/businesses", notificationKey: "hasNewBusinessVideos" },
+  { icon: Calendar, label: "Events", path: "/events", notificationKey: "hasNewEventsVideos" },
+  { icon: ShoppingCart, label: "E-commerce", path: "/ecommerce", notificationKey: "hasNewEcommerceItems" },
+  { icon: Settings, label: "Settings", path: "/settings", notificationKey: null },
+  { icon: UserCircle, label: "Profile", path: "/profile", notificationKey: null },
+] as const;
 
-  const navigationItems = [
-    { icon: Home, label: "Home", path: "/" },
-    { icon: Building2, label: "Business", path: "/businesses", hasNotification: hasNewBusinessVideos },
-    { icon: Calendar, label: "Events", path: "/events", hasNotification: hasNewEventsVideos },
-    { icon: ShoppingCart, label: "E-commerce", path: "/ecommerce", hasNotification: hasNewEcommerceItems },
-    { icon: Settings, label: "Settings", path: "/settings" },
-    { icon: UserCircle, label: "Profile", path: "/profile" },
-  ];
+const Sidebar = memo(({ className = "" }: SidebarProps) => {
+  const location = useLocation();
+  const notifications = useNotifications();
 
   return (
     <aside className={`w-full bg-card transition-all duration-300 ${className}`}>
@@ -30,9 +32,12 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
         </div>
         
         <nav className="space-y-1">
-          {navigationItems.map((item, index) => {
+          {navigationItems.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
+            const hasNotification = item.notificationKey 
+              ? notifications[item.notificationKey as keyof typeof notifications]
+              : false;
             
             return (
               <Link
@@ -55,14 +60,14 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
                       "font-heading font-medium text-[9px] lg:text-sm truncate tracking-tight",
                       isActive && "text-primary"
                     )}>{item.label}</span>
-                    {item.hasNotification && (
+                    {hasNotification && (
                       <Badge className="hidden lg:inline-flex text-[10px] px-1.5 py-0.5 bg-destructive text-destructive-foreground font-semibold animate-pulse">
                         NEW
                       </Badge>
                     )}
                   </div>
                 </div>
-                {item.hasNotification && (
+                {hasNotification && (
                   <div className="relative flex-shrink-0">
                     <div className="w-2 h-2 bg-destructive rounded-full animate-pulse" />
                   </div>
@@ -74,11 +79,8 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
       </div>
     </aside>
   );
-};
+});
 
-// Helper function for className merging
-function cn(...classes: (string | boolean | undefined)[]) {
-  return classes.filter(Boolean).join(" ");
-}
+Sidebar.displayName = 'Sidebar';
 
 export default Sidebar;

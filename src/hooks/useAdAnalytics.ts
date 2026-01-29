@@ -1,17 +1,32 @@
+import { useState, useCallback, useRef } from 'react';
+import { AdAnalytics } from '@/types/ads';
 
-import { useState, useCallback } from 'react';
-import { VideoAd, AdAnalytics } from '@/types/ads';
+// Track which ads have been logged this session to prevent spam
+const impressionLoggedThisSession = new Set<string>();
 
 export const useAdAnalytics = () => {
   const [analytics, setAnalytics] = useState<AdAnalytics[]>([]);
+  // Track impressions already recorded to prevent duplicates
+  const trackedImpressions = useRef<Set<string>>(new Set());
 
   const trackImpression = useCallback((adId: string) => {
-    // In a real app, this would send data to your analytics backend
-    console.log(`Ad impression tracked: ${adId}`);
+    const today = new Date().toISOString().split('T')[0];
+    const key = `${adId}-${today}`;
+    
+    // Skip if already tracked this session
+    if (trackedImpressions.current.has(key)) {
+      return;
+    }
+    trackedImpressions.current.add(key);
+    
+    // Only log once per ad per session to reduce console spam
+    if (!impressionLoggedThisSession.has(adId)) {
+      impressionLoggedThisSession.add(adId);
+      console.log(`Ad impression tracked: ${adId}`);
+    }
     
     // Update local analytics
     setAnalytics(prev => {
-      const today = new Date().toISOString().split('T')[0];
       const existing = prev.find(a => a.adId === adId && a.date === today);
       
       if (existing) {
@@ -35,10 +50,8 @@ export const useAdAnalytics = () => {
   }, []);
 
   const trackClick = useCallback((adId: string) => {
-    // In a real app, this would send data to your analytics backend
     console.log(`Ad click tracked: ${adId}`);
     
-    // Update local analytics
     setAnalytics(prev => {
       const today = new Date().toISOString().split('T')[0];
       return prev.map(a => {
@@ -53,7 +66,6 @@ export const useAdAnalytics = () => {
   }, []);
 
   const trackView = useCallback((adId: string, duration: number) => {
-    // Track when user actually watches the ad
     console.log(`Ad view tracked: ${adId}, duration: ${duration}s`);
     
     setAnalytics(prev => {

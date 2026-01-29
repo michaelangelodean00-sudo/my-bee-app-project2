@@ -1,21 +1,24 @@
-import { useEffect, useState } from "react";
+import { memo, useMemo } from "react";
 
-const AnimatedBackground = () => {
-  const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number; delay: number; size: number }>>([]);
+// Generate particles once at module level to avoid re-computation
+const generateParticles = () => 
+  Array.from({ length: 6 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    delay: Math.random() * 15,
+    size: 0.5 + Math.random() * 0.8,
+    duration: 10 + Math.random() * 5
+  }));
 
-  useEffect(() => {
-    const newParticles = Array.from({ length: 8 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      delay: Math.random() * 15,
-      size: 0.5 + Math.random() * 1
-    }));
-    setParticles(newParticles);
-  }, []);
+const staticParticles = generateParticles();
+
+const AnimatedBackground = memo(() => {
+  // Use static particles to avoid re-renders
+  const particles = useMemo(() => staticParticles, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 contain-strict">
       {/* Subtle gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
       
@@ -27,44 +30,42 @@ const AnimatedBackground = () => {
         }}
       />
       
-      {/* Subtle gradient orbs - warm honey tones */}
+      {/* Subtle gradient orbs - reduced complexity with will-change */}
       <div 
-        className="absolute top-20 left-10 w-96 h-96 rounded-full blur-3xl animate-float opacity-25"
-        style={{ background: 'radial-gradient(circle, hsl(var(--primary) / 0.2) 0%, transparent 70%)' }}
-      />
-      <div 
-        className="absolute bottom-20 right-10 w-80 h-80 rounded-full blur-3xl animate-float opacity-20"
+        className="absolute top-20 left-10 w-96 h-96 rounded-full blur-3xl opacity-20 will-change-transform"
         style={{ 
-          background: 'radial-gradient(circle, hsl(var(--accent) / 0.25) 0%, transparent 70%)',
-          animationDelay: '3s' 
+          background: 'radial-gradient(circle, hsl(var(--primary) / 0.15) 0%, transparent 70%)',
+          animation: 'float 20s ease-in-out infinite'
         }}
       />
       <div 
-        className="absolute top-1/2 left-1/3 w-64 h-64 rounded-full blur-3xl animate-float opacity-15"
+        className="absolute bottom-20 right-10 w-80 h-80 rounded-full blur-3xl opacity-15 will-change-transform"
         style={{ 
-          background: 'radial-gradient(circle, hsl(var(--primary) / 0.15) 0%, transparent 70%)',
-          animationDelay: '6s' 
+          background: 'radial-gradient(circle, hsl(var(--accent) / 0.2) 0%, transparent 70%)',
+          animation: 'float 25s ease-in-out infinite 3s'
         }}
       />
       
-      {/* Floating circular particles */}
+      {/* Floating circular particles - use CSS containment */}
       {particles.map((particle) => (
         <div
           key={particle.id}
-          className="absolute animate-float rounded-full"
+          className="absolute rounded-full will-change-transform"
           style={{
             left: `${particle.x}%`,
             top: `${particle.y}%`,
-            width: `${particle.size * 1.2}rem`,
-            height: `${particle.size * 1.2}rem`,
-            background: 'hsl(var(--primary) / 0.08)',
-            animationDelay: `${particle.delay}s`,
-            animationDuration: `${8 + Math.random() * 4}s`
+            width: `${particle.size}rem`,
+            height: `${particle.size}rem`,
+            background: 'hsl(var(--primary) / 0.06)',
+            animation: `float ${particle.duration}s ease-in-out infinite ${particle.delay}s`,
+            contain: 'layout style'
           }}
         />
       ))}
     </div>
   );
-};
+});
+
+AnimatedBackground.displayName = 'AnimatedBackground';
 
 export default AnimatedBackground;
