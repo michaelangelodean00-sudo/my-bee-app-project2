@@ -26,8 +26,8 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
           <div className="rounded-full bg-gradient-to-br from-secondary to-secondary/80 p-4 mb-2 group-hover:animate-bounce group-active:animate-button-press">
             <Handshake size={48} className="text-secondary-foreground transition-transform duration-300 group-hover:scale-110" />
           </div>
-          <span className="font-heading text-2xl sm:text-2xl lg:text-xl font-bold text-primary tracking-tight">Business</span>
-          <span className="text-sm text-muted-foreground">See 👉🏾</span>
+          <span className="font-heading text-3xl sm:text-3xl lg:text-2xl font-bold text-primary tracking-tight">Business</span>
+          <span className="text-sm text-muted-foreground/50">See 👉🏾</span>
         </Button>
         
         <Button 
@@ -39,8 +39,8 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
           <div className="rounded-full bg-gradient-to-br from-pink-400 via-purple-400 to-indigo-400 p-4 mb-2 group-hover:animate-bounce group-active:animate-button-press">
             <Calendar size={48} className="text-white transition-transform duration-300 group-hover:scale-110" />
           </div>
-          <span className="font-heading text-2xl sm:text-2xl lg:text-xl font-bold text-secondary tracking-tight">Events</span>
-          <span className="text-sm text-muted-foreground">See 👉🏾</span>
+          <span className="font-heading text-3xl sm:text-3xl lg:text-2xl font-bold text-secondary tracking-tight">Events</span>
+          <span className="text-sm text-muted-foreground/50">See 👉🏾</span>
         </Button>
         
         <Button 
@@ -52,8 +52,8 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
           <div className="rounded-full bg-gradient-to-br from-green-400 to-green-600 p-4 mb-2 group-hover:animate-bounce group-active:animate-button-press">
             <ShoppingCart size={48} className="text-white transition-transform duration-300 group-hover:scale-110" />
           </div>
-          <span className="font-heading text-xl md:text-lg lg:text-xl font-bold text-primary tracking-tight">E-commerce</span>
-          <span className="text-sm text-muted-foreground">See 👉🏾</span>
+          <span className="font-heading text-2xl sm:text-3xl lg:text-2xl font-bold text-primary tracking-tight">E-commerce</span>
+          <span className="text-sm text-muted-foreground/50">See 👉🏾</span>
         </Button>
       </div>
     </div>
