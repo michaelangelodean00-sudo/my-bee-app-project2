@@ -20,6 +20,9 @@ const LogoImage = ({ className, size = 'default' }: LogoImageProps) => {
       src="/lovable-uploads/bee-mascot-logo.png" 
       alt="B.E.E App Bahamas Logo - © 2024 All Rights Reserved"
       className={`object-contain ${sizeClasses[size]} ${className ?? ''}`}
+      loading="eager"
+      decoding="async"
+      fetchPriority="high"
       data-copyright-protected="true"
     />
   );
