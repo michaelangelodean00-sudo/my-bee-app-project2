@@ -14,6 +14,7 @@ import Footer from "../components/Footer";
 import CopyrightWatermark from "../components/CopyrightWatermark";
 import PullToRefresh from "../components/PullToRefresh";
 import GreetingBanner from "../components/GreetingBanner";
+import PageTransition from "../components/PageTransition";
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -82,8 +83,9 @@ const Index = () => {
   ];
   
   return (
-    <div className="min-h-screen bg-background transition-colors relative overflow-hidden">
-      <AnimatedBackground />
+    <PageTransition>
+      <div className="min-h-screen bg-background transition-colors relative overflow-hidden">
+        <AnimatedBackground />
       
       {/* Copyright Watermark */}
       <CopyrightWatermark 
@@ -225,8 +227,9 @@ const Index = () => {
         </aside>
       </div>
       
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </PageTransition>
   );
 };
 
