@@ -34,7 +34,7 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
             <Button 
               onClick={() => navigateTo("/businesses")}
               variant="outline" 
-              className="flex-1 md:w-full h-28 md:h-36 flex flex-col items-center justify-center gap-3 md:gap-4 text-lg font-semibold border-primary/30 hover:bg-primary/10 py-4 md:py-6 hover:scale-105 transition-all duration-300 hover:shadow-lg group animate-slide-in-bottom opacity-0"
+              className="flex-1 md:w-full h-28 md:h-36 flex flex-col items-center justify-center gap-3 md:gap-4 text-lg font-semibold border-primary/30 hover:bg-primary/10 py-4 md:py-6 hover:scale-105 transition-all duration-300 hover:shadow-lg group animate-slide-in-bottom"
               style={{ animationDelay: '0.1s' }}
             >
               <div className="rounded-full bg-gradient-to-br from-secondary to-secondary/80 p-3 md:p-4 mb-1 md:mb-2 group-hover:animate-bounce group-active:animate-button-press">
@@ -53,7 +53,7 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
             <Button 
               onClick={() => navigateTo("/events")}
               variant="outline" 
-              className="flex-1 md:w-full h-28 md:h-36 flex flex-col items-center justify-center gap-3 md:gap-4 text-lg font-semibold border-primary/30 hover:bg-accent py-4 md:py-6 hover:scale-105 transition-all duration-300 hover:shadow-lg group animate-slide-in-bottom opacity-0"
+              className="flex-1 md:w-full h-28 md:h-36 flex flex-col items-center justify-center gap-3 md:gap-4 text-lg font-semibold border-primary/30 hover:bg-accent py-4 md:py-6 hover:scale-105 transition-all duration-300 hover:shadow-lg group animate-slide-in-bottom"
               style={{ animationDelay: '0.2s' }}
             >
               <div className="rounded-full bg-gradient-to-br from-pink-400 via-purple-400 to-indigo-400 p-3 md:p-4 mb-1 md:mb-2 group-hover:animate-bounce group-active:animate-button-press">
@@ -72,7 +72,7 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
             <Button 
               onClick={() => navigateTo("/ecommerce")}
               variant="outline" 
-              className="flex-1 md:w-full h-28 md:h-36 flex flex-col items-center justify-center gap-3 md:gap-4 text-lg font-semibold border-primary/30 hover:bg-primary/10 py-4 md:py-6 hover:scale-105 transition-all duration-300 hover:shadow-lg group animate-slide-in-bottom opacity-0"
+              className="flex-1 md:w-full h-28 md:h-36 flex flex-col items-center justify-center gap-3 md:gap-4 text-lg font-semibold border-primary/30 hover:bg-primary/10 py-4 md:py-6 hover:scale-105 transition-all duration-300 hover:shadow-lg group animate-slide-in-bottom"
               style={{ animationDelay: '0.3s' }}
             >
               <div className="rounded-full bg-gradient-to-br from-green-400 to-green-600 p-3 md:p-4 mb-1 md:mb-2 group-hover:animate-bounce group-active:animate-button-press">
