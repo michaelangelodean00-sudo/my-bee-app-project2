@@ -18,7 +18,10 @@ import {
   Dialog,
   DialogContent,
   DialogClose,
+  DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 // Static ads array - defined outside component
 const ads: Ad[] = [
@@ -392,7 +395,10 @@ const AdSplash = memo(() => {
 
       {/* Magnify Dialog - Simplified */}
       <Dialog open={!!magnifyAd} onOpenChange={(open) => !open && setMagnifyAd(null)}>
-        <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 bg-black/95 border-none overflow-hidden">
+        <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 bg-black/95 border-none overflow-hidden" aria-describedby={undefined}>
+          <VisuallyHidden>
+            <DialogTitle>{magnifyAd?.title || 'Ad Preview'}</DialogTitle>
+          </VisuallyHidden>
           <DialogClose className="absolute top-4 right-4 z-50 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm p-2 transition-colors">
             <X size={24} className="text-white" />
             <span className="sr-only">Close</span>
