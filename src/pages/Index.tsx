@@ -43,10 +43,8 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 300); // Reduced from 800ms
-    return () => clearTimeout(timer);
+    // Instant load - no artificial delay
+    setIsLoading(false);
   }, []);
 
   const samplePosts = [
