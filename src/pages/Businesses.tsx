@@ -1,10 +1,10 @@
-
 import { useEffect, useState, useRef } from "react";
 import { Play, Pause } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import VideoPlayerWithAds from "../components/VideoPlayerWithAds";
+import PageTransition from "../components/PageTransition";
 import { useNotifications } from "../contexts/NotificationContext";
 import { useContentFilter } from "../contexts/ContentFilterContext";
 import { useAdAnalytics } from "../hooks/useAdAnalytics";
@@ -206,10 +206,11 @@ const Businesses = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header toggleMobileSidebar={() => {}} />
-      
-      <div className="flex relative">
+    <PageTransition>
+      <div className="min-h-screen bg-background">
+        <Header toggleMobileSidebar={() => {}} />
+        
+        <div className="flex relative">
         {/* Desktop Sidebar - Fixed position */}
         <div className="hidden md:block md:w-64 flex-shrink-0">
           <div className="fixed top-16 left-0 w-64 h-[calc(100vh-4rem)] overflow-y-auto bg-card/80 backdrop-blur-sm border-r border-border z-20">
@@ -249,7 +250,8 @@ const Businesses = () => {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </PageTransition>
   );
 };
 
