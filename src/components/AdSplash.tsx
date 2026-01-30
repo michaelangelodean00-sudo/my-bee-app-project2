@@ -393,65 +393,65 @@ const AdSplash = memo(() => {
         />
       )}
 
-      {/* Magnify Dialog - Simplified */}
+      {/* Full Page Ad Dialog */}
       <Dialog open={!!magnifyAd} onOpenChange={(open) => !open && setMagnifyAd(null)}>
-        <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 bg-black/95 border-none overflow-hidden" aria-describedby={undefined}>
+        <DialogContent className="max-w-full w-full h-[100dvh] max-h-[100dvh] p-0 bg-gradient-to-b from-secondary via-secondary/95 to-black border-none overflow-auto rounded-none sm:rounded-lg sm:max-w-4xl sm:h-auto sm:max-h-[95vh]" aria-describedby={undefined}>
           <VisuallyHidden>
             <DialogTitle>{magnifyAd?.title || 'Ad Preview'}</DialogTitle>
           </VisuallyHidden>
-          <DialogClose className="absolute top-4 right-4 z-50 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm p-2 transition-colors">
+          <DialogClose className="absolute top-4 right-4 z-50 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm p-2.5 transition-colors">
             <X size={24} className="text-white" />
             <span className="sr-only">Close</span>
           </DialogClose>
           
           {magnifyAd && (
-            <div className="relative w-full h-[95vh] flex flex-col">
-              <div 
-                className="flex-1 overflow-hidden touch-none cursor-grab active:cursor-grabbing relative"
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
-                onClick={handleDoubleTap}
-              >
-                <div 
-                  className="w-full h-full flex items-center justify-center transition-transform duration-200 ease-out"
-                  style={{ transform: `scale(${zoomLevel}) translate(${position.x / zoomLevel}px, ${position.y / zoomLevel}px)` }}
-                >
-                  <img 
-                    src={magnifyAd.imageUrl} 
-                    alt={magnifyAd.title}
-                    className="max-w-[95vw] max-h-[75vh] object-contain rounded-lg select-none pointer-events-none"
-                    draggable={false}
-                  />
+            <div className="flex flex-col min-h-full">
+              {/* Hero Image Section */}
+              <div className="relative w-full aspect-video sm:aspect-[16/9] overflow-hidden">
+                <img 
+                  src={magnifyAd.imageUrl} 
+                  alt={magnifyAd.title}
+                  className="w-full h-full object-cover"
+                />
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                
+                {/* Sponsored badge */}
+                <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/20">
+                  <Sparkles size={12} className="text-primary" />
+                  <span className="text-xs font-semibold text-white uppercase tracking-wider">Sponsored</span>
                 </div>
               </div>
               
-              {/* Zoom level indicator */}
-              {zoomLevel > 1 && (
-                <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
-                  {zoomLevel.toFixed(1)}x
+              {/* Content Section */}
+              <div className="flex-1 p-6 sm:p-8 text-white space-y-6">
+                <div>
+                  <h2 className="text-2xl sm:text-3xl font-bold mb-3 leading-tight">{magnifyAd.title}</h2>
+                  <p className="text-base sm:text-lg text-white/80 leading-relaxed">{magnifyAd.description}</p>
                 </div>
-              )}
-              
-              {/* Ad info overlay */}
-              <div className="shrink-0 p-4 bg-gradient-to-t from-black via-black/80 to-transparent text-center text-white">
-                <h3 className="text-lg md:text-xl font-bold mb-1">{magnifyAd.title}</h3>
-                <p className="text-xs md:text-sm text-white/80 max-w-lg mx-auto line-clamp-2">{magnifyAd.description}</p>
-                <div className="flex items-center justify-center gap-3 mt-3">
-                  {zoomLevel > 1 && (
-                    <button 
-                      onClick={() => { setZoomLevel(1); setPosition({ x: 0, y: 0 }); }}
-                      className="bg-white/20 text-white px-4 py-2 rounded-lg font-medium hover:bg-white/30 active:scale-95 transition-all text-sm"
-                    >
-                      Reset Zoom
-                    </button>
-                  )}
+                
+                {/* CTA Buttons */}
+                <div className="flex flex-col sm:flex-row gap-3 pt-4">
                   <button 
                     onClick={() => { handleGetMoreInfo(magnifyAd.id, magnifyAd.linkUrl); setMagnifyAd(null); }}
-                    className="bg-primary text-primary-foreground px-5 py-2 rounded-lg font-semibold hover:bg-primary/90 active:scale-95 transition-all text-sm"
+                    className="flex-1 bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold text-lg hover:bg-primary/90 active:scale-[0.98] transition-all shadow-lg shadow-primary/30 min-h-[56px]"
                   >
                     Get More Info
                   </button>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={() => { handleShare(magnifyAd); setMagnifyAd(null); }}
+                    className="flex-1 sm:flex-none border-white/30 text-white hover:bg-white/10 hover:border-white/50 min-h-[56px] gap-2 font-semibold"
+                  >
+                    <Share2 size={20} />
+                    Share This Ad
+                  </Button>
+                </div>
+                
+                {/* Additional info footer */}
+                <div className="pt-4 border-t border-white/10 text-center">
+                  <p className="text-xs text-white/50">Tap outside or the X button to close</p>
                 </div>
               </div>
             </div>
