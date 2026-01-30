@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import Logo from "./Logo";
@@ -8,7 +9,7 @@ interface HeaderProps {
   toggleMobileSidebar: () => void;
 }
 
-const Header = ({ toggleMobileSidebar }: HeaderProps) => {
+const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
   const { hasNewBusinessVideos, hasNewEventsVideos, hasNewEcommerceItems } = useNotifications();
   const hasAnyNotifications = hasNewBusinessVideos || hasNewEventsVideos || hasNewEcommerceItems;
 
@@ -65,6 +66,8 @@ const Header = ({ toggleMobileSidebar }: HeaderProps) => {
       </div>
     </header>
   );
-};
+});
+
+Header.displayName = 'Header';
 
 export default Header;
