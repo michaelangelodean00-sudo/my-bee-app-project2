@@ -1,99 +1,96 @@
-import { useEffect, useRef, useState, ReactNode } from "react";
+import { memo, useEffect, useRef, useState, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface ScrollRevealProps {
   children: ReactNode;
   className?: string;
   delay?: number;
-  direction?: "up" | "down" | "left" | "right" | "fade" | "scale" | "rotate";
-  threshold?: number;
-  duration?: number;
-  once?: boolean;
+  direction?: "up" | "down" | "left" | "right" | "fade" | "scale";
 }
 
-const ScrollReveal = ({ 
+// Single shared IntersectionObserver for all ScrollReveal instances
+const observerCallbacks = new Map<Element, (isIntersecting: boolean) => void>();
+let sharedObserver: IntersectionObserver | null = null;
+
+const getSharedObserver = () => {
+  if (!sharedObserver) {
+    sharedObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const callback = observerCallbacks.get(entry.target);
+          if (callback) {
+            callback(entry.isIntersecting);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "50px" }
+    );
+  }
+  return sharedObserver;
+};
+
+const ScrollReveal = memo(({ 
   children, 
   className, 
   delay = 0, 
-  direction = "up",
-  threshold = 0.1,
-  duration = 400, // Reduced from 700ms
-  once = true
+  direction = "up"
 }: ScrollRevealProps) => {
-  // Start visible if delay is 0 for faster initial paint
-  const [isVisible, setIsVisible] = useState(delay === 0);
+  const [isVisible, setIsVisible] = useState(false);
   const elementRef = useRef<HTMLDivElement>(null);
-  const hasAnimated = useRef(delay === 0);
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
-    // Skip observer setup if already visible
-    if (hasAnimated.current && once) return;
+    const element = elementRef.current;
+    if (!element || hasAnimated.current) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && (!once || !hasAnimated.current)) {
-          if (delay > 0) {
-            setTimeout(() => {
-              setIsVisible(true);
-              hasAnimated.current = true;
-            }, delay);
-          } else {
-            setIsVisible(true);
-            hasAnimated.current = true;
-          }
-        } else if (!once && !entry.isIntersecting) {
-          setIsVisible(false);
+    const handleIntersection = (isIntersecting: boolean) => {
+      if (isIntersecting && !hasAnimated.current) {
+        hasAnimated.current = true;
+        if (delay > 0) {
+          setTimeout(() => setIsVisible(true), delay);
+        } else {
+          setIsVisible(true);
         }
-      },
-      { threshold, rootMargin: "100px" } // Increased rootMargin for earlier trigger
-    );
+        // Unobserve after animation triggers (once-only)
+        observerCallbacks.delete(element);
+        getSharedObserver().unobserve(element);
+      }
+    };
 
-    if (elementRef.current) {
-      observer.observe(elementRef.current);
-    }
+    observerCallbacks.set(element, handleIntersection);
+    getSharedObserver().observe(element);
 
-    return () => observer.disconnect();
-  }, [delay, threshold, once]);
+    return () => {
+      observerCallbacks.delete(element);
+      getSharedObserver().unobserve(element);
+    };
+  }, [delay]);
 
-const initialClasses = {
-    up: "translate-y-4", // Reduced from 8 for subtler effect
-    down: "-translate-y-4",
-    left: "translate-x-4",
-    right: "-translate-x-4",
+  const transforms = {
+    up: isVisible ? "translate-y-0" : "translate-y-3",
+    down: isVisible ? "translate-y-0" : "-translate-y-3",
+    left: isVisible ? "translate-x-0" : "translate-x-3",
+    right: isVisible ? "translate-x-0" : "-translate-x-3",
     fade: "",
-    scale: "scale-[0.98]", // Subtler scale
-    rotate: "rotate-1"
-  };
-
-  const visibleClasses = {
-    up: "translate-y-0",
-    down: "translate-y-0",
-    left: "translate-x-0",
-    right: "translate-x-0",
-    fade: "",
-    scale: "scale-100",
-    rotate: "rotate-0"
+    scale: isVisible ? "scale-100" : "scale-[0.98]"
   };
 
   return (
     <div
       ref={elementRef}
       className={cn(
-        "will-change-transform",
-        !isVisible && "opacity-0",
-        !isVisible && initialClasses[direction],
-        isVisible && "opacity-100",
-        isVisible && visibleClasses[direction],
+        "transition-all duration-300 ease-out",
+        isVisible ? "opacity-100" : "opacity-0",
+        transforms[direction],
         className
       )}
-      style={{
-        transition: `all ${duration}ms cubic-bezier(0.4, 0, 0.2, 1)`,
-        transitionDelay: `${delay}ms`
-      }}
+      style={{ contain: 'layout style' }}
     >
       {children}
     </div>
   );
-};
+});
+
+ScrollReveal.displayName = 'ScrollReveal';
 
 export default ScrollReveal;

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, memo } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -20,8 +20,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 
-
-// Expanded ads array with more examples
+// Static ads array - defined outside component
 const ads: Ad[] = [
   {
     id: "ad1",
@@ -78,58 +77,18 @@ const ads: Ad[] = [
     description: "Shop unique handcrafted items from local artisans. Support our creative community.",
     imageUrl: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&h=1080&q=90&fm=webp&fit=crop",
     linkUrl: "https://www.artisanmarket.com"
-  },
-  {
-    id: "ad9",
-    title: "Oceanfront Restaurant",
-    description: "Experience fine dining with breathtaking ocean views. Fresh seafood and local cuisine daily.",
-    imageUrl: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&h=1080&q=90&fm=webp&fit=crop",
-    linkUrl: "https://www.oceanfrontdining.com"
-  },
-  {
-    id: "ad10",
-    title: "Caribbean Boat Charters",
-    description: "Private yacht and catamaran rentals for unforgettable ocean adventures. Captain included.",
-    imageUrl: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1920&h=1080&q=90&fm=webp&fit=crop",
-    linkUrl: "https://www.caribbeanboats.com"
-  },
-  {
-    id: "ad11",
-    title: "Island Fitness Club",
-    description: "State-of-the-art gym with ocean views. Personal training and group classes available.",
-    imageUrl: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&h=1080&q=90&fm=webp&fit=crop",
-    linkUrl: "https://www.islandfitness.com"
-  },
-  {
-    id: "ad12",
-    title: "Sunset Cruise Experience",
-    description: "Sail into the sunset with live music, cocktails, and breathtaking Caribbean views.",
-    imageUrl: "https://images.unsplash.com/photo-1502680390725-be18f3d49a3a?w=1920&h=1080&q=90&fm=webp&fit=crop",
-    linkUrl: "https://www.sunsetcruise.com"
-  },
-  {
-    id: "ad13",
-    title: "Local Coffee Roasters",
-    description: "Freshly roasted Caribbean coffee beans. Visit our café or order online for delivery.",
-    imageUrl: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1920&h=1080&q=90&fm=webp&fit=crop",
-    linkUrl: "https://www.islandcoffee.com"
-  },
-  {
-    id: "ad14",
-    title: "Scuba Diving Adventures",
-    description: "Explore vibrant coral reefs and underwater caves. PADI certified instructors on staff.",
-    imageUrl: "https://images.unsplash.com/photo-1544551763-77ef2d0cfc6c?w=1920&h=1080&q=90&fm=webp&fit=crop",
-    linkUrl: "https://www.divebahamas.com"
   }
 ];
 
-const AdSplash = () => {
-  // Automatically optimize all ad images on load
-  const optimizedAds = optimizeAds(ads, 'splash');
+// Pre-optimize ads once at module level
+const optimizedAdsStatic = optimizeAds(ads, 'splash');
+
+const AdSplash = memo(() => {
+  const optimizedAds = optimizedAdsStatic;
   
-  const [autoplay, setAutoplay] = useState(false); // Start with autoplay off
+  const [autoplay, setAutoplay] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [loadedImages, setLoadedImages] = useState(new Set([0])); // Start with first image loaded
+  const [loadedImages, setLoadedImages] = useState(new Set([0]));
   const [api, setApi] = useState<CarouselApi>();
   const [isReady, setIsReady] = useState(false);
   const [shareDialog, setShareDialog] = useState(false);
@@ -138,16 +97,11 @@ const AdSplash = () => {
   const [magnifyAd, setMagnifyAd] = useState<Ad | null>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isGesturing, setIsGesturing] = useState(false);
   const lastTouchDistance = useRef<number | null>(null);
-  const lastTouchCenter = useRef<{ x: number; y: number } | null>(null);
   const lastSingleTouch = useRef<{ x: number; y: number } | null>(null);
-  const velocity = useRef({ x: 0, y: 0 });
-  const animationFrame = useRef<number | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const initialZoomRef = useRef(1);
+  const lastTap = useRef<number>(0);
 
-  // Calculate distance between two touch points
+  // Simplified touch distance calculation
   const getTouchDistance = useCallback((touches: React.TouchList) => {
     if (touches.length < 2) return null;
     const dx = touches[0].clientX - touches[1].clientX;
@@ -155,144 +109,59 @@ const AdSplash = () => {
     return Math.sqrt(dx * dx + dy * dy);
   }, []);
 
-  // Calculate center point between two touches
-  const getTouchCenter = useCallback((touches: React.TouchList) => {
-    if (touches.length < 2) return null;
-    return {
-      x: (touches[0].clientX + touches[1].clientX) / 2,
-      y: (touches[0].clientY + touches[1].clientY) / 2
-    };
-  }, []);
-
-  // Smooth momentum animation for panning
-  const applyMomentum = useCallback(() => {
-    const friction = 0.92;
-    const minVelocity = 0.5;
-    
-    if (Math.abs(velocity.current.x) < minVelocity && Math.abs(velocity.current.y) < minVelocity) {
-      velocity.current = { x: 0, y: 0 };
-      return;
-    }
-    
-    velocity.current.x *= friction;
-    velocity.current.y *= friction;
-    
-    setPosition(prev => ({
-      x: prev.x + velocity.current.x,
-      y: prev.y + velocity.current.y
-    }));
-    
-    animationFrame.current = requestAnimationFrame(applyMomentum);
-  }, []);
-
-  // Handle touch start for pinch-to-zoom and pan
+  // Simplified touch handlers
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    // Cancel any ongoing momentum animation
-    if (animationFrame.current) {
-      cancelAnimationFrame(animationFrame.current);
-      animationFrame.current = null;
-    }
-    velocity.current = { x: 0, y: 0 };
-    
     if (e.touches.length === 2) {
       e.preventDefault();
-      setIsGesturing(true);
       lastTouchDistance.current = getTouchDistance(e.touches);
-      lastTouchCenter.current = getTouchCenter(e.touches);
-      initialZoomRef.current = zoomLevel;
     } else if (e.touches.length === 1 && zoomLevel > 1) {
-      // Single finger pan when zoomed in
       lastSingleTouch.current = {
         x: e.touches[0].clientX,
         y: e.touches[0].clientY
       };
-      setIsGesturing(true);
     }
-  }, [getTouchDistance, getTouchCenter, zoomLevel]);
+  }, [getTouchDistance, zoomLevel]);
 
-  // Handle touch move for pinch-to-zoom and pan
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (e.touches.length === 2 && lastTouchDistance.current !== null) {
       e.preventDefault();
       const newDistance = getTouchDistance(e.touches);
-      const newCenter = getTouchCenter(e.touches);
-      
-      if (newDistance && newCenter) {
-        // Smoother zoom scaling with dampening
-        const rawScale = newDistance / lastTouchDistance.current;
-        const dampedScale = 1 + (rawScale - 1) * 0.6; // Dampen the scale change for smoother feel
-        const newZoom = Math.min(Math.max(zoomLevel * dampedScale, 1), 4);
-        
-        // Calculate pan offset with smoother transitions
-        if (lastTouchCenter.current) {
-          const deltaX = (newCenter.x - lastTouchCenter.current.x) * 1.2;
-          const deltaY = (newCenter.y - lastTouchCenter.current.y) * 1.2;
-          
-          velocity.current = { x: deltaX, y: deltaY };
-          
-          setPosition(prev => ({
-            x: prev.x + deltaX,
-            y: prev.y + deltaY
-          }));
-        }
-        
+      if (newDistance) {
+        const scale = newDistance / lastTouchDistance.current;
+        const newZoom = Math.min(Math.max(zoomLevel * scale, 1), 3);
         setZoomLevel(newZoom);
         lastTouchDistance.current = newDistance;
-        lastTouchCenter.current = newCenter;
       }
     } else if (e.touches.length === 1 && lastSingleTouch.current && zoomLevel > 1) {
-      // Single finger pan when zoomed
       e.preventDefault();
       const touch = e.touches[0];
-      const deltaX = (touch.clientX - lastSingleTouch.current.x) * 1.5;
-      const deltaY = (touch.clientY - lastSingleTouch.current.y) * 1.5;
-      
-      velocity.current = { x: deltaX * 0.8, y: deltaY * 0.8 };
-      
-      setPosition(prev => ({
-        x: prev.x + deltaX,
-        y: prev.y + deltaY
-      }));
-      
-      lastSingleTouch.current = {
-        x: touch.clientX,
-        y: touch.clientY
-      };
+      const deltaX = touch.clientX - lastSingleTouch.current.x;
+      const deltaY = touch.clientY - lastSingleTouch.current.y;
+      setPosition(prev => ({ x: prev.x + deltaX, y: prev.y + deltaY }));
+      lastSingleTouch.current = { x: touch.clientX, y: touch.clientY };
     }
-  }, [zoomLevel, getTouchDistance, getTouchCenter]);
+  }, [zoomLevel, getTouchDistance]);
 
-  // Handle touch end with auto-reset
-  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    // Cancel any ongoing momentum animation
-    if (animationFrame.current) {
-      cancelAnimationFrame(animationFrame.current);
-      animationFrame.current = null;
-    }
-    
-    // Reset refs based on remaining touches
-    if (e.touches.length < 2) {
-      lastTouchDistance.current = null;
-      lastTouchCenter.current = null;
-    }
-    if (e.touches.length < 1) {
-      lastSingleTouch.current = null;
-      setIsGesturing(false);
-      
-      // Auto-reset zoom after a brief moment
+  const handleTouchEnd = useCallback(() => {
+    lastTouchDistance.current = null;
+    lastSingleTouch.current = null;
+    // Auto-reset zoom after delay
+    if (zoomLevel > 1) {
       setTimeout(() => {
         setZoomLevel(1);
         setPosition({ x: 0, y: 0 });
-      }, 800);
+      }, 1500);
     }
-  }, []);
+  }, [zoomLevel]);
 
-  // Cleanup animation frame on unmount
-  useEffect(() => {
-    return () => {
-      if (animationFrame.current) {
-        cancelAnimationFrame(animationFrame.current);
-      }
-    };
+  // Double-tap to zoom
+  const handleDoubleTap = useCallback(() => {
+    const now = Date.now();
+    if (now - lastTap.current < 300) {
+      setZoomLevel(prev => prev > 1 ? 1 : 2);
+      setPosition({ x: 0, y: 0 });
+    }
+    lastTap.current = now;
   }, []);
 
   // Reset zoom when dialog closes
@@ -303,22 +172,6 @@ const AdSplash = () => {
     }
   }, [magnifyAd]);
 
-  // Double-tap to zoom
-  const lastTap = useRef<number>(0);
-  const handleDoubleTap = useCallback((e: React.TouchEvent) => {
-    const now = Date.now();
-    if (now - lastTap.current < 300) {
-      e.preventDefault();
-      if (zoomLevel > 1) {
-        setZoomLevel(1);
-        setPosition({ x: 0, y: 0 });
-      } else {
-        setZoomLevel(2.5);
-      }
-    }
-    lastTap.current = now;
-  }, [zoomLevel]);
-  
   // Analytics tracking
   const { trackImpression, trackClick, getAdPerformance } = useAdAnalytics();
   
@@ -327,12 +180,10 @@ const AdSplash = () => {
     let isMounted = true;
     const warmup = async () => {
       try {
-        // Preload the first ad image (and start the next) to avoid initial paint flicker
         if (optimizedAds[0]?.imageUrl) {
           await preloadImage(optimizedAds[0].imageUrl);
         }
         if (optimizedAds[1]?.imageUrl) {
-          // Fire-and-forget for the next slide
           preloadImage(optimizedAds[1].imageUrl).catch(() => {});
         }
       } finally {
@@ -351,37 +202,28 @@ const AdSplash = () => {
   
   useEffect(() => {
     let interval: number;
-    
     if (autoplay && api && isReady) {
       interval = window.setInterval(() => {
         api.scrollNext();
-      }, 5000); // Auto rotate every 5 seconds
+      }, 5000);
     }
-    
     return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
+      if (interval) clearInterval(interval);
     };
   }, [autoplay, api, isReady]);
 
   useEffect(() => {
-    if (!api) {
-      return;
-    }
-
+    if (!api) return;
     api.on("select", () => {
       const newSlide = api.selectedScrollSnap();
       setCurrentSlide(newSlide);
-      
-      // Track impression when slide changes
       if (optimizedAds[newSlide]) {
         trackImpression(optimizedAds[newSlide].id);
       }
     });
   }, [api, optimizedAds, trackImpression]);
   
-  // Track initial impression - only once when component mounts
+  // Track initial impression
   useEffect(() => {
     if (isReady && optimizedAds[0]) {
       trackImpression(optimizedAds[0].id);
@@ -389,14 +231,13 @@ const AdSplash = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isReady]);
 
-  // Lazy load images for current and next/previous slides
+  // Lazy load images for current and adjacent slides
   useEffect(() => {
     const indicesToLoad = [
       currentSlide,
       (currentSlide + 1) % optimizedAds.length,
       currentSlide === 0 ? optimizedAds.length - 1 : currentSlide - 1
     ];
-    
     setLoadedImages(prev => {
       const newSet = new Set(prev);
       let hasNewItems = false;
@@ -410,29 +251,21 @@ const AdSplash = () => {
     });
   }, [currentSlide, optimizedAds.length]);
 
-  const handleGetMoreInfo = (adId: string, linkUrl: string) => {
-    // Track click before opening link
+  const handleGetMoreInfo = useCallback((adId: string, linkUrl: string) => {
     trackClick(adId);
-    
-    // Log performance data for debugging
-    const performance = getAdPerformance(adId, 7);
-    console.log(`Ad Performance for ${adId} (last 7 days):`, performance);
-    
     window.open(linkUrl, '_blank', 'noopener,noreferrer');
-  };
+  }, [trackClick]);
 
-  const handleSlideChange = (index: number) => {
-    if (api) {
-      api.scrollTo(index);
-    }
-  };
+  const handleSlideChange = useCallback((index: number) => {
+    if (api) api.scrollTo(index);
+  }, [api]);
 
-  const handleShare = (ad: Ad) => {
+  const handleShare = useCallback((ad: Ad) => {
     setSelectedAd(ad);
     setShareDialog(true);
-  };
+  }, []);
 
-  const handleShareComplete = () => {
+  const handleShareComplete = useCallback(() => {
     if (selectedAd) {
       setShareCounts(prev => ({
         ...prev,
@@ -440,29 +273,23 @@ const AdSplash = () => {
       }));
     }
     setShareDialog(false);
-  };
+  }, [selectedAd]);
   
   return (
-    <div className="relative bg-secondary text-secondary-foreground overflow-hidden flex justify-center z-0">
+    <div className="relative bg-secondary text-secondary-foreground overflow-hidden flex justify-center z-0" style={{ contain: 'layout style' }}>
       <Carousel 
         className="w-full max-w-7xl mx-auto py-8" 
-        opts={{ 
-          loop: true,
-          align: "center",
-        }}
+        opts={{ loop: true, align: "center" }}
         setApi={setApi}
       >
         <CarouselContent className="-ml-2 md:-ml-4">
           {optimizedAds.map((ad, index) => (
             <CarouselItem key={ad.id} className="pl-2 md:pl-4 basis-[80%] md:basis-[85%]">
               <div 
-                className={`flex flex-col md:flex-row items-center gap-8 px-4 will-change-transform transform-gpu ${
+                className={`flex flex-col md:flex-row items-center gap-8 px-4 transform-gpu ${
                   isReady ? 'transition-transform duration-200' : ''
-                } ${
-                  index === currentSlide 
-                    ? 'scale-100' 
-                    : isReady ? 'scale-[0.97]' : 'scale-100'
-                }`}
+                } ${index === currentSlide ? 'scale-100' : isReady ? 'scale-[0.97]' : 'scale-100'}`}
+                style={{ contain: 'layout' }}
               >
                 <div className="w-full md:w-1/2 relative group">
                   {loadedImages.has(index) ? (
@@ -474,29 +301,20 @@ const AdSplash = () => {
                       onKeyDown={(e) => e.key === 'Enter' && setMagnifyAd(ad)}
                       aria-label={`Tap to magnify ${ad.title} image`}
                     >
-                      {/* Sponsored badge - discreet placement */}
+                      {/* Sponsored badge */}
                       <div className="absolute bottom-3 right-3 z-20 flex items-center gap-1 bg-black/30 backdrop-blur-sm px-2 py-1 rounded-md border border-white/10">
                         <Sparkles size={10} className="text-white/70" />
                         <span className="text-[9px] font-medium text-white/70 uppercase tracking-wide">Sponsored</span>
                       </div>
                       
-                      {/* Gradient overlay for depth */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-accent/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                      
-                      {/* Decorative border glow */}
-                      <div className="absolute inset-0 rounded-2xl border-2 border-white/20 group-hover:border-white/40 transition-colors duration-150" />
-                      
                       <img 
                         src={ad.imageUrl} 
                         alt={ad.title} 
-                        className="rounded-2xl w-full h-64 md:h-80 lg:h-96 object-cover transform-gpu will-change-transform transition-transform duration-300 group-hover:scale-105 shadow-2xl shadow-primary/30"
+                        className="rounded-2xl w-full h-64 md:h-80 lg:h-96 object-cover transform-gpu transition-transform duration-300 group-hover:scale-105 shadow-2xl shadow-primary/30"
                         loading={index === 0 ? "eager" : "lazy"}
                         decoding="async"
                         fetchPriority={index === 0 ? "high" : "auto"}
                       />
-                      
-                      {/* Shine effect on hover */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-400 ease-out" />
                     </div>
                   ) : (
                     <div className="rounded-2xl w-full h-64 md:h-80 lg:h-96 bg-gradient-to-br from-muted/50 to-muted animate-pulse flex items-center justify-center shadow-2xl">
@@ -520,7 +338,7 @@ const AdSplash = () => {
                       onClick={() => handleShare(ad)}
                       className="text-white hover:bg-white/10 border border-white/20 hover:border-white/40 backdrop-blur-sm min-h-[44px] gap-2 px-5 transition-all active:scale-95 font-medium"
                     >
-                      <Share2 size={18} className="transition-transform group-hover:scale-110" />
+                      <Share2 size={18} />
                       <span>Share</span>
                       {shareCounts[ad.id] > 0 && (
                         <span className="ml-0.5 text-sm opacity-80">· {shareCounts[ad.id]}</span>
@@ -552,9 +370,7 @@ const AdSplash = () => {
             <button
               key={index}
               className={`h-2 rounded-full transition-all duration-300 active:scale-90 touch-manipulation ${
-                index === currentSlide 
-                  ? 'bg-white w-8' 
-                  : 'bg-white/40 w-2 hover:bg-white/60'
+                index === currentSlide ? 'bg-white w-8' : 'bg-white/40 w-2 hover:bg-white/60'
               }`}
               onClick={() => handleSlideChange(index)}
               aria-label={`Go to slide ${index + 1}`}
@@ -574,7 +390,7 @@ const AdSplash = () => {
         />
       )}
 
-      {/* Magnify Dialog */}
+      {/* Magnify Dialog - Simplified */}
       <Dialog open={!!magnifyAd} onOpenChange={(open) => !open && setMagnifyAd(null)}>
         <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 bg-black/95 border-none overflow-hidden">
           <DialogClose className="absolute top-4 right-4 z-50 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm p-2 transition-colors">
@@ -584,29 +400,21 @@ const AdSplash = () => {
           
           {magnifyAd && (
             <div className="relative w-full h-[95vh] flex flex-col">
-              {/* Pinch-to-zoom image container */}
               <div 
-                ref={containerRef}
-                className="flex-1 overflow-hidden touch-none overscroll-contain cursor-grab active:cursor-grabbing relative"
+                className="flex-1 overflow-hidden touch-none cursor-grab active:cursor-grabbing relative"
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}
-                onTouchCancel={handleTouchEnd}
+                onClick={handleDoubleTap}
               >
                 <div 
-                  className={`w-full h-full flex items-center justify-center ${
-                    isGesturing ? '' : 'transition-transform duration-200 ease-out'
-                  }`}
-                  style={{ 
-                    transform: `scale(${zoomLevel}) translate(${position.x / zoomLevel}px, ${position.y / zoomLevel}px)`,
-                    willChange: isGesturing ? 'transform' : 'auto',
-                  }}
-                  onTouchEnd={handleDoubleTap}
+                  className="w-full h-full flex items-center justify-center transition-transform duration-200 ease-out"
+                  style={{ transform: `scale(${zoomLevel}) translate(${position.x / zoomLevel}px, ${position.y / zoomLevel}px)` }}
                 >
                   <img 
                     src={magnifyAd.imageUrl} 
                     alt={magnifyAd.title}
-                    className="max-w-[95vw] max-h-[75vh] object-contain rounded-lg animate-scale-in select-none pointer-events-none"
+                    className="max-w-[95vw] max-h-[75vh] object-contain rounded-lg select-none pointer-events-none"
                     draggable={false}
                   />
                 </div>
@@ -619,34 +427,21 @@ const AdSplash = () => {
                 </div>
               )}
               
-              {/* Gesture hints */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white/40 text-center pointer-events-none">
-                {zoomLevel === 1 && (
-                  <p className="text-xs animate-pulse">Pinch to zoom • Double-tap to zoom</p>
-                )}
-              </div>
-              
-              {/* Ad info overlay - fixed at bottom */}
+              {/* Ad info overlay */}
               <div className="shrink-0 p-4 bg-gradient-to-t from-black via-black/80 to-transparent text-center text-white">
                 <h3 className="text-lg md:text-xl font-bold mb-1">{magnifyAd.title}</h3>
                 <p className="text-xs md:text-sm text-white/80 max-w-lg mx-auto line-clamp-2">{magnifyAd.description}</p>
                 <div className="flex items-center justify-center gap-3 mt-3">
                   {zoomLevel > 1 && (
                     <button 
-                      onClick={() => {
-                        setZoomLevel(1);
-                        setPosition({ x: 0, y: 0 });
-                      }}
+                      onClick={() => { setZoomLevel(1); setPosition({ x: 0, y: 0 }); }}
                       className="bg-white/20 text-white px-4 py-2 rounded-lg font-medium hover:bg-white/30 active:scale-95 transition-all text-sm"
                     >
                       Reset Zoom
                     </button>
                   )}
                   <button 
-                    onClick={() => {
-                      handleGetMoreInfo(magnifyAd.id, magnifyAd.linkUrl);
-                      setMagnifyAd(null);
-                    }}
+                    onClick={() => { handleGetMoreInfo(magnifyAd.id, magnifyAd.linkUrl); setMagnifyAd(null); }}
                     className="bg-primary text-primary-foreground px-5 py-2 rounded-lg font-semibold hover:bg-primary/90 active:scale-95 transition-all text-sm"
                   >
                     Get More Info
@@ -659,6 +454,8 @@ const AdSplash = () => {
       </Dialog>
     </div>
   );
-};
+});
+
+AdSplash.displayName = 'AdSplash';
 
 export default AdSplash;
