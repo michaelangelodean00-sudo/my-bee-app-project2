@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, lazy, Suspense } from "react";
+import { useState, useEffect, useCallback, lazy, Suspense, memo } from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import AdSplash from "../components/AdSplash";
@@ -24,18 +24,80 @@ import { toast } from "sonner";
 // Lazy load non-critical visual components
 const AnimatedBackground = lazy(() => import("../components/AnimatedBackground"));
 
+// Static sample posts - defined outside component to prevent recreation
+const samplePosts = [
+  {
+    id: "1",
+    author: {
+      id: "user1",
+      name: "John Doe",
+      avatarUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&auto=format&fit=crop&crop=face",
+      avatarFallback: "JD"
+    },
+    content: "Just launched my new business! Check out our amazing products and services. Excited to be part of the B.E.E community! 🚀",
+    timestamp: "2 hours ago",
+    likes: 15,
+    comments: 3,
+    shares: 2
+  },
+  {
+    id: "2",
+    author: {
+      id: "user2",
+      name: "Sarah Wilson",
+      avatarUrl: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&auto=format&fit=crop&crop=face",
+      avatarFallback: "SW"
+    },
+    content: "Beautiful sunset from our event venue today! Can't wait to host more amazing events here. 🌅",
+    imageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&auto=format&fit=crop",
+    timestamp: "4 hours ago",
+    likes: 28,
+    comments: 7,
+    shares: 5
+  }
+];
+
+// Memoized post list to prevent unnecessary re-renders
+const PostList = memo(({ posts, userPosts }: { posts: typeof samplePosts; userPosts: typeof samplePosts }) => (
+  <section aria-label="Social media posts" className="space-y-5 md:space-y-6">
+    {posts.map((post, index) => (
+      <article 
+        key={post.id} 
+        className="animate-fade-in-up"
+        style={{ animationDelay: `${index * 50}ms` }}
+      >
+        <EnhancedCard variant="default" hover>
+          <Post {...post} />
+        </EnhancedCard>
+      </article>
+    ))}
+    
+    {userPosts.map((post, index) => (
+      <article 
+        key={`user-${index}`}
+        className="animate-fade-in-up"
+      >
+        <EnhancedCard variant="premium" hover>
+          <Post {...post} />
+        </EnhancedCard>
+      </article>
+    ))}
+  </section>
+));
+
+PostList.displayName = 'PostList';
+
 const Index = () => {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<typeof samplePosts>([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   
-  const handleNewPost = (newPost) => {
-    setPosts([newPost, ...posts]);
-  };
+  const handleNewPost = useCallback((newPost: typeof samplePosts[0]) => {
+    setPosts(prev => [newPost, ...prev]);
+  }, []);
 
   const handleRefresh = useCallback(async () => {
-    // Simulate a refresh delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise(resolve => setTimeout(resolve, 1000));
     toast.success("Feed refreshed!", {
       description: "You're all caught up with the latest posts.",
       duration: 2000
@@ -46,42 +108,10 @@ const Index = () => {
     // Instant load - no artificial delay
     setIsLoading(false);
   }, []);
-
-  const samplePosts = [
-    {
-      id: "1",
-      author: {
-        id: "user1",
-        name: "John Doe",
-        avatarUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&auto=format&fit=crop&crop=face",
-        avatarFallback: "JD"
-      },
-      content: "Just launched my new business! Check out our amazing products and services. Excited to be part of the B.E.E community! 🚀",
-      timestamp: "2 hours ago",
-      likes: 15,
-      comments: 3,
-      shares: 2
-    },
-    {
-      id: "2",
-      author: {
-        id: "user2",
-        name: "Sarah Wilson",
-        avatarUrl: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&auto=format&fit=crop&crop=face",
-        avatarFallback: "SW"
-      },
-      content: "Beautiful sunset from our event venue today! Can't wait to host more amazing events here. 🌅",
-      imageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&auto=format&fit=crop",
-      timestamp: "4 hours ago",
-      likes: 28,
-      comments: 7,
-      shares: 5
-    }
-  ];
   
   return (
     <PageTransition>
-      <div className="min-h-screen bg-background transition-colors relative overflow-hidden">
+      <div className="min-h-screen bg-background transition-colors relative overflow-hidden" style={{ contain: 'layout' }}>
         <Suspense fallback={null}>
           <AnimatedBackground />
         </Suspense>
@@ -103,7 +133,7 @@ const Index = () => {
       <AdSplash />
       
       <div className="flex relative">
-        {/* Tablet & Desktop Sidebar - Sticky position relative to flex container */}
+        {/* Tablet & Desktop Sidebar */}
         <aside className="hidden md:block w-64 flex-shrink-0 sticky top-0 self-start h-fit">
           <div className="bg-card border-r border-border overflow-y-auto max-h-[calc(100vh-2rem)]">
             <Sidebar className="h-full" />
@@ -111,7 +141,6 @@ const Index = () => {
         </aside>
         
         {/* Main Content */}
-        {/* Sticky Navigation Section - Business, Events, E-commerce */}
         <div className="flex-1 flex flex-col min-h-0">
           <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border flex-shrink-0">
             <div className="w-full max-w-3xl mx-auto px-4 md:px-6 py-4">
@@ -125,7 +154,7 @@ const Index = () => {
             <main className="w-full max-w-3xl mx-auto py-6 md:py-10 px-4 md:px-6 relative z-10 space-y-6 md:space-y-8" role="main" id="main-content">
           
           {/* Video Upload Button */}
-          <ScrollReveal direction="up" delay={0}>
+          <ScrollReveal direction="up">
             <section aria-label="Upload video content">
               <Card 
                 className="p-4 cursor-pointer hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 bg-card border-primary/15 w-fit mx-auto group"
@@ -142,7 +171,7 @@ const Index = () => {
           </ScrollReveal>
           
           {/* Ad Widget */}
-          <ScrollReveal direction="fade" delay={0}>
+          <ScrollReveal direction="fade">
             <section aria-label="Sponsored content">
               <p className="text-xs text-muted-foreground mb-3 md:mb-4 text-center font-medium tracking-wide uppercase">Sponsored</p>
               <EnhancedCard variant="default" className="p-4 md:p-5">
@@ -151,44 +180,14 @@ const Index = () => {
             </section>
           </ScrollReveal>
           
-          {/* Posts Section */}
-          <section aria-label="Social media posts" className="space-y-5 md:space-y-6">
-            {isLoading ? (
-              <PageLoader type="posts" />
-            ) : (
-              <>
-                {samplePosts.map((post, index) => (
-                  <ScrollReveal 
-                    key={post.id}
-                    direction="up"
-                    delay={index * 50} // Reduced from 200 + index * 100
-                  >
-                    <article>
-                      <EnhancedCard variant="default" hover>
-                        <Post {...post} />
-                      </EnhancedCard>
-                    </article>
-                  </ScrollReveal>
-                ))}
-                
-                {posts.map((post, index) => (
-                  <ScrollReveal 
-                    key={`user-${index}`}
-                    direction="up"
-                    delay={0}
-                  >
-                    <article>
-                      <EnhancedCard variant="premium" hover>
-                        <Post {...post} />
-                      </EnhancedCard>
-                    </article>
-                  </ScrollReveal>
-                ))}
-              </>
-            )}
-          </section>
+          {/* Posts Section - Using CSS animations instead of per-post ScrollReveal */}
+          {isLoading ? (
+            <PageLoader type="posts" />
+          ) : (
+            <PostList posts={samplePosts} userPosts={posts} />
+          )}
           
-          {/* Mobile Widgets Section - Shown below posts on mobile/tablet */}
+          {/* Mobile Widgets Section */}
           <MobileWidgetsSection />
           </main>
         </PullToRefresh>

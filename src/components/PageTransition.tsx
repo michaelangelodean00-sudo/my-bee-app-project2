@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState, useRef } from "react";
+import { memo, ReactNode, useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
@@ -7,8 +7,8 @@ interface PageTransitionProps {
   className?: string;
 }
 
-const PageTransition = ({ children, className }: PageTransitionProps) => {
-  const [isVisible, setIsVisible] = useState(true); // Start visible for faster LCP
+const PageTransition = memo(({ children, className }: PageTransitionProps) => {
+  const [isVisible, setIsVisible] = useState(true);
   const location = useLocation();
   const isFirstRender = useRef(true);
 
@@ -19,23 +19,24 @@ const PageTransition = ({ children, className }: PageTransitionProps) => {
       return;
     }
     setIsVisible(false);
-    // Use requestAnimationFrame for smoother transition
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => setIsVisible(true));
-    });
+    // Single rAF is sufficient
+    requestAnimationFrame(() => setIsVisible(true));
   }, [location.pathname]);
 
   return (
     <div
       className={cn(
-        "transition-opacity duration-150 ease-out",
+        "transition-opacity duration-100 ease-out",
         isVisible ? "opacity-100" : "opacity-0",
         className
       )}
+      style={{ contain: 'layout' }}
     >
       {children}
     </div>
   );
-};
+});
+
+PageTransition.displayName = 'PageTransition';
 
 export default PageTransition;

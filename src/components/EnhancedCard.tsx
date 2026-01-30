@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { memo, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface EnhancedCardProps {
@@ -8,13 +8,13 @@ interface EnhancedCardProps {
   hover?: boolean;
 }
 
-const EnhancedCard = ({ 
+const EnhancedCard = memo(({ 
   children, 
   className, 
   variant = "default", 
   hover = true 
 }: EnhancedCardProps) => {
-  const baseClasses = "relative overflow-hidden transition-all duration-300 ease-out rounded-xl";
+  const baseClasses = "relative overflow-hidden transition-shadow duration-200 rounded-xl";
   
   const variants = {
     default: "bee-card",
@@ -26,15 +26,15 @@ const EnhancedCard = ({
   const hoverEffects = hover ? "hover:shadow-lg" : "";
 
   return (
-    <div className={cn(
-      baseClasses,
-      variants[variant],
-      hoverEffects,
-      className
-    )}>
+    <div 
+      className={cn(baseClasses, variants[variant], hoverEffects, className)}
+      style={{ contain: 'layout style' }}
+    >
       {children}
     </div>
   );
-};
+});
+
+EnhancedCard.displayName = 'EnhancedCard';
 
 export default EnhancedCard;
