@@ -17,26 +17,35 @@ const ScrollReveal = ({
   delay = 0, 
   direction = "up",
   threshold = 0.1,
-  duration = 700,
+  duration = 400, // Reduced from 700ms
   once = true
 }: ScrollRevealProps) => {
-  const [isVisible, setIsVisible] = useState(false);
+  // Start visible if delay is 0 for faster initial paint
+  const [isVisible, setIsVisible] = useState(delay === 0);
   const elementRef = useRef<HTMLDivElement>(null);
-  const hasAnimated = useRef(false);
+  const hasAnimated = useRef(delay === 0);
 
   useEffect(() => {
+    // Skip observer setup if already visible
+    if (hasAnimated.current && once) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && (!once || !hasAnimated.current)) {
-          setTimeout(() => {
+          if (delay > 0) {
+            setTimeout(() => {
+              setIsVisible(true);
+              hasAnimated.current = true;
+            }, delay);
+          } else {
             setIsVisible(true);
             hasAnimated.current = true;
-          }, delay);
+          }
         } else if (!once && !entry.isIntersecting) {
           setIsVisible(false);
         }
       },
-      { threshold, rootMargin: "50px" }
+      { threshold, rootMargin: "100px" } // Increased rootMargin for earlier trigger
     );
 
     if (elementRef.current) {
@@ -46,14 +55,14 @@ const ScrollReveal = ({
     return () => observer.disconnect();
   }, [delay, threshold, once]);
 
-  const initialClasses = {
-    up: "translate-y-8",
-    down: "-translate-y-8",
-    left: "translate-x-8",
-    right: "-translate-x-8",
+const initialClasses = {
+    up: "translate-y-4", // Reduced from 8 for subtler effect
+    down: "-translate-y-4",
+    left: "translate-x-4",
+    right: "-translate-x-4",
     fade: "",
-    scale: "scale-95",
-    rotate: "rotate-3"
+    scale: "scale-[0.98]", // Subtler scale
+    rotate: "rotate-1"
   };
 
   const visibleClasses = {
