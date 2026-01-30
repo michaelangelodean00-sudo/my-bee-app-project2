@@ -15,20 +15,17 @@ import CopyrightWatermark from "../components/CopyrightWatermark";
 import PullToRefresh from "../components/PullToRefresh";
 import GreetingBanner from "../components/GreetingBanner";
 import PageTransition from "../components/PageTransition";
+import MobileBottomNav from "../components/MobileBottomNav";
+import MobileWidgetsSection from "../components/MobileWidgetsSection";
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 
 const Index = () => {
-  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  
-  const toggleMobileSidebar = () => {
-    setMobileSidebarOpen(!mobileSidebarOpen);
-  };
   
   const handleNewPost = (newPost) => {
     setPosts([newPost, ...posts]);
@@ -99,40 +96,11 @@ const Index = () => {
         <p className="sr-only">Connect with local Bahamian businesses, discover events, and explore e-commerce opportunities in the Caribbean.</p>
       </header>
       
-      <Header toggleMobileSidebar={toggleMobileSidebar} />
+      <Header toggleMobileSidebar={() => {}} />
       <GreetingBanner />
       <AdSplash />
       
       <div className="flex relative">
-        {/* Mobile Sidebar Overlay */}
-        {mobileSidebarOpen && (
-          <div 
-            className="fixed inset-0 bg-foreground/40 backdrop-blur-sm z-40 md:hidden animate-in fade-in duration-200"
-            onClick={toggleMobileSidebar}
-          />
-        )}
-        
-        {/* Mobile Sidebar - Fixed position */}
-        <div className={`fixed inset-y-0 left-0 z-50 w-72 bg-card shadow-2xl transform ${
-          mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } transition-transform duration-300 ease-out md:hidden`}>
-          <div className="flex justify-between items-center p-4 border-b border-border">
-            <h2 className="text-lg font-semibold text-foreground">Menu</h2>
-            <button
-              onClick={toggleMobileSidebar}
-              className="p-2 hover:bg-accent rounded-lg transition-colors"
-              aria-label="Close menu"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-          </div>
-          <div className="h-[calc(100%-65px)] overflow-y-auto">
-            <Sidebar />
-          </div>
-        </div>
-        
         {/* Tablet & Desktop Sidebar - Sticky position relative to flex container */}
         <aside className="hidden md:block w-64 flex-shrink-0 sticky top-0 self-start h-fit">
           <div className="bg-card border-r border-border overflow-y-auto max-h-[calc(100vh-2rem)]">
@@ -217,17 +185,23 @@ const Index = () => {
               </>
             )}
           </section>
+          
+          {/* Mobile Widgets Section - Shown below posts on mobile/tablet */}
+          <MobileWidgetsSection />
           </main>
         </PullToRefresh>
         </div>
         
-        {/* Right Sidebar */}
+        {/* Right Sidebar - Desktop only */}
         <aside aria-label="Additional content and widgets">
           <RightSidebar />
         </aside>
       </div>
       
         <Footer />
+        
+        {/* Mobile Bottom Navigation */}
+        <MobileBottomNav />
       </div>
     </PageTransition>
   );

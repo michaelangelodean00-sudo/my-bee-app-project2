@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import VideoPlayerWithAds from "../components/VideoPlayerWithAds";
 import PageTransition from "../components/PageTransition";
+import MobileBottomNav from "../components/MobileBottomNav";
 import { useNotifications } from "../contexts/NotificationContext";
 import { useContentFilter } from "../contexts/ContentFilterContext";
 import { useAdAnalytics } from "../hooks/useAdAnalytics";
@@ -250,6 +251,7 @@ const Businesses = () => {
           </div>
         </div>
       </div>
+      <MobileBottomNav />
       </div>
     </PageTransition>
   );

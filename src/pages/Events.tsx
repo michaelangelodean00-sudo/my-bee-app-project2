@@ -6,6 +6,7 @@ import VideoPlayerWithAds from "../components/VideoPlayerWithAds";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import PageTransition from "../components/PageTransition";
+import MobileBottomNav from "../components/MobileBottomNav";
 import { useNotifications } from "../contexts/NotificationContext";
 import { useContentFilter } from "../contexts/ContentFilterContext";
 import { useAdAnalytics } from "../hooks/useAdAnalytics";
@@ -259,6 +260,7 @@ const Events = () => {
           </div>
         </div>
       </div>
+      <MobileBottomNav />
       </div>
     </PageTransition>
   );
