@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, lazy, Suspense } from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import AdSplash from "../components/AdSplash";
@@ -7,7 +7,6 @@ import RightSidebar from "../components/RightSidebar";
 import Post from "../components/Post";
 import PageLoader from "../components/PageLoader";
 import McdonaldsAdWidget from "../components/McdonaldsAdWidget";
-import AnimatedBackground from "../components/AnimatedBackground";
 import EnhancedCard from "../components/EnhancedCard";
 import ScrollReveal from "../components/ScrollReveal";
 import Footer from "../components/Footer";
@@ -21,6 +20,9 @@ import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
+
+// Lazy load non-critical visual components
+const AnimatedBackground = lazy(() => import("../components/AnimatedBackground"));
 
 const Index = () => {
   const [posts, setPosts] = useState([]);
@@ -43,7 +45,7 @@ const Index = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 800);
+    }, 300); // Reduced from 800ms
     return () => clearTimeout(timer);
   }, []);
 
@@ -82,7 +84,9 @@ const Index = () => {
   return (
     <PageTransition>
       <div className="min-h-screen bg-background transition-colors relative overflow-hidden">
-        <AnimatedBackground />
+        <Suspense fallback={null}>
+          <AnimatedBackground />
+        </Suspense>
       
       {/* Copyright Watermark */}
       <CopyrightWatermark 
@@ -123,7 +127,7 @@ const Index = () => {
             <main className="w-full max-w-3xl mx-auto py-6 md:py-10 px-4 md:px-6 relative z-10 space-y-6 md:space-y-8" role="main" id="main-content">
           
           {/* Video Upload Button */}
-          <ScrollReveal direction="up" delay={100}>
+          <ScrollReveal direction="up" delay={0}>
             <section aria-label="Upload video content">
               <Card 
                 className="p-4 cursor-pointer hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 bg-card border-primary/15 w-fit mx-auto group"
@@ -140,7 +144,7 @@ const Index = () => {
           </ScrollReveal>
           
           {/* Ad Widget */}
-          <ScrollReveal direction="fade" delay={150}>
+          <ScrollReveal direction="fade" delay={0}>
             <section aria-label="Sponsored content">
               <p className="text-xs text-muted-foreground mb-3 md:mb-4 text-center font-medium tracking-wide uppercase">Sponsored</p>
               <EnhancedCard variant="default" className="p-4 md:p-5">
@@ -159,7 +163,7 @@ const Index = () => {
                   <ScrollReveal 
                     key={post.id}
                     direction="up"
-                    delay={200 + (index * 100)}
+                    delay={index * 50} // Reduced from 200 + index * 100
                   >
                     <article>
                       <EnhancedCard variant="default" hover>
@@ -173,7 +177,7 @@ const Index = () => {
                   <ScrollReveal 
                     key={`user-${index}`}
                     direction="up"
-                    delay={50}
+                    delay={0}
                   >
                     <article>
                       <EnhancedCard variant="premium" hover>
