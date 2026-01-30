@@ -2,6 +2,7 @@ import { memo } from "react";
 import { Building2, Calendar, ShoppingCart, Settings, Home, UserCircle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useNotifications } from "../contexts/NotificationContext";
+import { usePrefetch } from "../hooks/usePrefetch";
 import { Badge } from "./ui/badge";
 import SearchBar from "./SearchBar";
 import { cn } from "@/lib/utils";
@@ -22,6 +23,7 @@ const navigationItems = [
 const Sidebar = memo(({ className = "" }: SidebarProps) => {
   const location = useLocation();
   const notifications = useNotifications();
+  const { prefetchOnHover } = usePrefetch();
 
   return (
     <aside className={`w-full bg-card transition-all duration-300 ${className}`}>
@@ -43,6 +45,7 @@ const Sidebar = memo(({ className = "" }: SidebarProps) => {
               <Link
                 key={item.path}
                 to={item.path}
+                {...prefetchOnHover(item.path)}
                 className={cn(
                   "flex items-center justify-between px-3 lg:px-4 py-3 rounded-lg transition-all duration-200 min-h-[48px] group",
                   isActive

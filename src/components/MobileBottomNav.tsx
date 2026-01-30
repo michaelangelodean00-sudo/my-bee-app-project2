@@ -2,6 +2,7 @@ import { memo } from "react";
 import { Building2, Calendar, ShoppingCart, Home, UserCircle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useNotifications } from "../contexts/NotificationContext";
+import { usePrefetch } from "../hooks/usePrefetch";
 import { cn } from "@/lib/utils";
 
 interface NavItem {
@@ -22,6 +23,7 @@ const navigationItems: NavItem[] = [
 const MobileBottomNav = memo(() => {
   const location = useLocation();
   const notifications = useNotifications();
+  const { prefetchOnHover } = usePrefetch();
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-card/95 backdrop-blur-md border-t border-border safe-area-bottom">
@@ -37,6 +39,7 @@ const MobileBottomNav = memo(() => {
             <Link
               key={item.path}
               to={item.path}
+              {...prefetchOnHover(item.path)}
               className={cn(
                 "flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all duration-200 relative min-w-[60px]",
                 isActive
