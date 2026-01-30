@@ -168,19 +168,19 @@ const BurgerAdWidget = () => {
       
       {/* Content */}
       <div className="relative z-10 flex items-center w-full gap-2 sm:gap-3">
-        {/* Image with glow ring and 3D lift effect */}
-        <div className="relative flex-shrink-0" style={{ transform: 'translateZ(20px)' }}>
-          <div className={`absolute inset-0 rounded-lg sm:rounded-xl bg-white/30 blur-md scale-110 opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+        {/* Image with glow ring and 3D lift effect - Fixed size container */}
+        <div 
+          className="relative flex-shrink-0 w-[112px] h-[63px] sm:w-[128px] sm:h-[72px] md:w-[160px] md:h-[90px] overflow-hidden rounded-lg sm:rounded-xl border-2 border-white/30 shadow-lg"
+          style={{ transform: 'translateZ(20px)' }}
+        >
+          <div className={`absolute inset-0 bg-white/30 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10`} />
           <img 
             src={currentAd.imageSrc}
             alt={currentAd.altText} 
             className={`
-              relative w-28 h-[63px] sm:w-32 sm:h-[72px] md:w-40 md:h-[90px]
-              rounded-lg sm:rounded-xl object-cover
-              border-2 border-white/30
-              shadow-lg
-              transition-all duration-300
-              ${isHovered ? 'scale-110 shadow-xl' : 'scale-100'}
+              absolute inset-0 w-full h-full object-cover
+              transition-transform duration-300
+              ${isHovered ? 'scale-110' : 'scale-100'}
             `}
             loading="lazy"
             decoding="async"
