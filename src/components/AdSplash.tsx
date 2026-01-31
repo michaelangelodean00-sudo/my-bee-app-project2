@@ -482,18 +482,18 @@ const AdSplash = memo(() => {
         />
       )}
 
-      {/* Full Page Ad Dialog */}
-      <Dialog open={!!magnifyAd} onOpenChange={(open) => !open && setMagnifyAd(null)}>
-        <DialogContent className="max-w-full w-full h-[100dvh] max-h-[100dvh] p-0 bg-gradient-to-b from-secondary via-secondary/95 to-black border-none overflow-auto rounded-none sm:rounded-lg sm:max-w-4xl sm:h-auto sm:max-h-[95vh]" aria-describedby={undefined}>
-          <VisuallyHidden>
-            <DialogTitle>{magnifyAd?.title || 'Ad Preview'}</DialogTitle>
-          </VisuallyHidden>
-          <DialogClose className="absolute top-4 right-4 z-50 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm p-2.5 transition-colors">
-            <X size={24} className="text-white" />
-            <span className="sr-only">Close</span>
-          </DialogClose>
-          
-          {magnifyAd && (
+      {/* Full Page Ad Dialog - Only mount when ad is selected */}
+      {magnifyAd && (
+        <Dialog open={true} onOpenChange={(open) => !open && setMagnifyAd(null)}>
+          <DialogContent className="max-w-full w-full h-[100dvh] max-h-[100dvh] p-0 bg-gradient-to-b from-secondary via-secondary/95 to-black border-none overflow-auto rounded-none sm:rounded-lg sm:max-w-4xl sm:h-auto sm:max-h-[95vh]" aria-describedby={undefined}>
+            <VisuallyHidden>
+              <DialogTitle>{magnifyAd.title}</DialogTitle>
+            </VisuallyHidden>
+            <DialogClose className="absolute top-4 right-4 z-50 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm p-2.5 transition-colors">
+              <X size={24} className="text-white" />
+              <span className="sr-only">Close</span>
+            </DialogClose>
+            
             <div className="flex flex-col min-h-full">
               {/* Hero Image Section - Pinch to zoom */}
               <div 
@@ -573,9 +573,9 @@ const AdSplash = memo(() => {
                 </div>
               </div>
             </div>
-          )}
-        </DialogContent>
-      </Dialog>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 });
