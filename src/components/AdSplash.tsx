@@ -103,6 +103,33 @@ const AdSplash = memo(() => {
   const lastTouchDistance = useRef<number | null>(null);
   const lastSingleTouch = useRef<{ x: number; y: number } | null>(null);
   const lastTap = useRef<number>(0);
+  const clickStartPos = useRef<{ x: number; y: number } | null>(null);
+  const isDragging = useRef(false);
+
+  // Handle click vs drag detection
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    clickStartPos.current = { x: e.clientX, y: e.clientY };
+    isDragging.current = false;
+  }, []);
+
+  const handlePointerMove = useCallback((e: React.PointerEvent) => {
+    if (clickStartPos.current) {
+      const dx = Math.abs(e.clientX - clickStartPos.current.x);
+      const dy = Math.abs(e.clientY - clickStartPos.current.y);
+      if (dx > 10 || dy > 10) {
+        isDragging.current = true;
+      }
+    }
+  }, []);
+
+  const handleImageClick = useCallback((ad: Ad) => {
+    // Only open if not dragging
+    if (!isDragging.current) {
+      setMagnifyAd(ad);
+    }
+    clickStartPos.current = null;
+    isDragging.current = false;
+  }, []);
 
   // Simplified touch distance calculation
   const getTouchDistance = useCallback((touches: React.TouchList) => {
@@ -297,12 +324,14 @@ const AdSplash = memo(() => {
                 <div className="w-full md:w-1/2 relative group">
                   {loadedImages.has(index) ? (
                     <div 
-                      className="relative overflow-hidden rounded-2xl cursor-zoom-in"
-                      onClick={() => setMagnifyAd(ad)}
+                      className="relative overflow-hidden rounded-2xl cursor-pointer"
+                      onPointerDown={handlePointerDown}
+                      onPointerMove={handlePointerMove}
+                      onClick={() => handleImageClick(ad)}
                       role="button"
                       tabIndex={0}
                       onKeyDown={(e) => e.key === 'Enter' && setMagnifyAd(ad)}
-                      aria-label={`Tap to magnify ${ad.title} image`}
+                      aria-label={`Tap to view full ${ad.title} ad`}
                     >
                       {/* Sponsored badge */}
                       <div className="absolute bottom-3 right-3 z-20 flex items-center gap-1 bg-black/30 backdrop-blur-sm px-2 py-1 rounded-md border border-white/10">
