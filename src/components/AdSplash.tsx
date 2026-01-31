@@ -103,32 +103,30 @@ const AdSplash = memo(() => {
   const lastTouchDistance = useRef<number | null>(null);
   const lastSingleTouch = useRef<{ x: number; y: number } | null>(null);
   const lastTap = useRef<number>(0);
+  const clickStartTime = useRef<number>(0);
   const clickStartPos = useRef<{ x: number; y: number } | null>(null);
-  const isDragging = useRef(false);
 
-  // Handle click vs drag detection
+  // Track pointer down for click vs drag detection
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    clickStartTime.current = Date.now();
     clickStartPos.current = { x: e.clientX, y: e.clientY };
-    isDragging.current = false;
   }, []);
 
-  const handlePointerMove = useCallback((e: React.PointerEvent) => {
-    if (clickStartPos.current) {
-      const dx = Math.abs(e.clientX - clickStartPos.current.x);
-      const dy = Math.abs(e.clientY - clickStartPos.current.y);
-      if (dx > 10 || dy > 10) {
-        isDragging.current = true;
-      }
-    }
-  }, []);
-
-  const handleImageClick = useCallback((ad: Ad) => {
-    // Only open if not dragging
-    if (!isDragging.current) {
+  // Use onMouseUp to bypass carousel click interference
+  const handleMouseUp = useCallback((ad: Ad, e: React.MouseEvent) => {
+    if (!clickStartPos.current) return;
+    
+    const timeDiff = Date.now() - clickStartTime.current;
+    const dx = Math.abs(e.clientX - clickStartPos.current.x);
+    const dy = Math.abs(e.clientY - clickStartPos.current.y);
+    
+    // If tap was quick (< 250ms) and didn't move much (< 10px), open the ad
+    if (timeDiff < 250 && dx < 10 && dy < 10) {
+      e.stopPropagation();
       setMagnifyAd(ad);
     }
+    
     clickStartPos.current = null;
-    isDragging.current = false;
   }, []);
 
   // Simplified touch distance calculation
@@ -326,8 +324,7 @@ const AdSplash = memo(() => {
                     <div 
                       className="relative overflow-hidden rounded-2xl cursor-pointer"
                       onPointerDown={handlePointerDown}
-                      onPointerMove={handlePointerMove}
-                      onClick={() => handleImageClick(ad)}
+                      onMouseUp={(e) => handleMouseUp(ad, e)}
                       role="button"
                       tabIndex={0}
                       onKeyDown={(e) => e.key === 'Enter' && setMagnifyAd(ad)}
