@@ -12,14 +12,14 @@ import { optimizeAds, preloadImage } from "@/utils/adUtils";
 import type { Ad } from "@/utils/adUtils";
 import { useAdAnalytics } from "@/hooks/useAdAnalytics";
 import ShareDialog from "./ShareDialog";
-import { Share2, X, Sparkles } from "lucide-react";
+import { Share2, X, Sparkles, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogClose,
   DialogTitle,
-  DialogDescription,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
@@ -99,181 +99,6 @@ const AdSplash = memo(() => {
   const [shareDialog, setShareDialog] = useState(false);
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null);
   const [shareCounts, setShareCounts] = useState<Record<string, number>>({});
-  const [magnifyAd, setMagnifyAd] = useState<Ad | null>(null);
-  const [zoomLevel, setZoomLevel] = useState(1);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  // Dialog-specific zoom state
-  const [dialogZoom, setDialogZoom] = useState(1);
-  const [dialogPosition, setDialogPosition] = useState({ x: 0, y: 0 });
-  const dialogTouchDistance = useRef<number | null>(null);
-  const dialogSingleTouch = useRef<{ x: number; y: number } | null>(null);
-  const dialogLastTap = useRef<number>(0);
-  
-  const lastTouchDistance = useRef<number | null>(null);
-  const lastSingleTouch = useRef<{ x: number; y: number } | null>(null);
-  const lastTap = useRef<number>(0);
-  const clickStartTime = useRef<number>(0);
-  const clickStartPos = useRef<{ x: number; y: number } | null>(null);
-  const isDragging = useRef<boolean>(false);
-
-  // Track mouse/touch down for click vs drag detection
-  const handleMouseDown = useCallback((e: React.MouseEvent) => {
-    clickStartTime.current = Date.now();
-    clickStartPos.current = { x: e.clientX, y: e.clientY };
-    isDragging.current = false;
-  }, []);
-
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (clickStartPos.current) {
-      const dx = Math.abs(e.clientX - clickStartPos.current.x);
-      const dy = Math.abs(e.clientY - clickStartPos.current.y);
-      if (dx > 10 || dy > 10) {
-        isDragging.current = true;
-      }
-    }
-  }, []);
-
-  // Use onClick for reliable tap detection
-  const handleAdClick = useCallback((ad: Ad, e: React.MouseEvent) => {
-    // Don't open if user was dragging/swiping
-    if (isDragging.current) {
-      isDragging.current = false;
-      clickStartPos.current = null;
-      return;
-    }
-    
-    const timeDiff = Date.now() - clickStartTime.current;
-    
-    // If click was quick (< 500ms), open the ad
-    if (timeDiff < 500) {
-      console.log('Opening ad dialog:', ad.title);
-      setMagnifyAd(ad);
-    }
-    
-    clickStartPos.current = null;
-    isDragging.current = false;
-  }, []);
-
-  // Simplified touch distance calculation
-  const getTouchDistance = useCallback((touches: React.TouchList) => {
-    if (touches.length < 2) return null;
-    const dx = touches[0].clientX - touches[1].clientX;
-    const dy = touches[0].clientY - touches[1].clientY;
-    return Math.sqrt(dx * dx + dy * dy);
-  }, []);
-
-  // Simplified touch handlers
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    if (e.touches.length === 2) {
-      e.preventDefault();
-      lastTouchDistance.current = getTouchDistance(e.touches);
-    } else if (e.touches.length === 1 && zoomLevel > 1) {
-      lastSingleTouch.current = {
-        x: e.touches[0].clientX,
-        y: e.touches[0].clientY
-      };
-    }
-  }, [getTouchDistance, zoomLevel]);
-
-  const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (e.touches.length === 2 && lastTouchDistance.current !== null) {
-      e.preventDefault();
-      const newDistance = getTouchDistance(e.touches);
-      if (newDistance) {
-        const scale = newDistance / lastTouchDistance.current;
-        const newZoom = Math.min(Math.max(zoomLevel * scale, 1), 3);
-        setZoomLevel(newZoom);
-        lastTouchDistance.current = newDistance;
-      }
-    } else if (e.touches.length === 1 && lastSingleTouch.current && zoomLevel > 1) {
-      e.preventDefault();
-      const touch = e.touches[0];
-      const deltaX = touch.clientX - lastSingleTouch.current.x;
-      const deltaY = touch.clientY - lastSingleTouch.current.y;
-      setPosition(prev => ({ x: prev.x + deltaX, y: prev.y + deltaY }));
-      lastSingleTouch.current = { x: touch.clientX, y: touch.clientY };
-    }
-  }, [zoomLevel, getTouchDistance]);
-
-  const handleTouchEnd = useCallback(() => {
-    lastTouchDistance.current = null;
-    lastSingleTouch.current = null;
-    // Auto-reset zoom after delay
-    if (zoomLevel > 1) {
-      setTimeout(() => {
-        setZoomLevel(1);
-        setPosition({ x: 0, y: 0 });
-      }, 1500);
-    }
-  }, [zoomLevel]);
-
-  // Double-tap to zoom
-  const handleDoubleTap = useCallback(() => {
-    const now = Date.now();
-    if (now - lastTap.current < 300) {
-      setZoomLevel(prev => prev > 1 ? 1 : 2);
-      setPosition({ x: 0, y: 0 });
-    }
-    lastTap.current = now;
-  }, []);
-
-  // Dialog pinch-to-zoom handlers
-  const handleDialogTouchStart = useCallback((e: React.TouchEvent) => {
-    if (e.touches.length === 2) {
-      e.preventDefault();
-      dialogTouchDistance.current = getTouchDistance(e.touches);
-    } else if (e.touches.length === 1 && dialogZoom > 1) {
-      dialogSingleTouch.current = {
-        x: e.touches[0].clientX,
-        y: e.touches[0].clientY
-      };
-    }
-  }, [getTouchDistance, dialogZoom]);
-
-  const handleDialogTouchMove = useCallback((e: React.TouchEvent) => {
-    if (e.touches.length === 2 && dialogTouchDistance.current !== null) {
-      e.preventDefault();
-      const newDistance = getTouchDistance(e.touches);
-      if (newDistance) {
-        const scale = newDistance / dialogTouchDistance.current;
-        const newZoom = Math.min(Math.max(dialogZoom * scale, 1), 4);
-        setDialogZoom(newZoom);
-        dialogTouchDistance.current = newDistance;
-      }
-    } else if (e.touches.length === 1 && dialogSingleTouch.current && dialogZoom > 1) {
-      e.preventDefault();
-      const touch = e.touches[0];
-      const deltaX = touch.clientX - dialogSingleTouch.current.x;
-      const deltaY = touch.clientY - dialogSingleTouch.current.y;
-      setDialogPosition(prev => ({ x: prev.x + deltaX, y: prev.y + deltaY }));
-      dialogSingleTouch.current = { x: touch.clientX, y: touch.clientY };
-    }
-  }, [dialogZoom, getTouchDistance]);
-
-  const handleDialogTouchEnd = useCallback(() => {
-    dialogTouchDistance.current = null;
-    dialogSingleTouch.current = null;
-  }, []);
-
-  // Double-tap to zoom in dialog
-  const handleDialogDoubleTap = useCallback(() => {
-    const now = Date.now();
-    if (now - dialogLastTap.current < 300) {
-      setDialogZoom(prev => prev > 1 ? 1 : 2.5);
-      setDialogPosition({ x: 0, y: 0 });
-    }
-    dialogLastTap.current = now;
-  }, []);
-
-  // Reset zoom when dialog closes
-  useEffect(() => {
-    if (!magnifyAd) {
-      setZoomLevel(1);
-      setPosition({ x: 0, y: 0 });
-      setDialogZoom(1);
-      setDialogPosition({ x: 0, y: 0 });
-    }
-  }, [magnifyAd]);
 
   // Analytics tracking
   const { trackImpression, trackClick, getAdPerformance } = useAdAnalytics();
@@ -395,35 +220,96 @@ const AdSplash = memo(() => {
                 <div className="w-full md:w-1/2 relative group">
                   {loadedImages.has(index) ? (
                     <div className="relative overflow-hidden rounded-2xl">
-                      {/* Clickable overlay - separate from carousel drag */}
-                      <button
-                        type="button"
-                        className="absolute inset-0 z-30 cursor-pointer bg-transparent"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          e.preventDefault();
-                          console.log('Ad clicked:', ad.title);
-                          // Use setTimeout to prevent Radix Dialog from detecting this as "click outside"
-                          setTimeout(() => setMagnifyAd(ad), 0);
-                        }}
-                        onMouseDown={(e) => e.stopPropagation()}
-                        onTouchStart={(e) => e.stopPropagation()}
-                        aria-label={`View full ${ad.title} ad`}
-                      />
-                      
                       {/* Sponsored badge */}
                       <div className="absolute bottom-3 right-3 z-20 flex items-center gap-1 bg-black/30 backdrop-blur-sm px-2 py-1 rounded-md border border-white/10 pointer-events-none">
                         <Sparkles size={10} className="text-white/70" />
                         <span className="text-[9px] font-medium text-white/70 uppercase tracking-wide">Sponsored</span>
                       </div>
                       
+                      {/* View full ad dialog with inline trigger */}
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <button
+                            type="button"
+                            className="absolute top-3 right-3 z-50 flex items-center gap-1.5 bg-white/95 hover:bg-white text-black font-medium px-3 py-2 rounded-md shadow-xl border border-white/20 text-sm transition-colors cursor-pointer"
+                            onPointerDown={(e) => e.stopPropagation()}
+                          >
+                            <ZoomIn size={14} />
+                            View Ad
+                          </button>
+                        </DialogTrigger>
+                        <DialogContent 
+                          className="max-w-full w-full h-[100dvh] max-h-[100dvh] p-0 bg-gradient-to-b from-secondary via-secondary/95 to-black border-none overflow-auto rounded-none sm:rounded-lg sm:max-w-4xl sm:h-auto sm:max-h-[95vh]" 
+                          aria-describedby={undefined}
+                          onPointerDownOutside={(e) => e.preventDefault()}
+                          onInteractOutside={(e) => e.preventDefault()}
+                        >
+                          <VisuallyHidden>
+                            <DialogTitle>{ad.title}</DialogTitle>
+                          </VisuallyHidden>
+                          <DialogClose className="absolute top-4 right-4 z-50 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm p-2.5 transition-colors">
+                            <X size={24} className="text-white" />
+                            <span className="sr-only">Close</span>
+                          </DialogClose>
+                          
+                          <div className="flex flex-col min-h-full">
+                            {/* Hero Image Section */}
+                            <div className="relative w-full aspect-video sm:aspect-[16/9] overflow-hidden">
+                              <img 
+                                src={ad.imageUrl} 
+                                alt={ad.title}
+                                className="w-full h-full object-cover"
+                                draggable={false}
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                              <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/20">
+                                <Sparkles size={12} className="text-primary" />
+                                <span className="text-xs font-semibold text-white uppercase tracking-wider">Sponsored</span>
+                              </div>
+                            </div>
+                            
+                            {/* Content Section */}
+                            <div className="flex-1 p-6 sm:p-8 text-white space-y-6">
+                              <div>
+                                <h2 className="text-2xl sm:text-3xl font-bold mb-3 leading-tight">{ad.title}</h2>
+                                <p className="text-base sm:text-lg text-white/80 leading-relaxed">{ad.description}</p>
+                              </div>
+                              
+                              {/* CTA Buttons */}
+                              <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                                <button 
+                                  onClick={() => handleGetMoreInfo(ad.id, ad.linkUrl)}
+                                  className="flex-1 bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold text-lg hover:bg-primary/90 active:scale-[0.98] transition-all shadow-lg shadow-primary/30 min-h-[56px]"
+                                >
+                                  Get More Info
+                                </button>
+                                <Button
+                                  variant="outline"
+                                  size="lg"
+                                  onClick={() => handleShare(ad)}
+                                  className="flex-1 sm:flex-none border-white/30 text-white hover:bg-white/10 hover:border-white/50 min-h-[56px] gap-2 font-semibold"
+                                >
+                                  <Share2 size={20} />
+                                  Share This Ad
+                                </Button>
+                              </div>
+                              
+                              <div className="pt-4 border-t border-white/10 text-center">
+                                <p className="text-xs text-white/50">Tap outside or the X button to close</p>
+                              </div>
+                            </div>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                      
                       <img 
                         src={ad.imageUrl} 
                         alt={ad.title} 
-                        className="rounded-2xl w-full h-64 md:h-80 lg:h-96 object-cover transform-gpu transition-transform duration-300 group-hover:scale-105 shadow-2xl shadow-primary/30 pointer-events-none"
+                        className="rounded-2xl w-full h-64 md:h-80 lg:h-96 object-cover transform-gpu transition-transform duration-300 group-hover:scale-105 shadow-2xl shadow-primary/30 select-none"
                         loading={index === 0 ? "eager" : "lazy"}
                         decoding="async"
                         fetchPriority={index === 0 ? "high" : "auto"}
+                        draggable={false}
                       />
                     </div>
                   ) : (
@@ -498,106 +384,6 @@ const AdSplash = memo(() => {
           postContent={`${selectedAd.title} - ${selectedAd.description}`}
           onShareComplete={handleShareComplete}
         />
-      )}
-
-      {/* Full Page Ad Dialog - Only mount when ad is selected */}
-      {magnifyAd && (
-        <Dialog open={true} onOpenChange={(open) => !open && setMagnifyAd(null)}>
-          <DialogContent 
-            className="max-w-full w-full h-[100dvh] max-h-[100dvh] p-0 bg-gradient-to-b from-secondary via-secondary/95 to-black border-none overflow-auto rounded-none sm:rounded-lg sm:max-w-4xl sm:h-auto sm:max-h-[95vh]" 
-            aria-describedby={undefined}
-            onPointerDownOutside={(e) => e.preventDefault()}
-            onInteractOutside={(e) => e.preventDefault()}
-          >
-            <VisuallyHidden>
-              <DialogTitle>{magnifyAd.title}</DialogTitle>
-            </VisuallyHidden>
-            <DialogClose className="absolute top-4 right-4 z-50 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm p-2.5 transition-colors">
-              <X size={24} className="text-white" />
-              <span className="sr-only">Close</span>
-            </DialogClose>
-            
-            <div className="flex flex-col min-h-full">
-              {/* Hero Image Section - Pinch to zoom */}
-              <div 
-                className="relative w-full aspect-video sm:aspect-[16/9] overflow-hidden touch-none select-none"
-                onTouchStart={handleDialogTouchStart}
-                onTouchMove={handleDialogTouchMove}
-                onTouchEnd={handleDialogTouchEnd}
-                onClick={handleDialogDoubleTap}
-              >
-                <img 
-                  src={magnifyAd.imageUrl} 
-                  alt={magnifyAd.title}
-                  className="w-full h-full object-cover transition-transform duration-100 ease-out"
-                  style={{
-                    transform: `scale(${dialogZoom}) translate(${dialogPosition.x / dialogZoom}px, ${dialogPosition.y / dialogZoom}px)`,
-                    transformOrigin: 'center center'
-                  }}
-                  draggable={false}
-                />
-                {/* Gradient overlay - only show when not zoomed */}
-                <div 
-                  className={`absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent transition-opacity duration-200 ${dialogZoom > 1 ? 'opacity-0' : 'opacity-100'}`} 
-                />
-                
-                {/* Zoom indicator */}
-                {dialogZoom > 1 && (
-                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-full text-white text-xs font-medium">
-                    {Math.round(dialogZoom * 100)}% • Double-tap to reset
-                  </div>
-                )}
-                
-                {/* Pinch hint - show only initially */}
-                {dialogZoom === 1 && (
-                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full text-white/70 text-xs flex items-center gap-2 animate-pulse">
-                    <span>Pinch to zoom</span>
-                    <span className="text-white/50">•</span>
-                    <span>Double-tap to magnify</span>
-                  </div>
-                )}
-                
-                {/* Sponsored badge */}
-                <div className={`absolute top-4 left-4 flex items-center gap-1.5 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/20 transition-opacity duration-200 ${dialogZoom > 1.5 ? 'opacity-0' : 'opacity-100'}`}>
-                  <Sparkles size={12} className="text-primary" />
-                  <span className="text-xs font-semibold text-white uppercase tracking-wider">Sponsored</span>
-                </div>
-              </div>
-              
-              {/* Content Section */}
-              <div className="flex-1 p-6 sm:p-8 text-white space-y-6">
-                <div>
-                  <h2 className="text-2xl sm:text-3xl font-bold mb-3 leading-tight">{magnifyAd.title}</h2>
-                  <p className="text-base sm:text-lg text-white/80 leading-relaxed">{magnifyAd.description}</p>
-                </div>
-                
-                {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                  <button 
-                    onClick={() => { handleGetMoreInfo(magnifyAd.id, magnifyAd.linkUrl); setMagnifyAd(null); }}
-                    className="flex-1 bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold text-lg hover:bg-primary/90 active:scale-[0.98] transition-all shadow-lg shadow-primary/30 min-h-[56px]"
-                  >
-                    Get More Info
-                  </button>
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    onClick={() => { handleShare(magnifyAd); setMagnifyAd(null); }}
-                    className="flex-1 sm:flex-none border-white/30 text-white hover:bg-white/10 hover:border-white/50 min-h-[56px] gap-2 font-semibold"
-                  >
-                    <Share2 size={20} />
-                    Share This Ad
-                  </Button>
-                </div>
-                
-                {/* Additional info footer */}
-                <div className="pt-4 border-t border-white/10 text-center">
-                  <p className="text-xs text-white/50">Tap outside or the X button to close</p>
-                </div>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
       )}
     </div>
   );
