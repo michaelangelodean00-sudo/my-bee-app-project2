@@ -102,6 +102,13 @@ const AdSplash = memo(() => {
   const [magnifyAd, setMagnifyAd] = useState<Ad | null>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  // Dialog-specific zoom state
+  const [dialogZoom, setDialogZoom] = useState(1);
+  const [dialogPosition, setDialogPosition] = useState({ x: 0, y: 0 });
+  const dialogTouchDistance = useRef<number | null>(null);
+  const dialogSingleTouch = useRef<{ x: number; y: number } | null>(null);
+  const dialogLastTap = useRef<number>(0);
+  
   const lastTouchDistance = useRef<number | null>(null);
   const lastSingleTouch = useRef<{ x: number; y: number } | null>(null);
   const lastTap = useRef<number>(0);
@@ -200,11 +207,61 @@ const AdSplash = memo(() => {
     lastTap.current = now;
   }, []);
 
+  // Dialog pinch-to-zoom handlers
+  const handleDialogTouchStart = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      dialogTouchDistance.current = getTouchDistance(e.touches);
+    } else if (e.touches.length === 1 && dialogZoom > 1) {
+      dialogSingleTouch.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+      };
+    }
+  }, [getTouchDistance, dialogZoom]);
+
+  const handleDialogTouchMove = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length === 2 && dialogTouchDistance.current !== null) {
+      e.preventDefault();
+      const newDistance = getTouchDistance(e.touches);
+      if (newDistance) {
+        const scale = newDistance / dialogTouchDistance.current;
+        const newZoom = Math.min(Math.max(dialogZoom * scale, 1), 4);
+        setDialogZoom(newZoom);
+        dialogTouchDistance.current = newDistance;
+      }
+    } else if (e.touches.length === 1 && dialogSingleTouch.current && dialogZoom > 1) {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const deltaX = touch.clientX - dialogSingleTouch.current.x;
+      const deltaY = touch.clientY - dialogSingleTouch.current.y;
+      setDialogPosition(prev => ({ x: prev.x + deltaX, y: prev.y + deltaY }));
+      dialogSingleTouch.current = { x: touch.clientX, y: touch.clientY };
+    }
+  }, [dialogZoom, getTouchDistance]);
+
+  const handleDialogTouchEnd = useCallback(() => {
+    dialogTouchDistance.current = null;
+    dialogSingleTouch.current = null;
+  }, []);
+
+  // Double-tap to zoom in dialog
+  const handleDialogDoubleTap = useCallback(() => {
+    const now = Date.now();
+    if (now - dialogLastTap.current < 300) {
+      setDialogZoom(prev => prev > 1 ? 1 : 2.5);
+      setDialogPosition({ x: 0, y: 0 });
+    }
+    dialogLastTap.current = now;
+  }, []);
+
   // Reset zoom when dialog closes
   useEffect(() => {
     if (!magnifyAd) {
       setZoomLevel(1);
       setPosition({ x: 0, y: 0 });
+      setDialogZoom(1);
+      setDialogPosition({ x: 0, y: 0 });
     }
   }, [magnifyAd]);
 
@@ -438,18 +495,47 @@ const AdSplash = memo(() => {
           
           {magnifyAd && (
             <div className="flex flex-col min-h-full">
-              {/* Hero Image Section */}
-              <div className="relative w-full aspect-video sm:aspect-[16/9] overflow-hidden">
+              {/* Hero Image Section - Pinch to zoom */}
+              <div 
+                className="relative w-full aspect-video sm:aspect-[16/9] overflow-hidden touch-none select-none"
+                onTouchStart={handleDialogTouchStart}
+                onTouchMove={handleDialogTouchMove}
+                onTouchEnd={handleDialogTouchEnd}
+                onClick={handleDialogDoubleTap}
+              >
                 <img 
                   src={magnifyAd.imageUrl} 
                   alt={magnifyAd.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-transform duration-100 ease-out"
+                  style={{
+                    transform: `scale(${dialogZoom}) translate(${dialogPosition.x / dialogZoom}px, ${dialogPosition.y / dialogZoom}px)`,
+                    transformOrigin: 'center center'
+                  }}
+                  draggable={false}
                 />
-                {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                {/* Gradient overlay - only show when not zoomed */}
+                <div 
+                  className={`absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent transition-opacity duration-200 ${dialogZoom > 1 ? 'opacity-0' : 'opacity-100'}`} 
+                />
+                
+                {/* Zoom indicator */}
+                {dialogZoom > 1 && (
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-full text-white text-xs font-medium">
+                    {Math.round(dialogZoom * 100)}% • Double-tap to reset
+                  </div>
+                )}
+                
+                {/* Pinch hint - show only initially */}
+                {dialogZoom === 1 && (
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full text-white/70 text-xs flex items-center gap-2 animate-pulse">
+                    <span>Pinch to zoom</span>
+                    <span className="text-white/50">•</span>
+                    <span>Double-tap to magnify</span>
+                  </div>
+                )}
                 
                 {/* Sponsored badge */}
-                <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/20">
+                <div className={`absolute top-4 left-4 flex items-center gap-1.5 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/20 transition-opacity duration-200 ${dialogZoom > 1.5 ? 'opacity-0' : 'opacity-100'}`}>
                   <Sparkles size={12} className="text-primary" />
                   <span className="text-xs font-semibold text-white uppercase tracking-wider">Sponsored</span>
                 </div>
