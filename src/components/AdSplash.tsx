@@ -122,8 +122,8 @@ const AdSplash = memo(() => {
     const dx = Math.abs(e.clientX - clickStartPos.current.x);
     const dy = Math.abs(e.clientY - clickStartPos.current.y);
     
-    // If tap was quick (< 250ms) and didn't move much (< 10px), open the ad
-    if (timeDiff < 250 && dx < 10 && dy < 10) {
+    // If tap was quick (< 250ms) and didn't move much (< 15px), open the ad
+    if (timeDiff < 250 && dx < 15 && dy < 15) {
       e.stopPropagation();
       setMagnifyAd(ad);
     }
