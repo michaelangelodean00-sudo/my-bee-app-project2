@@ -114,34 +114,44 @@ const AdSplash = memo(() => {
   const lastTap = useRef<number>(0);
   const clickStartTime = useRef<number>(0);
   const clickStartPos = useRef<{ x: number; y: number } | null>(null);
+  const isDragging = useRef<boolean>(false);
 
-  // Track pointer down for click vs drag detection
-  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+  // Track mouse/touch down for click vs drag detection
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
     clickStartTime.current = Date.now();
     clickStartPos.current = { x: e.clientX, y: e.clientY };
+    isDragging.current = false;
   }, []);
 
-  // Use onPointerUp for reliable tap detection - fires before carousel can intercept
-  const handlePointerUp = useCallback((ad: Ad, e: React.PointerEvent) => {
-    // If no start position recorded, treat as a direct tap
-    if (!clickStartPos.current) {
-      setMagnifyAd(ad);
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (clickStartPos.current) {
+      const dx = Math.abs(e.clientX - clickStartPos.current.x);
+      const dy = Math.abs(e.clientY - clickStartPos.current.y);
+      if (dx > 10 || dy > 10) {
+        isDragging.current = true;
+      }
+    }
+  }, []);
+
+  // Use onClick for reliable tap detection
+  const handleAdClick = useCallback((ad: Ad, e: React.MouseEvent) => {
+    // Don't open if user was dragging/swiping
+    if (isDragging.current) {
+      isDragging.current = false;
+      clickStartPos.current = null;
       return;
     }
     
     const timeDiff = Date.now() - clickStartTime.current;
-    const dx = Math.abs(e.clientX - clickStartPos.current.x);
-    const dy = Math.abs(e.clientY - clickStartPos.current.y);
     
-    // If tap was quick (< 400ms) and didn't move much (< 25px), open the ad
-    // Very forgiving thresholds to ensure taps register reliably
-    if (timeDiff < 400 && dx < 25 && dy < 25) {
-      e.preventDefault();
-      e.stopPropagation();
+    // If click was quick (< 500ms), open the ad
+    if (timeDiff < 500) {
+      console.log('Opening ad dialog:', ad.title);
       setMagnifyAd(ad);
     }
     
     clickStartPos.current = null;
+    isDragging.current = false;
   }, []);
 
   // Simplified touch distance calculation
@@ -384,17 +394,25 @@ const AdSplash = memo(() => {
               >
                 <div className="w-full md:w-1/2 relative group">
                   {loadedImages.has(index) ? (
-                    <div 
-                      className="relative overflow-hidden rounded-2xl cursor-pointer"
-                      onPointerDown={handlePointerDown}
-                      onPointerUp={(e) => handlePointerUp(ad, e)}
-                      role="button"
-                      tabIndex={0}
-                      onKeyDown={(e) => e.key === 'Enter' && setMagnifyAd(ad)}
-                      aria-label={`Tap to view full ${ad.title} ad`}
-                    >
+                    <div className="relative overflow-hidden rounded-2xl">
+                      {/* Clickable overlay - separate from carousel drag */}
+                      <button
+                        type="button"
+                        className="absolute inset-0 z-30 cursor-pointer bg-transparent"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          console.log('Ad clicked:', ad.title);
+                          // Use setTimeout to prevent Radix Dialog from detecting this as "click outside"
+                          setTimeout(() => setMagnifyAd(ad), 0);
+                        }}
+                        onMouseDown={(e) => e.stopPropagation()}
+                        onTouchStart={(e) => e.stopPropagation()}
+                        aria-label={`View full ${ad.title} ad`}
+                      />
+                      
                       {/* Sponsored badge */}
-                      <div className="absolute bottom-3 right-3 z-20 flex items-center gap-1 bg-black/30 backdrop-blur-sm px-2 py-1 rounded-md border border-white/10">
+                      <div className="absolute bottom-3 right-3 z-20 flex items-center gap-1 bg-black/30 backdrop-blur-sm px-2 py-1 rounded-md border border-white/10 pointer-events-none">
                         <Sparkles size={10} className="text-white/70" />
                         <span className="text-[9px] font-medium text-white/70 uppercase tracking-wide">Sponsored</span>
                       </div>
@@ -402,7 +420,7 @@ const AdSplash = memo(() => {
                       <img 
                         src={ad.imageUrl} 
                         alt={ad.title} 
-                        className="rounded-2xl w-full h-64 md:h-80 lg:h-96 object-cover transform-gpu transition-transform duration-300 group-hover:scale-105 shadow-2xl shadow-primary/30"
+                        className="rounded-2xl w-full h-64 md:h-80 lg:h-96 object-cover transform-gpu transition-transform duration-300 group-hover:scale-105 shadow-2xl shadow-primary/30 pointer-events-none"
                         loading={index === 0 ? "eager" : "lazy"}
                         decoding="async"
                         fetchPriority={index === 0 ? "high" : "auto"}
@@ -485,7 +503,12 @@ const AdSplash = memo(() => {
       {/* Full Page Ad Dialog - Only mount when ad is selected */}
       {magnifyAd && (
         <Dialog open={true} onOpenChange={(open) => !open && setMagnifyAd(null)}>
-          <DialogContent className="max-w-full w-full h-[100dvh] max-h-[100dvh] p-0 bg-gradient-to-b from-secondary via-secondary/95 to-black border-none overflow-auto rounded-none sm:rounded-lg sm:max-w-4xl sm:h-auto sm:max-h-[95vh]" aria-describedby={undefined}>
+          <DialogContent 
+            className="max-w-full w-full h-[100dvh] max-h-[100dvh] p-0 bg-gradient-to-b from-secondary via-secondary/95 to-black border-none overflow-auto rounded-none sm:rounded-lg sm:max-w-4xl sm:h-auto sm:max-h-[95vh]" 
+            aria-describedby={undefined}
+            onPointerDownOutside={(e) => e.preventDefault()}
+            onInteractOutside={(e) => e.preventDefault()}
+          >
             <VisuallyHidden>
               <DialogTitle>{magnifyAd.title}</DialogTitle>
             </VisuallyHidden>
