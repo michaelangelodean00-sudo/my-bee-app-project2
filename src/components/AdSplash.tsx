@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, memo } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -12,16 +12,8 @@ import { optimizeAds, preloadImage } from "@/utils/adUtils";
 import type { Ad } from "@/utils/adUtils";
 import { useAdAnalytics } from "@/hooks/useAdAnalytics";
 import ShareDialog from "./ShareDialog";
-import { Share2, X, Sparkles, ZoomIn } from "lucide-react";
+import { Share2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogClose,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 // Static ads array - defined outside component
 const ads: Ad[] = [
@@ -225,82 +217,6 @@ const AdSplash = memo(() => {
                         <Sparkles size={10} className="text-white/70" />
                         <span className="text-[9px] font-medium text-white/70 uppercase tracking-wide">Sponsored</span>
                       </div>
-                      
-                      {/* View full ad dialog with inline trigger */}
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <button
-                            type="button"
-                            className="absolute top-3 right-3 z-50 flex items-center gap-1.5 bg-white/95 hover:bg-white text-black font-medium px-3 py-2 rounded-md shadow-xl border border-white/20 text-sm transition-colors cursor-pointer"
-                            onPointerDown={(e) => e.stopPropagation()}
-                          >
-                            <ZoomIn size={14} />
-                            View Ad
-                          </button>
-                        </DialogTrigger>
-                        <DialogContent 
-                          className="max-w-full w-full h-[100dvh] max-h-[100dvh] p-0 bg-gradient-to-b from-secondary via-secondary/95 to-black border-none overflow-auto rounded-none sm:rounded-lg sm:max-w-4xl sm:h-auto sm:max-h-[95vh]" 
-                          aria-describedby={undefined}
-                          onPointerDownOutside={(e) => e.preventDefault()}
-                          onInteractOutside={(e) => e.preventDefault()}
-                        >
-                          <VisuallyHidden>
-                            <DialogTitle>{ad.title}</DialogTitle>
-                          </VisuallyHidden>
-                          <DialogClose className="absolute top-4 right-4 z-50 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm p-2.5 transition-colors">
-                            <X size={24} className="text-white" />
-                            <span className="sr-only">Close</span>
-                          </DialogClose>
-                          
-                          <div className="flex flex-col min-h-full">
-                            {/* Hero Image Section */}
-                            <div className="relative w-full aspect-video sm:aspect-[16/9] overflow-hidden">
-                              <img 
-                                src={ad.imageUrl} 
-                                alt={ad.title}
-                                className="w-full h-full object-cover"
-                                draggable={false}
-                              />
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                              <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/20">
-                                <Sparkles size={12} className="text-primary" />
-                                <span className="text-xs font-semibold text-white uppercase tracking-wider">Sponsored</span>
-                              </div>
-                            </div>
-                            
-                            {/* Content Section */}
-                            <div className="flex-1 p-6 sm:p-8 text-white space-y-6">
-                              <div>
-                                <h2 className="text-2xl sm:text-3xl font-bold mb-3 leading-tight">{ad.title}</h2>
-                                <p className="text-base sm:text-lg text-white/80 leading-relaxed">{ad.description}</p>
-                              </div>
-                              
-                              {/* CTA Buttons */}
-                              <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                                <button 
-                                  onClick={() => handleGetMoreInfo(ad.id, ad.linkUrl)}
-                                  className="flex-1 bg-primary text-primary-foreground px-8 py-4 rounded-xl font-bold text-lg hover:bg-primary/90 active:scale-[0.98] transition-all shadow-lg shadow-primary/30 min-h-[56px]"
-                                >
-                                  Get More Info
-                                </button>
-                                <Button
-                                  variant="outline"
-                                  size="lg"
-                                  onClick={() => handleShare(ad)}
-                                  className="flex-1 sm:flex-none border-white/30 text-white hover:bg-white/10 hover:border-white/50 min-h-[56px] gap-2 font-semibold"
-                                >
-                                  <Share2 size={20} />
-                                  Share This Ad
-                                </Button>
-                              </div>
-                              
-                              <div className="pt-4 border-t border-white/10 text-center">
-                                <p className="text-xs text-white/50">Tap outside or the X button to close</p>
-                              </div>
-                            </div>
-                          </div>
-                        </DialogContent>
-                      </Dialog>
                       
                       <img 
                         src={ad.imageUrl} 
