@@ -91,9 +91,11 @@ const AdSplash = memo(() => {
   
   const [autoplay, setAutoplay] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [loadedImages, setLoadedImages] = useState(new Set([0]));
+  // Start with first 3 images ready to load for instant render
+  const [loadedImages, setLoadedImages] = useState(new Set([0, 1, 2]));
   const [api, setApi] = useState<CarouselApi>();
-  const [isReady, setIsReady] = useState(false);
+  // Start ready immediately - no waiting
+  const [isReady, setIsReady] = useState(true);
   const [shareDialog, setShareDialog] = useState(false);
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null);
   const [shareCounts, setShareCounts] = useState<Record<string, number>>({});
@@ -203,29 +205,27 @@ const AdSplash = memo(() => {
   // Analytics tracking
   const { trackImpression, trackClick, getAdPerformance } = useAdAnalytics();
   
-  // Enable autoplay after initial load
+  // Enable autoplay immediately, preload images in background
   useEffect(() => {
-    let isMounted = true;
-    const warmup = async () => {
-      try {
-        if (optimizedAds[0]?.imageUrl) {
-          await preloadImage(optimizedAds[0].imageUrl);
+    // Start autoplay immediately
+    setAutoplay(true);
+    
+    // Preload remaining images in background (non-blocking)
+    const preloadRemaining = () => {
+      optimizedAds.slice(2).forEach((ad, index) => {
+        if (ad.imageUrl) {
+          const img = new Image();
+          img.src = ad.imageUrl;
         }
-        if (optimizedAds[1]?.imageUrl) {
-          preloadImage(optimizedAds[1].imageUrl).catch(() => {});
-        }
-      } finally {
-        if (isMounted) {
-          setIsReady(true);
-          setAutoplay(true);
-        }
-      }
+      });
     };
-    const timer = window.setTimeout(warmup, 100);
-    return () => {
-      isMounted = false;
-      window.clearTimeout(timer);
-    };
+    
+    // Defer preloading to not block initial render
+    if ('requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(preloadRemaining);
+    } else {
+      setTimeout(preloadRemaining, 1000);
+    }
   }, [optimizedAds]);
   
   useEffect(() => {

@@ -89,7 +89,8 @@ PostList.displayName = 'PostList';
 
 const Index = () => {
   const [posts, setPosts] = useState<typeof samplePosts>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // Start with isLoading false for instant render
+  const [isLoading] = useState(false);
   const navigate = useNavigate();
   
   const handleNewPost = useCallback((newPost: typeof samplePosts[0]) => {
@@ -97,16 +98,11 @@ const Index = () => {
   }, []);
 
   const handleRefresh = useCallback(async () => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 800));
     toast.success("Feed refreshed!", {
       description: "You're all caught up with the latest posts.",
       duration: 2000
     });
-  }, []);
-
-  useEffect(() => {
-    // Instant load - no artificial delay
-    setIsLoading(false);
   }, []);
   
   return (
