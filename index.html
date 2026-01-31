@@ -41,8 +41,10 @@
     <!-- Preload Critical Assets -->
     <link rel="preload" href="/lovable-uploads/bee-mascot-logo.png" as="image" type="image/png" fetchpriority="high" />
     <link rel="preload" href="/lovable-uploads/bee-app-logo.png" as="image" type="image/png" />
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" /></noscript>
+    <!-- Preload first ad image for instant splash render -->
+    <link rel="preload" href="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&h=450&q=80&fm=webp&fit=crop" as="image" type="image/webp" />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" /></noscript>
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="B.E.E App Bahamas - Business, Events & E-commerce Platform" />
@@ -117,18 +119,27 @@
         <div class="loader-spinner"></div>
       </div>
     </div>
-    <!-- Remove initial loader once app loads -->
+    <!-- Remove initial loader immediately when React renders -->
     <script>
-      window.addEventListener('DOMContentLoaded', function() {
-        var loader = document.getElementById('initial-loader');
-        if (loader) {
-          setTimeout(function() {
+      (function() {
+        var removed = false;
+        function removeLoader() {
+          if (removed) return;
+          var loader = document.getElementById('initial-loader');
+          if (loader) {
+            removed = true;
             loader.style.opacity = '0';
-            loader.style.transition = 'opacity 0.3s ease';
-            setTimeout(function() { loader.remove(); }, 300);
-          }, 100);
+            loader.style.transition = 'opacity 0.15s ease';
+            setTimeout(function() { loader.remove(); }, 150);
+          }
         }
-      });
+        // Remove on first paint or after max 500ms
+        if (document.readyState === 'complete') removeLoader();
+        else {
+          window.addEventListener('load', removeLoader);
+          setTimeout(removeLoader, 500);
+        }
+      })();
     </script>
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
