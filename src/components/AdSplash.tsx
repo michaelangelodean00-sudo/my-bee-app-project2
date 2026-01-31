@@ -114,9 +114,9 @@ const AdSplash = memo(() => {
     clickStartPos.current = { x: e.clientX, y: e.clientY };
   }, []);
 
-  // Use onClick with tap detection - more reliable than onMouseUp with carousels
-  const handleAdClick = useCallback((ad: Ad, e: React.MouseEvent) => {
-    // If no start position recorded, treat as a direct click
+  // Use onPointerUp for reliable tap detection - fires before carousel can intercept
+  const handlePointerUp = useCallback((ad: Ad, e: React.PointerEvent) => {
+    // If no start position recorded, treat as a direct tap
     if (!clickStartPos.current) {
       setMagnifyAd(ad);
       return;
@@ -126,9 +126,9 @@ const AdSplash = memo(() => {
     const dx = Math.abs(e.clientX - clickStartPos.current.x);
     const dy = Math.abs(e.clientY - clickStartPos.current.y);
     
-    // If tap was quick (< 300ms) and didn't move much (< 20px), open the ad
-    // More forgiving thresholds since carousel may add slight drift
-    if (timeDiff < 300 && dx < 20 && dy < 20) {
+    // If tap was quick (< 400ms) and didn't move much (< 25px), open the ad
+    // Very forgiving thresholds to ensure taps register reliably
+    if (timeDiff < 400 && dx < 25 && dy < 25) {
       e.preventDefault();
       e.stopPropagation();
       setMagnifyAd(ad);
@@ -330,7 +330,7 @@ const AdSplash = memo(() => {
                     <div 
                       className="relative overflow-hidden rounded-2xl cursor-pointer"
                       onPointerDown={handlePointerDown}
-                      onClick={(e) => handleAdClick(ad, e)}
+                      onPointerUp={(e) => handlePointerUp(ad, e)}
                       role="button"
                       tabIndex={0}
                       onKeyDown={(e) => e.key === 'Enter' && setMagnifyAd(ad)}
