@@ -40,15 +40,17 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
         </div>
       </div>
       
-      {/* Tablet & Desktop: Horizontal layout */}
+      {/* Tablet & Desktop: Horizontal layout - centered logo and ad */}
       <div className="hidden sm:flex items-center justify-center w-full px-4 py-3 gap-4 min-h-[72px] md:min-h-[80px]">
-        <div className="flex-shrink-0 animate-logo-entrance">
-          <Logo className="scale-100" />
-        </div>
-        
-        {/* Desktop: Ad widget closer to logo */}
-        <div className="flex-1 min-w-0 md:max-w-lg lg:max-w-xl animate-fade-in" style={{ animationDelay: '0.2s' }}>
-          <BurgerAdWidget />
+        <div className="flex items-center gap-4 md:gap-6">
+          <div className="flex-shrink-0 animate-logo-entrance">
+            <Logo className="scale-100" />
+          </div>
+          
+          {/* Desktop: Ad widget centered with logo */}
+          <div className="min-w-0 w-[280px] md:w-[400px] lg:w-[500px] animate-fade-in" style={{ animationDelay: '0.2s' }}>
+            <BurgerAdWidget />
+          </div>
         </div>
         
         <div className="flex-shrink-0 md:hidden">
