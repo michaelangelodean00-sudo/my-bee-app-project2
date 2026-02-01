@@ -28,14 +28,32 @@ export const SecurityProvider = ({ children }: SecurityProviderProps) => {
     measureWebVitals();
     
     // Register service worker for PWA functionality
-    if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
-      navigator.serviceWorker.register('/sw.js')
-        .then((registration) => {
-          console.log('SW registered: ', registration);
-        })
-        .catch((registrationError) => {
-          console.log('SW registration failed: ', registrationError);
-        });
+    if ('serviceWorker' in navigator) {
+      // Register immediately for faster caching
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((registration) => {
+            // Check for updates periodically
+            registration.update();
+            setInterval(() => registration.update(), 60 * 60 * 1000); // hourly
+            
+            // Handle updates
+            registration.addEventListener('updatefound', () => {
+              const newWorker = registration.installing;
+              if (newWorker) {
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    // New content available, can notify user if needed
+                    console.log('New content available, refresh to update');
+                  }
+                });
+              }
+            });
+          })
+          .catch((error) => {
+            console.warn('SW registration failed:', error);
+          });
+      });
     }
     
     // Warn about insecure connections in production

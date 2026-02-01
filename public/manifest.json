@@ -1,29 +1,37 @@
 {
   "name": "B.E.E App Bahamas",
   "short_name": "B.E.E App",
-  "description": "The premier social platform connecting Bahamian businesses, events, and e-commerce - Copyright © 2024 B.E.E App Bahamas. All rights reserved.",
-  "start_url": "/",
+  "description": "The premier social platform connecting Bahamian businesses, events, and e-commerce.",
+  "id": "/",
+  "start_url": "/?source=pwa",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "display_override": ["standalone", "minimal-ui"],
+  "background_color": "#fafafa",
   "theme_color": "#FFD500",
   "orientation": "portrait-primary",
   "categories": ["social", "business", "lifestyle"],
   "lang": "en-BS",
   "dir": "ltr",
-  "copyright": "© 2024 B.E.E App Bahamas. All rights reserved.",
-  "author": "B.E.E App Bahamas",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/lovable-uploads/bee-app-logo.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "/lovable-uploads/bee-app-logo.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/lovable-uploads/bee-app-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "screenshots": [
@@ -31,7 +39,8 @@
       "src": "/lovable-uploads/f4a4e8e5-574a-4d93-88f9-155b1f4b2e32.png",
       "sizes": "1280x720",
       "type": "image/png",
-      "form_factor": "wide"
+      "form_factor": "wide",
+      "label": "B.E.E App Dashboard"
     }
   ],
   "shortcuts": [
