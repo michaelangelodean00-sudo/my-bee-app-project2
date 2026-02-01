@@ -41,10 +41,10 @@ const MobileBottomNav = memo(() => {
               to={item.path}
               {...prefetchOnHover(item.path)}
               className={cn(
-                "flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all duration-200 relative min-w-[60px]",
+                "flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all duration-200 relative min-w-[60px] min-h-[44px] touch-manipulation active:scale-95",
                 isActive
                   ? "bg-primary/10 text-primary"
-                  : "text-muted-foreground hover:text-foreground"
+                  : "text-muted-foreground hover:text-foreground active:bg-accent/50"
               )}
             >
               <div className="relative">

@@ -170,14 +170,14 @@ const Post = memo(({
             
             {showReactions && (
               <div 
-                className="absolute bottom-full left-0 mb-2 bg-card border border-border rounded-xl shadow-lg p-2 flex gap-2 z-10 animate-pop-in"
+                className="absolute bottom-full left-0 mb-2 bg-card border border-border rounded-xl shadow-lg p-2 flex gap-1 z-10 animate-pop-in"
                 onMouseLeave={() => setShowReactions(false)}
               >
                 {reactions.map((reaction) => (
                   <button
                     key={reaction.emoji}
                     onClick={() => handleReaction(reaction.emoji)}
-                    className="text-2xl hover:scale-125 transition-transform duration-200 p-1"
+                    className="text-2xl hover:scale-125 transition-transform duration-200 p-2 min-w-[44px] min-h-[44px] flex items-center justify-center touch-manipulation active:scale-110 rounded-lg hover:bg-accent/50"
                     title={reaction.label}
                   >
                     {reaction.emoji}
