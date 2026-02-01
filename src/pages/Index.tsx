@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, lazy, Suspense, memo } from "react";
+import { useState, useCallback, lazy, Suspense, memo } from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import AdSplash from "../components/AdSplash";
@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 
 // Lazy load non-critical visual components
 const AnimatedBackground = lazy(() => import("../components/AnimatedBackground"));
@@ -91,6 +92,7 @@ const Index = () => {
   const [posts, setPosts] = useState<typeof samplePosts>([]);
   // Start with isLoading false for instant render
   const [isLoading] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const navigate = useNavigate();
   
   const handleNewPost = useCallback((newPost: typeof samplePosts[0]) => {
@@ -104,6 +106,10 @@ const Index = () => {
       duration: 2000
     });
   }, []);
+
+  const toggleMobileSidebar = useCallback(() => {
+    setMobileSidebarOpen(prev => !prev);
+  }, []);
   
   return (
     <PageTransition>
@@ -111,6 +117,16 @@ const Index = () => {
         <Suspense fallback={null}>
           <AnimatedBackground />
         </Suspense>
+      
+      {/* Mobile Sidebar Sheet */}
+      <Sheet open={mobileSidebarOpen} onOpenChange={setMobileSidebarOpen}>
+        <SheetContent side="right" className="w-[280px] p-0">
+          <SheetHeader className="px-4 pt-4 pb-2 border-b border-border">
+            <SheetTitle className="text-lg font-heading">Menu</SheetTitle>
+          </SheetHeader>
+          <Sidebar className="h-full" onLinkClick={() => setMobileSidebarOpen(false)} />
+        </SheetContent>
+      </Sheet>
       
       {/* Copyright Watermark */}
       <CopyrightWatermark 
@@ -124,7 +140,7 @@ const Index = () => {
         <p className="sr-only">Connect with local Bahamian businesses, discover events, and explore e-commerce opportunities in the Caribbean.</p>
       </header>
       
-      <Header toggleMobileSidebar={() => {}} />
+      <Header toggleMobileSidebar={toggleMobileSidebar} />
       <GreetingBanner />
       <AdSplash />
       

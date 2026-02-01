@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 
 interface SidebarProps {
   className?: string;
+  onLinkClick?: () => void;
 }
 
 const navigationItems = [
@@ -20,7 +21,7 @@ const navigationItems = [
   { icon: UserCircle, label: "Profile", path: "/profile", notificationKey: null },
 ] as const;
 
-const Sidebar = memo(({ className = "" }: SidebarProps) => {
+const Sidebar = memo(({ className = "", onLinkClick }: SidebarProps) => {
   const location = useLocation();
   const notifications = useNotifications();
   const { prefetchOnHover } = usePrefetch();
@@ -45,6 +46,7 @@ const Sidebar = memo(({ className = "" }: SidebarProps) => {
               <Link
                 key={item.path}
                 to={item.path}
+                onClick={onLinkClick}
                 {...prefetchOnHover(item.path)}
                 className={cn(
                   "flex items-center justify-between px-3 lg:px-4 py-3 rounded-lg transition-all duration-200 min-h-[48px] group",
