@@ -176,3 +176,43 @@
 - Minimum touch target should be 44x44px
 - Use `pointer-events-none` on child elements inside buttons
 - Provide visual feedback with `active:` states
+
+---
+
+### Global Touch Handling Improvements (2026-02-01)
+**Issue:** Inconsistent touch responsiveness across the app - various interactive elements had tap delays or required multiple taps on mobile devices.
+
+**Solution:** Applied a systematic touch-responsiveness standard across all interactive components:
+
+**Core UI Components Updated:**
+- `src/components/ui/button.tsx` - Added `touch-manipulation` and `active:scale-[0.98]` to base styles, ensured 44px minimum touch targets
+- `src/components/ui/input.tsx` - Added `touch-manipulation` for form inputs
+- `src/components/ui/textarea.tsx` - Added `touch-manipulation` for text areas
+- `src/components/ui/select.tsx` - Added `touch-manipulation` to trigger button
+- `src/components/ui/checkbox.tsx` - Increased touch target to 20x20px with `touch-manipulation`
+- `src/components/ui/switch.tsx` - Added `touch-manipulation` class
+- `src/components/ui/dropdown-menu.tsx` - Added `touch-manipulation` and 44px minimum height to menu items
+- `src/components/ui/dialog.tsx` - Enhanced close button with 44px touch target and `touch-manipulation`
+- `src/components/ui/sheet.tsx` - Enhanced close button with 44px touch target and `touch-manipulation`
+
+**Component-Specific Updates:**
+- `src/components/MobileBottomNav.tsx` - Added `touch-manipulation` and `active:scale-95` to navigation buttons
+- `src/components/Sidebar.tsx` - Added `touch-manipulation` and `active:scale-[0.98]` to sidebar nav items
+- `src/components/Post.tsx` - Increased emoji reaction buttons to 40x40px with `touch-manipulation`
+- `src/components/BurgerAdWidget.tsx` - Added `touch-manipulation` and `active:scale-[0.98]` to ad container
+- `src/components/SearchBar.tsx` - Increased clear button touch target to 36x36px with `touch-manipulation`
+
+**Standard Applied:**
+```jsx
+// For buttons and interactive elements
+className="touch-manipulation active:scale-[0.98] min-h-[44px] min-w-[44px]"
+
+// For child elements inside buttons
+className="pointer-events-none"
+```
+
+**Key Learning:** Establishing a global touch handling standard ensures consistent mobile experience. The key properties are:
+1. `touch-manipulation` - Removes 300ms tap delay on mobile
+2. `min-h-[44px] min-w-[44px]` - Meets accessibility touch target guidelines
+3. `active:scale-[0.98]` or `active:scale-95` - Provides immediate tactile feedback
+4. `pointer-events-none` on child elements - Ensures parent receives touch events
