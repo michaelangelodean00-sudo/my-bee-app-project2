@@ -11,6 +11,8 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  DialogPortal,
+  DialogOverlay,
 } from "@/components/ui/dialog";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import bambooAd from "../images/bamboo-ad.jpeg";
@@ -228,6 +230,9 @@ const AdSplash = memo(() => {
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null);
   const [shareCounts, setShareCounts] = useState<Record<string, number>>({});
   const [imagePreview, setImagePreview] = useState<{ url: string; title: string } | null>(null);
+  
+  // Tap detection state for distinguishing taps from swipes
+  const tapStartRef = useRef<{ x: number; y: number; time: number; imageUrl: string; title: string } | null>(null);
 
   // Analytics tracking
   const { trackImpression, trackClick, getAdPerformance } = useAdAnalytics();
@@ -320,10 +325,34 @@ const AdSplash = memo(() => {
     setShareDialog(true);
   }, []);
 
-  const handleImageClick = useCallback((e: React.MouseEvent, imageUrl: string, title: string) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setImagePreview({ url: imageUrl, title });
+  // Tap detection handlers - distinguish taps from swipes
+  const handleImageTapStart = useCallback((e: React.PointerEvent | React.TouchEvent, imageUrl: string, title: string) => {
+    const point = 'touches' in e ? e.touches[0] : e;
+    tapStartRef.current = {
+      x: point.clientX,
+      y: point.clientY,
+      time: Date.now(),
+      imageUrl,
+      title
+    };
+  }, []);
+
+  const handleImageTapEnd = useCallback((e: React.PointerEvent | React.TouchEvent) => {
+    if (!tapStartRef.current) return;
+    
+    const point = 'changedTouches' in e ? e.changedTouches[0] : e;
+    const deltaX = Math.abs(point.clientX - tapStartRef.current.x);
+    const deltaY = Math.abs(point.clientY - tapStartRef.current.y);
+    const deltaTime = Date.now() - tapStartRef.current.time;
+    
+    // If movement is small (<25px) and time is short (<400ms), it's a tap
+    if (deltaX < 25 && deltaY < 25 && deltaTime < 400) {
+      e.stopPropagation();
+      e.preventDefault();
+      setImagePreview({ url: tapStartRef.current.imageUrl, title: tapStartRef.current.title });
+    }
+    
+    tapStartRef.current = null;
   }, []);
 
   const handleShareComplete = useCallback(() => {
@@ -354,22 +383,27 @@ const AdSplash = memo(() => {
               >
                 <div className="w-full md:w-1/2 relative group">
                   {loadedImages.has(index) ? (
-                    <div 
-                      className="relative overflow-hidden rounded-2xl cursor-pointer"
-                      onClick={(e) => handleImageClick(e, ad.imageUrl, ad.title)}
-                    >
+                    <div className="relative overflow-hidden rounded-2xl group">
                       {/* Sponsored badge */}
                       <div className="absolute bottom-3 right-3 z-20 flex items-center gap-1 bg-black/30 backdrop-blur-sm px-2 py-1 rounded-md border border-white/10 pointer-events-none">
                         <Sparkles size={10} className="text-white/70" />
                         <span className="text-[9px] font-medium text-white/70 uppercase tracking-wide">Sponsored</span>
                       </div>
                       
-                      {/* Zoom indicator overlay */}
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center z-10 pointer-events-none">
+                      {/* Click to zoom button - positioned above carousel interactions */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          setImagePreview({ url: ad.imageUrl, title: ad.title });
+                        }}
+                        className="absolute inset-0 z-30 flex items-center justify-center bg-black/0 hover:bg-black/20 transition-colors duration-300 cursor-pointer"
+                        aria-label={`View ${ad.title} full size`}
+                      >
                         <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 rounded-full p-3 shadow-lg">
                           <ZoomIn size={24} className="text-primary" />
                         </div>
-                      </div>
+                      </button>
                       
                       <img 
                         src={ad.imageUrl} 
@@ -457,21 +491,21 @@ const AdSplash = memo(() => {
 
       {/* Full Image Preview Dialog */}
       <Dialog open={!!imagePreview} onOpenChange={() => setImagePreview(null)}>
-        <DialogContent 
-          className="max-w-[95vw] h-[95vh] p-0 border-0 bg-black/95 overflow-hidden flex items-center justify-center"
-          aria-describedby={undefined}
-        >
-          <VisuallyHidden.Root>
-            <DialogTitle>{imagePreview?.title || "Image Preview"}</DialogTitle>
-          </VisuallyHidden.Root>
-          {imagePreview && (
-            <ZoomableImage
-              src={imagePreview.url}
-              alt={imagePreview.title}
-              onClose={() => setImagePreview(null)}
-            />
-          )}
-        </DialogContent>
+        <DialogPortal>
+          <DialogOverlay className="bg-black/95" />
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <VisuallyHidden.Root>
+              <DialogTitle>{imagePreview?.title || "Image Preview"}</DialogTitle>
+            </VisuallyHidden.Root>
+            {imagePreview && (
+              <ZoomableImage
+                src={imagePreview.url}
+                alt={imagePreview.title}
+                onClose={() => setImagePreview(null)}
+              />
+            )}
+          </div>
+        </DialogPortal>
       </Dialog>
     </div>
   );
