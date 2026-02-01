@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, memo } from "react";
+import { useState, useEffect, useCallback, memo, useRef } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -18,6 +18,136 @@ import { useAdAnalytics } from "@/hooks/useAdAnalytics";
 import ShareDialog from "./ShareDialog";
 import { Share2, Sparkles, X, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+// Image Preview with pinch-to-zoom
+const ZoomableImage = memo(({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) => {
+  const [scale, setScale] = useState(1);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const lastTouchRef = useRef<{ x: number; y: number } | null>(null);
+  const lastPinchDistanceRef = useRef<number | null>(null);
+  const lastTapRef = useRef<number>(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const resetZoom = useCallback(() => {
+    setScale(1);
+    setPosition({ x: 0, y: 0 });
+  }, []);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      // Pinch start
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      lastPinchDistanceRef.current = dist;
+    } else if (e.touches.length === 1) {
+      // Single touch - check for double tap
+      const now = Date.now();
+      if (now - lastTapRef.current < 300) {
+        // Double tap - toggle zoom
+        if (scale > 1) {
+          resetZoom();
+        } else {
+          setScale(2.5);
+        }
+        lastTapRef.current = 0;
+      } else {
+        lastTapRef.current = now;
+      }
+      
+      if (scale > 1) {
+        setIsDragging(true);
+        lastTouchRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }
+    }
+  }, [scale, resetZoom]);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length === 2 && lastPinchDistanceRef.current !== null) {
+      // Pinch zoom
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      const delta = dist / lastPinchDistanceRef.current;
+      lastPinchDistanceRef.current = dist;
+      
+      setScale(prev => Math.min(Math.max(prev * delta, 1), 4));
+    } else if (e.touches.length === 1 && isDragging && lastTouchRef.current && scale > 1) {
+      // Pan
+      const deltaX = e.touches[0].clientX - lastTouchRef.current.x;
+      const deltaY = e.touches[0].clientY - lastTouchRef.current.y;
+      lastTouchRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      
+      setPosition(prev => ({
+        x: prev.x + deltaX,
+        y: prev.y + deltaY
+      }));
+    }
+  }, [isDragging, scale]);
+
+  const handleTouchEnd = useCallback(() => {
+    lastPinchDistanceRef.current = null;
+    lastTouchRef.current = null;
+    setIsDragging(false);
+    
+    // Reset position if zoomed out
+    if (scale <= 1) {
+      setPosition({ x: 0, y: 0 });
+    }
+  }, [scale]);
+
+  // Reset on close
+  useEffect(() => {
+    return () => resetZoom();
+  }, [resetZoom]);
+
+  return (
+    <div 
+      ref={containerRef}
+      className="relative w-full h-full flex items-center justify-center touch-none"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      <Button
+        variant="ghost"
+        size="icon"
+        className="absolute top-2 right-2 z-50 bg-black/50 hover:bg-black/70 text-white rounded-full h-10 w-10"
+        onClick={onClose}
+      >
+        <X size={20} />
+      </Button>
+      
+      {/* Zoom indicator */}
+      {scale > 1 && (
+        <div className="absolute top-2 left-2 z-50 bg-black/50 text-white text-xs px-2 py-1 rounded-full">
+          {Math.round(scale * 100)}%
+        </div>
+      )}
+      
+      {/* Instructions hint */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-50 bg-black/50 text-white text-xs px-3 py-1.5 rounded-full opacity-70 pointer-events-none">
+        {scale > 1 ? "Drag to pan • Double-tap to reset" : "Pinch to zoom • Double-tap to zoom"}
+      </div>
+      
+      <img
+        src={src}
+        alt={alt}
+        className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl select-none"
+        style={{
+          transform: `scale(${scale}) translate(${position.x / scale}px, ${position.y / scale}px)`,
+          transition: isDragging ? 'none' : 'transform 0.2s ease-out'
+        }}
+        draggable={false}
+      />
+    </div>
+  );
+});
+
+ZoomableImage.displayName = 'ZoomableImage';
 
 // Static ads array - defined outside component
 const ads: Ad[] = [
@@ -324,23 +454,13 @@ const AdSplash = memo(() => {
       {/* Full Image Preview Dialog */}
       <Dialog open={!!imagePreview} onOpenChange={() => setImagePreview(null)}>
         <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 border-0 bg-transparent overflow-hidden">
-          <div className="relative w-full h-full flex items-center justify-center">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute top-2 right-2 z-50 bg-black/50 hover:bg-black/70 text-white rounded-full h-10 w-10"
-              onClick={() => setImagePreview(null)}
-            >
-              <X size={20} />
-            </Button>
-            {imagePreview && (
-              <img
-                src={imagePreview.url}
-                alt={imagePreview.title}
-                className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
-              />
-            )}
-          </div>
+          {imagePreview && (
+            <ZoomableImage
+              src={imagePreview.url}
+              alt={imagePreview.title}
+              onClose={() => setImagePreview(null)}
+            />
+          )}
         </DialogContent>
       </Dialog>
     </div>
