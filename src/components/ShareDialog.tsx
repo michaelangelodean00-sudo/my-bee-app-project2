@@ -1,12 +1,13 @@
 import React from 'react';
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet';
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 import { useToast } from '@/hooks/use-toast';
-import { Link2, MessageCircle, Facebook, Mail, Send, MoreHorizontal } from 'lucide-react';
+import { Link2, MessageCircle, Facebook, Mail, Send, MoreHorizontal, X } from 'lucide-react';
 
 interface ShareDialogProps {
   open: boolean;
@@ -113,21 +114,38 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
     onOpenChange(false);
   };
 
+  const handleClose = () => {
+    onOpenChange(false);
+  };
+
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent 
-        side="bottom" 
-        className="rounded-t-3xl px-4 pb-8 pt-3 max-h-[85vh] bg-background"
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent 
+        className="!fixed !inset-x-0 !bottom-0 !top-auto !left-0 !translate-x-0 !translate-y-0 !max-w-none w-full rounded-t-3xl border-t border-x-0 border-b-0 px-4 pb-8 pt-3 bg-background data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom duration-300"
         style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom))' }}
+        onPointerDownOutside={(e) => e.preventDefault()}
       >
+        <VisuallyHidden.Root>
+          <DialogTitle>Share options</DialogTitle>
+        </VisuallyHidden.Root>
+        
+        {/* Custom close button positioned at top right */}
+        <button
+          onClick={handleClose}
+          className="absolute right-4 top-4 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-muted/50 touch-manipulation active:scale-90 transition-transform"
+        >
+          <X className="h-5 w-5 text-muted-foreground" />
+          <span className="sr-only">Close</span>
+        </button>
+        
         {/* Drag handle indicator */}
         <div className="flex justify-center mb-4">
           <div className="w-10 h-1 bg-muted-foreground/30 rounded-full" />
         </div>
         
-        <SheetHeader className="mb-6">
-          <SheetTitle className="text-center text-lg font-semibold">Share to</SheetTitle>
-        </SheetHeader>
+        <DialogHeader className="mb-6">
+          <p className="text-center text-lg font-semibold">Share to</p>
+        </DialogHeader>
         
         {/* TikTok-style horizontal scroll share options */}
         <div className="flex gap-4 overflow-x-auto pb-2 px-2 -mx-2 scrollbar-hide">
@@ -186,13 +204,13 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
 
         {/* Cancel button */}
         <button
-          onClick={() => onOpenChange(false)}
-          className="w-full mt-6 py-3 text-center text-muted-foreground font-medium touch-manipulation active:bg-muted rounded-xl transition-colors"
+          onClick={handleClose}
+          className="w-full mt-6 py-3 text-center text-muted-foreground font-medium touch-manipulation active:bg-muted rounded-xl transition-colors min-h-[44px]"
         >
           Cancel
         </button>
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 };
 
