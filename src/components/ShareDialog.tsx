@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useToast } from '@/hooks/use-toast';
 import { Link2, MessageCircle, Facebook, Mail, Send, MoreHorizontal, X } from 'lucide-react';
@@ -19,10 +19,16 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
   onShareComplete
 }) => {
   const { toast } = useToast();
-  const contentRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
   
   const shareUrl = `${window.location.origin}/post/${postId}`;
   const shareText = postContent.substring(0, 100) + (postContent.length > 100 ? '...' : '');
+
+  // Ensure component is mounted before rendering portal
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
 
   // Lock body scroll when open
   useEffect(() => {
@@ -46,73 +52,69 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
     return () => document.removeEventListener('keydown', handleEscape);
   }, [open, onOpenChange]);
 
-  const handleBackdropClick = (e: React.MouseEvent | React.TouchEvent) => {
-    if (e.target === e.currentTarget) {
-      e.preventDefault();
-      e.stopPropagation();
-      onOpenChange(false);
-    }
+  const handleClose = () => {
+    onOpenChange(false);
   };
 
   const shareOptions = [
     {
       name: 'WhatsApp',
       icon: MessageCircle,
-      color: 'bg-green-500',
+      bgColor: '#25D366',
       action: () => {
         window.open(`https://wa.me/?text=${encodeURIComponent(shareText + '\n' + shareUrl)}`, '_blank');
         onShareComplete?.();
-        onOpenChange(false);
+        handleClose();
       }
     },
     {
       name: 'Facebook',
       icon: Facebook,
-      color: 'bg-blue-600',
+      bgColor: '#1877F2',
       action: () => {
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`, '_blank');
         onShareComplete?.();
-        onOpenChange(false);
+        handleClose();
       }
     },
     {
       name: 'X',
       icon: () => (
-        <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current">
+        <svg viewBox="0 0 24 24" style={{ width: 24, height: 24, fill: 'white' }}>
           <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
         </svg>
       ),
-      color: 'bg-black dark:bg-white dark:text-black',
+      bgColor: '#000000',
       action: () => {
         window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`, '_blank');
         onShareComplete?.();
-        onOpenChange(false);
+        handleClose();
       }
     },
     {
       name: 'Telegram',
       icon: Send,
-      color: 'bg-sky-500',
+      bgColor: '#0088CC',
       action: () => {
         window.open(`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`, '_blank');
         onShareComplete?.();
-        onOpenChange(false);
+        handleClose();
       }
     },
     {
       name: 'Email',
       icon: Mail,
-      color: 'bg-red-500',
+      bgColor: '#EA4335',
       action: () => {
         window.location.href = `mailto:?subject=${encodeURIComponent('Check this out!')}&body=${encodeURIComponent(shareText + '\n\n' + shareUrl)}`;
         onShareComplete?.();
-        onOpenChange(false);
+        handleClose();
       }
     },
     {
       name: 'Copy Link',
       icon: Link2,
-      color: 'bg-gray-600',
+      bgColor: '#6B7280',
       action: async () => {
         try {
           await navigator.clipboard.writeText(shareUrl);
@@ -121,7 +123,7 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
             description: "The link has been copied to your clipboard.",
           });
           onShareComplete?.();
-          onOpenChange(false);
+          handleClose();
         } catch (err) {
           toast({
             title: "Failed to copy",
@@ -134,7 +136,7 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
     {
       name: 'More',
       icon: MoreHorizontal,
-      color: 'bg-purple-500',
+      bgColor: '#8B5CF6',
       action: async () => {
         if (navigator.share) {
           try {
@@ -144,7 +146,7 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
               url: shareUrl,
             });
             onShareComplete?.();
-            onOpenChange(false);
+            handleClose();
           } catch (err) {
             if ((err as Error).name !== 'AbortError') {
               toast({
@@ -164,86 +166,96 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
     }
   ];
 
-  if (!open) return null;
+  if (!open || !mounted) return null;
 
-  // Use portal to render at document root, bypassing all parent transforms
-  return createPortal(
+  const dialogContent = (
     <div
-      className="fixed inset-0 z-[9999] flex items-end justify-center"
-      style={{ 
+      style={{
         position: 'fixed',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        zIndex: 9999,
+        zIndex: 99999,
+        display: 'flex',
+        alignItems: 'flex-end',
+        justifyContent: 'center',
       }}
-      onClick={handleBackdropClick}
-      onTouchEnd={handleBackdropClick}
+      onClick={handleClose}
     >
-      {/* Backdrop */}
-      <div 
-        className="absolute inset-0 bg-black/60 animate-in fade-in duration-200"
+      {/* Dark backdrop */}
+      <div
         style={{
           position: 'absolute',
           top: 0,
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.6)',
+          backgroundColor: 'rgba(0, 0, 0, 0.6)',
         }}
-        onClick={handleBackdropClick}
-        onTouchEnd={handleBackdropClick}
       />
       
-      {/* Content */}
-      <div 
-        ref={contentRef}
-        className="relative w-full max-w-lg bg-background rounded-t-3xl animate-in slide-in-from-bottom duration-300"
+      {/* White bottom sheet */}
+      <div
         style={{
           position: 'relative',
           width: '100%',
-          maxWidth: '32rem',
-          backgroundColor: 'var(--background, #ffffff)',
-          borderTopLeftRadius: '1.5rem',
-          borderTopRightRadius: '1.5rem',
-          paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom))',
-          transform: 'translateY(0)',
+          maxWidth: 500,
+          backgroundColor: '#ffffff',
+          borderTopLeftRadius: 24,
+          borderTopRightRadius: 24,
+          paddingBottom: 'max(24px, env(safe-area-inset-bottom))',
+          boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.15)',
+          animation: 'slideUp 0.3s ease-out',
         }}
         onClick={(e) => e.stopPropagation()}
-        onTouchEnd={(e) => e.stopPropagation()}
       >
         {/* Drag handle */}
-        <div className="flex justify-center pt-3 pb-2">
-          <div 
-            className="w-12 h-1.5 rounded-full bg-muted-foreground/30"
-            style={{ width: '3rem', height: '0.375rem', borderRadius: '9999px', backgroundColor: 'rgba(128,128,128,0.3)' }}
+        <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 12, paddingBottom: 8 }}>
+          <div
+            style={{
+              width: 48,
+              height: 5,
+              borderRadius: 999,
+              backgroundColor: '#D1D5DB',
+            }}
           />
         </div>
         
         {/* Close button */}
         <button
-          onClick={() => onOpenChange(false)}
-          className="absolute top-3 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-muted hover:bg-muted/80 transition-colors touch-manipulation"
-          style={{ position: 'absolute', top: '0.75rem', right: '1rem' }}
+          onClick={handleClose}
+          style={{
+            position: 'absolute',
+            top: 12,
+            right: 16,
+            width: 32,
+            height: 32,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: 999,
+            backgroundColor: '#F3F4F6',
+            border: 'none',
+            cursor: 'pointer',
+          }}
           aria-label="Close"
         >
-          <X size={18} className="text-muted-foreground" />
+          <X size={18} color="#6B7280" />
         </button>
         
         {/* Header */}
-        <div className="text-center py-2 px-4">
-          <h2 className="text-lg font-semibold text-foreground">Share to</h2>
+        <div style={{ textAlign: 'center', paddingTop: 8, paddingBottom: 8, paddingLeft: 16, paddingRight: 16 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 600, color: '#111827', margin: 0 }}>Share to</h2>
         </div>
         
-        {/* Share options - TikTok style horizontal scroll */}
-        <div 
-          className="flex gap-4 overflow-x-auto px-6 py-4 scrollbar-hide"
-          style={{ 
-            display: 'flex', 
-            gap: '1rem', 
-            overflowX: 'auto', 
-            padding: '1rem 1.5rem',
+        {/* Share options - horizontal scroll */}
+        <div
+          style={{
+            display: 'flex',
+            gap: 16,
+            overflowX: 'auto',
+            padding: '16px 24px',
             WebkitOverflowScrolling: 'touch',
           }}
         >
@@ -255,36 +267,39 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
                 e.stopPropagation();
                 option.action();
               }}
-              onTouchEnd={(e) => {
-                e.stopPropagation();
-              }}
-              className="flex flex-col items-center gap-2 min-w-[72px] touch-manipulation active:scale-95 transition-transform select-none"
-              style={{ 
-                display: 'flex', 
-                flexDirection: 'column', 
-                alignItems: 'center', 
-                gap: '0.5rem', 
-                minWidth: '72px',
-                touchAction: 'manipulation',
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 8,
+                minWidth: 72,
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0,
               }}
             >
-              <div 
-                className={`w-14 h-14 rounded-full ${option.color} flex items-center justify-center text-white shadow-lg`}
-                style={{ 
-                  width: '3.5rem', 
-                  height: '3.5rem', 
-                  borderRadius: '9999px', 
-                  display: 'flex', 
-                  alignItems: 'center', 
+              <div
+                style={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: 999,
+                  backgroundColor: option.bgColor,
+                  display: 'flex',
+                  alignItems: 'center',
                   justifyContent: 'center',
-                  color: 'white',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
                 }}
               >
-                <option.icon className="w-6 h-6 pointer-events-none" />
+                <option.icon style={{ width: 24, height: 24, color: 'white' }} color="white" />
               </div>
-              <span 
-                className="text-xs text-foreground/80 font-medium whitespace-nowrap pointer-events-none"
-                style={{ fontSize: '0.75rem', fontWeight: 500, whiteSpace: 'nowrap' }}
+              <span
+                style={{
+                  fontSize: 12,
+                  fontWeight: 500,
+                  color: '#374151',
+                  whiteSpace: 'nowrap',
+                }}
               >
                 {option.name}
               </span>
@@ -293,26 +308,46 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
         </div>
 
         {/* Cancel button */}
-        <div className="px-4 pb-2">
+        <div style={{ padding: '8px 16px 8px 16px' }}>
           <button
-            onClick={() => onOpenChange(false)}
-            className="w-full py-3.5 text-center text-muted-foreground font-medium touch-manipulation active:bg-muted rounded-xl transition-colors min-h-[48px]"
-            style={{ 
-              width: '100%', 
-              padding: '0.875rem', 
+            onClick={handleClose}
+            style={{
+              width: '100%',
+              padding: 14,
               textAlign: 'center',
-              borderRadius: '0.75rem',
-              minHeight: '48px',
-              touchAction: 'manipulation',
+              color: '#6B7280',
+              fontWeight: 500,
+              background: 'none',
+              border: 'none',
+              borderRadius: 12,
+              cursor: 'pointer',
+              minHeight: 48,
+              fontSize: 16,
             }}
           >
             Cancel
           </button>
         </div>
       </div>
-    </div>,
-    document.body
+      
+      {/* Inline keyframes animation */}
+      <style>{`
+        @keyframes slideUp {
+          from {
+            transform: translateY(100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+      `}</style>
+    </div>
   );
+
+  // Render to document.body to escape all parent stacking contexts
+  return createPortal(dialogContent, document.body);
 };
 
 export default ShareDialog;
