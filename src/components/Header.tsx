@@ -24,12 +24,13 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
           <Button
             variant="ghost"
             size="icon"
-            className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-lg hover:bg-accent transition-colors"
+            className="absolute right-0 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] w-11 h-11 rounded-lg hover:bg-accent active:bg-accent/80 active:scale-95 transition-all touch-manipulation z-10"
             onClick={toggleMobileSidebar}
+            type="button"
           >
-            <Menu size={22} className="text-foreground" />
+            <Menu size={22} className="text-foreground pointer-events-none" />
             {hasAnyNotifications && (
-              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-destructive rounded-full" />
+              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-destructive rounded-full pointer-events-none" />
             )}
             <span className="sr-only">Open menu</span>
           </Button>
@@ -53,12 +54,13 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
           <Button
             variant="ghost"
             size="icon"
-            className="relative w-10 h-10 rounded-lg hover:bg-accent transition-colors"
+            className="relative min-w-[44px] min-h-[44px] w-11 h-11 rounded-lg hover:bg-accent active:bg-accent/80 active:scale-95 transition-all touch-manipulation"
             onClick={toggleMobileSidebar}
+            type="button"
           >
-            <Menu size={22} className="text-foreground" />
+            <Menu size={22} className="text-foreground pointer-events-none" />
             {hasAnyNotifications && (
-              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-destructive rounded-full" />
+              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-destructive rounded-full pointer-events-none" />
             )}
             <span className="sr-only">Open menu</span>
           </Button>
