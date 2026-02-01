@@ -117,3 +117,23 @@
   - Floating chat widget or support page
   - Automated responses for common questions
   - Help with navigation and app features
+
+---
+
+## Fixes & Solutions Log
+
+### Splash Ad Fix (2026-02-01)
+**Issue:** Clicking on splash page ad images showed a black screen instead of the full-size ad preview.
+
+**Root Cause:** The `DialogContent` component from shadcn/ui already includes its own `DialogPortal` and `DialogOverlay` internally. The code was manually wrapping these again, causing duplicate overlays. Additionally, the default `DialogContent` styles use `left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]` centering which conflicted with fullscreen display.
+
+**Solution:** 
+1. Removed manual `DialogPortal` and `DialogOverlay` wrappers
+2. Applied `!important` CSS overrides to `DialogContent` for fullscreen behavior:
+   ```jsx
+   <DialogContent className="!fixed !inset-0 !left-0 !top-0 !translate-x-0 !translate-y-0 !max-w-none !w-screen !h-screen !p-0 !border-none !bg-black/95 !rounded-none flex items-center justify-center">
+   ```
+
+**File:** `src/components/AdSplash.tsx`
+
+**Key Learning:** When using shadcn/ui Dialog components, `DialogContent` is self-contained and should not be wrapped in additional `DialogPortal` or `DialogOverlay` components.
