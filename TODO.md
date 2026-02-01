@@ -137,3 +137,42 @@
 **File:** `src/components/AdSplash.tsx`
 
 **Key Learning:** When using shadcn/ui Dialog components, `DialogContent` is self-contained and should not be wrapped in additional `DialogPortal` or `DialogOverlay` components.
+
+---
+
+### Mobile Menu Touch Fix (2026-02-01)
+**Issue:** The mobile menu button required 3-4 taps before responding on mobile devices.
+
+**Root Cause:** Multiple issues combined:
+1. Button size was 40x40px, below the recommended 44x44px minimum touch target
+2. Missing `touch-manipulation` CSS property which removes the 300ms mobile tap delay
+3. Child elements (icon, notification badge) were intercepting touch events
+4. No explicit z-index causing potential overlap issues
+
+**Solution:** 
+1. Increased touch target to 44x44px with `min-w-[44px] min-h-[44px] w-11 h-11`
+2. Added `touch-manipulation` class to remove mobile tap delay
+3. Added `pointer-events-none` to all child elements so clicks hit the button directly
+4. Added `z-10` to ensure button stays above overlapping elements
+5. Added `active:scale-95` for visual feedback on tap
+6. Added explicit `type="button"` attribute
+
+```jsx
+<Button
+  variant="ghost"
+  size="icon"
+  className="absolute right-0 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] w-11 h-11 rounded-lg hover:bg-accent active:bg-accent/80 active:scale-95 transition-all touch-manipulation z-10"
+  onClick={toggleMobileSidebar}
+  type="button"
+>
+  <Menu size={22} className="text-foreground pointer-events-none" />
+</Button>
+```
+
+**File:** `src/components/Header.tsx`
+
+**Key Learning:** For reliable mobile touch handling:
+- Always use `touch-manipulation` on interactive elements
+- Minimum touch target should be 44x44px
+- Use `pointer-events-none` on child elements inside buttons
+- Provide visual feedback with `active:` states
