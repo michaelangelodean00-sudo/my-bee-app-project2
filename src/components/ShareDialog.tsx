@@ -115,7 +115,11 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="rounded-t-3xl px-4 pb-8 pt-3">
+      <SheetContent 
+        side="bottom" 
+        className="rounded-t-3xl px-4 pb-8 pt-3 max-h-[85vh] bg-background"
+        style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom))' }}
+      >
         {/* Drag handle indicator */}
         <div className="flex justify-center mb-4">
           <div className="w-10 h-1 bg-muted-foreground/30 rounded-full" />
@@ -169,7 +173,7 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
             bgColor="bg-muted"
             iconColor="text-foreground"
           />
-          {navigator.share && (
+          {typeof navigator !== 'undefined' && navigator.share && (
             <ShareOption
               icon={MoreHorizontal}
               label="More"

@@ -434,7 +434,11 @@ const AdSplash = memo(() => {
                     <Button
                       variant="ghost"
                       size="lg"
-                      onClick={() => handleShare(ad)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        handleShare(ad);
+                      }}
                       className="text-white hover:bg-white/10 border border-white/20 hover:border-white/40 backdrop-blur-sm min-h-[44px] gap-2 px-5 transition-all active:scale-95 font-medium"
                     >
                       <Share2 size={18} />
