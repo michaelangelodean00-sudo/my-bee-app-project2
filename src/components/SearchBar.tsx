@@ -50,7 +50,7 @@ const SearchBar = () => {
           <button
             type="button"
             onClick={clearSearch}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 p-1 min-w-[32px] min-h-[32px] flex items-center justify-center touch-manipulation active:scale-90"
           >
             <X size={16} />
           </button>

@@ -49,10 +49,10 @@ const Sidebar = memo(({ className = "", onLinkClick }: SidebarProps) => {
                 onClick={onLinkClick}
                 {...prefetchOnHover(item.path)}
                 className={cn(
-                  "flex items-center justify-between px-3 lg:px-4 py-3 rounded-lg transition-all duration-200 min-h-[48px] group",
+                  "flex items-center justify-between px-3 lg:px-4 py-3 rounded-lg transition-all duration-200 min-h-[48px] group touch-manipulation active:scale-[0.98]",
                   isActive
                     ? "bg-primary/10 text-primary border border-primary/20"
-                    : "text-muted-foreground hover:bg-accent hover:text-foreground hover:translate-x-1"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground hover:translate-x-1 active:bg-accent/70"
                 )}
               >
                 <div className="flex items-center gap-2 lg:gap-3 min-w-0 flex-1">
