@@ -219,7 +219,7 @@ className="pointer-events-none"
 
 ---
 
-### Share Dialog Black Screen Fix (2026-02-01)
+### Splash Screen Share Fix (2026-02-01)
 **Issue:** The share dialog showed a black screen or nothing appeared when clicking the share button on splash page ads on mobile devices.
 
 **Root Cause:** Multiple cascading issues:
