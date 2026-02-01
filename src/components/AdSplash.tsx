@@ -320,7 +320,9 @@ const AdSplash = memo(() => {
     setShareDialog(true);
   }, []);
 
-  const handleImageClick = useCallback((imageUrl: string, title: string) => {
+  const handleImageClick = useCallback((e: React.MouseEvent, imageUrl: string, title: string) => {
+    e.stopPropagation();
+    e.preventDefault();
     setImagePreview({ url: imageUrl, title });
   }, []);
 
@@ -354,7 +356,7 @@ const AdSplash = memo(() => {
                   {loadedImages.has(index) ? (
                     <div 
                       className="relative overflow-hidden rounded-2xl cursor-pointer"
-                      onClick={() => handleImageClick(ad.imageUrl, ad.title)}
+                      onClick={(e) => handleImageClick(e, ad.imageUrl, ad.title)}
                     >
                       {/* Sponsored badge */}
                       <div className="absolute bottom-3 right-3 z-20 flex items-center gap-1 bg-black/30 backdrop-blur-sm px-2 py-1 rounded-md border border-white/10 pointer-events-none">
