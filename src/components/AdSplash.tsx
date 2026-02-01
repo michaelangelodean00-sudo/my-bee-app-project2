@@ -491,21 +491,18 @@ const AdSplash = memo(() => {
 
       {/* Full Image Preview Dialog */}
       <Dialog open={!!imagePreview} onOpenChange={() => setImagePreview(null)}>
-        <DialogPortal>
-          <DialogOverlay className="bg-black/95" />
-          <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <VisuallyHidden.Root>
-              <DialogTitle>{imagePreview?.title || "Image Preview"}</DialogTitle>
-            </VisuallyHidden.Root>
-            {imagePreview && (
-              <ZoomableImage
-                src={imagePreview.url}
-                alt={imagePreview.title}
-                onClose={() => setImagePreview(null)}
-              />
-            )}
-          </div>
-        </DialogPortal>
+        <DialogContent className="!fixed !inset-0 !left-0 !top-0 !translate-x-0 !translate-y-0 !max-w-none !w-screen !h-screen !p-0 !border-none !bg-black/95 !rounded-none flex items-center justify-center">
+          <VisuallyHidden.Root>
+            <DialogTitle>{imagePreview?.title || "Image Preview"}</DialogTitle>
+          </VisuallyHidden.Root>
+          {imagePreview && (
+            <ZoomableImage
+              src={imagePreview.url}
+              alt={imagePreview.title}
+              onClose={() => setImagePreview(null)}
+            />
+          )}
+        </DialogContent>
       </Dialog>
     </div>
   );
