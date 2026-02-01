@@ -231,14 +231,10 @@ const Events = () => {
         
         {/* Main Content - TikTok Style Feed */}
         <div className="flex-1 overflow-y-auto h-screen snap-y snap-mandatory scroll-smooth overscroll-none" ref={containerRef} style={{ scrollBehavior: 'smooth' }}>
-          {/* Auto-scroll toggle button */}
+          {/* Auto-scroll toggle button - positioned on media */}
           <Button
             onClick={toggleAutoScroll}
-            className={`fixed bottom-24 right-4 z-50 h-14 px-4 rounded-full shadow-xl touch-manipulation active:scale-95 md:bottom-8 flex items-center gap-2 font-medium transition-all duration-200 ${
-              isAutoScrolling 
-                ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
-                : 'bg-amber-500 text-white hover:bg-amber-600 animate-pulse'
-            }`}
+            className="fixed top-1/2 right-4 z-50 h-12 px-4 rounded-full shadow-lg touch-manipulation active:scale-95 flex items-center gap-2 font-medium bg-black/60 text-white hover:bg-black/80 backdrop-blur-sm border border-white/20"
             aria-label={isAutoScrolling ? "Pause auto-scroll" : "Start auto-scroll"}
           >
             {isAutoScrolling ? (
@@ -248,7 +244,7 @@ const Events = () => {
               </>
             ) : (
               <>
-                <Play className="h-5 w-5 ml-0.5" />
+                <Play className="h-5 w-5" />
                 <span className="text-sm">Auto</span>
               </>
             )}
