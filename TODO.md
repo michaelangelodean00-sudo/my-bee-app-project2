@@ -216,3 +216,64 @@ className="pointer-events-none"
 2. `min-h-[44px] min-w-[44px]` - Meets accessibility touch target guidelines
 3. `active:scale-[0.98]` or `active:scale-95` - Provides immediate tactile feedback
 4. `pointer-events-none` on child elements - Ensures parent receives touch events
+
+---
+
+### Share Dialog Black Screen Fix (2026-02-01)
+**Issue:** The share dialog showed a black screen or nothing appeared when clicking the share button on splash page ads on mobile devices.
+
+**Root Cause:** Multiple cascading issues:
+1. **CSS Containment**: The parent carousel/ad container had `overflow-hidden` and CSS containment properties that clipped or hid fixed-position elements
+2. **Stacking Context**: The carousel's CSS transforms created isolated stacking contexts, trapping the dialog's z-index
+3. **Portal Target**: Using `document.body` as the portal target still placed content within affected CSS contexts
+4. **Component Libraries**: Using Drawer/Dialog components from shadcn/ui inherited styles that conflicted with the carousel
+
+**Solution:** 
+1. Created a dedicated portal container outside React's main root:
+   ```jsx
+   const getPortalContainer = () => {
+     let container = document.getElementById('share-dialog-portal');
+     if (!container) {
+       container = document.createElement('div');
+       container.id = 'share-dialog-portal';
+       container.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999999;';
+       document.body.appendChild(container);
+     }
+     return container;
+   };
+   ```
+
+2. Used 100% inline styles instead of Tailwind classes to bypass CSS variable resolution failures:
+   ```jsx
+   <div style={{
+     position: 'fixed',
+     top: 0, left: 0, right: 0, bottom: 0,
+     zIndex: 999999,
+     backgroundColor: '#ffffff', // Hardcoded, not CSS variables
+   }}>
+   ```
+
+3. Removed all shadcn/ui Drawer/Dialog components and built custom UI with native HTML elements
+
+4. Added explicit body scroll locking:
+   ```jsx
+   useEffect(() => {
+     if (open) {
+       document.body.style.overflow = 'hidden';
+       return () => { document.body.style.overflow = originalOverflow; };
+     }
+   }, [open]);
+   ```
+
+5. Simplified event handlers - removed `e.preventDefault()` and `e.stopPropagation()` from the share button trigger as they were blocking touch events
+
+**Files:** 
+- `src/components/ShareDialog.tsx` - Complete rewrite with custom portal and inline styles
+- `src/components/AdSplash.tsx` - Simplified share button event handling
+
+**Key Learning:** When dealing with complex UI hierarchies (carousels, modals, portals):
+- Create dedicated portal containers outside React's render tree
+- Use inline styles for critical visibility properties to avoid CSS cascade issues
+- Avoid nesting portal-based components (Dialog inside Carousel)
+- Hardcode colors and dimensions rather than relying on CSS variables
+- Test on actual mobile devices - many CSS issues only manifest on real hardware
