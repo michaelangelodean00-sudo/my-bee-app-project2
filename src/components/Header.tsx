@@ -43,7 +43,7 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
       {/* Tablet & Desktop: Horizontal layout - centered logo and ad */}
       <div className="hidden sm:flex items-center justify-center w-full px-4 py-3 gap-4 min-h-[72px] md:min-h-[80px]">
         <div className="flex items-center gap-4 md:gap-6">
-          <div className="flex-shrink-0 animate-logo-entrance">
+          <div className="flex-shrink-0 animate-logo-entrance ml-4 md:ml-6">
             <Logo className="scale-100" />
           </div>
           
