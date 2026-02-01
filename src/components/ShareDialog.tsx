@@ -1,7 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useToast } from '@/hooks/use-toast';
 import { Link2, MessageCircle, Facebook, Mail, Send, MoreHorizontal, X } from 'lucide-react';
+
+// Create a dedicated portal container outside React's main root
+const getPortalContainer = () => {
+  let container = document.getElementById('share-dialog-portal');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'share-dialog-portal';
+    container.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999999;';
+    document.body.appendChild(container);
+  }
+  return container;
+};
 
 interface ShareDialogProps {
   open: boolean;
@@ -19,16 +31,9 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
   onShareComplete
 }) => {
   const { toast } = useToast();
-  const [mounted, setMounted] = useState(false);
   
   const shareUrl = `${window.location.origin}/post/${postId}`;
   const shareText = postContent.substring(0, 100) + (postContent.length > 100 ? '...' : '');
-
-  // Ensure component is mounted before rendering portal
-  useEffect(() => {
-    setMounted(true);
-    return () => setMounted(false);
-  }, []);
 
   // Lock body scroll when open
   useEffect(() => {
@@ -166,20 +171,30 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
     }
   ];
 
-  if (!open || !mounted) return null;
+  // Don't render if not open
+  if (!open) {
+    console.log('ShareDialog: not rendering because open is false');
+    return null;
+  }
+  
+  console.log('ShareDialog: rendering dialog, open =', open);
 
   const dialogContent = (
     <div
+      id="share-dialog-root"
       style={{
         position: 'fixed',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        zIndex: 99999,
+        width: '100vw',
+        height: '100vh',
+        zIndex: 999999,
         display: 'flex',
         alignItems: 'flex-end',
         justifyContent: 'center',
+        pointerEvents: 'auto',
       }}
       onClick={handleClose}
     >
@@ -206,7 +221,7 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
           borderTopRightRadius: 24,
           paddingBottom: 'max(24px, env(safe-area-inset-bottom))',
           boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.15)',
-          animation: 'slideUp 0.3s ease-out',
+          animation: 'shareSlideUp 0.3s ease-out',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -332,7 +347,7 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
       
       {/* Inline keyframes animation */}
       <style>{`
-        @keyframes slideUp {
+        @keyframes shareSlideUp {
           from {
             transform: translateY(100%);
             opacity: 0;
@@ -345,9 +360,9 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
       `}</style>
     </div>
   );
-
-  // Render to document.body to escape all parent stacking contexts
-  return createPortal(dialogContent, document.body);
+  
+  // Use portal to render outside all React containers
+  return createPortal(dialogContent, getPortalContainer());
 };
 
 export default ShareDialog;
