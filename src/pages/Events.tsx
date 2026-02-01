@@ -234,15 +234,23 @@ const Events = () => {
           {/* Auto-scroll toggle button */}
           <Button
             onClick={toggleAutoScroll}
-            variant="outline"
-            size="icon"
-            className="fixed bottom-24 right-4 z-50 h-12 w-12 rounded-full bg-background/90 backdrop-blur-sm border-2 border-primary shadow-lg touch-manipulation active:scale-95 md:bottom-8"
+            className={`fixed bottom-24 right-4 z-50 h-14 px-4 rounded-full shadow-xl touch-manipulation active:scale-95 md:bottom-8 flex items-center gap-2 font-medium transition-all duration-200 ${
+              isAutoScrolling 
+                ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
+                : 'bg-amber-500 text-white hover:bg-amber-600 animate-pulse'
+            }`}
             aria-label={isAutoScrolling ? "Pause auto-scroll" : "Start auto-scroll"}
           >
             {isAutoScrolling ? (
-              <Pause className="h-5 w-5 text-primary" />
+              <>
+                <Pause className="h-5 w-5" />
+                <span className="text-sm">Auto</span>
+              </>
             ) : (
-              <Play className="h-5 w-5 text-primary ml-0.5" />
+              <>
+                <Play className="h-5 w-5 ml-0.5" />
+                <span className="text-sm">Auto</span>
+              </>
             )}
           </Button>
           
