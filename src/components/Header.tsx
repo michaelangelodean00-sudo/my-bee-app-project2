@@ -46,8 +46,8 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
           <Logo className="scale-100" />
         </div>
         
-        {/* Desktop: Push ad widget toward right-center */}
-        <div className="flex-1 min-w-0 md:max-w-lg lg:max-w-xl ml-auto mr-auto md:mr-8 lg:mr-16 xl:mr-24 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+        {/* Desktop: Position ad widget slightly right of center */}
+        <div className="flex-1 min-w-0 md:max-w-lg lg:max-w-xl ml-auto md:mr-4 lg:mr-8 animate-fade-in" style={{ animationDelay: '0.2s' }}>
           <BurgerAdWidget />
         </div>
         
