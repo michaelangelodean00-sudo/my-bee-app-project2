@@ -1,14 +1,12 @@
 import React from 'react';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Share2, Link2, MessageCircle, Facebook } from 'lucide-react';
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet';
 import { useToast } from '@/hooks/use-toast';
+import { Link2, MessageCircle, Facebook, Mail, Send, MoreHorizontal } from 'lucide-react';
 
 interface ShareDialogProps {
   open: boolean;
@@ -17,6 +15,38 @@ interface ShareDialogProps {
   postContent: string;
   onShareComplete?: () => void;
 }
+
+// TikTok-style share option button
+const ShareOption = ({ 
+  icon: Icon, 
+  label, 
+  onClick, 
+  bgColor = 'bg-muted',
+  iconColor = 'text-foreground'
+}: { 
+  icon: React.ElementType; 
+  label: string; 
+  onClick: () => void;
+  bgColor?: string;
+  iconColor?: string;
+}) => (
+  <button
+    onClick={onClick}
+    className="flex flex-col items-center gap-2 min-w-[72px] touch-manipulation active:scale-95 transition-transform"
+  >
+    <div className={`w-14 h-14 rounded-full ${bgColor} flex items-center justify-center`}>
+      <Icon className={`w-6 h-6 ${iconColor}`} />
+    </div>
+    <span className="text-xs text-muted-foreground font-medium">{label}</span>
+  </button>
+);
+
+// X/Twitter icon (not in lucide)
+const XIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="currentColor">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+);
 
 const ShareDialog: React.FC<ShareDialogProps> = ({
   open,
@@ -43,11 +73,18 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
       case 'twitter':
         url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
         break;
+      case 'telegram':
+        url = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
+        break;
+      case 'email':
+        url = `mailto:?subject=${encodeURIComponent('Check this out!')}&body=${encodeURIComponent(shareText + '\n\n' + shareUrl)}`;
+        break;
     }
     
     if (url) {
       window.open(url, '_blank', 'width=600,height=400');
     }
+    onOpenChange(false);
   };
 
   const handleCopyLink = () => {
@@ -60,64 +97,98 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
     onOpenChange(false);
   };
 
+  const handleNativeShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Check this out!',
+          text: shareText,
+          url: shareUrl,
+        });
+        onShareComplete?.();
+      } catch (err) {
+        // User cancelled or error
+      }
+    }
+    onOpenChange(false);
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md bg-card border-border">
-        <DialogHeader>
-          <DialogTitle className="text-foreground">Share Post</DialogTitle>
-          <DialogDescription className="text-muted-foreground">
-            Share this post with your friends
-          </DialogDescription>
-        </DialogHeader>
-        
-        <div className="grid gap-3 py-4">
-          <Button
-            variant="outline"
-            className="w-full justify-start gap-3 h-12"
-            onClick={() => handleShare('whatsapp')}
-          >
-            <MessageCircle className="h-5 w-5 text-green-500" />
-            <span>Share on WhatsApp</span>
-          </Button>
-          
-          <Button
-            variant="outline"
-            className="w-full justify-start gap-3 h-12"
-            onClick={() => handleShare('facebook')}
-          >
-            <Facebook className="h-5 w-5 text-blue-500" />
-            <span>Share on Facebook</span>
-          </Button>
-          
-          <Button
-            variant="outline"
-            className="w-full justify-start gap-3 h-12"
-            onClick={() => handleShare('twitter')}
-          >
-            <Share2 className="h-5 w-5 text-sky-500" />
-            <span>Share on Twitter</span>
-          </Button>
-          
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-border" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">Or</span>
-            </div>
-          </div>
-          
-          <Button
-            variant="secondary"
-            className="w-full justify-start gap-3 h-12"
-            onClick={handleCopyLink}
-          >
-            <Link2 className="h-5 w-5" />
-            <span>Copy Link</span>
-          </Button>
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent side="bottom" className="rounded-t-3xl px-4 pb-8 pt-3">
+        {/* Drag handle indicator */}
+        <div className="flex justify-center mb-4">
+          <div className="w-10 h-1 bg-muted-foreground/30 rounded-full" />
         </div>
-      </DialogContent>
-    </Dialog>
+        
+        <SheetHeader className="mb-6">
+          <SheetTitle className="text-center text-lg font-semibold">Share to</SheetTitle>
+        </SheetHeader>
+        
+        {/* TikTok-style horizontal scroll share options */}
+        <div className="flex gap-4 overflow-x-auto pb-2 px-2 -mx-2 scrollbar-hide">
+          <ShareOption
+            icon={MessageCircle}
+            label="WhatsApp"
+            onClick={() => handleShare('whatsapp')}
+            bgColor="bg-green-500"
+            iconColor="text-white"
+          />
+          <ShareOption
+            icon={Facebook}
+            label="Facebook"
+            onClick={() => handleShare('facebook')}
+            bgColor="bg-blue-600"
+            iconColor="text-white"
+          />
+          <ShareOption
+            icon={XIcon}
+            label="X"
+            onClick={() => handleShare('twitter')}
+            bgColor="bg-black dark:bg-white"
+            iconColor="text-white dark:text-black"
+          />
+          <ShareOption
+            icon={Send}
+            label="Telegram"
+            onClick={() => handleShare('telegram')}
+            bgColor="bg-sky-500"
+            iconColor="text-white"
+          />
+          <ShareOption
+            icon={Mail}
+            label="Email"
+            onClick={() => handleShare('email')}
+            bgColor="bg-red-500"
+            iconColor="text-white"
+          />
+          <ShareOption
+            icon={Link2}
+            label="Copy Link"
+            onClick={handleCopyLink}
+            bgColor="bg-muted"
+            iconColor="text-foreground"
+          />
+          {navigator.share && (
+            <ShareOption
+              icon={MoreHorizontal}
+              label="More"
+              onClick={handleNativeShare}
+              bgColor="bg-muted"
+              iconColor="text-foreground"
+            />
+          )}
+        </div>
+
+        {/* Cancel button */}
+        <button
+          onClick={() => onOpenChange(false)}
+          className="w-full mt-6 py-3 text-center text-muted-foreground font-medium touch-manipulation active:bg-muted rounded-xl transition-colors"
+        >
+          Cancel
+        </button>
+      </SheetContent>
+    </Sheet>
   );
 };
 
