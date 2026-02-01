@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
@@ -36,14 +36,8 @@ const queryClient = new QueryClient({
 });
 
 const App = () => {
-  useEffect(() => {
-    // Bee buzz vibration on app launch
-    if ('vibrate' in navigator) {
-      // Pattern: [vibrate, pause, vibrate, pause, vibrate]
-      // Creates a bee-like buzzing effect
-      navigator.vibrate([100, 50, 100, 50, 100]);
-    }
-  }, []);
+  // Removed auto-vibrate on load - it's blocked without user interaction
+  // and can cause issues on some browsers
 
   return (
   <HelmetProvider>
