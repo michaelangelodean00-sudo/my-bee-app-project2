@@ -7,12 +7,16 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
+import {
+  Dialog,
+  DialogContent,
+} from "@/components/ui/dialog";
 import bambooAd from "../images/bamboo-ad.jpeg";
 import { optimizeAds, preloadImage } from "@/utils/adUtils";
 import type { Ad } from "@/utils/adUtils";
 import { useAdAnalytics } from "@/hooks/useAdAnalytics";
 import ShareDialog from "./ShareDialog";
-import { Share2, Sparkles } from "lucide-react";
+import { Share2, Sparkles, X, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // Static ads array - defined outside component
@@ -91,6 +95,7 @@ const AdSplash = memo(() => {
   const [shareDialog, setShareDialog] = useState(false);
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null);
   const [shareCounts, setShareCounts] = useState<Record<string, number>>({});
+  const [imagePreview, setImagePreview] = useState<{ url: string; title: string } | null>(null);
 
   // Analytics tracking
   const { trackImpression, trackClick, getAdPerformance } = useAdAnalytics();
@@ -183,6 +188,10 @@ const AdSplash = memo(() => {
     setShareDialog(true);
   }, []);
 
+  const handleImageClick = useCallback((imageUrl: string, title: string) => {
+    setImagePreview({ url: imageUrl, title });
+  }, []);
+
   const handleShareComplete = useCallback(() => {
     if (selectedAd) {
       setShareCounts(prev => ({
@@ -211,11 +220,21 @@ const AdSplash = memo(() => {
               >
                 <div className="w-full md:w-1/2 relative group">
                   {loadedImages.has(index) ? (
-                    <div className="relative overflow-hidden rounded-2xl">
+                    <div 
+                      className="relative overflow-hidden rounded-2xl cursor-pointer"
+                      onClick={() => handleImageClick(ad.imageUrl, ad.title)}
+                    >
                       {/* Sponsored badge */}
                       <div className="absolute bottom-3 right-3 z-20 flex items-center gap-1 bg-black/30 backdrop-blur-sm px-2 py-1 rounded-md border border-white/10 pointer-events-none">
                         <Sparkles size={10} className="text-white/70" />
                         <span className="text-[9px] font-medium text-white/70 uppercase tracking-wide">Sponsored</span>
+                      </div>
+                      
+                      {/* Zoom indicator overlay */}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center z-10 pointer-events-none">
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 rounded-full p-3 shadow-lg">
+                          <ZoomIn size={24} className="text-primary" />
+                        </div>
                       </div>
                       
                       <img 
@@ -301,6 +320,29 @@ const AdSplash = memo(() => {
           onShareComplete={handleShareComplete}
         />
       )}
+
+      {/* Full Image Preview Dialog */}
+      <Dialog open={!!imagePreview} onOpenChange={() => setImagePreview(null)}>
+        <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 border-0 bg-transparent overflow-hidden">
+          <div className="relative w-full h-full flex items-center justify-center">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute top-2 right-2 z-50 bg-black/50 hover:bg-black/70 text-white rounded-full h-10 w-10"
+              onClick={() => setImagePreview(null)}
+            >
+              <X size={20} />
+            </Button>
+            {imagePreview && (
+              <img
+                src={imagePreview.url}
+                alt={imagePreview.title}
+                className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 });
