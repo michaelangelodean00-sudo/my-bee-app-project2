@@ -10,7 +10,9 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogTitle,
 } from "@/components/ui/dialog";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import bambooAd from "../images/bamboo-ad.jpeg";
 import { optimizeAds, preloadImage } from "@/utils/adUtils";
 import type { Ad } from "@/utils/adUtils";
@@ -453,7 +455,13 @@ const AdSplash = memo(() => {
 
       {/* Full Image Preview Dialog */}
       <Dialog open={!!imagePreview} onOpenChange={() => setImagePreview(null)}>
-        <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 border-0 bg-transparent overflow-hidden">
+        <DialogContent 
+          className="max-w-[95vw] h-[95vh] p-0 border-0 bg-black/95 overflow-hidden flex items-center justify-center"
+          aria-describedby={undefined}
+        >
+          <VisuallyHidden.Root>
+            <DialogTitle>{imagePreview?.title || "Image Preview"}</DialogTitle>
+          </VisuallyHidden.Root>
           {imagePreview && (
             <ZoomableImage
               src={imagePreview.url}
