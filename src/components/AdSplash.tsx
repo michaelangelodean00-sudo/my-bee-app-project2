@@ -321,8 +321,10 @@ const AdSplash = memo(() => {
   }, [api]);
 
   const handleShare = useCallback((ad: Ad) => {
+    console.log('handleShare called for ad:', ad.id, 'setting shareDialog to true');
     setSelectedAd(ad);
     setShareDialog(true);
+    console.log('handleShare: state update dispatched');
   }, []);
 
   // Tap detection handlers - distinguish taps from swipes
@@ -366,7 +368,7 @@ const AdSplash = memo(() => {
   }, [selectedAd]);
   
   return (
-    <div className="relative bg-secondary text-secondary-foreground overflow-hidden flex justify-center z-0" style={{ contain: 'layout style' }}>
+    <div className="relative bg-secondary text-secondary-foreground flex justify-center z-0">
       <Carousel 
         className="w-full max-w-7xl mx-auto py-8" 
         opts={{ loop: true, align: "center" }}
@@ -431,22 +433,21 @@ const AdSplash = memo(() => {
                     >
                       Get More Info
                     </button>
-                    <Button
-                      variant="ghost"
-                      size="lg"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        e.preventDefault();
+                    <button
+                      type="button"
+                      onClick={() => {
+                        console.log('Share button clicked for ad:', ad.id);
                         handleShare(ad);
                       }}
-                      className="text-white hover:bg-white/10 border border-white/20 hover:border-white/40 backdrop-blur-sm min-h-[44px] gap-2 px-5 transition-all active:scale-95 font-medium"
+                      className="relative z-50 inline-flex items-center justify-center text-white hover:bg-white/10 border border-white/20 hover:border-white/40 backdrop-blur-sm min-h-[44px] gap-2 px-5 transition-all active:scale-95 font-medium rounded-md"
+                      style={{ touchAction: 'manipulation', pointerEvents: 'auto' }}
                     >
-                      <Share2 size={18} />
-                      <span>Share</span>
+                      <Share2 size={18} className="pointer-events-none" />
+                      <span className="pointer-events-none">Share</span>
                       {shareCounts[ad.id] > 0 && (
-                        <span className="ml-0.5 text-sm opacity-80">· {shareCounts[ad.id]}</span>
+                        <span className="ml-0.5 text-sm opacity-80 pointer-events-none">· {shareCounts[ad.id]}</span>
                       )}
-                    </Button>
+                    </button>
                   </div>
                 </div>
               </div>
