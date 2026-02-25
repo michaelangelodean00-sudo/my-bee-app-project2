@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import LogoImage from "./LogoImage";
 
@@ -8,6 +8,24 @@ interface LogoProps {
 
 const Logo = ({ className }: LogoProps) => {
   const [isPressed, setIsPressed] = useState(false);
+  const [clock, setClock] = useState("");
+
+  useEffect(() => {
+    const updateClock = () => {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString("en-US", {
+        timeZone: "America/New_York",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
+      });
+      setClock(timeStr);
+    };
+    updateClock();
+    const interval = setInterval(updateClock, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleTap = useCallback(() => {
     // Haptic feedback on tap
@@ -27,41 +45,33 @@ const Logo = ({ className }: LogoProps) => {
       onTouchEnd={() => setIsPressed(false)}
       onClick={handleTap}
     >
-      {/* Sun & Cloud above logo */}
-      <div className="relative flex items-end justify-center w-full mb-[-8px] h-7 select-none pointer-events-none">
-        {/* Sun */}
+      {/* Sun (far left) + EST Digital Clock */}
+      <div className="flex items-center gap-1 w-full mb-1 select-none pointer-events-none">
         <span
-          className="absolute text-xl"
           style={{
-            left: '50%',
-            transform: 'translateX(-68px)',
-            bottom: 0,
+            fontSize: '1.1rem',
             animation: 'sunFloat 3s ease-in-out infinite',
-            filter: 'drop-shadow(0 0 6px rgba(255, 200, 0, 0.7))',
+            filter: 'drop-shadow(0 0 5px rgba(255, 200, 0, 0.7))',
+            display: 'inline-block',
           }}
         >
           ☀️
         </span>
-        {/* Cloud */}
         <span
-          className="absolute text-2xl"
           style={{
-            left: '50%',
-            transform: 'translateX(-10px)',
-            bottom: 0,
-            animation: 'cloudFloat 4s ease-in-out infinite',
+            fontSize: '0.6rem',
+            fontVariantNumeric: 'tabular-nums',
+            letterSpacing: '0.04em',
+            color: 'hsl(var(--muted-foreground))',
+            fontFamily: 'monospace',
           }}
         >
-          ⛅
+          {clock} EST
         </span>
         <style>{`
           @keyframes sunFloat {
-            0%, 100% { transform: translateX(-68px) translateY(0px); }
-            50% { transform: translateX(-68px) translateY(-4px); }
-          }
-          @keyframes cloudFloat {
-            0%, 100% { transform: translateX(-10px) translateY(0px); }
-            50% { transform: translateX(-10px) translateY(-5px); }
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-3px); }
           }
         `}</style>
       </div>
