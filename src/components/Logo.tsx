@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import LogoImage from "./LogoImage";
 
@@ -8,27 +8,8 @@ interface LogoProps {
 
 const Logo = ({ className }: LogoProps) => {
   const [isPressed, setIsPressed] = useState(false);
-  const [clock, setClock] = useState("");
-
-  useEffect(() => {
-    const updateClock = () => {
-      const now = new Date();
-      const timeStr = now.toLocaleTimeString("en-US", {
-        timeZone: "America/New_York",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: true,
-      });
-      setClock(timeStr);
-    };
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   const handleTap = useCallback(() => {
-    // Haptic feedback on tap
     if ('vibrate' in navigator) {
       navigator.vibrate(50);
     }
@@ -45,7 +26,7 @@ const Logo = ({ className }: LogoProps) => {
       onTouchEnd={() => setIsPressed(false)}
       onClick={handleTap}
     >
-      {/* Sun (far left) + EST Digital Clock */}
+      {/* Sun (far left) + Cloud */}
       <div className="flex items-center gap-1 w-full mb-1 select-none pointer-events-none">
         <span
           style={{
@@ -59,25 +40,21 @@ const Logo = ({ className }: LogoProps) => {
         </span>
         <span
           style={{
-            fontSize: '0.65rem',
-            fontVariantNumeric: 'tabular-nums',
-            letterSpacing: '0.12em',
-            color: '#00ff88',
-            fontFamily: '"Courier New", Courier, monospace',
-            background: 'rgba(0,0,0,0.75)',
-            borderRadius: '999px',
-            padding: '1px 6px',
-            border: '1px solid rgba(0,255,136,0.25)',
-            textShadow: '0 0 6px rgba(0,255,136,0.7)',
-            boxShadow: '0 0 8px rgba(0,255,136,0.15)',
+            fontSize: '1.1rem',
+            animation: 'cloudFloat 4s ease-in-out infinite',
+            display: 'inline-block',
           }}
         >
-          {clock} EST
+          ⛅
         </span>
         <style>{`
           @keyframes sunFloat {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-3px); }
+          }
+          @keyframes cloudFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-4px); }
           }
         `}</style>
       </div>
