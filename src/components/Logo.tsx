@@ -59,11 +59,17 @@ const Logo = ({ className }: LogoProps) => {
         </span>
         <span
           style={{
-            fontSize: '0.6rem',
+            fontSize: '0.65rem',
             fontVariantNumeric: 'tabular-nums',
-            letterSpacing: '0.04em',
-            color: 'hsl(var(--muted-foreground))',
-            fontFamily: 'monospace',
+            letterSpacing: '0.12em',
+            color: '#00ff88',
+            fontFamily: '"Courier New", Courier, monospace',
+            background: 'rgba(0,0,0,0.75)',
+            borderRadius: '999px',
+            padding: '1px 6px',
+            border: '1px solid rgba(0,255,136,0.25)',
+            textShadow: '0 0 6px rgba(0,255,136,0.7)',
+            boxShadow: '0 0 8px rgba(0,255,136,0.15)',
           }}
         >
           {clock} EST
