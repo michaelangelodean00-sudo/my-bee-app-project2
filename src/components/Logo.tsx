@@ -26,32 +26,18 @@ const Logo = ({ className }: LogoProps) => {
       onTouchEnd={() => setIsPressed(false)}
       onClick={handleTap}
     >
-      {/* Sun (far left) + Cloud */}
-      <div className="flex items-center gap-1 w-full mb-1 select-none pointer-events-none">
+      {/* Cloud only */}
+      <div className="flex items-center w-full mb-1 select-none pointer-events-none">
         <span
           style={{
-            fontSize: '1.1rem',
-            animation: 'sunFloat 3s ease-in-out infinite',
-            filter: 'drop-shadow(0 0 5px rgba(255, 200, 0, 0.7))',
-            display: 'inline-block',
-          }}
-        >
-          ☀️
-        </span>
-        <span
-          style={{
-            fontSize: '1.1rem',
+            fontSize: '2rem',
             animation: 'cloudFloat 4s ease-in-out infinite',
             display: 'inline-block',
           }}
         >
-          ⛅
+          ☁️
         </span>
         <style>{`
-          @keyframes sunFloat {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-3px); }
-          }
           @keyframes cloudFloat {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-4px); }
