@@ -58,8 +58,6 @@ const Logo = ({ className }: LogoProps) => {
           </span>
         ))}
         <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Boogaloo&display=swap');
-
           @keyframes neonPop {
             0%   { transform: translateY(0px) scale(1); filter: drop-shadow(0 0 4px rgba(251,191,36,0.8)) drop-shadow(0 0 10px rgba(245,158,11,0.5)); }
             30%  { transform: translateY(-4px) scale(1.15); filter: drop-shadow(0 0 10px rgba(252,211,77,1)) drop-shadow(0 0 20px rgba(245,158,11,0.9)) drop-shadow(0 0 30px rgba(239,68,68,0.5)); }
