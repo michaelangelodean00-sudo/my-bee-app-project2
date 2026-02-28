@@ -27,55 +27,58 @@ const Logo = ({ className }: LogoProps) => {
       onClick={handleTap}
     >
       {/* Slogan ABOVE logo */}
-      <div className="select-none flex items-center" style={{ gap: '0.05em' }}>
+      <div className="select-none flex items-center" style={{ gap: '0.04em' }}>
         {[
-          { char: 'F', color: '#FF3D00' },
-          { char: 'E', color: '#FF6D00' },
-          { char: 'E', color: '#FFAB00' },
-          { char: 'L', color: '#FFD600' },
-          { char: ' ', color: 'transparent' },
-          { char: 'T', color: '#00E5FF' },
-          { char: 'H', color: '#00BFA5' },
-          { char: 'E', color: '#1DE9B6' },
-          { char: ' ', color: 'transparent' },
-          { char: 'B', color: '#FF3D00' },
-          { char: 'U', color: '#FF6D00' },
-          { char: 'Z', color: '#FFAB00' },
-          { char: 'Z', color: '#FFD600' },
-        ].map(({ char, color }, i) => (
+          { char: 'F', color: '#FF1744', glow: '#FF1744' },
+          { char: 'E', color: '#FF6D00', glow: '#FF6D00' },
+          { char: 'E', color: '#FFD600', glow: '#FFD600' },
+          { char: 'L', color: '#00E676', glow: '#00E676' },
+          { char: ' ', color: 'transparent', glow: 'transparent' },
+          { char: 'T', color: '#00E5FF', glow: '#00E5FF' },
+          { char: 'H', color: '#D500F9', glow: '#D500F9' },
+          { char: 'E', color: '#FF1744', glow: '#FF1744' },
+          { char: ' ', color: 'transparent', glow: 'transparent' },
+          { char: 'B', color: '#FFEA00', glow: '#FFEA00' },
+          { char: 'U', color: '#FF6D00', glow: '#FF6D00' },
+          { char: 'Z', color: '#00E5FF', glow: '#00E5FF' },
+          { char: 'Z', color: '#FF1744', glow: '#FF1744' },
+        ].map(({ char, color, glow }, i) => (
           <span
             key={i}
             style={{
               fontFamily: "'Bangers', cursive",
-              fontSize: 'clamp(1.4rem, 4.5vw, 2.2rem)',
+              fontSize: 'clamp(1.7rem, 5.5vw, 2.8rem)',
               fontWeight: 400,
               display: 'inline-block',
               color: char === ' ' ? 'transparent' : color,
               textShadow: char === ' ' ? 'none'
-                : `0 0 8px ${color}, 0 0 20px ${color}99, 2px 2px 0px #000, -1px -1px 0 #000`,
-              letterSpacing: '0.08em',
+                : `0 0 6px ${glow}, 0 0 18px ${glow}, 0 0 40px ${glow}88, 3px 3px 0px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000`,
+              letterSpacing: '0.1em',
               lineHeight: 1,
-              minWidth: char === ' ' ? '0.25em' : undefined,
-              animationName: char === ' ' ? 'none' : 'buzzJolt',
-              animationDuration: '2.2s',
+              minWidth: char === ' ' ? '0.3em' : undefined,
+              animationName: char === ' ' ? 'none' : 'buzzPop',
+              animationDuration: `${1.6 + (i % 3) * 0.3}s`,
               animationTimingFunction: 'cubic-bezier(.36,.07,.19,.97)',
               animationIterationCount: 'infinite',
-              animationDelay: `${i * 0.1}s`,
-              willChange: 'transform',
+              animationDelay: `${i * 0.12}s`,
+              willChange: 'transform, filter',
+              WebkitTextStroke: char === ' ' ? 'none' : '0.5px rgba(0,0,0,0.8)',
             }}
           >
             {char}
           </span>
         ))}
         <style>{`
-          @keyframes buzzJolt {
-            0%   { transform: translateY(0) rotate(0deg) scale(1); }
-            10%  { transform: translateY(-5px) rotate(-3deg) scale(1.18); }
-            20%  { transform: translateY(2px) rotate(2deg) scale(0.95); }
-            30%  { transform: translateY(-3px) rotate(-1deg) scale(1.1); }
-            40%  { transform: translateY(1px) rotate(1deg) scale(1.02); }
-            50%  { transform: translateY(0) rotate(0deg) scale(1); }
-            100% { transform: translateY(0) rotate(0deg) scale(1); }
+          @import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
+          @keyframes buzzPop {
+            0%   { transform: translateY(0) rotate(0deg) scale(1); filter: brightness(1); }
+            8%   { transform: translateY(-8px) rotate(-4deg) scale(1.25); filter: brightness(1.6) saturate(2); }
+            16%  { transform: translateY(3px) rotate(3deg) scale(0.92); filter: brightness(0.9); }
+            24%  { transform: translateY(-4px) rotate(-2deg) scale(1.12); filter: brightness(1.4) saturate(1.8); }
+            32%  { transform: translateY(2px) rotate(1deg) scale(1.04); filter: brightness(1.1); }
+            40%  { transform: translateY(-2px) rotate(-1deg) scale(1.08); filter: brightness(1.3); }
+            50%  { transform: translateY(0) rotate(0deg) scale(1); filter: brightness(1); }
+            100% { transform: translateY(0) rotate(0deg) scale(1); filter: brightness(1); }
           }
         `}</style>
       </div>
