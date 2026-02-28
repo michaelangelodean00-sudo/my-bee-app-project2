@@ -27,42 +27,55 @@ const Logo = ({ className }: LogoProps) => {
       onClick={handleTap}
     >
       {/* Slogan ABOVE logo */}
-      <div className="select-none flex items-center gap-0.5">
-        {['F','e','e','l',' ','t','h','e',' ','B','u','z','z'].map((char, i) => (
+      <div className="select-none flex items-center" style={{ gap: '0.05em' }}>
+        {[
+          { char: 'F', color: '#FF3D00' },
+          { char: 'E', color: '#FF6D00' },
+          { char: 'E', color: '#FFAB00' },
+          { char: 'L', color: '#FFD600' },
+          { char: ' ', color: 'transparent' },
+          { char: 'T', color: '#00E5FF' },
+          { char: 'H', color: '#00BFA5' },
+          { char: 'E', color: '#1DE9B6' },
+          { char: ' ', color: 'transparent' },
+          { char: 'B', color: '#FF3D00' },
+          { char: 'U', color: '#FF6D00' },
+          { char: 'Z', color: '#FFAB00' },
+          { char: 'Z', color: '#FFD600' },
+        ].map(({ char, color }, i) => (
           <span
             key={i}
-            className="buzz-char"
             style={{
-              fontFamily: "'Boogaloo', cursive",
-              fontSize: 'clamp(1.1rem, 3.5vw, 1.7rem)',
+              fontFamily: "'Bangers', cursive",
+              fontSize: 'clamp(1.4rem, 4.5vw, 2.2rem)',
               fontWeight: 400,
               display: 'inline-block',
-              animationName: 'neonPop',
-              animationDuration: '1.8s',
-              animationTimingFunction: 'ease-in-out',
-              animationIterationCount: 'infinite',
-              animationDelay: `${i * 0.08}s`,
-              color: char === ' ' ? 'transparent' : undefined,
-              background: char === ' ' ? 'none' : `linear-gradient(180deg, #FCD34D 0%, #F59E0B 50%, #EF4444 100%)`,
-              backgroundSize: char === ' ' ? undefined : '100% 200%',
-              WebkitBackgroundClip: char === ' ' ? undefined : 'text',
-              WebkitTextFillColor: char === ' ' ? 'transparent' : 'transparent',
-              backgroundClip: char === ' ' ? undefined : 'text',
-              filter: char === ' ' ? 'none' : 'drop-shadow(0 0 6px rgba(251,191,36,0.9)) drop-shadow(0 0 12px rgba(245,158,11,0.6))',
-              letterSpacing: '0.03em',
+              color: char === ' ' ? 'transparent' : color,
+              textShadow: char === ' ' ? 'none'
+                : `0 0 8px ${color}, 0 0 20px ${color}99, 2px 2px 0px #000, -1px -1px 0 #000`,
+              letterSpacing: '0.08em',
               lineHeight: 1,
-              minWidth: char === ' ' ? '0.3em' : undefined,
+              minWidth: char === ' ' ? '0.25em' : undefined,
+              animationName: char === ' ' ? 'none' : 'buzzJolt',
+              animationDuration: '2.2s',
+              animationTimingFunction: 'cubic-bezier(.36,.07,.19,.97)',
+              animationIterationCount: 'infinite',
+              animationDelay: `${i * 0.1}s`,
+              willChange: 'transform',
             }}
           >
             {char}
           </span>
         ))}
         <style>{`
-          @keyframes neonPop {
-            0%   { transform: translateY(0px) scale(1); filter: drop-shadow(0 0 4px rgba(251,191,36,0.8)) drop-shadow(0 0 10px rgba(245,158,11,0.5)); }
-            30%  { transform: translateY(-4px) scale(1.15); filter: drop-shadow(0 0 10px rgba(252,211,77,1)) drop-shadow(0 0 20px rgba(245,158,11,0.9)) drop-shadow(0 0 30px rgba(239,68,68,0.5)); }
-            60%  { transform: translateY(-1px) scale(1.05); filter: drop-shadow(0 0 6px rgba(251,191,36,0.9)) drop-shadow(0 0 14px rgba(239,68,68,0.6)); }
-            100% { transform: translateY(0px) scale(1); filter: drop-shadow(0 0 4px rgba(251,191,36,0.8)) drop-shadow(0 0 10px rgba(245,158,11,0.5)); }
+          @keyframes buzzJolt {
+            0%   { transform: translateY(0) rotate(0deg) scale(1); }
+            10%  { transform: translateY(-5px) rotate(-3deg) scale(1.18); }
+            20%  { transform: translateY(2px) rotate(2deg) scale(0.95); }
+            30%  { transform: translateY(-3px) rotate(-1deg) scale(1.1); }
+            40%  { transform: translateY(1px) rotate(1deg) scale(1.02); }
+            50%  { transform: translateY(0) rotate(0deg) scale(1); }
+            100% { transform: translateY(0) rotate(0deg) scale(1); }
           }
         `}</style>
       </div>
