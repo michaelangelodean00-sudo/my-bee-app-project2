@@ -22,7 +22,6 @@ const LogoImage = ({ className, size = 'default' }: LogoImageProps) => {
       className={`object-contain ${sizeClasses[size]} ${className ?? ''}`}
       loading="eager"
       decoding="async"
-      fetchPriority="high"
       data-copyright-protected="true"
     />
   );

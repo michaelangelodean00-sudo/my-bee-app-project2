@@ -32,48 +32,46 @@ const Logo = ({ className }: LogoProps) => {
         style={{
           transform: 'rotate(-3deg)',
           display: 'inline-block',
-          padding: '4px 14px 6px 14px',
-          border: '2px solid #FF6D00',
-          borderRadius: '4px',
-          boxShadow: '0 0 8px #FF6D0088, 0 0 20px #FF6D0044, inset 0 0 10px #FF6D0022, 2px 2px 0 #000',
-          background: 'rgba(0,0,0,0.7)',
+          padding: '8px 20px 10px 20px',
+          border: '2.5px solid #E8A020',
+          borderRadius: '6px',
+          boxShadow: '0 0 10px #E8A02099, 0 0 28px #E8A02055, 0 0 55px #E8A02022, inset 0 0 14px #E8A02018',
+          background: 'rgba(10,8,2,0.82)',
           marginBottom: '2px',
         }}
       >
-        {/* Neon tube border glow effect */}
+        {/* Outer neon tube halo */}
         <div style={{
-          position: 'absolute', inset: '-4px', borderRadius: '6px',
-          border: '1px solid #FF6D0055',
+          position: 'absolute', inset: '-6px', borderRadius: '10px',
+          border: '1px solid #E8A02033',
+          boxShadow: '0 0 6px #E8A02044',
           pointerEvents: 'none',
         }} />
         <span
           style={{
-            fontFamily: "'Bangers', cursive",
-            fontSize: 'clamp(1.3rem, 4.5vw, 2.1rem)',
+            fontFamily: "'Pacifico', cursive",
+            fontSize: 'clamp(1.2rem, 4vw, 2rem)',
             fontWeight: 400,
-            letterSpacing: '0.18em',
+            letterSpacing: '0.04em',
             display: 'inline-block',
-            background: 'linear-gradient(90deg, #FF1744 0%, #FF6D00 20%, #FFD600 40%, #00E676 55%, #00E5FF 70%, #D500F9 85%, #FF1744 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            filter: 'drop-shadow(0 0 6px #FF6D00) drop-shadow(0 0 14px #FF1744AA)',
+            color: '#FFD580',
+            textShadow: '0 0 7px #FFD580, 0 0 18px #E8A020, 0 0 40px #E8A020BB, 0 0 70px #C8780088',
             animationName: 'neonFlicker',
-            animationDuration: '3.5s',
+            animationDuration: '4s',
             animationTimingFunction: 'ease-in-out',
             animationIterationCount: 'infinite',
             willChange: 'filter, opacity',
           }}
         >
-          FEEL THE BUZZ
+          Feel the Buzz
         </span>
         <style>{`
           @keyframes neonFlicker {
-            0%,  94% { filter: drop-shadow(0 0 6px #FF6D00) drop-shadow(0 0 14px #FF1744AA); opacity: 1; }
-            95%       { filter: drop-shadow(0 0 2px #FF6D00) drop-shadow(0 0 4px #FF174466);  opacity: 0.7; }
-            96%       { filter: drop-shadow(0 0 6px #FF6D00) drop-shadow(0 0 14px #FF1744AA); opacity: 1; }
-            97%       { filter: drop-shadow(0 0 1px #FF6D00) drop-shadow(0 0 2px #FF174433);  opacity: 0.5; }
-            98%, 100% { filter: drop-shadow(0 0 6px #FF6D00) drop-shadow(0 0 14px #FF1744AA); opacity: 1; }
+            0%,  90% { opacity: 1;   text-shadow: 0 0 7px #FFD580, 0 0 18px #E8A020, 0 0 40px #E8A020BB, 0 0 70px #C8780088; }
+            91%       { opacity: 0.75; text-shadow: 0 0 3px #FFD580, 0 0 8px #E8A02066; }
+            92%       { opacity: 1;   text-shadow: 0 0 7px #FFD580, 0 0 18px #E8A020, 0 0 40px #E8A020BB; }
+            94%       { opacity: 0.6;  text-shadow: 0 0 2px #FFD58088; }
+            95%, 100% { opacity: 1;   text-shadow: 0 0 7px #FFD580, 0 0 18px #E8A020, 0 0 40px #E8A020BB, 0 0 70px #C8780088; }
           }
         `}</style>
       </div>
