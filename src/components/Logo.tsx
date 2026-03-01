@@ -26,59 +26,54 @@ const Logo = ({ className }: LogoProps) => {
       onTouchEnd={() => setIsPressed(false)}
       onClick={handleTap}
     >
-      {/* Slogan ABOVE logo */}
-      <div className="select-none flex items-center" style={{ gap: '0.04em' }}>
-        {[
-          { char: 'F', color: '#FF1744', glow: '#FF1744' },
-          { char: 'E', color: '#FF6D00', glow: '#FF6D00' },
-          { char: 'E', color: '#FFD600', glow: '#FFD600' },
-          { char: 'L', color: '#00E676', glow: '#00E676' },
-          { char: ' ', color: 'transparent', glow: 'transparent' },
-          { char: 'T', color: '#00E5FF', glow: '#00E5FF' },
-          { char: 'H', color: '#D500F9', glow: '#D500F9' },
-          { char: 'E', color: '#FF1744', glow: '#FF1744' },
-          { char: ' ', color: 'transparent', glow: 'transparent' },
-          { char: 'B', color: '#FFEA00', glow: '#FFEA00' },
-          { char: 'U', color: '#FF6D00', glow: '#FF6D00' },
-          { char: 'Z', color: '#00E5FF', glow: '#00E5FF' },
-          { char: 'Z', color: '#FF1744', glow: '#FF1744' },
-        ].map(({ char, color, glow }, i) => (
-          <span
-            key={i}
-            style={{
-              fontFamily: "'Bangers', cursive",
-              fontSize: 'clamp(1.7rem, 5.5vw, 2.8rem)',
-              fontWeight: 400,
-              display: 'inline-block',
-              color: char === ' ' ? 'transparent' : color,
-              textShadow: char === ' ' ? 'none'
-                : `0 0 6px ${glow}, 0 0 18px ${glow}, 0 0 40px ${glow}88, 3px 3px 0px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000`,
-              letterSpacing: '0.1em',
-              lineHeight: 1,
-              minWidth: char === ' ' ? '0.3em' : undefined,
-              animationName: char === ' ' ? 'none' : 'buzzPop',
-              animationDuration: `${1.6 + (i % 3) * 0.3}s`,
-              animationTimingFunction: 'cubic-bezier(.36,.07,.19,.97)',
-              animationIterationCount: 'infinite',
-              animationDelay: `${i * 0.12}s`,
-              willChange: 'transform, filter',
-              WebkitTextStroke: char === ' ' ? 'none' : '0.5px rgba(0,0,0,0.8)',
-            }}
-          >
-            {char}
-          </span>
-        ))}
+      {/* Neon Store Sign Slogan ABOVE logo */}
+      <div
+        className="select-none relative"
+        style={{
+          transform: 'rotate(-3deg)',
+          display: 'inline-block',
+          padding: '4px 14px 6px 14px',
+          border: '2px solid #FF6D00',
+          borderRadius: '4px',
+          boxShadow: '0 0 8px #FF6D0088, 0 0 20px #FF6D0044, inset 0 0 10px #FF6D0022, 2px 2px 0 #000',
+          background: 'rgba(0,0,0,0.7)',
+          marginBottom: '2px',
+        }}
+      >
+        {/* Neon tube border glow effect */}
+        <div style={{
+          position: 'absolute', inset: '-4px', borderRadius: '6px',
+          border: '1px solid #FF6D0055',
+          pointerEvents: 'none',
+        }} />
+        <span
+          style={{
+            fontFamily: "'Bangers', cursive",
+            fontSize: 'clamp(1.3rem, 4.5vw, 2.1rem)',
+            fontWeight: 400,
+            letterSpacing: '0.18em',
+            display: 'inline-block',
+            background: 'linear-gradient(90deg, #FF1744 0%, #FF6D00 20%, #FFD600 40%, #00E676 55%, #00E5FF 70%, #D500F9 85%, #FF1744 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            filter: 'drop-shadow(0 0 6px #FF6D00) drop-shadow(0 0 14px #FF1744AA)',
+            animationName: 'neonFlicker',
+            animationDuration: '3.5s',
+            animationTimingFunction: 'ease-in-out',
+            animationIterationCount: 'infinite',
+            willChange: 'filter, opacity',
+          }}
+        >
+          FEEL THE BUZZ
+        </span>
         <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
-          @keyframes buzzPop {
-            0%   { transform: translateY(0) rotate(0deg) scale(1); filter: brightness(1); }
-            8%   { transform: translateY(-8px) rotate(-4deg) scale(1.25); filter: brightness(1.6) saturate(2); }
-            16%  { transform: translateY(3px) rotate(3deg) scale(0.92); filter: brightness(0.9); }
-            24%  { transform: translateY(-4px) rotate(-2deg) scale(1.12); filter: brightness(1.4) saturate(1.8); }
-            32%  { transform: translateY(2px) rotate(1deg) scale(1.04); filter: brightness(1.1); }
-            40%  { transform: translateY(-2px) rotate(-1deg) scale(1.08); filter: brightness(1.3); }
-            50%  { transform: translateY(0) rotate(0deg) scale(1); filter: brightness(1); }
-            100% { transform: translateY(0) rotate(0deg) scale(1); filter: brightness(1); }
+          @keyframes neonFlicker {
+            0%,  94% { filter: drop-shadow(0 0 6px #FF6D00) drop-shadow(0 0 14px #FF1744AA); opacity: 1; }
+            95%       { filter: drop-shadow(0 0 2px #FF6D00) drop-shadow(0 0 4px #FF174466);  opacity: 0.7; }
+            96%       { filter: drop-shadow(0 0 6px #FF6D00) drop-shadow(0 0 14px #FF1744AA); opacity: 1; }
+            97%       { filter: drop-shadow(0 0 1px #FF6D00) drop-shadow(0 0 2px #FF174433);  opacity: 0.5; }
+            98%, 100% { filter: drop-shadow(0 0 6px #FF6D00) drop-shadow(0 0 14px #FF1744AA); opacity: 1; }
           }
         `}</style>
       </div>
