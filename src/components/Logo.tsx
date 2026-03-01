@@ -26,18 +26,18 @@ const Logo = ({ className }: LogoProps) => {
       onTouchEnd={() => setIsPressed(false)}
       onClick={handleTap}
     >
-      {/* Neon Slogan - solo font, no box */}
+      {/* Neon Slogan - solo cursive font, no box */}
       <span
         className="select-none"
         style={{
-          fontFamily: "'Pacifico', cursive",
-          fontSize: 'clamp(1.2rem, 4vw, 2rem)',
-          fontWeight: 400,
-          letterSpacing: '0.04em',
+          fontFamily: "'Dancing Script', cursive",
+          fontSize: 'clamp(1.4rem, 5vw, 2.4rem)',
+          fontWeight: 700,
+          letterSpacing: '0.02em',
           display: 'inline-block',
           transform: 'rotate(-3deg)',
-          color: '#FFD580',
-          textShadow: '0 0 7px #FFD580, 0 0 18px #E8A020, 0 0 40px #E8A020BB, 0 0 70px #C8780088',
+          color: '#FF9500',
+          textShadow: '0 0 6px #FF9500, 0 0 16px #FF6A00, 0 0 35px #FF6A00CC, 0 0 65px #E85000AA, 0 0 90px #C8400066',
           animationName: 'neonFlicker',
           animationDuration: '4s',
           animationTimingFunction: 'ease-in-out',
@@ -47,12 +47,13 @@ const Logo = ({ className }: LogoProps) => {
       >
         Feel the Buzz
         <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
           @keyframes neonFlicker {
-            0%,  90% { opacity: 1;   text-shadow: 0 0 7px #FFD580, 0 0 18px #E8A020, 0 0 40px #E8A020BB, 0 0 70px #C8780088; }
-            91%       { opacity: 0.75; text-shadow: 0 0 3px #FFD580, 0 0 8px #E8A02066; }
-            92%       { opacity: 1;   text-shadow: 0 0 7px #FFD580, 0 0 18px #E8A020, 0 0 40px #E8A020BB; }
-            94%       { opacity: 0.6;  text-shadow: 0 0 2px #FFD58088; }
-            95%, 100% { opacity: 1;   text-shadow: 0 0 7px #FFD580, 0 0 18px #E8A020, 0 0 40px #E8A020BB, 0 0 70px #C8780088; }
+            0%,  90% { opacity: 1;   text-shadow: 0 0 6px #FF9500, 0 0 16px #FF6A00, 0 0 35px #FF6A00CC, 0 0 65px #E85000AA; }
+            91%       { opacity: 0.7; text-shadow: 0 0 3px #FF9500, 0 0 8px #FF6A0066; }
+            92%       { opacity: 1;   text-shadow: 0 0 6px #FF9500, 0 0 16px #FF6A00, 0 0 35px #FF6A00CC; }
+            94%       { opacity: 0.55; text-shadow: 0 0 2px #FF950088; }
+            95%, 100% { opacity: 1;   text-shadow: 0 0 6px #FF9500, 0 0 16px #FF6A00, 0 0 35px #FF6A00CC, 0 0 65px #E85000AA; }
           }
         `}</style>
       </span>
