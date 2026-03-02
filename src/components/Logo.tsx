@@ -47,7 +47,6 @@ const Logo = ({ className }: LogoProps) => {
       >
         Feel the Buzz
         <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
           @keyframes neonFlicker {
             0%,  90% { opacity: 1;   text-shadow: 0 0 6px #FF9500, 0 0 16px #FF6A00, 0 0 35px #FF6A00CC, 0 0 65px #E85000AA; }
             91%       { opacity: 0.7; text-shadow: 0 0 3px #FF9500, 0 0 8px #FF6A0066; }
