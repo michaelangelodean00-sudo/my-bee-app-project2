@@ -30,8 +30,8 @@ const Logo = ({ className }: LogoProps) => {
       <span
         className="select-none"
         style={{
-          fontFamily: "'Dancing Script', cursive",
-          fontSize: 'clamp(1.8rem, 6.5vw, 3.2rem)',
+          fontFamily: "'Sacramento', cursive",
+          fontSize: 'clamp(2.2rem, 8vw, 4rem)',
           fontWeight: 700,
           letterSpacing: '0.02em',
           display: 'inline-block',
