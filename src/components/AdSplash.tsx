@@ -392,20 +392,6 @@ const AdSplash = memo(() => {
                         <span className="text-[9px] font-medium text-white/70 uppercase tracking-wide">Sponsored</span>
                       </div>
                       
-                      {/* Click to zoom button - positioned above carousel interactions */}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          e.preventDefault();
-                          setImagePreview({ url: ad.imageUrl, title: ad.title });
-                        }}
-                        className="absolute inset-0 z-30 flex items-center justify-center bg-black/0 hover:bg-black/20 transition-colors duration-300 cursor-pointer"
-                        aria-label={`View ${ad.title} full size`}
-                      >
-                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 rounded-full p-3 shadow-lg">
-                          <ZoomIn size={24} className="text-primary" />
-                        </div>
-                      </button>
                       
                       <img 
                         src={ad.imageUrl} 
