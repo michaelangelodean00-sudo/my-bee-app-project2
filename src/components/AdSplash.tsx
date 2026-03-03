@@ -393,9 +393,20 @@ const AdSplash = memo(() => {
                       </div>
                       
                       
+                      {/* Invisible tap overlay to open zoom */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          setImagePreview({ url: ad.imageUrl, title: ad.title });
+                        }}
+                        className="absolute inset-0 z-30 bg-transparent cursor-zoom-in"
+                        aria-label={`View ${ad.title} full size`}
+                      />
+
                       <img 
                         src={ad.imageUrl} 
-                        alt={ad.title} 
+                        alt={ad.title}
                         className="rounded-2xl w-full h-64 md:h-80 lg:h-96 object-cover transform-gpu transition-transform duration-300 group-hover:scale-105 shadow-2xl shadow-primary/30 select-none"
                         loading={index === 0 ? "eager" : "lazy"}
                         decoding="async"
