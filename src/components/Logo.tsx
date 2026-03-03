@@ -28,11 +28,17 @@ const Logo = ({ className }: LogoProps) => {
     >
       {/* Logo */}
       <div
-        className={`transition-transform duration-150 ease-out flex-shrink-0 ${
+        className={`transition-transform duration-150 ease-out flex-shrink-0 flex flex-col items-center gap-1 ${
           isPressed ? 'scale-90' : 'scale-100 hover:scale-105'
         }`}
       >
         <LogoImage size="large" />
+        <span
+          className="text-[10px] tracking-[0.22em] uppercase text-muted-foreground font-light select-none"
+          style={{ fontFamily: "'Georgia', 'Times New Roman', serif", letterSpacing: '0.22em' }}
+        >
+          Business&nbsp;·&nbsp;Events&nbsp;·&nbsp;E-commerce
+        </span>
       </div>
     </Link>
   );
