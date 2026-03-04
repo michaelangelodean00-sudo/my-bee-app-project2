@@ -34,7 +34,7 @@ const Logo = ({ className }: LogoProps) => {
       >
         <LogoImage size="large" />
         <span
-          className="text-[10px] tracking-[0.22em] uppercase text-muted-foreground font-bold select-none self-start ml-1"
+          className="text-[10px] tracking-[0.22em] uppercase text-foreground font-bold select-none self-start ml-1"
           style={{ fontFamily: "'Georgia', 'Times New Roman', serif", letterSpacing: '0.22em' }}
         >
           Business&nbsp;·&nbsp;Events&nbsp;·&nbsp;E-commerce
