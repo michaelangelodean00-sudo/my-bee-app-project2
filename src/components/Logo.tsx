@@ -37,7 +37,7 @@ const Logo = ({ className }: LogoProps) => {
           className="text-[10px] tracking-[0.22em] uppercase text-foreground font-bold select-none self-start ml-1"
           style={{ fontFamily: "'Georgia', 'Times New Roman', serif", letterSpacing: '0.22em' }}
         >
-          Business&nbsp;·&nbsp;Events&nbsp;·&nbsp;E-commerce
+          Business&nbsp;&middot;&nbsp;Events&nbsp;&middot;&nbsp;E-commerce
         </span>
       </div>
     </Link>
