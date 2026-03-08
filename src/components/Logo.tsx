@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import LogoImage from "./LogoImage";
+import bahamasSilhouette from "@/assets/bahamas-silhouette.png";
 
 interface LogoProps {
   className?: string;
@@ -18,7 +19,7 @@ const Logo = ({ className }: LogoProps) => {
   return (
     <Link
       to="/"
-      className={`flex flex-col items-center gap-1 ${className ?? ''}`}
+      className={`flex items-center gap-2 ${className ?? ''}`}
       onMouseDown={() => setIsPressed(true)}
       onMouseUp={() => setIsPressed(false)}
       onMouseLeave={() => setIsPressed(false)}
@@ -26,7 +27,7 @@ const Logo = ({ className }: LogoProps) => {
       onTouchEnd={() => setIsPressed(false)}
       onClick={handleTap}
     >
-      {/* Logo */}
+      {/* Logo + tagline */}
       <div
         className={`transition-transform duration-150 ease-out flex-shrink-0 flex flex-col items-center gap-1 ${
           isPressed ? 'scale-90' : 'scale-100 hover:scale-105'
@@ -40,6 +41,14 @@ const Logo = ({ className }: LogoProps) => {
           Business&nbsp;&middot;&nbsp;Events&nbsp;&middot;&nbsp;E-commerce
         </span>
       </div>
+
+      {/* Bahamas islands silhouette */}
+      <img
+        src={bahamasSilhouette}
+        alt="Bahamas Islands"
+        className="h-16 sm:h-20 md:h-24 w-auto object-contain opacity-80 flex-shrink-0 select-none"
+        draggable={false}
+      />
     </Link>
   );
 };
