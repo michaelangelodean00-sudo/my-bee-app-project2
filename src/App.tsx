@@ -12,8 +12,10 @@ import AccessibilityEnhancements from "./components/AccessibilityEnhancements";
 import CopyrightProtection from "./components/CopyrightProtection";
 import PageLoader from "./components/PageLoader";
 
-// Lazy load all pages for code splitting
-const Index = lazy(() => import("./pages/Index"));
+// Eagerly import Index (home page) so it renders instantly without Suspense delay
+import Index from "./pages/Index";
+
+// Lazy load all other pages for code splitting
 const Businesses = lazy(() => import("./pages/Businesses"));
 const Events = lazy(() => import("./pages/Events"));
 const Ecommerce = lazy(() => import("./pages/Ecommerce"));
