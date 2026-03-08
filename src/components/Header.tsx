@@ -15,44 +15,19 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-card/95 backdrop-blur-md border-b border-border animate-fade-in-down">
-      {/* Mobile: Centered logo with absolute menu button */}
-      <div className="flex flex-col sm:hidden px-3 pt-10 pb-2 gap-2">
-        <div className="relative flex items-center justify-center">
-          <div className="animate-logo-entrance">
-            <Logo className="scale-100" />
-          </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute right-0 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] w-11 h-11 rounded-lg hover:bg-accent active:bg-accent/80 active:scale-95 transition-all touch-manipulation z-10"
-            onClick={toggleMobileSidebar}
-            type="button"
-          >
-            <Menu size={22} className="text-foreground pointer-events-none" />
-            {hasAnyNotifications && (
-              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-destructive rounded-full pointer-events-none" />
-            )}
-            <span className="sr-only">Open menu</span>
-          </Button>
+      {/* All viewports: same horizontal layout — logo | ad | menu button */}
+      <div className="flex items-center w-full px-3 sm:px-4 py-2 sm:py-3 gap-2 sm:gap-4 min-h-[64px] sm:min-h-[72px] md:min-h-[80px]">
+        {/* Logo */}
+        <div className="flex-shrink-0 animate-logo-entrance">
+          <Logo />
         </div>
-        <div className="w-full animate-fade-in" style={{ animationDelay: '0.1s' }}>
+
+        {/* Ad widget — fills remaining space */}
+        <div className="flex-1 min-w-0 animate-fade-in" style={{ animationDelay: '0.2s' }}>
           <BurgerAdWidget />
         </div>
-      </div>
-      
-      {/* Tablet & Desktop: Horizontal layout - centered logo and ad */}
-      <div className="hidden sm:flex items-center justify-center w-full px-4 py-3 gap-4 min-h-[72px] md:min-h-[80px]">
-        <div className="flex items-center gap-4 md:gap-6">
-          <div className="flex-shrink-0 animate-logo-entrance ml-4 md:ml-6">
-            <Logo className="scale-100" />
-          </div>
-          
-          {/* Desktop: Ad widget centered with logo */}
-          <div className="min-w-0 w-[280px] md:w-[400px] lg:w-[500px] animate-fade-in" style={{ animationDelay: '0.2s' }}>
-            <BurgerAdWidget />
-          </div>
-        </div>
-        
+
+        {/* Hamburger — mobile & tablet only */}
         <div className="flex-shrink-0 md:hidden">
           <Button
             variant="ghost"
