@@ -44,7 +44,7 @@ const Logo = ({ className }: LogoProps) => {
         </div>
 
         {/* Bahamas islands silhouette — RIGHT side, same container */}
-        <img src={bahamasSilhouette} alt="" aria-hidden="true" className="h-28 sm:h-36 md:h-44 w-auto opacity-80 flex-shrink-0 select-none" />
+        <img src={bahamasSilhouette} alt="" aria-hidden="true" className="h-28 sm:h-36 md:h-44 w-auto opacity-80 flex-shrink-0 select-none -ml-6" />
       </div>
     </Link>
   );
