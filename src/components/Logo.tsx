@@ -43,12 +43,12 @@ const Logo = ({ className }: LogoProps) => {
           </span>
         </div>
 
-        {/* Bahamas islands silhouette — desktop only */}
+        {/* Bahamas islands silhouette — all screen sizes, scaled by breakpoint */}
         <img
           src={bahamasSilhouette}
           alt=""
           aria-hidden="true"
-          className="hidden md:block h-24 md:h-28 lg:h-32 w-auto opacity-80 flex-shrink-0 select-none ml-2"
+          className="h-14 sm:h-20 md:h-28 lg:h-32 w-auto opacity-80 flex-shrink-0 select-none ml-1"
         />
       </div>
     </Link>
