@@ -198,10 +198,10 @@ const BurgerAdWidget = () => {
               Ad
             </span>
           </div>
-          <div className="text-white text-xs sm:text-base md:text-xl font-bold leading-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] [text-shadow:_0_1px_0_rgb(0_0_0_/_80%)] truncate">
+          <div className="text-white text-xs sm:text-sm md:text-xl font-bold leading-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] [text-shadow:_0_1px_0_rgb(0_0_0_/_80%)] line-clamp-1">
             {currentAd.title}
           </div>
-          <div className={`${currentAd.highlightColor} text-xs sm:text-base md:text-xl font-extrabold leading-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] [text-shadow:_0_1px_0_rgb(0_0_0_/_80%)] truncate`}>
+          <div className={`${currentAd.highlightColor} text-xs sm:text-sm md:text-xl font-extrabold leading-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] [text-shadow:_0_1px_0_rgb(0_0_0_/_80%)] line-clamp-1`}>
             {currentAd.highlight}
           </div>
         </div>
