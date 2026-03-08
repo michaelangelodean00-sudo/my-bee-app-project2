@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import LogoImage from "./LogoImage";
-import bahamasSilhouette from "@/assets/bahamas-silhouette.png";
+import { ReactComponent as BahamasSVG } from "@/assets/bahamas-silhouette.svg?react";
 
 interface LogoProps {
   className?: string;
