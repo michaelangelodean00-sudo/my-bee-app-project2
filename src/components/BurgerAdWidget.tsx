@@ -139,7 +139,7 @@ const BurgerAdWidget = () => {
       className={`
         relative group cursor-pointer w-full overflow-hidden
         bg-gradient-to-r ${currentAd.gradientFrom} ${currentAd.gradientTo}
-        rounded-xl sm:rounded-2xl min-h-[56px] sm:min-h-[60px] px-3 sm:px-4 py-2.5 sm:py-3
+        rounded-xl sm:rounded-2xl min-h-[56px] sm:min-h-[72px] px-2 sm:px-4 py-2 sm:py-3
         border border-white/20
         transition-all duration-300 ease-out touch-manipulation
         ${isTransitioning ? 'scale-[0.98] opacity-80' : 'scale-100 opacity-100'}
@@ -168,9 +168,9 @@ const BurgerAdWidget = () => {
       
       {/* Content */}
       <div className="relative z-10 flex items-center w-full gap-2 sm:gap-3">
-        {/* Image with glow ring and 3D lift effect - Fixed size container */}
+        {/* Image */}
         <div 
-          className="relative flex-shrink-0 w-[112px] h-[63px] sm:w-[128px] sm:h-[72px] md:w-[160px] md:h-[90px] overflow-hidden rounded-lg sm:rounded-xl border-2 border-white/30 shadow-lg"
+          className="relative flex-shrink-0 w-[80px] h-[45px] sm:w-[112px] sm:h-[63px] md:w-[160px] md:h-[90px] overflow-hidden rounded-lg sm:rounded-xl border-2 border-white/30 shadow-lg"
           style={{ transform: 'translateZ(20px)' }}
         >
           <div className={`absolute inset-0 bg-white/30 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10`} />
@@ -187,21 +187,21 @@ const BurgerAdWidget = () => {
           />
         </div>
         
-        {/* Text content with 3D lift */}
+        {/* Text content */}
         <div 
-          className="min-w-0 flex-1 ml-8 sm:ml-10"
+          className="min-w-0 flex-1 ml-2 sm:ml-4 md:ml-8"
           style={{ transform: 'translateZ(15px)' }}
         >
-          <div className="flex items-center gap-1.5 mb-1.5">
-            <Sparkles size={12} className="text-white flex-shrink-0" />
-            <span className="text-[11px] sm:text-xs font-bold text-white uppercase tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
+          <div className="flex items-center gap-1 mb-0.5 sm:mb-1.5">
+            <Sparkles size={10} className="text-white flex-shrink-0" />
+            <span className="text-[9px] sm:text-[11px] font-bold text-white uppercase tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
               Ad
             </span>
           </div>
-          <div className="text-white text-base sm:text-lg md:text-xl font-bold leading-normal drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] [text-shadow:_0_1px_0_rgb(0_0_0_/_80%)]">
+          <div className="text-white text-xs sm:text-base md:text-xl font-bold leading-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] [text-shadow:_0_1px_0_rgb(0_0_0_/_80%)] truncate">
             {currentAd.title}
           </div>
-          <div className={`${currentAd.highlightColor} text-base sm:text-lg md:text-xl font-extrabold leading-normal drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] [text-shadow:_0_1px_0_rgb(0_0_0_/_80%)]`}>
+          <div className={`${currentAd.highlightColor} text-xs sm:text-base md:text-xl font-extrabold leading-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] [text-shadow:_0_1px_0_rgb(0_0_0_/_80%)] truncate`}>
             {currentAd.highlight}
           </div>
         </div>
