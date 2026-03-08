@@ -27,22 +27,24 @@ const Logo = ({ className }: LogoProps) => {
       onTouchEnd={() => setIsPressed(false)}
       onClick={handleTap}
     >
-      {/* Bahamas islands silhouette — LEFT side */}
-      <img src={bahamasSilhouette} alt="" aria-hidden="true" className="h-28 sm:h-36 md:h-44 w-auto opacity-80 flex-shrink-0 select-none" />
-
-      {/* Logo + tagline */}
+      {/* Logo + tagline + Bahamas silhouette in one container */}
       <div
-        className={`transition-transform duration-150 ease-out flex-shrink-0 flex flex-col items-center gap-1 ${
+        className={`transition-transform duration-150 ease-out flex-shrink-0 flex items-center gap-3 ${
           isPressed ? 'scale-90' : 'scale-100 hover:scale-105'
         }`}
       >
-        <LogoImage size="large" />
-        <span
-          className="text-[10px] tracking-[0.22em] uppercase text-foreground font-bold select-none self-start ml-1"
-          style={{ fontFamily: "'Georgia', 'Times New Roman', serif", letterSpacing: '0.22em' }}
-        >
-          Business&nbsp;&middot;&nbsp;Events&nbsp;&middot;&nbsp;E-commerce
-        </span>
+        <div className="flex flex-col items-center gap-1">
+          <LogoImage size="large" />
+          <span
+            className="text-[10px] tracking-[0.22em] uppercase text-foreground font-bold select-none self-start ml-1"
+            style={{ fontFamily: "'Georgia', 'Times New Roman', serif", letterSpacing: '0.22em' }}
+          >
+            Business&nbsp;&middot;&nbsp;Events&nbsp;&middot;&nbsp;E-commerce
+          </span>
+        </div>
+
+        {/* Bahamas islands silhouette — RIGHT side, same container */}
+        <img src={bahamasSilhouette} alt="" aria-hidden="true" className="h-28 sm:h-36 md:h-44 w-auto opacity-80 flex-shrink-0 select-none" />
       </div>
     </Link>
   );
