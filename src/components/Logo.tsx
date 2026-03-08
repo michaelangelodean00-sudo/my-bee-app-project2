@@ -34,21 +34,21 @@ const Logo = ({ className }: LogoProps) => {
       >
         {/* Logo image + tagline */}
         <div className="flex flex-col items-center gap-0 flex-shrink-0">
-          <LogoImage size="default" className="h-14 sm:h-16 md:h-20 w-auto" />
+          <LogoImage size="default" className="h-10 sm:h-14 md:h-20 w-auto" />
           <span
-            className="text-[8px] sm:text-[9px] md:text-[11px] tracking-[0.22em] uppercase text-foreground font-bold select-none self-start ml-0.5 whitespace-nowrap"
+            className="text-[7px] sm:text-[9px] md:text-[11px] tracking-[0.18em] uppercase text-foreground font-bold select-none self-start ml-0.5 whitespace-nowrap"
             style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}
           >
             Business&nbsp;&middot;&nbsp;Events&nbsp;&middot;&nbsp;E-commerce
           </span>
         </div>
 
-        {/* Bahamas islands silhouette — hidden on mobile, visible sm+ */}
+        {/* Bahamas islands silhouette — desktop only */}
         <img
           src={bahamasSilhouette}
           alt=""
           aria-hidden="true"
-          className="hidden sm:block h-24 sm:h-28 md:h-32 w-auto opacity-80 flex-shrink-0 select-none ml-2"
+          className="hidden md:block h-24 md:h-28 lg:h-32 w-auto opacity-80 flex-shrink-0 select-none ml-2"
         />
       </div>
     </Link>
