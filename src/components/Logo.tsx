@@ -29,7 +29,7 @@ const Logo = ({ className }: LogoProps) => {
     >
       {/* Logo + tagline + Bahamas silhouette in one container */}
       <div
-        className={`transition-transform duration-150 ease-out flex-shrink-0 flex items-center gap-3 ${
+        className={`transition-transform duration-150 ease-out flex-shrink-0 flex items-center gap-0 ${
           isPressed ? 'scale-90' : 'scale-100 hover:scale-105'
         }`}
       >
