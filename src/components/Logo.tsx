@@ -27,6 +27,14 @@ const Logo = ({ className }: LogoProps) => {
       onTouchEnd={() => setIsPressed(false)}
       onClick={handleTap}
     >
+      {/* Bahamas islands silhouette — LEFT side */}
+      <img
+        src={bahamasSilhouette}
+        alt="Bahamas Islands"
+        className="h-16 sm:h-20 md:h-24 w-auto object-contain opacity-75 flex-shrink-0 select-none"
+        draggable={false}
+      />
+
       {/* Logo + tagline */}
       <div
         className={`transition-transform duration-150 ease-out flex-shrink-0 flex flex-col items-center gap-1 ${
@@ -41,14 +49,6 @@ const Logo = ({ className }: LogoProps) => {
           Business&nbsp;&middot;&nbsp;Events&nbsp;&middot;&nbsp;E-commerce
         </span>
       </div>
-
-      {/* Bahamas islands silhouette */}
-      <img
-        src={bahamasSilhouette}
-        alt="Bahamas Islands"
-        className="h-16 sm:h-20 md:h-24 w-auto object-contain opacity-80 flex-shrink-0 select-none"
-        draggable={false}
-      />
     </Link>
   );
 };
