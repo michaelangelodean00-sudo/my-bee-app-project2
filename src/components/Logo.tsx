@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import LogoImage from "./LogoImage";
-import { ReactComponent as BahamasSVG } from "@/assets/bahamas-silhouette.svg?react";
+import BahamasSilhouette from "./BahamasSilhouette";
 
 interface LogoProps {
   className?: string;
@@ -28,12 +28,7 @@ const Logo = ({ className }: LogoProps) => {
       onClick={handleTap}
     >
       {/* Bahamas islands silhouette — LEFT side */}
-      <img
-        src={bahamasSilhouette}
-        alt="Bahamas Islands"
-        className="h-16 sm:h-20 md:h-24 w-auto object-contain opacity-75 flex-shrink-0 select-none"
-        draggable={false}
-      />
+      <BahamasSilhouette className="h-16 sm:h-20 md:h-24 w-auto text-foreground opacity-75 flex-shrink-0 select-none" />
 
       {/* Logo + tagline */}
       <div
