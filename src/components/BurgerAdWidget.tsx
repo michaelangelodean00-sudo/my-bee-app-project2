@@ -168,9 +168,9 @@ const BurgerAdWidget = () => {
       
       {/* Content */}
       <div className="relative z-10 flex items-center w-full gap-2 sm:gap-3">
-        {/* Image - small on mobile, full on sm+ */}
+        {/* Image */}
         <div 
-          className="relative flex-shrink-0 w-[52px] h-[29px] sm:w-[112px] sm:h-[63px] md:w-[160px] md:h-[90px] overflow-hidden rounded-md sm:rounded-xl border-2 border-white/30 shadow-lg"
+          className="relative flex-shrink-0 w-[80px] h-[45px] sm:w-[112px] sm:h-[63px] md:w-[160px] md:h-[90px] overflow-hidden rounded-lg sm:rounded-xl border-2 border-white/30 shadow-lg"
           style={{ transform: 'translateZ(20px)' }}
         >
           <div className={`absolute inset-0 bg-white/30 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10`} />
