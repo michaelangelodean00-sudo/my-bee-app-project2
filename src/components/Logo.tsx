@@ -19,7 +19,7 @@ const Logo = ({ className }: LogoProps) => {
   return (
     <Link
       to="/"
-      className={`flex items-center gap-2 ${className ?? ''}`}
+      className={`flex items-center gap-0 ${className ?? ''}`}
       onMouseDown={() => setIsPressed(true)}
       onMouseUp={() => setIsPressed(false)}
       onMouseLeave={() => setIsPressed(false)}
@@ -27,24 +27,29 @@ const Logo = ({ className }: LogoProps) => {
       onTouchEnd={() => setIsPressed(false)}
       onClick={handleTap}
     >
-      {/* Logo + tagline + Bahamas silhouette in one container */}
       <div
-        className={`transition-transform duration-150 ease-out flex-shrink-0 flex items-center gap-0 ${
+        className={`transition-transform duration-150 ease-out flex items-center overflow-visible ${
           isPressed ? 'scale-90' : 'scale-100 hover:scale-105'
         }`}
       >
-        <div className="flex flex-col items-center gap-1">
-          <LogoImage size="large" />
+        {/* Logo image + tagline */}
+        <div className="flex flex-col items-center gap-0.5 flex-shrink-0">
+          <LogoImage size="default" className="h-14 sm:h-16 md:h-20 w-auto" />
           <span
-            className="text-[10px] tracking-[0.22em] uppercase text-foreground font-bold select-none self-start ml-1"
-            style={{ fontFamily: "'Georgia', 'Times New Roman', serif", letterSpacing: '0.22em' }}
+            className="text-[7px] sm:text-[8px] md:text-[10px] tracking-[0.18em] uppercase text-foreground font-bold select-none self-start ml-0.5 whitespace-nowrap"
+            style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}
           >
             Business&nbsp;&middot;&nbsp;Events&nbsp;&middot;&nbsp;E-commerce
           </span>
         </div>
 
-        {/* Bahamas islands silhouette — RIGHT side, same container */}
-        <img src={bahamasSilhouette} alt="" aria-hidden="true" className="h-36 sm:h-44 md:h-56 w-auto opacity-80 flex-shrink-0 select-none -ml-3" />
+        {/* Bahamas islands silhouette — stays to the right, never overlaps */}
+        <img
+          src={bahamasSilhouette}
+          alt=""
+          aria-hidden="true"
+          className="h-20 sm:h-24 md:h-32 w-auto opacity-80 flex-shrink-0 select-none ml-1"
+        />
       </div>
     </Link>
   );
