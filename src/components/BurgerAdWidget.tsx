@@ -189,7 +189,7 @@ const BurgerAdWidget = () => {
         
         {/* Text content */}
         <div 
-          className="min-w-0 flex-1 ml-0 sm:ml-4 md:ml-8"
+          className="min-w-0 flex-1 ml-2 sm:ml-4 md:ml-8"
           style={{ transform: 'translateZ(15px)' }}
         >
           <div className="flex items-center gap-1 mb-0.5 sm:mb-1.5">
