@@ -168,9 +168,9 @@ const BurgerAdWidget = () => {
       
       {/* Content */}
       <div className="relative z-10 flex items-center w-full gap-2 sm:gap-3">
-        {/* Image with glow ring and 3D lift effect - Fixed size container */}
+        {/* Image - hidden on xs when space is ultra-tight, shown sm+ */}
         <div 
-          className="relative flex-shrink-0 w-[72px] h-[40px] sm:w-[112px] sm:h-[63px] md:w-[160px] md:h-[90px] overflow-hidden rounded-lg sm:rounded-xl border-2 border-white/30 shadow-lg"
+          className="relative flex-shrink-0 w-[60px] h-[34px] sm:w-[112px] sm:h-[63px] md:w-[160px] md:h-[90px] overflow-hidden rounded-md sm:rounded-xl border-2 border-white/30 shadow-lg"
           style={{ transform: 'translateZ(20px)' }}
         >
           <div className={`absolute inset-0 bg-white/30 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10`} />
@@ -187,9 +187,9 @@ const BurgerAdWidget = () => {
           />
         </div>
         
-        {/* Text content with 3D lift */}
+        {/* Text content */}
         <div 
-          className="min-w-0 flex-1 ml-0 sm:ml-6 md:ml-10"
+          className="min-w-0 flex-1 ml-0 sm:ml-4 md:ml-8"
           style={{ transform: 'translateZ(15px)' }}
         >
           <div className="flex items-center gap-1 mb-0.5 sm:mb-1.5">
