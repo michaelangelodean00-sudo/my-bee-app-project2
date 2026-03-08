@@ -43,12 +43,12 @@ const Logo = ({ className }: LogoProps) => {
           </span>
         </div>
 
-        {/* Bahamas islands silhouette — stays to the right, never overlaps */}
+        {/* Bahamas islands silhouette — hidden on sm to save header space, visible md+ */}
         <img
           src={bahamasSilhouette}
           alt=""
           aria-hidden="true"
-          className="h-10 sm:h-12 md:h-20 w-auto opacity-80 flex-shrink-0 select-none ml-1"
+          className="hidden md:block h-20 md:h-20 w-auto opacity-80 flex-shrink-0 select-none ml-1"
         />
       </div>
     </Link>
