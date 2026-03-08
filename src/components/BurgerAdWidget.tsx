@@ -189,7 +189,7 @@ const BurgerAdWidget = () => {
         
         {/* Text content */}
         <div 
-          className="min-w-0 flex-1 ml-2 sm:ml-4 md:ml-8"
+          className="min-w-0 flex-1 ml-2 sm:ml-3 md:ml-8 overflow-hidden"
           style={{ transform: 'translateZ(15px)' }}
         >
           <div className="flex items-center gap-1 mb-0.5 sm:mb-1.5">
@@ -198,10 +198,10 @@ const BurgerAdWidget = () => {
               Ad
             </span>
           </div>
-          <div className="text-white text-xs sm:text-base md:text-xl font-bold leading-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] [text-shadow:_0_1px_0_rgb(0_0_0_/_80%)] truncate">
+          <div className="text-white text-xs sm:text-sm md:text-xl font-bold leading-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] [text-shadow:_0_1px_0_rgb(0_0_0_/_80%)] truncate">
             {currentAd.title}
           </div>
-          <div className={`${currentAd.highlightColor} text-xs sm:text-base md:text-xl font-extrabold leading-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] [text-shadow:_0_1px_0_rgb(0_0_0_/_80%)] truncate`}>
+          <div className={`${currentAd.highlightColor} text-xs sm:text-sm md:text-xl font-extrabold leading-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] [text-shadow:_0_1px_0_rgb(0_0_0_/_80%)] truncate`}>
             {currentAd.highlight}
           </div>
         </div>
