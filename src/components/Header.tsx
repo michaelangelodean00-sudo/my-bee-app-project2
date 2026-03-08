@@ -19,7 +19,7 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
       {/* Mobile: logo row + full-width ad below */}
       <div className="sm:hidden">
         {/* Top row: logo + hamburger */}
-        <div className="flex items-center justify-between px-3 pt-2 pb-1">
+        <div className="flex items-center justify-between px-3 pt-3 pb-1">
           <div className="animate-logo-entrance">
             <Logo />
           </div>
