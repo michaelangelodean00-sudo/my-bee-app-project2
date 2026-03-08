@@ -19,7 +19,7 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
       {/* Mobile: logo row + full-width ad below */}
       <div className="sm:hidden">
         {/* Top row: logo + hamburger */}
-        <div className="flex items-center justify-between px-3 pt-2 pb-1">
+        <div className="flex items-center justify-between px-3 pt-3 pb-1">
           <div className="animate-logo-entrance">
             <Logo />
           </div>
@@ -44,8 +44,8 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
       </div>
 
       {/* Tablet & Desktop: single horizontal row */}
-      <div className="hidden sm:flex items-center w-full px-4 py-3 gap-4 min-h-[72px] md:min-h-[80px]">
-        <div className="flex-shrink-0 animate-logo-entrance max-w-[220px] sm:max-w-[260px] md:max-w-none overflow-hidden">
+      <div className="hidden sm:flex items-center w-full px-4 py-2 gap-4 min-h-[88px] md:min-h-[100px]">
+        <div className="flex-shrink-0 animate-logo-entrance overflow-hidden">
           <Logo />
         </div>
         <div className="flex-1 min-w-0 animate-fade-in" style={{ animationDelay: '0.2s' }}>
