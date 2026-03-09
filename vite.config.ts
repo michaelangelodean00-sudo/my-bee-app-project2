@@ -17,9 +17,18 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      // Alias all react imports to the same instance
+      "react": path.resolve(__dirname, "node_modules/react"),
+      "react-dom": path.resolve(__dirname, "node_modules/react-dom"),
     },
-    // Force single React instance - critical to prevent duplicate hooks/context errors
-    dedupe: ["react", "react-dom", "react/jsx-runtime", "react-router-dom", "react-router"],
+    dedupe: [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "react/jsx-dev-runtime",
+      "react-router-dom",
+      "react-router",
+    ],
   },
   build: {
     minify: 'esbuild',
@@ -30,7 +39,10 @@ export default defineConfig(({ mode }) => ({
   optimizeDeps: {
     include: [
       'react',
+      'react/jsx-runtime',
+      'react/jsx-dev-runtime',
       'react-dom',
+      'react-dom/client',
       'react-router-dom',
       '@tanstack/react-query',
     ],
