@@ -34,7 +34,7 @@ const Logo = ({ className }: LogoProps) => {
       >
         {/* Logo image + tagline */}
         <div className="flex flex-col items-center gap-0 flex-shrink-0">
-          <LogoImage size="default" className="h-10 sm:h-14 md:h-20 w-auto" />
+          <LogoImage size="default" className="h-14 sm:h-18 md:h-24 w-auto" />
           <span
             className="text-[7px] sm:text-[9px] md:text-[11px] tracking-[0.18em] uppercase text-foreground font-bold select-none self-start ml-0.5 whitespace-nowrap"
             style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}
