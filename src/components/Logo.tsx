@@ -48,7 +48,7 @@ const Logo = ({ className }: LogoProps) => {
           src={bahamasSilhouette}
           alt=""
           aria-hidden="true"
-          className="h-20 sm:h-32 md:h-48 lg:h-56 w-auto opacity-85 flex-shrink-0 select-none ml-1"
+          className="h-28 sm:h-40 md:h-60 lg:h-72 w-auto opacity-90 flex-shrink-0 select-none ml-1"
         />
       </div>
     </Link>
