@@ -32,8 +32,7 @@ export default defineConfig(({ mode }) => ({
               id.includes('node_modules/react/') ||
               id.includes('node_modules/react-router')) return 'react-vendor';
           
-          // Router - essential for navigation
-          if (id.includes('react-router')) return 'router';
+          
           
           // React Query - data fetching
           if (id.includes('@tanstack/react-query')) return 'query';
