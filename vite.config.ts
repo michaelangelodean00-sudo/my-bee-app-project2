@@ -27,12 +27,12 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Core React - loaded first
-          if (id.includes('node_modules/react-dom')) return 'react-dom';
-          if (id.includes('node_modules/react/')) return 'react-core';
+          // Core React - keep ALL react packages in one chunk to prevent duplicate instances
+          if (id.includes('node_modules/react-dom') || 
+              id.includes('node_modules/react/') ||
+              id.includes('node_modules/react-router')) return 'react-vendor';
           
-          // Router - essential for navigation
-          if (id.includes('react-router')) return 'router';
+          
           
           // React Query - data fetching
           if (id.includes('@tanstack/react-query')) return 'query';
