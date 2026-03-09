@@ -18,7 +18,8 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-    dedupe: ["react", "react-dom", "react/jsx-runtime"],
+    // Force single React instance - critical to prevent duplicate hooks/context errors
+    dedupe: ["react", "react-dom", "react/jsx-runtime", "react-router-dom", "react-router"],
   },
   build: {
     // Use esbuild for minification (built-in, faster than terser)
@@ -27,7 +28,7 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Core React - keep ALL react packages in one chunk to prevent duplicate instances
+          // Core React - keep ALL react packages in ONE chunk to prevent duplicate instances
           if (id.includes('node_modules/react-dom') || 
               id.includes('node_modules/react/') ||
               id.includes('node_modules/react-router')) return 'react-vendor';
