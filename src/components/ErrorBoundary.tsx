@@ -38,7 +38,7 @@ export class ErrorBoundary extends Component<Props, State> {
     });
 
     // Log error to external service in production
-    if (process.env.NODE_ENV === 'production') {
+    if (!import.meta.env.DEV) {
       // Here you would typically send to error tracking service
       console.error('Production error logged:', {
         error: error.message,
