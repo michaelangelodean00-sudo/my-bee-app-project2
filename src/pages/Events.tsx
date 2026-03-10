@@ -33,7 +33,7 @@ const Events = () => {
   const [isAutoScrolling, setIsAutoScrolling] = useState(false);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  const autoScrollInterval = useRef<NodeJS.Timeout | null>(null);
+  const autoScrollInterval = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Mark events videos as viewed when the component mounts
   useEffect(() => {
