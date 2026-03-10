@@ -57,7 +57,7 @@ export const SecurityProvider = ({ children }: SecurityProviderProps) => {
     }
     
     // Warn about insecure connections in production
-    if (process.env.NODE_ENV === 'production' && !isSecure) {
+    if (!import.meta.env.DEV && !isSecure) {
       console.warn('Application is running over HTTP in production. This is insecure.');
     }
   }, [isSecure]);

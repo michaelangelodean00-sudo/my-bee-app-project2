@@ -51,7 +51,7 @@ export const generateSecureToken = (): string => {
 
 // Check for common security headers (for debugging)
 export const checkSecurityHeaders = (): void => {
-  if (process.env.NODE_ENV === 'development') {
+  if (import.meta.env.DEV) {
     console.log('Security Headers Check:');
     console.log('- Content-Security-Policy:', document.querySelector('meta[http-equiv="Content-Security-Policy"]') ? '✓' : '✗');
     console.log('- X-Frame-Options:', '(Check server response headers)');

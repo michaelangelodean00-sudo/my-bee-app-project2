@@ -89,7 +89,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 We encountered an unexpected error. Don't worry, our team has been notified.
               </p>
               
-              {process.env.NODE_ENV === 'development' && this.state.error && (
+              {import.meta.env.DEV && this.state.error && (
                 <details className="mt-4 p-3 bg-muted rounded-lg text-xs">
                   <summary className="cursor-pointer font-medium mb-2">
                     Error Details (Development)

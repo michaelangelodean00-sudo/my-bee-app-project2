@@ -9,7 +9,7 @@ export const measureWebVitals = () => {
       console.log(`${entry.name}:`, entry);
       
       // Log to analytics in production
-      if (process.env.NODE_ENV === 'production') {
+      if (!import.meta.env.DEV) {
         // Here you would send to your analytics service
         const value = 'value' in entry ? entry.value : entry.duration;
         console.log('Web Vital:', {
