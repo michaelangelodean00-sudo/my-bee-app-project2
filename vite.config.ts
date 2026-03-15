@@ -8,16 +8,16 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    // Enable HTTP/2 push hints in dev for faster asset delivery
+    hmr: { overlay: false },
   },
   plugins: [
     react(),
-    mode === 'development' &&
-    componentTagger(),
+    mode === 'development' && componentTagger(),
   ].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      // Alias all react imports to the same instance
       "react": path.resolve(__dirname, "node_modules/react"),
       "react-dom": path.resolve(__dirname, "node_modules/react-dom"),
     },
@@ -35,6 +35,20 @@ export default defineConfig(({ mode }) => ({
     chunkSizeWarningLimit: 1000,
     sourcemap: false,
     target: 'es2020',
+    // Optimise CSS delivery
+    cssCodeSplit: true,
+    // Remove console logs in production for smaller bundle
+    esbuildOptions: {
+      drop: mode === 'production' ? ['console', 'debugger'] : [],
+    },
+    rollupOptions: {
+      output: {
+        // Stable hashes for long-term caching
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
+      },
+    },
   },
   optimizeDeps: {
     include: [
@@ -45,6 +59,8 @@ export default defineConfig(({ mode }) => ({
       'react-dom/client',
       'react-router-dom',
       '@tanstack/react-query',
+      'sonner',
+      'react-helmet-async',
     ],
   },
 }));
