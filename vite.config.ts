@@ -8,7 +8,6 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
-    // Enable HTTP/2 push hints in dev for faster asset delivery
     hmr: { overlay: false },
   },
   plugins: [
@@ -18,6 +17,7 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      // Force single React instance — prevents useState/null dispatcher crash
       "react": path.resolve(__dirname, "node_modules/react"),
       "react-dom": path.resolve(__dirname, "node_modules/react-dom"),
     },
@@ -30,25 +30,18 @@ export default defineConfig(({ mode }) => ({
       "react-router",
     ],
   },
+  // Drop console/debugger in production (top-level esbuild option)
+  esbuild: {
+    drop: mode === 'production' ? ['console', 'debugger'] : [],
+  },
   build: {
     minify: 'esbuild',
     chunkSizeWarningLimit: 1000,
     sourcemap: false,
     target: 'es2020',
-    // Optimise CSS delivery
     cssCodeSplit: true,
-    // Remove console logs in production for smaller bundle
-    esbuildOptions: {
-      drop: mode === 'production' ? ['console', 'debugger'] : [],
-    },
-    rollupOptions: {
-      output: {
-        // Stable hashes for long-term caching
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]',
-      },
-    },
+    // No custom rollupOptions.output — letting Vite manage chunks
+    // prevents duplicate React instances across split chunks
   },
   optimizeDeps: {
     include: [
