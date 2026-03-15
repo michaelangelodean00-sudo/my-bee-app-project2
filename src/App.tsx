@@ -30,9 +30,13 @@ const CustomerAnalytics = lazy(() => import("./pages/CustomerAnalytics"));
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 2,
+      retry: 1,                          // Reduce retry overhead
+      retryDelay: 1000,
       refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000, // 5 minutes
+      refetchOnReconnect: 'always',
+      staleTime: 5 * 60 * 1000,         // 5 minutes cache
+      gcTime: 10 * 60 * 1000,           // 10 minutes garbage collection
+      networkMode: 'offlineFirst',       // Serve cached data instantly offline
     },
   },
 });

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     
     <!-- SEO Meta Tags -->
-    <title>B.E.E App Bahamas - Business, Events & E-commerce Platform</title>
+    <title>B.E.E App Bahamas - Business, Events &amp; E-commerce Platform</title>
     <meta name="description" content="Join B.E.E App Bahamas - the premier social platform connecting Bahamian businesses, events, and e-commerce. Share content, discover local businesses, and engage with your community." />
     <meta name="keywords" content="Bahamas, social media, business network, events, e-commerce, community, Caribbean, Nassau, local business" />
     <meta name="author" content="B.E.E App Bahamas" />
@@ -22,7 +22,7 @@
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json" />
     
-    <!-- Performance & Security -->
+    <!-- Security (safe meta tags only — X-Frame-Options excluded for iframe compatibility) -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
     
@@ -34,31 +34,32 @@
     <meta name="application-name" content="B.E.E App" />
     <meta name="format-detection" content="telephone=no" />
     
-    <!-- Critical Resource Hints -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <!-- Critical Resource Hints — earliest possible DNS + connection -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://images.unsplash.com" />
-    <link rel="preconnect" href="https://i.pravatar.cc" />
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-    <link rel="dns-prefetch" href="https://images.unsplash.com" />
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
     <link rel="dns-prefetch" href="https://i.pravatar.cc" />
     
-    <!-- Preload Critical Assets -->
+    <!-- Preload Critical Assets (fetchpriority=high for LCP) -->
     <link rel="preload" href="/lovable-uploads/bee-mascot-logo.png" as="image" type="image/png" fetchpriority="high" />
-    <link rel="preload" href="/lovable-uploads/bee-app-logo.png" as="image" type="image/png" />
+    <link rel="preload" href="/lovable-uploads/bee-app-logo.png" as="image" type="image/png" fetchpriority="high" />
     <!-- Preload first ad image for instant splash render -->
-    <link rel="preload" href="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&h=450&q=80&fm=webp&fit=crop" as="image" type="image/webp" />
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" /></noscript>
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" /></noscript>
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" /></noscript>
+    <link rel="preload" href="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&h=450&q=80&fm=webp&fit=crop" as="image" type="image/webp" fetchpriority="high" />
+
+    <!-- Fonts: async non-blocking load -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" />
+    </noscript>
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="B.E.E App Bahamas - Business, Events & E-commerce Platform" />
+    <meta property="og:title" content="B.E.E App Bahamas - Business, Events &amp; E-commerce Platform" />
     <meta property="og:description" content="Join B.E.E App Bahamas - the premier social platform connecting Bahamian businesses, events, and e-commerce. Share content, discover local businesses, and engage with your community." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://beeappbahamas.com" />
@@ -73,11 +74,11 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@BEEAppBahamas" />
     <meta name="twitter:creator" content="@BEEAppBahamas" />
-    <meta name="twitter:title" content="B.E.E App Bahamas - Business, Events & E-commerce Platform" />
+    <meta name="twitter:title" content="B.E.E App Bahamas - Business, Events &amp; E-commerce Platform" />
     <meta name="twitter:description" content="Join B.E.E App Bahamas - the premier social platform connecting Bahamian businesses, events, and e-commerce." />
     <meta name="twitter:image" content="https://beeappbahamas.com/lovable-uploads/bee-app-logo.png" />
     
-    <!-- Structured Data -->
+    <!-- Structured Data / JSON-LD -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -108,18 +109,18 @@
     }
     </script>
     
-    <!-- Inline Critical CSS for faster FCP -->
+    <!-- Inline Critical CSS: zero-flash first paint -->
     <style>
-      /* Critical CSS for initial render */
       *{box-sizing:border-box;margin:0;padding:0}
-      html{-webkit-text-size-adjust:100%;line-height:1.5}
-      body{font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-      #root{min-height:100vh}
-      /* Loading state styles */
-      .initial-loader{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#fafafa;z-index:9999}
-      .dark .initial-loader{background:#0a0a14}
-      .loader-spinner{width:48px;height:48px;border:3px solid #e5e7eb;border-top-color:#ffd500;border-radius:50%;animation:spin 1s linear infinite}
+      html{-webkit-text-size-adjust:100%;line-height:1.5;scroll-behavior:smooth}
+      body{font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;background:#fafafa;color:#111}
+      #root{min-height:100vh;display:flex;flex-direction:column}
+      /* Instant loading spinner */
+      .initial-loader{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#fafafa;z-index:9999;will-change:opacity}
+      .loader-spinner{width:48px;height:48px;border:3px solid #e5e7eb;border-top-color:#FFD500;border-radius:50%;animation:spin 0.8s linear infinite}
       @keyframes spin{to{transform:rotate(360deg)}}
+      /* Prevent layout shift */
+      img{max-width:100%;height:auto;display:block}
     </style>
   </head>
 
@@ -130,30 +131,34 @@
         <div class="loader-spinner"></div>
       </div>
     </div>
-    <!-- Remove initial loader as soon as possible -->
+
+    <!-- Remove initial loader at the earliest possible moment -->
     <script>
       (function() {
         var removed = false;
         function removeLoader() {
           if (removed) return;
+          removed = true;
           var loader = document.getElementById('initial-loader');
           if (loader) {
-            removed = true;
             loader.style.opacity = '0';
-            loader.style.transition = 'opacity 0.1s ease';
-            setTimeout(function() { loader.remove(); }, 100);
+            loader.style.transition = 'opacity 0.15s ease';
+            setTimeout(function() {
+              if (loader.parentNode) loader.parentNode.removeChild(loader);
+            }, 150);
           }
         }
-        // Remove immediately or very quickly
+        // Remove as soon as DOM is ready
         if (document.readyState !== 'loading') {
           removeLoader();
         } else {
-          document.addEventListener('DOMContentLoaded', removeLoader);
+          document.addEventListener('DOMContentLoaded', removeLoader, { once: true });
         }
-        // Fallback: always remove after 300ms max
-        setTimeout(removeLoader, 300);
+        // Hard fallback at 500ms — never leave user stuck
+        setTimeout(removeLoader, 500);
       })();
     </script>
+
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
