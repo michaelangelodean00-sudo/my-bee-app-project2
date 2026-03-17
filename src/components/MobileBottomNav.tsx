@@ -26,7 +26,7 @@ const MobileBottomNav = memo(() => {
   const { prefetchOnHover } = usePrefetch();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-card/95 backdrop-blur-md border-t border-border safe-area-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-card/95 backdrop-blur-md safe-area-bottom" style={{ borderTop: '1px solid hsl(var(--border))', boxShadow: '0 -4px 24px hsl(var(--primary)/0.06)' }}>
       <div className="flex items-center justify-around px-2 py-2">
         {navigationItems.map((item) => {
           const Icon = item.icon;

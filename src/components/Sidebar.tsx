@@ -51,7 +51,7 @@ const Sidebar = memo(({ className = "", onLinkClick }: SidebarProps) => {
                 className={cn(
                   "flex items-center justify-between px-3 lg:px-4 py-3 rounded-lg transition-all duration-200 min-h-[48px] group touch-manipulation active:scale-[0.98]",
                   isActive
-                    ? "bg-primary/10 text-primary border border-primary/20"
+                    ? "bg-gradient-to-r from-primary/15 to-primary/5 text-primary border border-primary/25 shadow-[0_0_12px_hsl(var(--primary)/0.15)] shadow-inner"
                     : "text-muted-foreground hover:bg-accent hover:text-foreground hover:translate-x-1 active:bg-accent/70"
                 )}
               >
