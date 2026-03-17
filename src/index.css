@@ -396,15 +396,17 @@
   .bee-card:hover {
     box-shadow: var(--shadow-card-hover);
     transform: translateY(-2px);
-    border-color: hsl(var(--primary) / 0.2);
+    border-color: hsl(var(--primary) / 0.25);
+    background: linear-gradient(hsl(var(--card)), hsl(var(--card))) padding-box,
+                linear-gradient(135deg, hsl(var(--primary)/0.25), hsl(var(--border)), hsl(var(--primary)/0.12)) border-box;
   }
   
   /* Premium card with honey accent strip */
   .bee-card-premium {
     background: hsl(var(--card));
-    border: 1px solid hsl(var(--primary) / 0.15);
+    border: 1px solid hsl(var(--primary) / 0.2);
     border-radius: var(--radius);
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--shadow-card), 0 0 0 1px hsl(var(--primary)/0.04);
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
@@ -418,13 +420,15 @@
     right: 0;
     height: 3px;
     background: var(--gradient-primary);
+    box-shadow: 0 0 12px hsl(var(--primary)/0.4);
   }
 
   .bee-card-premium:hover {
     box-shadow: 
       var(--shadow-card-hover),
-      0 4px 20px -5px hsl(var(--primary) / 0.15);
+      0 4px 24px -4px hsl(var(--primary) / 0.2);
     transform: translateY(-3px);
+    border-color: hsl(var(--primary) / 0.3);
   }
   
   /* Clean link style */
