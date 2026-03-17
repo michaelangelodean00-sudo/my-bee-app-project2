@@ -99,7 +99,9 @@ const Post = memo(({
   
   return (
     <>
-      <div className="bee-card p-4 md:p-5 mb-4 group relative overflow-hidden animate-fade-in-up" style={{ contain: 'layout style' }}>
+      <div className="bee-card p-4 md:p-5 mb-4 group relative overflow-hidden animate-fade-in-up hover:shadow-[0_8px_32px_hsl(var(--primary)/0.10)] transition-shadow duration-300" style={{ contain: 'layout style' }}>
+        {/* Subtle top gradient accent on hover */}
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         <div className="flex justify-between items-start">
           <div className="flex gap-3">
             <Avatar className="transition-transform duration-300 hover:scale-110">
