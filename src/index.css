@@ -150,6 +150,9 @@
     overflow-x: hidden;
     /* Performance: hint that body won't affect ancestor layouts */
     contain: layout style;
+    /* Subtle warm honey tint at top of page */
+    background-image: var(--bg-tint);
+    background-attachment: fixed;
   }
   
   /* Performance: CSS containment for cards and repeated elements */
