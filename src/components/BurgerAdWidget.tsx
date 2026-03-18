@@ -304,7 +304,7 @@ const BurgerAdWidget = () => {
             </div>
             <button
               onClick={handleCTA}
-              className="flex-shrink-0 flex items-center gap-2 bg-white text-gray-900 px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg hover:bg-white/90 active:scale-95 transition-all touch-manipulation"
+              className="flex-shrink-0 flex items-center gap-2 bg-background text-foreground px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg hover:bg-background/90 active:scale-95 transition-all touch-manipulation"
             >
               <span>Visit Now</span>
               <ExternalLink size={14} />
