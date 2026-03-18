@@ -70,30 +70,40 @@ const BurgerAdWidget = () => {
   const [isMuted, setIsMuted] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  // Track pending next index during fade so text + video commit together
+  const pendingIndex = useRef<number | null>(null);
 
+  // current always derived from committed index — text & video always in sync
   const current = videoAds[currentIndex];
 
-  // Auto-advance every 12 seconds
+  // Single transition function: fade out → commit new index → fade in
+  const goTo = (nextIndex: number) => {
+    if (pendingIndex.current !== null) return; // already transitioning
+    pendingIndex.current = nextIndex;
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setCurrentIndex(nextIndex);
+      pendingIndex.current = null;
+      setIsTransitioning(false);
+    }, 250);
+  };
+
+  // Auto-advance every 12 s; resets whenever currentIndex changes (manual nav)
   useEffect(() => {
-    const timer = setInterval(() => advance(1), 12000);
+    const timer = setInterval(() => {
+      goTo((currentIndex + 1) % videoAds.length);
+    }, 12000);
     return () => clearInterval(timer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex]);
 
-  // Reload & play video when ad changes
+  // Reload & play video exactly when currentIndex commits (after fade)
   useEffect(() => {
     const vid = videoRef.current;
     if (!vid) return;
     vid.load();
     vid.play().catch(() => {/* autoplay blocked – poster shows */});
   }, [currentIndex]);
-
-  const advance = (dir: 1 | -1) => {
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setCurrentIndex(prev => (prev + dir + videoAds.length) % videoAds.length);
-      setIsTransitioning(false);
-    }, 250);
-  };
 
   const handleClick = () => {
     if (isValidUrl(current.linkUrl)) {
@@ -180,12 +190,12 @@ const BurgerAdWidget = () => {
           {current.highlight}
         </div>
 
-        {/* Progress dots */}
+        {/* Progress dots — each dot jumps directly to that index */}
         <div className="flex gap-1 mt-1.5">
           {videoAds.map((_, i) => (
             <button
               key={i}
-              onClick={e => { e.stopPropagation(); advance(i > currentIndex ? 1 : -1); setCurrentIndex(i); }}
+              onClick={e => { e.stopPropagation(); goTo(i); }}
               className={`h-1 rounded-full transition-all duration-300 ${
                 i === currentIndex ? "w-4 bg-white/90" : "w-1.5 bg-white/40 hover:bg-white/60"
               }`}
@@ -208,14 +218,14 @@ const BurgerAdWidget = () => {
         </div>
         <div className="flex gap-1">
           <button
-            onClick={e => { e.stopPropagation(); advance(-1); }}
+            onClick={e => { e.stopPropagation(); goTo((currentIndex - 1 + videoAds.length) % videoAds.length); }}
             className="w-6 h-6 flex items-center justify-center rounded-md bg-white/15 hover:bg-white/30 border border-white/20 transition-colors touch-manipulation"
             aria-label="Previous ad"
           >
             <ChevronLeft size={12} className="text-white" />
           </button>
           <button
-            onClick={e => { e.stopPropagation(); advance(1); }}
+            onClick={e => { e.stopPropagation(); goTo((currentIndex + 1) % videoAds.length); }}
             className="w-6 h-6 flex items-center justify-center rounded-md bg-white/15 hover:bg-white/30 border border-white/20 transition-colors touch-manipulation"
             aria-label="Next ad"
           >
