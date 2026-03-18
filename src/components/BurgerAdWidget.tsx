@@ -231,18 +231,8 @@ const BurgerAdWidget = () => {
           </div>
         </div>
 
-        {/* CTA + nav arrows (desktop) */}
+        {/* Nav arrows (desktop) */}
         <div className="hidden sm:flex flex-col items-end gap-1.5 pr-3">
-          <div
-            onClick={handleCTA}
-            className="flex items-center gap-1.5 cursor-pointer
-                       bg-white/20 backdrop-blur-sm text-white px-3 py-1.5
-                       rounded-lg text-xs font-bold border border-white/25
-                       hover:bg-white/30 transition-all duration-200 whitespace-nowrap"
-          >
-            <span>View</span>
-            <ExternalLink size={12} className="opacity-80" />
-          </div>
           <div className="flex gap-1">
             <button
               onClick={e => { e.stopPropagation(); goTo((currentIndex - 1 + videoAds.length) % videoAds.length); }}
