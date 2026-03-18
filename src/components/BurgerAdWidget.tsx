@@ -16,9 +16,9 @@ interface VideoAd {
 
 const videoAds: VideoAd[] = [
   {
-    // Free sample vertical video – Pexels (food)
-    videoSrc: "https://videos.pexels.com/video-files/3296754/3296754-uhd_1440_2560_25fps.mp4",
-    posterSrc: "https://images.pexels.com/videos/3296754/free-video-3296754.jpg?auto=compress&cs=tinysrgb&w=300",
+    // W3Schools free sample – universally CORS-friendly
+    videoSrc: "https://www.w3schools.com/html/mov_bbb.mp4",
+    posterSrc: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200&h=356&auto=format&fit=crop",
     title: "Try the new",
     highlight: "Deluxe Burger",
     gradientFrom: "from-amber-500",
@@ -28,9 +28,9 @@ const videoAds: VideoAd[] = [
     label: "Food & Dining",
   },
   {
-    // Free sample vertical video – Pexels (beach/travel)
-    videoSrc: "https://videos.pexels.com/video-files/4763824/4763824-uhd_1440_2560_24fps.mp4",
-    posterSrc: "https://images.pexels.com/videos/4763824/free-video-4763824.jpg?auto=compress&cs=tinysrgb&w=300",
+    // Mozilla sample vertical video
+    videoSrc: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+    posterSrc: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200&h=356&auto=format&fit=crop",
     title: "Escape to",
     highlight: "Paradise Beaches",
     gradientFrom: "from-cyan-500",
@@ -40,10 +40,10 @@ const videoAds: VideoAd[] = [
     label: "Travel",
   },
   {
-    // Free sample vertical video – Pexels (fitness)
-    videoSrc: "https://videos.pexels.com/video-files/4761778/4761778-uhd_1440_2560_24fps.mp4",
-    posterSrc: "https://images.pexels.com/videos/4761778/free-video-4761778.jpg?auto=compress&cs=tinysrgb&w=300",
-    title: "Transform with",
+    // Another CORS-open public sample
+    videoSrc: "https://www.w3schools.com/html/movie.mp4",
+    posterSrc: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=200&h=356&auto=format&fit=crop",
+    title: "Relax & unwind",
     highlight: "Spa Day Packages",
     gradientFrom: "from-teal-500",
     gradientTo: "to-emerald-600",
@@ -52,9 +52,9 @@ const videoAds: VideoAd[] = [
     label: "Wellness",
   },
   {
-    // Free sample vertical video – Pexels (fashion)
-    videoSrc: "https://videos.pexels.com/video-files/7550697/7550697-hd_1080_1920_25fps.mp4",
-    posterSrc: "https://images.pexels.com/videos/7550697/free-video-7550697.jpg?auto=compress&cs=tinysrgb&w=300",
+    // Commondatastorage sample
+    videoSrc: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+    posterSrc: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=200&h=356&auto=format&fit=crop",
     title: "New arrivals",
     highlight: "Shop the Look",
     gradientFrom: "from-rose-500",
