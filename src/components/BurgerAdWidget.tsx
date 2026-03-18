@@ -199,26 +199,26 @@ const BurgerAdWidget = () => {
 
         {/* Text content */}
         <div
-          className="flex-1 min-w-0 px-2 sm:px-3 md:px-4 overflow-hidden cursor-pointer"
+          className="flex-1 min-w-0 px-2 sm:px-3 md:px-4 overflow-hidden cursor-pointer flex flex-col items-center justify-center text-center"
           onClick={openModal}
         >
-          <div className="flex items-center gap-1 mb-0.5">
+          <div className="flex items-center justify-center gap-1 mb-0.5">
             <Sparkles size={9} className="text-white flex-shrink-0" />
             <span className="text-[9px] sm:text-[10px] font-bold text-white uppercase tracking-wider drop-shadow-sm">
               Ad · {current.label}
             </span>
           </div>
-          <div className="text-white text-xs sm:text-sm md:text-base font-bold leading-tight drop-shadow truncate
+          <div className="text-white text-xs sm:text-sm md:text-base font-bold leading-tight drop-shadow truncate w-full
                           [text-shadow:_0_1px_3px_rgba(0,0,0,0.8)]">
             {current.title}
           </div>
-          <div className={`${current.highlightColor} text-xs sm:text-sm md:text-base font-extrabold leading-tight truncate
+          <div className={`${current.highlightColor} text-xs sm:text-sm md:text-base font-extrabold leading-tight truncate w-full
                            drop-shadow [text-shadow:_0_1px_3px_rgba(0,0,0,0.8)]`}>
             {current.highlight}
           </div>
 
           {/* Progress dots */}
-          <div className="flex gap-1 mt-1.5">
+          <div className="flex justify-center gap-1 mt-1.5">
             {videoAds.map((_, i) => (
               <button
                 key={i}
