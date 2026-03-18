@@ -198,12 +198,12 @@ const BurgerAdWidget = () => {
           {current.highlight}
         </div>
 
-        {/* Progress dots */}
+        {/* Progress dots — each dot jumps directly to that index */}
         <div className="flex gap-1 mt-1.5">
           {videoAds.map((_, i) => (
             <button
               key={i}
-              onClick={e => { e.stopPropagation(); advance(i > currentIndex ? 1 : -1); setCurrentIndex(i); }}
+              onClick={e => { e.stopPropagation(); goTo(i); }}
               className={`h-1 rounded-full transition-all duration-300 ${
                 i === currentIndex ? "w-4 bg-white/90" : "w-1.5 bg-white/40 hover:bg-white/60"
               }`}
@@ -226,14 +226,14 @@ const BurgerAdWidget = () => {
         </div>
         <div className="flex gap-1">
           <button
-            onClick={e => { e.stopPropagation(); advance(-1); }}
+            onClick={e => { e.stopPropagation(); goTo((currentIndex - 1 + videoAds.length) % videoAds.length); }}
             className="w-6 h-6 flex items-center justify-center rounded-md bg-white/15 hover:bg-white/30 border border-white/20 transition-colors touch-manipulation"
             aria-label="Previous ad"
           >
             <ChevronLeft size={12} className="text-white" />
           </button>
           <button
-            onClick={e => { e.stopPropagation(); advance(1); }}
+            onClick={e => { e.stopPropagation(); goTo((currentIndex + 1) % videoAds.length); }}
             className="w-6 h-6 flex items-center justify-center rounded-md bg-white/15 hover:bg-white/30 border border-white/20 transition-colors touch-manipulation"
             aria-label="Next ad"
           >
