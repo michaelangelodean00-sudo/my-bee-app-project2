@@ -70,30 +70,48 @@ const BurgerAdWidget = () => {
   const [isMuted, setIsMuted] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // Derive current ad from committed index — always in sync
   const current = videoAds[currentIndex];
 
-  // Auto-advance every 12 seconds
+  // Atomically switch to a specific index with a fade transition
+  const goTo = (nextIndex: number) => {
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setCurrentIndex(nextIndex);
+      setIsTransitioning(false);
+    }, 250);
+  };
+
+  const advance = (dir: 1 | -1) => {
+    setCurrentIndex(prev => {
+      const next = (prev + dir + videoAds.length) % videoAds.length;
+      goTo(next);
+      return prev; // goTo will commit the real update after fade
+    });
+  };
+
+  // Restart auto-advance timer on every committed index change
   useEffect(() => {
-    const timer = setInterval(() => advance(1), 12000);
-    return () => clearInterval(timer);
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setCurrentIndex(prev => {
+        const next = (prev + 1) % videoAds.length;
+        goTo(next);
+        return prev;
+      });
+    }, 12000);
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [currentIndex]);
 
-  // Reload & play video when ad changes
+  // Reload & play video exactly when currentIndex commits
   useEffect(() => {
     const vid = videoRef.current;
     if (!vid) return;
     vid.load();
     vid.play().catch(() => {/* autoplay blocked – poster shows */});
   }, [currentIndex]);
-
-  const advance = (dir: 1 | -1) => {
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setCurrentIndex(prev => (prev + dir + videoAds.length) % videoAds.length);
-      setIsTransitioning(false);
-    }, 250);
-  };
 
   const handleClick = () => {
     if (isValidUrl(current.linkUrl)) {
