@@ -70,42 +70,34 @@ const BurgerAdWidget = () => {
   const [isMuted, setIsMuted] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  // Track pending next index during fade so text + video commit together
+  const pendingIndex = useRef<number | null>(null);
 
-  // Derive current ad from committed index — always in sync
+  // current always derived from committed index — text & video always in sync
   const current = videoAds[currentIndex];
 
-  // Atomically switch to a specific index with a fade transition
+  // Single transition function: fade out → commit new index → fade in
   const goTo = (nextIndex: number) => {
+    if (pendingIndex.current !== null) return; // already transitioning
+    pendingIndex.current = nextIndex;
     setIsTransitioning(true);
     setTimeout(() => {
       setCurrentIndex(nextIndex);
+      pendingIndex.current = null;
       setIsTransitioning(false);
     }, 250);
   };
 
-  const advance = (dir: 1 | -1) => {
-    setCurrentIndex(prev => {
-      const next = (prev + dir + videoAds.length) % videoAds.length;
-      goTo(next);
-      return prev; // goTo will commit the real update after fade
-    });
-  };
-
-  // Restart auto-advance timer on every committed index change
+  // Auto-advance every 12 s; resets whenever currentIndex changes (manual nav)
   useEffect(() => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => {
-      setCurrentIndex(prev => {
-        const next = (prev + 1) % videoAds.length;
-        goTo(next);
-        return prev;
-      });
+    const timer = setInterval(() => {
+      goTo((currentIndex + 1) % videoAds.length);
     }, 12000);
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+    return () => clearInterval(timer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex]);
 
-  // Reload & play video exactly when currentIndex commits
+  // Reload & play video exactly when currentIndex commits (after fade)
   useEffect(() => {
     const vid = videoRef.current;
     if (!vid) return;
