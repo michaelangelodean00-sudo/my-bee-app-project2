@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { ExternalLink, Volume2, VolumeX, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
+import { ExternalLink, Volume2, VolumeX, Sparkles, ChevronLeft, ChevronRight, X, Maximize2 } from "lucide-react";
 import { isValidUrl } from "../utils/security";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 interface VideoAd {
   videoSrc: string;
