@@ -131,13 +131,12 @@ const BurgerAdWidget = () => {
       {/* Glassmorphism overlay */}
       <div className="absolute inset-0 bg-white/5 rounded-2xl pointer-events-none" />
 
-      {/* ── 9:16 vertical video container ── */}
+      {/* ── 16:9 horizontal video container ── */}
       <div
         className="relative flex-shrink-0 overflow-hidden rounded-lg sm:rounded-xl border-2 border-white/30 shadow-lg bg-black
-                   w-[80px] h-[142px] sm:w-[112px] sm:h-[200px] md:w-[135px] md:h-[240px]
+                   w-[120px] h-[68px] sm:w-[160px] sm:h-[90px] md:w-[200px] md:h-[112px]
                    ml-2 sm:ml-3 my-2"
-        /* 9:16 = width × (16/9), hardcoded so it never reflows */
-        style={{ aspectRatio: "9/16" }}
+        style={{ aspectRatio: "16/9" }}
       >
         <video
           ref={videoRef}
@@ -148,10 +147,7 @@ const BurgerAdWidget = () => {
           loop
           playsInline
           preload="metadata"
-          className={`
-            absolute inset-0 w-full h-full object-cover
-            transition-transform duration-300
-          `}
+          className="absolute inset-0 w-full h-full object-cover"
         />
         {/* Mute toggle */}
         <button
@@ -164,9 +160,9 @@ const BurgerAdWidget = () => {
             : <Volume2 size={9} className="text-white" />
           }
         </button>
-        {/* 9:16 badge */}
+        {/* 16:9 badge */}
         <div className="absolute top-0.5 left-0.5 z-20 px-1 py-px rounded bg-black/60 backdrop-blur-sm">
-          <span className="text-[7px] font-bold text-white/80 leading-none">9:16</span>
+          <span className="text-[7px] font-bold text-white/80 leading-none">16:9</span>
         </div>
       </div>
 
