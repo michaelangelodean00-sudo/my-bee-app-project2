@@ -124,7 +124,7 @@ const BurgerAdWidget = () => {
       {/* ── 9:16 vertical video container ── */}
       <div
         className="relative flex-shrink-0 overflow-hidden rounded-lg sm:rounded-xl border-2 border-white/30 shadow-lg bg-black
-                   w-[54px] h-[96px] sm:w-[72px] sm:h-[128px] md:w-[90px] md:h-[160px]
+                   w-[80px] h-[142px] sm:w-[112px] sm:h-[200px] md:w-[135px] md:h-[240px]
                    ml-2 sm:ml-3 my-2"
         /* 9:16 = width × (16/9), hardcoded so it never reflows */
         style={{ aspectRatio: "9/16" }}
