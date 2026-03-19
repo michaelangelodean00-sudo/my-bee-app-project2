@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import bambooAd from "../images/bamboo-ad.jpeg";
+import advertiseHereSample from "../assets/advertise-here-sample.jpg";
 import { optimizeAds, preloadImage } from "@/utils/adUtils";
 import type { Ad } from "@/utils/adUtils";
 import { useAdAnalytics } from "@/hooks/useAdAnalytics";
