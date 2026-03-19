@@ -215,8 +215,8 @@ const ads: Ad[] = [
   {
     id: "ad-advertise",
     title: "Advertise Here",
-    description: "Reach thousands of Bahamian customers daily. Place your business in front of the right audience on the B.E.E App. Contact us to get started!",
-    imageUrl: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1920&h=1080&q=90&fm=webp&fit=crop",
+    description: "Your brand, seen by thousands of Bahamian customers every day. Join the businesses already growing with B.E.E App — contact us to book your spot!",
+    imageUrl: advertiseHereSample,
     linkUrl: "mailto:advertise@beeapp.com",
     isAdvertiseCTA: true
   }
