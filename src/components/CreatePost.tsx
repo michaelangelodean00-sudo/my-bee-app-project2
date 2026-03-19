@@ -59,7 +59,7 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
               <div className="rounded-full bg-gradient-to-br from-pink-400 via-purple-400 to-indigo-400 p-3 md:p-4 mb-1 md:mb-2 group-hover:animate-bounce group-active:animate-button-press">
                 <Calendar size={36} className="md:w-12 md:h-12 text-white transition-transform duration-300 group-hover:scale-110" />
               </div>
-              <span className="font-heading text-xl md:text-2xl lg:text-xl font-bold text-secondary tracking-tight">Events</span>
+              <span className="font-heading text-base md:text-lg lg:text-base font-bold text-secondary tracking-tight">Events Videos</span>
             </Button>
           </div>
           
