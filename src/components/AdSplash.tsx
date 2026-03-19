@@ -391,15 +391,28 @@ const AdSplash = memo(() => {
                 } ${index === currentSlide ? 'scale-100' : isReady ? 'scale-[0.97]' : 'scale-100'}`}
                 style={{ contain: 'layout' }}
               >
+                {/* Image / CTA panel */}
                 <div className="w-full md:w-1/2 relative group">
-                  {loadedImages.has(index) ? (
+                  {ad.isAdvertiseCTA ? (
+                    /* "Advertise Here" placeholder panel */
+                    <div className="relative rounded-2xl w-full h-64 md:h-80 lg:h-96 overflow-hidden shadow-2xl shadow-primary/40 flex items-center justify-center bg-gradient-to-br from-primary/20 via-primary/10 to-background border-2 border-dashed border-primary/50">
+                      {/* Animated shimmer overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent animate-shimmer" style={{ backgroundSize: '200% 100%' }} />
+                      <div className="relative z-10 flex flex-col items-center gap-4 text-center px-6">
+                        <div className="w-16 h-16 rounded-full bg-primary/20 border-2 border-primary/40 flex items-center justify-center">
+                          <Sparkles size={28} className="text-primary" />
+                        </div>
+                        <span className="text-2xl md:text-3xl font-bold text-primary">Your Ad Here</span>
+                        <span className="text-sm text-white/70 leading-relaxed">Reach thousands of Bahamian customers every day</span>
+                      </div>
+                    </div>
+                  ) : loadedImages.has(index) ? (
                     <div className="relative overflow-hidden rounded-2xl group">
                       {/* Sponsored badge */}
                       <div className="absolute bottom-3 right-3 z-20 flex items-center gap-1 bg-black/30 backdrop-blur-sm px-2 py-1 rounded-md border border-white/10 pointer-events-none">
                         <Sparkles size={10} className="text-white/70" />
                         <span className="text-[9px] font-medium text-white/70 uppercase tracking-wide">Sponsored</span>
                       </div>
-                      
                       
                       {/* Invisible tap overlay to open zoom */}
                       <button
@@ -428,31 +441,45 @@ const AdSplash = memo(() => {
                     </div>
                   )}
                 </div>
+
+                {/* Text panel */}
                 <div className="w-full md:w-1/2">
                   <h3 className="text-2xl md:text-3xl font-bold mb-4">{ad.title}</h3>
                   <p className="text-lg mb-6 leading-relaxed">{ad.description}</p>
                   <div className="flex flex-wrap gap-3 items-center">
-                    <button 
-                      onClick={() => handleGetMoreInfo(ad.id, ad.linkUrl)}
-                      className="bg-primary text-primary-foreground px-6 py-3 rounded-lg font-semibold text-lg hover:bg-primary/90 active:scale-95 transition-all cursor-pointer shadow-md touch-manipulation min-h-[44px]"
-                    >
-                      Get More Info
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        console.log('Share button clicked for ad:', ad.id);
-                        handleShare(ad);
-                      }}
-                      className="relative z-50 inline-flex items-center justify-center text-white hover:bg-white/10 border border-white/20 hover:border-white/40 backdrop-blur-sm min-h-[44px] gap-2 px-5 transition-all active:scale-95 font-medium rounded-md"
-                      style={{ touchAction: 'manipulation', pointerEvents: 'auto' }}
-                    >
-                      <Share2 size={18} className="pointer-events-none" />
-                      <span className="pointer-events-none">Share</span>
-                      {shareCounts[ad.id] > 0 && (
-                        <span className="ml-0.5 text-sm opacity-80 pointer-events-none">· {shareCounts[ad.id]}</span>
-                      )}
-                    </button>
+                    {ad.isAdvertiseCTA ? (
+                      <a
+                        href="mailto:advertise@beeapp.com"
+                        className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-semibold text-lg hover:bg-primary/90 active:scale-95 transition-all cursor-pointer shadow-md touch-manipulation min-h-[44px]"
+                      >
+                        <Sparkles size={18} className="pointer-events-none" />
+                        Contact Us
+                      </a>
+                    ) : (
+                      <>
+                        <button 
+                          onClick={() => handleGetMoreInfo(ad.id, ad.linkUrl)}
+                          className="bg-primary text-primary-foreground px-6 py-3 rounded-lg font-semibold text-lg hover:bg-primary/90 active:scale-95 transition-all cursor-pointer shadow-md touch-manipulation min-h-[44px]"
+                        >
+                          Get More Info
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            console.log('Share button clicked for ad:', ad.id);
+                            handleShare(ad);
+                          }}
+                          className="relative z-50 inline-flex items-center justify-center text-white hover:bg-white/10 border border-white/20 hover:border-white/40 backdrop-blur-sm min-h-[44px] gap-2 px-5 transition-all active:scale-95 font-medium rounded-md"
+                          style={{ touchAction: 'manipulation', pointerEvents: 'auto' }}
+                        >
+                          <Share2 size={18} className="pointer-events-none" />
+                          <span className="pointer-events-none">Share</span>
+                          {shareCounts[ad.id] > 0 && (
+                            <span className="ml-0.5 text-sm opacity-80 pointer-events-none">· {shareCounts[ad.id]}</span>
+                          )}
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
