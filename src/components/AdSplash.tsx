@@ -210,6 +210,14 @@ const ads: Ad[] = [
     description: "Shop unique handcrafted items from local artisans. Support our creative community.",
     imageUrl: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&h=1080&q=90&fm=webp&fit=crop",
     linkUrl: "https://www.artisanmarket.com"
+  },
+  {
+    id: "ad-advertise",
+    title: "Advertise Here",
+    description: "Reach thousands of Bahamian customers daily. Place your business in front of the right audience on the B.E.E App. Contact us to get started!",
+    imageUrl: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1920&h=1080&q=90&fm=webp&fit=crop",
+    linkUrl: "mailto:advertise@beeapp.com",
+    isAdvertiseCTA: true
   }
 ];
 
