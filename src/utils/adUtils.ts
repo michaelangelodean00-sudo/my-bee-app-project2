@@ -9,6 +9,7 @@ export interface Ad {
   startDate?: string; // For scheduling
   endDate?: string; // For scheduling
   isActive?: boolean; // For enabling/disabling
+  isAdvertiseCTA?: boolean; // For "Advertise Here" placeholder slides
 }
 
 export const filterActiveAds = (ads: Ad[]): Ad[] => {
