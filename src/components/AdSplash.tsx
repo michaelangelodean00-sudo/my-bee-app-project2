@@ -395,17 +395,25 @@ const AdSplash = memo(() => {
                 {/* Image / CTA panel */}
                 <div className="w-full md:w-1/2 relative group">
                   {ad.isAdvertiseCTA ? (
-                    /* "Advertise Here" placeholder panel */
-                    <div className="relative rounded-2xl w-full h-64 md:h-80 lg:h-96 overflow-hidden shadow-2xl shadow-primary/40 flex items-center justify-center bg-gradient-to-br from-primary/20 via-primary/10 to-background border-2 border-dashed border-primary/50">
-                      {/* Animated shimmer overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent animate-shimmer" style={{ backgroundSize: '200% 100%' }} />
-                      <div className="relative z-10 flex flex-col items-center gap-4 text-center px-6">
-                        <div className="w-16 h-16 rounded-full bg-primary/20 border-2 border-primary/40 flex items-center justify-center">
-                          <Sparkles size={28} className="text-primary" />
-                        </div>
-                        <span className="text-2xl md:text-3xl font-bold text-primary">Your Ad Here</span>
-                        <span className="text-sm text-white/70 leading-relaxed">Reach thousands of Bahamian customers every day</span>
+                    /* "Advertise Here" — real sample photo with overlay banner */
+                    <div className="relative overflow-hidden rounded-2xl shadow-2xl shadow-primary/40 group">
+                      {/* "Sample Ad" ribbon */}
+                      <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-bold tracking-wide shadow-lg">
+                        <Sparkles size={11} />
+                        Sample Ad
                       </div>
+                      {/* "Advertise Here" bottom banner */}
+                      <div className="absolute bottom-0 left-0 right-0 z-20 bg-gradient-to-t from-black/80 to-transparent px-4 py-4 flex items-end justify-between">
+                        <span className="text-white font-bold text-lg leading-tight">Could be your brand<br/><span className="text-primary font-extrabold">Advertise Here →</span></span>
+                      </div>
+                      <img
+                        src={ad.imageUrl}
+                        alt="Sample advertisement — Advertise Here"
+                        className="rounded-2xl w-full h-64 md:h-80 lg:h-96 object-cover transform-gpu transition-transform duration-300 group-hover:scale-105 select-none"
+                        loading="lazy"
+                        decoding="async"
+                        draggable={false}
+                      />
                     </div>
                   ) : loadedImages.has(index) ? (
                     <div className="relative overflow-hidden rounded-2xl group">
