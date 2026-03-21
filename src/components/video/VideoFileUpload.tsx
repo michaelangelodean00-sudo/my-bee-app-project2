@@ -42,6 +42,7 @@ const VideoFileUpload = ({ selectedFile, onFileChange }: VideoFileUploadProps) =
               <span className="font-semibold">Click to upload</span> your video
             </p>
             <p className="text-xs text-gray-500">MP4, MOV, AVI, MKV, WebM (up to 50MB)</p>
+            <p className="text-xs text-muted-foreground font-medium mt-0.5">Max duration: 1 min 30 sec</p>
             {selectedFile && (
               <p className="text-xs text-green-600 mt-2">
                 Selected: {selectedFile.name}

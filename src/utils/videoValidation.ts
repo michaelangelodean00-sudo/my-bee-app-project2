@@ -10,6 +10,8 @@ export const validateUrl = (url: string, platform: string) => {
   return patterns[platform as keyof typeof patterns]?.test(url) || false;
 };
 
+export const MAX_VIDEO_DURATION_SECONDS = 90; // 1 minute 30 seconds
+
 export const validateVideoFile = (file: File) => {
   // Accepted video MIME types (MP4 and common formats)
   const acceptedTypes = [
@@ -33,4 +35,28 @@ export const validateVideoFile = (file: File) => {
   }
   
   return { isValid: true, error: null };
+};
+
+export const validateVideoDuration = (file: File): Promise<{ isValid: boolean; error: string | null }> => {
+  return new Promise((resolve) => {
+    const video = document.createElement('video');
+    video.preload = 'metadata';
+    const url = URL.createObjectURL(file);
+    video.onloadedmetadata = () => {
+      URL.revokeObjectURL(url);
+      if (video.duration > MAX_VIDEO_DURATION_SECONDS) {
+        resolve({
+          isValid: false,
+          error: `Video must be 1 minute 30 seconds or less. Your video is ${Math.floor(video.duration / 60)}m ${Math.round(video.duration % 60)}s.`
+        });
+      } else {
+        resolve({ isValid: true, error: null });
+      }
+    };
+    video.onerror = () => {
+      URL.revokeObjectURL(url);
+      resolve({ isValid: true, error: null }); // Allow if duration can't be read
+    };
+    video.src = url;
+  });
 };
