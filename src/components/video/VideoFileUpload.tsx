@@ -2,7 +2,7 @@
 import { Upload } from "lucide-react";
 import { FormLabel } from "@/components/ui/form";
 import { toast } from "sonner";
-import { validateVideoFile } from "@/utils/videoValidation";
+import { validateVideoFile, validateVideoDuration } from "@/utils/videoValidation";
 
 interface VideoFileUploadProps {
   selectedFile: File | null;
@@ -10,13 +10,19 @@ interface VideoFileUploadProps {
 }
 
 const VideoFileUpload = ({ selectedFile, onFileChange }: VideoFileUploadProps) => {
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const validation = validateVideoFile(file);
-      
       if (!validation.isValid) {
         toast.error(validation.error!);
+        return;
+      }
+
+      const durationValidation = await validateVideoDuration(file);
+      if (!durationValidation.isValid) {
+        toast.error(durationValidation.error!);
+        event.target.value = "";
         return;
       }
       
@@ -36,6 +42,7 @@ const VideoFileUpload = ({ selectedFile, onFileChange }: VideoFileUploadProps) =
               <span className="font-semibold">Click to upload</span> your video
             </p>
             <p className="text-xs text-gray-500">MP4, MOV, AVI, MKV, WebM (up to 50MB)</p>
+            <p className="text-xs text-muted-foreground font-medium mt-0.5">Max duration: 1 min 30 sec</p>
             {selectedFile && (
               <p className="text-xs text-green-600 mt-2">
                 Selected: {selectedFile.name}
