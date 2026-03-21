@@ -2,7 +2,7 @@
 import { Upload } from "lucide-react";
 import { FormLabel } from "@/components/ui/form";
 import { toast } from "sonner";
-import { validateVideoFile } from "@/utils/videoValidation";
+import { validateVideoFile, validateVideoDuration } from "@/utils/videoValidation";
 
 interface VideoFileUploadProps {
   selectedFile: File | null;
@@ -10,13 +10,19 @@ interface VideoFileUploadProps {
 }
 
 const VideoFileUpload = ({ selectedFile, onFileChange }: VideoFileUploadProps) => {
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const validation = validateVideoFile(file);
-      
       if (!validation.isValid) {
         toast.error(validation.error!);
+        return;
+      }
+
+      const durationValidation = await validateVideoDuration(file);
+      if (!durationValidation.isValid) {
+        toast.error(durationValidation.error!);
+        event.target.value = "";
         return;
       }
       
