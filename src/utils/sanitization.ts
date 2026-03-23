@@ -1,20 +1,11 @@
 /**
  * B.E.E App Bahamas — Industry-Grade Input Sanitization & Validation
  * © 2025 B.E.E App Bahamas - All Rights Reserved
- *
- * Covers:
- *  - XSS prevention (HTML/script stripping)
- *  - URL allow-listing & protocol enforcement
- *  - Text length caps with character-class enforcement
- *  - File type & size hard gates
- *  - Search query sanitization
- *  - Rate-limiter per action key
- *  - Zod schemas for every public form
  */
 
 import { z } from "zod";
 
-// ─── Constants ───────────────────────────────────────────────────────────────
+// ─── Constants ────────────────────────────────────────────────────────────────
 
 export const LIMITS = {
   NAME_MAX: 80,
@@ -27,40 +18,34 @@ export const LIMITS = {
   EMAIL_MAX: 254,
   PASSWORD_MIN: 8,
   PASSWORD_MAX: 128,
-} as const;
+};
 
-// ─── Low-level XSS / injection strip ─────────────────────────────────────────
+// ─── XSS / Injection strip ────────────────────────────────────────────────────
 
-/** Remove all HTML tags and dangerous attribute patterns */
 export const stripHtml = (input: string): string =>
   input
-    .replace(/<[^>]*>/g, "")                        // strip ALL html tags
-    .replace(/&lt;.*?&gt;/gi, "")                   // encoded brackets
-    .replace(/javascript\s*:/gi, "")                // JS pseudo-protocol
-    .replace(/data\s*:/gi, "")                      // data URI
-    .replace(/vbscript\s*:/gi, "")                  // VBScript
-    .replace(/on\w+\s*=\s*["']?[^"'\s>]*/gi, "")   // inline event handlers
-    .replace(/expression\s*\(/gi, "")               // CSS expressions
+    .replace(/<[^>]*>/g, "")
+    .replace(/&lt;.*?&gt;/gi, "")
+    .replace(/javascript\s*:/gi, "")
+    .replace(/data\s*:/gi, "")
+    .replace(/vbscript\s*:/gi, "")
+    .replace(/on\w+\s*=\s*["']?[^"'\s>]*/gi, "")
+    .replace(/expression\s*\(/gi, "")
     .trim();
 
-/** Sanitize a plain-text user value (names, titles, descriptions, etc.) */
-export const sanitizeText = (
-  input: string,
-  maxLength = LIMITS.DESCRIPTION_MAX
-): string => {
+export const sanitizeText = (input: string, maxLength: number): string => {
   if (typeof input !== "string") return "";
   return stripHtml(input)
-    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, "") // control chars
+    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, "")
     .slice(0, maxLength)
     .trim();
 };
 
-/** Sanitize search queries — allow letters, numbers, spaces, and basic punctuation */
 export const sanitizeSearch = (input: string): string => {
   if (typeof input !== "string") return "";
   return input
-    .replace(/[<>'"`;\\{}()|]/g, "")   // dangerous chars
-    .replace(/\s{2,}/g, " ")           // collapse whitespace
+    .replace(/[<>'"`;\\{}()|]/g, "")
+    .replace(/\s{2,}/g, " ")
     .slice(0, LIMITS.SEARCH_MAX)
     .trim();
 };
@@ -85,26 +70,24 @@ export const sanitizeUrl = (url: string): string | null => {
 
 // ─── Zod schemas ─────────────────────────────────────────────────────────────
 
-/** Reusable string transformer that strips HTML before validation */
-const safeStr = (max: number) =>
-  z
-    .string()
-    .transform((v) => sanitizeText(v, max));
-
 export const profileSchema = z.object({
-  name: z.string()
-    .transform((v) => sanitizeText(v, 80))
-    .pipe(z.string().min(1, "Name is required").max(80)),
-  bio: z.string()
-    .transform((v) => sanitizeText(v, 300))
-    .pipe(z.string().max(300, "Bio must be 300 chars or less"))
+  name: z
+    .string()
+    .transform((v) => sanitizeText(v, LIMITS.NAME_MAX))
+    .refine((v) => v.length >= 1, "Name is required")
+    .refine((v) => v.length <= LIMITS.NAME_MAX, `Name must be ${LIMITS.NAME_MAX} chars or less`),
+  bio: z
+    .string()
     .optional()
-    .default(""),
-  location: z.string()
-    .transform((v) => sanitizeText(v, 100))
-    .pipe(z.string().max(100, "Location must be 100 chars or less"))
+    .default("")
+    .transform((v) => sanitizeText(v ?? "", LIMITS.BIO_MAX))
+    .refine((v) => v.length <= LIMITS.BIO_MAX, `Bio must be ${LIMITS.BIO_MAX} chars or less`),
+  location: z
+    .string()
     .optional()
-    .default(""),
+    .default("")
+    .transform((v) => sanitizeText(v ?? "", LIMITS.LOCATION_MAX))
+    .refine((v) => v.length <= LIMITS.LOCATION_MAX, `Location must be ${LIMITS.LOCATION_MAX} chars or less`),
   businessOwner: z.boolean().default(false),
   avatarUrl: z.string().optional().default(""),
 });
@@ -115,19 +98,24 @@ export const searchSchema = z.object({
   query: z
     .string()
     .transform((v) => sanitizeSearch(v))
-    .pipe(z.string().max(LIMITS.SEARCH_MAX)),
+    .refine((v) => v.length <= LIMITS.SEARCH_MAX, "Search query too long"),
   filter: z.enum(["all", "businesses", "events", "products"]).default("all"),
 });
 
 export type SearchFormData = z.infer<typeof searchSchema>;
 
 export const videoSubmissionSchema = z.object({
-  title: safeStr(LIMITS.TITLE_MAX)
-    .pipe(z.string().min(1, "Title is required").max(LIMITS.TITLE_MAX)),
-  description: safeStr(LIMITS.DESCRIPTION_MAX)
-    .pipe(z.string().max(LIMITS.DESCRIPTION_MAX))
+  title: z
+    .string()
+    .transform((v) => sanitizeText(v, LIMITS.TITLE_MAX))
+    .refine((v) => v.length >= 1, "Title is required")
+    .refine((v) => v.length <= LIMITS.TITLE_MAX, `Title must be ${LIMITS.TITLE_MAX} chars or less`),
+  description: z
+    .string()
     .optional()
-    .default(""),
+    .default("")
+    .transform((v) => sanitizeText(v ?? "", LIMITS.DESCRIPTION_MAX))
+    .refine((v) => v.length <= LIMITS.DESCRIPTION_MAX),
   platform: z.enum(["youtube", "instagram", "tiktok", "facebook", "mp4"], {
     errorMap: () => ({ message: "Please select a valid platform" }),
   }),
@@ -138,7 +126,11 @@ export const videoSubmissionSchema = z.object({
     .string()
     .optional()
     .default("")
-    .transform((v) => sanitizeUrl(v ?? "") ?? ""),
+    .transform((v) => {
+      if (!v) return "";
+      const safe = sanitizeUrl(v);
+      return safe ?? "";
+    }),
 });
 
 export type VideoSubmissionData = z.infer<typeof videoSubmissionSchema>;
@@ -168,62 +160,39 @@ const IMAGE_MIME_ALLOWLIST = new Set([
 
 export const validateVideoFileSecure = (file: File): FileValidationResult => {
   if (!file) return { isValid: false, error: "No file provided" };
-
-  // MIME type must be in explicit allowlist (not just startsWith)
   if (!VIDEO_MIME_ALLOWLIST.has(file.type)) {
-    return {
-      isValid: false,
-      error: "Only MP4, MOV, AVI, MKV, and WebM video files are allowed",
-    };
+    return { isValid: false, error: "Only MP4, MOV, AVI, MKV, and WebM video files are allowed" };
   }
-
-  // Extension double-check
-  const ext = file.name.split(".").pop()?.toLowerCase() ?? "";
+  const ext = (file.name.split(".").pop() ?? "").toLowerCase();
   const allowedExts = ["mp4", "mpeg", "mov", "avi", "mkv", "webm"];
   if (!allowedExts.includes(ext)) {
     return { isValid: false, error: "File extension is not permitted" };
   }
-
-  // Size: 50 MB hard cap
-  const MAX_SIZE = 50 * 1024 * 1024;
-  if (file.size > MAX_SIZE) {
-    return { isValid: false, error: "File must be less than 50 MB" };
+  if (file.size > 50 * 1024 * 1024) {
+    return { isValid: false, error: "Video must be less than 50 MB" };
   }
-
-  // Minimum size sanity check (1 KB)
   if (file.size < 1024) {
     return { isValid: false, error: "File appears to be empty or corrupt" };
   }
-
   return { isValid: true, error: null };
 };
 
 export const validateImageFileSecure = (file: File): FileValidationResult => {
   if (!file) return { isValid: false, error: "No file provided" };
-
   if (!IMAGE_MIME_ALLOWLIST.has(file.type)) {
-    return {
-      isValid: false,
-      error: "Only JPEG, PNG, and WebP images are allowed",
-    };
+    return { isValid: false, error: "Only JPEG, PNG, and WebP images are allowed" };
   }
-
-  const ext = file.name.split(".").pop()?.toLowerCase() ?? "";
+  const ext = (file.name.split(".").pop() ?? "").toLowerCase();
   const allowedExts = ["jpg", "jpeg", "png", "webp"];
   if (!allowedExts.includes(ext)) {
     return { isValid: false, error: "File extension is not permitted" };
   }
-
-  // 5 MB hard cap for images
-  const MAX_SIZE = 5 * 1024 * 1024;
-  if (file.size > MAX_SIZE) {
+  if (file.size > 5 * 1024 * 1024) {
     return { isValid: false, error: "Image must be less than 5 MB" };
   }
-
   if (file.size < 512) {
     return { isValid: false, error: "Image appears to be empty or corrupt" };
   }
-
   return { isValid: true, error: null };
 };
 
@@ -234,22 +203,13 @@ interface RateLimitState {
   resetAt: number;
 }
 
-const _store = new Map<string, RateLimitState>();
+const _rlStore = new Map<string, RateLimitState>();
 
-/**
- * Client-side rate limiter — returns false when the caller exceeds
- * `maxCalls` within `windowMs` milliseconds for a given key.
- */
-export const rateLimit = (
-  key: string,
-  maxCalls = 5,
-  windowMs = 60_000
-): boolean => {
+export const rateLimit = (key: string, maxCalls = 5, windowMs = 60_000): boolean => {
   const now = Date.now();
-  const state = _store.get(key);
-
+  const state = _rlStore.get(key);
   if (!state || now > state.resetAt) {
-    _store.set(key, { count: 1, resetAt: now + windowMs });
+    _rlStore.set(key, { count: 1, resetAt: now + windowMs });
     return true;
   }
   if (state.count >= maxCalls) return false;
@@ -257,16 +217,14 @@ export const rateLimit = (
   return true;
 };
 
-// ─── Misc helpers ─────────────────────────────────────────────────────────────
+// ─── Misc ─────────────────────────────────────────────────────────────────────
 
-/** Generate a cryptographically random nonce for CSP inline scripts */
 export const generateNonce = (): string => {
   const buf = new Uint8Array(16);
   crypto.getRandomValues(buf);
   return btoa(String.fromCharCode(...buf));
 };
 
-/** Encode text for safe insertion into HTML attributes */
 export const encodeHtmlAttr = (value: string): string =>
   value
     .replace(/&/g, "&amp;")
