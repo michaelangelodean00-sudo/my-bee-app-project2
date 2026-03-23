@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { VideoSubmission } from "@/types/video";
 import { validateUrl } from "@/utils/videoValidation";
+import { sanitizeText, sanitizeUrl, LIMITS } from "@/utils/sanitization";
 import VideoFileUpload from "./VideoFileUpload";
 
 interface VideoFormFieldsProps {
@@ -74,23 +75,33 @@ const VideoFormFields = ({ control, watchedPlatform, selectedFile, onFileChange 
         <FormField
           control={control}
           name="videoUrl"
-          rules={{ 
+          rules={{
             required: watchedPlatform ? "Video URL is required" : false,
             validate: (value) => {
               if (!watchedPlatform || isFileUpload) return true;
-              if (watchedPlatform && !validateUrl(value, watchedPlatform)) {
+              // URL must sanitize (protocol check) AND match platform pattern
+              const safe = sanitizeUrl(value ?? "");
+              if (!safe) return "URL must use https://";
+              if (!validateUrl(safe, watchedPlatform)) {
                 return `Please enter a valid ${watchedPlatform} URL`;
               }
               return true;
-            }
+            },
           }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Video URL</FormLabel>
               <FormControl>
-                <Input 
-                  placeholder="Paste your video URL here..." 
-                  {...field} 
+                <Input
+                  placeholder="Paste your video URL here..."
+                  maxLength={LIMITS.URL_MAX}
+                  autoComplete="off"
+                  {...field}
+                  onChange={(e) => {
+                    // Strip dangerous characters while typing
+                    const val = e.target.value.replace(/[<>"']/g, "");
+                    field.onChange(val);
+                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -102,14 +113,21 @@ const VideoFormFields = ({ control, watchedPlatform, selectedFile, onFileChange 
       <FormField
         control={control}
         name="title"
-        rules={{ required: isFileUpload ? "Title is required for MP4 uploads" : false }}
+        rules={{
+          required: isFileUpload ? "Title is required for MP4 uploads" : false,
+          maxLength: { value: LIMITS.TITLE_MAX, message: `Max ${LIMITS.TITLE_MAX} characters` },
+        }}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Video Title {!isFileUpload && <span className="text-muted-foreground text-xs">(Optional)</span>}</FormLabel>
+            <FormLabel>
+              Video Title {!isFileUpload && <span className="text-muted-foreground text-xs">(Optional)</span>}
+            </FormLabel>
             <FormControl>
-              <Input 
-                placeholder={isFileUpload ? "Enter video title..." : "Custom title (optional)..."} 
-                {...field} 
+              <Input
+                placeholder={isFileUpload ? "Enter video title..." : "Custom title (optional)..."}
+                maxLength={LIMITS.TITLE_MAX}
+                {...field}
+                onChange={(e) => field.onChange(sanitizeText(e.target.value, LIMITS.TITLE_MAX))}
               />
             </FormControl>
             <FormMessage />
@@ -122,12 +140,16 @@ const VideoFormFields = ({ control, watchedPlatform, selectedFile, onFileChange 
         name="description"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Description <span className="text-muted-foreground text-xs">(Optional)</span></FormLabel>
+            <FormLabel>
+              Description <span className="text-muted-foreground text-xs">(Optional)</span>
+            </FormLabel>
             <FormControl>
-              <Textarea 
-                placeholder={isFileUpload ? "Add a description..." : "Custom description (optional)..."} 
+              <Textarea
+                placeholder={isFileUpload ? "Add a description..." : "Custom description (optional)..."}
                 className="resize-none"
-                {...field} 
+                maxLength={LIMITS.DESCRIPTION_MAX}
+                {...field}
+                onChange={(e) => field.onChange(sanitizeText(e.target.value, LIMITS.DESCRIPTION_MAX))}
               />
             </FormControl>
             <FormMessage />

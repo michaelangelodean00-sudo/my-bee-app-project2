@@ -16,47 +16,94 @@ interface SecurityProviderProps {
 }
 
 export const SecurityProvider = ({ children }: SecurityProviderProps) => {
-  const isSecure = window.location.protocol === 'https:' || 
-                   window.location.hostname === 'localhost' ||
-                   window.location.hostname === '127.0.0.1';
+  const isSecure =
+    window.location.protocol === 'https:' ||
+    window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1';
 
   useEffect(() => {
-    // Check security headers in development
+    // ── Content Security Policy (meta tag fallback) ──────────────────────────
+    // Primary CSP should be set as a server response header.
+    // This meta tag provides a client-side backup.
+    if (!document.querySelector('meta[http-equiv="Content-Security-Policy"]')) {
+      const csp = document.createElement('meta');
+      csp.setAttribute('http-equiv', 'Content-Security-Policy');
+      csp.setAttribute(
+        'content',
+        [
+          "default-src 'self'",
+          "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.gpteng.co",
+          "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+          "font-src 'self' https://fonts.gstatic.com data:",
+          "img-src 'self' data: blob: https: http:",
+          "media-src 'self' blob: https:",
+          "connect-src 'self' https: wss:",
+          "frame-src 'none'",
+          "object-src 'none'",
+          "base-uri 'self'",
+          "form-action 'self'",
+        ].join('; ')
+      );
+      document.head.prepend(csp);
+    }
+
+    // ── X-Frame-Options equivalent (clickjacking guard) ─────────────────────
+    // If we're being framed by an unexpected origin, break out
+    try {
+      if (window.self !== window.top) {
+        const allowedOrigin = window.location.origin;
+        if (document.referrer && !document.referrer.startsWith(allowedOrigin)) {
+          // Break out of unexpected iframe
+          window.top!.location.href = window.location.href;
+        }
+      }
+    } catch {
+      // Cross-origin frame — break out
+      document.body.innerHTML = '';
+      window.location.reload();
+    }
+
+    // ── Referrer Policy ──────────────────────────────────────────────────────
+    if (!document.querySelector('meta[name="referrer"]')) {
+      const rp = document.createElement('meta');
+      rp.name = 'referrer';
+      rp.content = 'strict-origin-when-cross-origin';
+      document.head.appendChild(rp);
+    }
+
+    // ── Security header check (dev only) ────────────────────────────────────
     checkSecurityHeaders();
-    
-    // Initialize performance monitoring
+
+    // ── Performance monitoring ───────────────────────────────────────────────
     measureWebVitals();
-    
-    // Register service worker for PWA functionality
+
+    // ── Service Worker (PWA) ─────────────────────────────────────────────────
     if ('serviceWorker' in navigator) {
-      // Register immediately for faster caching
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
+        navigator.serviceWorker
+          .register('/sw.js')
           .then((registration) => {
-            // Check for updates periodically
             registration.update();
-            setInterval(() => registration.update(), 60 * 60 * 1000); // hourly
-            
-            // Handle updates
+            setInterval(() => registration.update(), 60 * 60 * 1000);
+
             registration.addEventListener('updatefound', () => {
               const newWorker = registration.installing;
               if (newWorker) {
                 newWorker.addEventListener('statechange', () => {
                   if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                    // New content available, can notify user if needed
                     console.log('New content available, refresh to update');
                   }
                 });
               }
             });
           })
-          .catch((error) => {
-            console.warn('SW registration failed:', error);
+          .catch((err) => {
+            console.warn('SW registration failed:', err);
           });
       });
     }
-    
-    // Warn about insecure connections in production
+
+    // ── Insecure connection warning ──────────────────────────────────────────
     if (!import.meta.env.DEV && !isSecure) {
       console.warn('Application is running over HTTP in production. This is insecure.');
     }
