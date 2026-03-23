@@ -92,14 +92,17 @@ const safeStr = (max: number) =>
     .transform((v) => sanitizeText(v, max));
 
 export const profileSchema = z.object({
-  name: safeStr(LIMITS.NAME_MAX)
-    .pipe(z.string().min(1, "Name is required").max(LIMITS.NAME_MAX)),
-  bio: safeStr(LIMITS.BIO_MAX)
-    .pipe(z.string().max(LIMITS.BIO_MAX, `Bio must be ${LIMITS.BIO_MAX} chars or less`))
+  name: z.string()
+    .transform((v) => sanitizeText(v, 80))
+    .pipe(z.string().min(1, "Name is required").max(80)),
+  bio: z.string()
+    .transform((v) => sanitizeText(v, 300))
+    .pipe(z.string().max(300, "Bio must be 300 chars or less"))
     .optional()
     .default(""),
-  location: safeStr(LIMITS.LOCATION_MAX)
-    .pipe(z.string().max(LIMITS.LOCATION_MAX, `Location must be ${LIMITS.LOCATION_MAX} chars or less`))
+  location: z.string()
+    .transform((v) => sanitizeText(v, 100))
+    .pipe(z.string().max(100, "Location must be 100 chars or less"))
     .optional()
     .default(""),
   businessOwner: z.boolean().default(false),
