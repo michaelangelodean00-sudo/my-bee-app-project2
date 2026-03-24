@@ -46,7 +46,7 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
       </div>
 
       {/* Tablet & Desktop: single horizontal row */}
-      <div className="hidden sm:flex items-center w-full px-4 py-2 gap-4 min-h-[88px] md:min-h-[100px]">
+      <div className="hidden sm:flex items-center w-full px-4 py-1 gap-4 min-h-[64px] md:min-h-[72px]">
         <div className="flex-shrink-0 animate-logo-entrance overflow-hidden">
           <Logo />
         </div>

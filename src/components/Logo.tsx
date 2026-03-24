@@ -34,9 +34,9 @@ const Logo = ({ className }: LogoProps) => {
       >
         {/* Logo image + tagline */}
         <div className="flex flex-col items-center gap-0 flex-shrink-0">
-          <LogoImage size="default" className="h-28 sm:h-36 md:h-44 w-auto" />
+          <LogoImage size="default" className="h-28 sm:h-32 md:h-36 w-auto" />
           <span
-            className="text-[7px] sm:text-[9px] md:text-[11px] tracking-[0.18em] uppercase text-foreground font-bold select-none self-start ml-0.5 whitespace-nowrap"
+            className="text-[7px] sm:text-[9px] md:text-[10px] tracking-[0.18em] uppercase text-foreground font-bold select-none self-start ml-0.5 whitespace-nowrap"
             style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}
           >
             Business&nbsp;&middot;&nbsp;Events&nbsp;&middot;&nbsp;E-commerce
@@ -48,7 +48,7 @@ const Logo = ({ className }: LogoProps) => {
           src={bahamasSilhouette}
           alt=""
           aria-hidden="true"
-          className="h-44 sm:h-60 md:h-80 lg:h-96 w-auto opacity-90 flex-shrink-0 select-none ml-1"
+          className="h-44 sm:h-52 md:h-60 lg:h-64 w-auto opacity-90 flex-shrink-0 select-none ml-1"
         />
       </div>
     </Link>
