@@ -209,7 +209,7 @@ const ads: Ad[] = [
     id: "ad8",
     title: "Artisan Market",
     description: "Shop unique handcrafted items from local artisans. Support our creative community.",
-    imageUrl: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&h=1080&q=90&fm=webp&fit=crop",
+    imageUrl: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=675&q=75&fm=webp&fit=crop",
     linkUrl: "https://www.artisanmarket.com"
   },
   {
