@@ -82,19 +82,13 @@
     <!-- Preload Critical Assets (fetchpriority=high for LCP) -->
     <link rel="preload" href="/lovable-uploads/bee-mascot-logo.png" as="image" type="image/png" fetchpriority="high" />
     <link rel="preload" href="/lovable-uploads/bee-app-logo.png" as="image" type="image/png" fetchpriority="high" />
-    <!-- Preload first ad image for instant splash render -->
-    <link rel="preload" href="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&h=450&q=80&fm=webp&fit=crop" as="image" type="image/webp" fetchpriority="high" />
+    <!-- Preload first ad image for instant splash render — match exact URL used in AdSplash -->
+    <link rel="preload" href="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1200&h=675&q=75&fm=webp&fit=crop" as="image" type="image/webp" fetchpriority="high" />
 
-    <!-- Fonts: async non-blocking load -->
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <!-- Fonts: ONE combined request — 4x fewer round-trips, non-blocking -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bangers&family=Pacifico&family=Sacramento&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" />
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" />
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bangers&family=Pacifico&family=Sacramento&display=swap" />
     </noscript>
 
     <!-- Open Graph Meta Tags -->

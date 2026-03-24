@@ -56,6 +56,7 @@ export default defineConfig(({ mode }) => ({
       '@tanstack/react-query',
       'sonner',
       'react-helmet-async',
+      'lucide-react',
     ],
   },
 }));
