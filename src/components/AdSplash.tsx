@@ -195,7 +195,7 @@ const ads: Ad[] = [
     id: "ad6",
     title: "Beachfront Yoga Retreat",
     description: "Find your zen with sunrise yoga sessions on pristine beaches. All skill levels welcome.",
-    imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1920&h=1080&q=90&fm=webp&fit=crop",
+    imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&h=675&q=75&fm=webp&fit=crop",
     linkUrl: "https://www.beachyoga.com"
   },
   {
