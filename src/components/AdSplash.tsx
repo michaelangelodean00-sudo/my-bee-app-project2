@@ -188,7 +188,7 @@ const ads: Ad[] = [
     id: "ad5",
     title: "Adventure Sports Center",
     description: "Try kayaking, snorkeling, and diving with professional instructors. Equipment provided.",
-    imageUrl: "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=1920&h=1080&q=90&fm=webp&fit=crop",
+    imageUrl: "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=1200&h=675&q=75&fm=webp&fit=crop",
     linkUrl: "https://www.adventuresports.com"
   },
   {
