@@ -141,8 +141,12 @@ const Index = () => {
       </header>
       
       <Header toggleMobileSidebar={toggleMobileSidebar} />
-      <GreetingBanner />
-      <AdSplash />
+      <Suspense fallback={null}>
+        <GreetingBanner />
+      </Suspense>
+      <Suspense fallback={<div className="h-[420px] md:h-[520px] bg-secondary animate-pulse" />}>
+        <AdSplash />
+      </Suspense>
       
       <div className="flex relative">
         {/* Tablet & Desktop Sidebar */}
