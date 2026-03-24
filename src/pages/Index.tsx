@@ -1,7 +1,6 @@
 import { useState, useCallback, lazy, Suspense, memo } from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
-import AdSplash from "../components/AdSplash";
 import CreatePost from "../components/CreatePost";
 import RightSidebar from "../components/RightSidebar";
 import Post from "../components/Post";
@@ -12,7 +11,6 @@ import ScrollReveal from "../components/ScrollReveal";
 import Footer from "../components/Footer";
 import CopyrightWatermark from "../components/CopyrightWatermark";
 import PullToRefresh from "../components/PullToRefresh";
-import GreetingBanner from "../components/GreetingBanner";
 import PageTransition from "../components/PageTransition";
 import MobileBottomNav from "../components/MobileBottomNav";
 import MobileWidgetsSection from "../components/MobileWidgetsSection";
@@ -24,6 +22,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 
 // Lazy load non-critical visual components
 const AnimatedBackground = lazy(() => import("../components/AnimatedBackground"));
+const AdSplash = lazy(() => import("../components/AdSplash"));
+const GreetingBanner = lazy(() => import("../components/GreetingBanner"));
 
 // Static sample posts - defined outside component to prevent recreation
 const samplePosts = [
