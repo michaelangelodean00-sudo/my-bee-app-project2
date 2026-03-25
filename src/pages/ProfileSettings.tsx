@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 import { 
   User, 
   Lock, 
@@ -33,8 +34,31 @@ import {
   Phone,
   Mail,
   Home,
-  Edit
+  Edit,
+  CheckCircle2,
+  Instagram,
+  UtensilsCrossed,
+  Sparkles,
+  ShoppingBag,
+  Wrench,
+  Car,
+  CalendarDays,
+  BriefcaseBusiness,
+  AlertCircle,
 } from "lucide-react";
+
+const BUSINESS_CATEGORIES = [
+  { id: "food-dining",           label: "Food & Dining",         icon: UtensilsCrossed },
+  { id: "beauty-wellness",       label: "Beauty & Wellness",     icon: Sparkles },
+  { id: "retail-shopping",       label: "Retail & Shopping",     icon: ShoppingBag },
+  { id: "home-trade-services",   label: "Home & Trade Services", icon: Wrench },
+  { id: "auto-transport",        label: "Auto & Transport",      icon: Car },
+  { id: "events",                label: "Events",                icon: CalendarDays },
+  { id: "professional-services", label: "Professional Services", icon: BriefcaseBusiness },
+] as const;
+
+const countSentences = (text: string) =>
+  (text.match(/[^.!?]*[.!?]+/g) ?? []).filter(s => s.trim().length > 3).length;
 
 const ProfileSettings = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
