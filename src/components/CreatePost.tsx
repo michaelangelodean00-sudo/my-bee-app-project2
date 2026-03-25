@@ -1,6 +1,5 @@
 
-import { useState } from "react";
-import { Handshake, Calendar, ShoppingCart } from "lucide-react";
+import { Handshake, Calendar, ShoppingCart, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
@@ -17,10 +16,10 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
       <Separator className="my-4 md:my-5" />
       
       <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 md:gap-6 px-2 sm:px-4">
-        {/* See pointer text - Desktop only */}
-        <div className="hidden md:flex flex-shrink-0 flex-col items-center justify-center">
-          <span className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary font-heading tracking-tight">See</span>
-          <span className="text-4xl md:text-5xl lg:text-6xl animate-[bounce-x_1.5s_ease-in-out_infinite]">👉</span>
+        {/* Explore heading - Desktop only */}
+        <div className="hidden md:flex flex-shrink-0 flex-col items-center justify-center gap-1">
+          <span className="text-2xl md:text-3xl font-bold text-primary font-heading tracking-tight">Explore</span>
+          <ChevronRight size={28} className="text-primary" />
         </div>
         
         {/* Category buttons */}
@@ -28,8 +27,8 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
           {/* Business Button */}
           <div className="flex items-center gap-2 md:block">
             <div className="flex flex-col items-center md:hidden flex-shrink-0">
-              <span className="text-lg font-bold text-primary font-heading">See</span>
-              <span className="text-xl animate-[bounce-x_1.5s_ease-in-out_infinite]">👉</span>
+              <span className="text-sm font-bold text-primary font-heading">Explore</span>
+              <ChevronRight size={16} className="text-primary" />
             </div>
             <Button 
               onClick={() => navigateTo("/businesses")}
@@ -47,8 +46,8 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
           {/* Events Button */}
           <div className="flex items-center gap-2 md:block">
             <div className="flex flex-col items-center md:hidden flex-shrink-0">
-              <span className="text-lg font-bold text-primary font-heading">See</span>
-              <span className="text-xl animate-[bounce-x_1.5s_ease-in-out_infinite]">👉</span>
+              <span className="text-sm font-bold text-primary font-heading">Explore</span>
+              <ChevronRight size={16} className="text-primary" />
             </div>
             <Button 
               onClick={() => navigateTo("/events")}
@@ -66,8 +65,8 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
           {/* E-commerce Button */}
           <div className="flex items-center gap-2 md:block">
             <div className="flex flex-col items-center md:hidden flex-shrink-0">
-              <span className="text-lg font-bold text-primary font-heading">See</span>
-              <span className="text-xl animate-[bounce-x_1.5s_ease-in-out_infinite]">👉</span>
+              <span className="text-sm font-bold text-primary font-heading">Explore</span>
+              <ChevronRight size={16} className="text-primary" />
             </div>
             <Button 
               onClick={() => navigateTo("/ecommerce")}
