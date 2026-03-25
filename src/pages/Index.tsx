@@ -147,6 +147,12 @@ const Index = () => {
       <Suspense fallback={<div className="h-[420px] md:h-[520px] bg-secondary animate-pulse" />}>
         <AdSplash />
       </Suspense>
+      {/* Video Ad Banner — directly below AdSplash */}
+      <div className="w-full px-4 md:px-6 py-3 bg-card/80 border-b border-border">
+        <div className="max-w-3xl mx-auto">
+          <BurgerAdWidget />
+        </div>
+      </div>
       
       <div className="flex relative">
         {/* Tablet & Desktop Sidebar */}
