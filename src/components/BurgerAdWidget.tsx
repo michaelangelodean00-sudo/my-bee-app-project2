@@ -87,7 +87,7 @@ const BurgerAdWidget = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       goTo((currentIndex + 1) % videoAds.length);
-    }, 12000);
+    }, 30000);
     return () => clearInterval(timer);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex]);
