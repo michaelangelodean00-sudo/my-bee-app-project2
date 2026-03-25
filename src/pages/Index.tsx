@@ -156,6 +156,9 @@ const Index = () => {
           <BurgerAdWidget />
         </div>
       </div>
+
+      {/* Business Category Browse — directly below Video Ad */}
+      <BusinessCategorySection />
       
       <div className="flex relative">
         {/* Tablet & Desktop Sidebar */}
