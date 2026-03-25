@@ -77,7 +77,13 @@ const ProfileSettings = () => {
     work: "Senior Developer at Tech Corp",
     education: "Stanford University",
     website: "https://johndoe.dev",
-    accountType: "individual"
+    accountType: "individual",
+    // Business fields
+    businessCategory: "",
+    businessPhone: "",
+    businessWebsite: "",
+    businessSocial: "",
+    businessHasPhoto: false,
   });
 
   const [privacySettings, setPrivacySettings] = useState({
