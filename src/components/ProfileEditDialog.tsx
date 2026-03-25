@@ -12,8 +12,20 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Upload, Building2, User, Check, AlertCircle } from "lucide-react";
+import { Upload, Building2, User, Check, AlertCircle, UtensilsCrossed, Sparkles, ShoppingBag, Wrench, Car, CalendarDays, BriefcaseBusiness } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+const BUSINESS_CATEGORIES = [
+  { id: "food-dining",           label: "Food & Dining",           icon: UtensilsCrossed },
+  { id: "beauty-wellness",       label: "Beauty & Wellness",        icon: Sparkles },
+  { id: "retail-shopping",       label: "Retail & Shopping",        icon: ShoppingBag },
+  { id: "home-trade-services",   label: "Home & Trade Services",    icon: Wrench },
+  { id: "auto-transport",        label: "Auto & Transport",         icon: Car },
+  { id: "events",                label: "Events",                   icon: CalendarDays },
+  { id: "professional-services", label: "Professional Services",    icon: BriefcaseBusiness },
+] as const;
+
+type BusinessCategoryId = typeof BUSINESS_CATEGORIES[number]["id"];
 import { sanitizeText, validateImageFileSecure, rateLimit, LIMITS } from "@/utils/sanitization";
 import { toast } from "sonner";
 
