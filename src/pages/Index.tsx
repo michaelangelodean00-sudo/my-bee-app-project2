@@ -7,6 +7,7 @@ import Post from "../components/Post";
 import PageLoader from "../components/PageLoader";
 import McdonaldsAdWidget from "../components/McdonaldsAdWidget";
 import BurgerAdWidget from "../components/BurgerAdWidget";
+import BusinessCategorySection from "../components/BusinessCategorySection";
 
 import EnhancedCard from "../components/EnhancedCard";
 import ScrollReveal from "../components/ScrollReveal";
@@ -155,6 +156,9 @@ const Index = () => {
           <BurgerAdWidget />
         </div>
       </div>
+
+      {/* Business Category Browse — directly below Video Ad */}
+      <BusinessCategorySection />
       
       <div className="flex relative">
         {/* Tablet & Desktop Sidebar */}
