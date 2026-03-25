@@ -7,6 +7,7 @@ import Post from "../components/Post";
 import PageLoader from "../components/PageLoader";
 import McdonaldsAdWidget from "../components/McdonaldsAdWidget";
 import BurgerAdWidget from "../components/BurgerAdWidget";
+
 import EnhancedCard from "../components/EnhancedCard";
 import ScrollReveal from "../components/ScrollReveal";
 import Footer from "../components/Footer";
