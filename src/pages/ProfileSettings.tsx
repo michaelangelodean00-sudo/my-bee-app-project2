@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 import { 
   User, 
   Lock, 
@@ -33,8 +34,31 @@ import {
   Phone,
   Mail,
   Home,
-  Edit
+  Edit,
+  CheckCircle2,
+  Instagram,
+  UtensilsCrossed,
+  Sparkles,
+  ShoppingBag,
+  Wrench,
+  Car,
+  CalendarDays,
+  BriefcaseBusiness,
+  AlertCircle,
 } from "lucide-react";
+
+const BUSINESS_CATEGORIES = [
+  { id: "food-dining",           label: "Food & Dining",         icon: UtensilsCrossed },
+  { id: "beauty-wellness",       label: "Beauty & Wellness",     icon: Sparkles },
+  { id: "retail-shopping",       label: "Retail & Shopping",     icon: ShoppingBag },
+  { id: "home-trade-services",   label: "Home & Trade Services", icon: Wrench },
+  { id: "auto-transport",        label: "Auto & Transport",      icon: Car },
+  { id: "events",                label: "Events",                icon: CalendarDays },
+  { id: "professional-services", label: "Professional Services", icon: BriefcaseBusiness },
+] as const;
+
+const countSentences = (text: string) =>
+  (text.match(/[^.!?]*[.!?]+/g) ?? []).filter(s => s.trim().length > 3).length;
 
 const ProfileSettings = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -53,7 +77,13 @@ const ProfileSettings = () => {
     work: "Senior Developer at Tech Corp",
     education: "Stanford University",
     website: "https://johndoe.dev",
-    accountType: "individual"
+    accountType: "individual",
+    // Business fields
+    businessCategory: "",
+    businessPhone: "",
+    businessWebsite: "",
+    businessSocial: "",
+    businessHasPhoto: false,
   });
 
   const [privacySettings, setPrivacySettings] = useState({
@@ -373,10 +403,103 @@ const ProfileSettings = () => {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="individual">Individual</SelectItem>
-                          <SelectItem value="company">Company/Business</SelectItem>
+                          <SelectItem value="company">Company / Business</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
+
+                    {/* ── Business Requirements (shown only for business accounts) ── */}
+                    {profileData.accountType === "company" && (() => {
+                      const sentenceCount = countSentences(profileData.bio);
+                      const hasContact = !!(profileData.businessPhone || profileData.businessWebsite || profileData.businessSocial);
+                      const requirements = [
+                        { key: "photo",   label: "Photo or logo uploaded",        met: profileData.businessHasPhoto },
+                        { key: "desc",    label: "Two-sentence description",      met: sentenceCount >= 2 },
+                        { key: "contact", label: "Phone, website or social link", met: hasContact },
+                      ];
+                      return (
+                        <div className="rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50/60 dark:bg-amber-950/20 p-4 space-y-4">
+                          <div className="flex items-center justify-between">
+                            <p className="text-xs font-semibold uppercase tracking-widest text-amber-700 dark:text-amber-400">
+                              Business Requirements
+                            </p>
+                            {requirements.every(r => r.met) && (
+                              <span className="text-xs text-emerald-600 font-medium flex items-center gap-1">
+                                <CheckCircle2 className="h-3.5 w-3.5" /> All complete
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Checklist */}
+                          <div className="space-y-1.5">
+                            {requirements.map(r => (
+                              <div key={r.key} className="flex items-center gap-2 text-xs">
+                                <CheckCircle2 className={cn("h-4 w-4 flex-shrink-0", r.met ? "text-emerald-500" : "text-muted-foreground/40")} />
+                                <span className={r.met ? "text-foreground" : "text-muted-foreground"}>{r.label}</span>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Business Category */}
+                          <div className="space-y-1.5">
+                            <Label className="text-xs font-semibold">Business Category <span className="text-destructive">*</span></Label>
+                            <div className="grid grid-cols-2 gap-2">
+                              {BUSINESS_CATEGORIES.map(({ id, label, icon: Icon }) => (
+                                <button
+                                  key={id}
+                                  type="button"
+                                  onClick={() => setProfileData(prev => ({ ...prev, businessCategory: id }))}
+                                  className={cn(
+                                    "flex items-center gap-2 px-3 py-2 rounded-lg border text-xs font-medium transition-all text-left",
+                                    profileData.businessCategory === id
+                                      ? "border-amber-500 bg-amber-500/10 text-amber-700 dark:text-amber-400"
+                                      : "border-border bg-background text-muted-foreground hover:border-amber-300"
+                                  )}
+                                >
+                                  <Icon size={14} className="flex-shrink-0" />
+                                  <span className="line-clamp-1">{label}</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Contact fields */}
+                          <div className="space-y-2">
+                            <Label className="text-xs font-semibold">
+                              Contact Info <span className="text-destructive">*</span>{" "}
+                              <span className="text-xs text-muted-foreground font-normal">(at least one)</span>
+                            </Label>
+                            <div className="relative">
+                              <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                              <Input
+                                placeholder="Business phone number"
+                                value={profileData.businessPhone}
+                                onChange={(e) => setProfileData({ ...profileData, businessPhone: e.target.value })}
+                                className="pl-8 h-9 text-sm"
+                              />
+                            </div>
+                            <div className="relative">
+                              <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                              <Input
+                                placeholder="Website (https://...)"
+                                value={profileData.businessWebsite}
+                                onChange={(e) => setProfileData({ ...profileData, businessWebsite: e.target.value })}
+                                className="pl-8 h-9 text-sm"
+                              />
+                            </div>
+                            <div className="relative">
+                              <Instagram className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                              <Input
+                                placeholder="Social media link"
+                                value={profileData.businessSocial}
+                                onChange={(e) => setProfileData({ ...profileData, businessSocial: e.target.value })}
+                                className="pl-8 h-9 text-sm"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })()}
 
                     <Separator />
 
