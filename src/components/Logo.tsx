@@ -1,7 +1,6 @@
 import { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import LogoImage from "./LogoImage";
-import bahamasSilhouette from "../assets/bahamas-silhouette-accurate.png";
 
 interface LogoProps {
   className?: string;
@@ -42,14 +41,6 @@ const Logo = ({ className }: LogoProps) => {
             Business&nbsp;&middot;&nbsp;Events&nbsp;&middot;&nbsp;E-commerce
           </span>
         </div>
-
-        {/* Bahamas islands silhouette — all screen sizes, scaled by breakpoint */}
-        <img
-          src={bahamasSilhouette}
-          alt=""
-          aria-hidden="true"
-          className="h-40 sm:h-48 md:h-52 lg:h-56 w-auto opacity-90 flex-shrink-0 select-none ml-1"
-        />
       </div>
     </Link>
   );

@@ -2,7 +2,6 @@ import { memo } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import Logo from "./Logo";
-import BurgerAdWidget from "./BurgerAdWidget";
 import { useNotifications } from "../contexts/NotificationContext";
 
 interface HeaderProps {
@@ -18,10 +17,9 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
       {/* Animated honey-gold accent line at top */}
       <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-primary/60 via-primary to-primary/60 animate-shimmer" style={{ backgroundSize: '200% 100%' }} />
       
-      {/* Mobile: logo row + full-width ad below */}
+      {/* Mobile: logo row */}
       <div className="sm:hidden">
-        {/* Top row: logo + hamburger */}
-        <div className="flex items-center justify-between px-3 pt-3 pb-1">
+        <div className="flex items-center justify-between px-3 py-2">
           <div className="animate-logo-entrance">
             <Logo />
           </div>
@@ -39,10 +37,6 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
             <span className="sr-only">Open menu</span>
           </Button>
         </div>
-        {/* Full-width ad below logo */}
-        <div className="px-3 pb-2 animate-fade-in" style={{ animationDelay: '0.1s' }}>
-          <BurgerAdWidget />
-        </div>
       </div>
 
       {/* Tablet & Desktop: single horizontal row */}
@@ -50,9 +44,7 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
         <div className="flex-shrink-0 animate-logo-entrance overflow-hidden">
           <Logo />
         </div>
-        <div className="flex-1 min-w-0 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-          <BurgerAdWidget />
-        </div>
+        <div className="flex-1" />
         {/* Hamburger — tablet only (md hides it via sidebar) */}
         <div className="flex-shrink-0 md:hidden">
           <Button

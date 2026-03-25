@@ -6,6 +6,7 @@ import RightSidebar from "../components/RightSidebar";
 import Post from "../components/Post";
 import PageLoader from "../components/PageLoader";
 import McdonaldsAdWidget from "../components/McdonaldsAdWidget";
+import BurgerAdWidget from "../components/BurgerAdWidget";
 import EnhancedCard from "../components/EnhancedCard";
 import ScrollReveal from "../components/ScrollReveal";
 import Footer from "../components/Footer";
@@ -147,6 +148,12 @@ const Index = () => {
       <Suspense fallback={<div className="h-[420px] md:h-[520px] bg-secondary animate-pulse" />}>
         <AdSplash />
       </Suspense>
+      {/* Video Ad Banner — directly below AdSplash */}
+      <div className="w-full px-4 md:px-6 py-3 bg-card/80 border-b border-border">
+        <div className="max-w-3xl mx-auto">
+          <BurgerAdWidget />
+        </div>
+      </div>
       
       <div className="flex relative">
         {/* Tablet & Desktop Sidebar */}
