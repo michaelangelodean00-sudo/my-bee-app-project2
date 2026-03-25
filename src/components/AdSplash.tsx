@@ -377,7 +377,7 @@ const AdSplash = memo(() => {
   }, [selectedAd]);
   
   return (
-    <div className="relative bg-secondary text-secondary-foreground flex justify-center z-0">
+    <div className="relative bg-secondary text-secondary-foreground flex justify-center z-0 overflow-hidden">
       <Carousel 
         className="w-full max-w-7xl mx-auto py-8" 
         opts={{ loop: true, align: "center" }}
