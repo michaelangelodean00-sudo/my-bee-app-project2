@@ -23,6 +23,7 @@ import { useAdAnalytics } from "@/hooks/useAdAnalytics";
 import ShareDialog from "./ShareDialog";
 import { Share2, Sparkles, X, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import AdPerformanceMetrics from "./AdPerformanceMetrics";
 
 // Image Preview with pinch-to-zoom
 const ZoomableImage = memo(({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) => {
