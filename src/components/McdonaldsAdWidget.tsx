@@ -1,5 +1,7 @@
 import { useState, useEffect, memo } from "react";
 import { isValidUrl } from "../utils/security";
+import { useAdAnalytics } from "@/hooks/useAdAnalytics";
+import AdPerformanceMetrics from "./AdPerformanceMetrics";
 
 interface AdContent {
   imageSrc: string;
