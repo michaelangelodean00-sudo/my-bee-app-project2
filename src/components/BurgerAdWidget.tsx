@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { ExternalLink, Volume2, VolumeX, Sparkles, ChevronLeft, ChevronRight, X, Maximize2 } from "lucide-react";
 import { isValidUrl } from "../utils/security";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useAdAnalytics } from "@/hooks/useAdAnalytics";
+import AdPerformanceMetrics from "./AdPerformanceMetrics";
 
 interface VideoAd {
   videoSrc: string;
