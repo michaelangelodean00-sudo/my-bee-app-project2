@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Play, Pause, Heart, MessageCircle, Share, MoreHorizontal, ExternalLink, Star, Crown } from "lucide-react";
 import { VideoAd, SponsoredContent } from "@/types/ads";
 import ContentFilterControls from "./ContentFilterControls";
+import AdPerformanceMetrics from "./AdPerformanceMetrics";
 
 interface VideoPlayerWithAdsProps {
   videoId: string;
