@@ -1,6 +1,8 @@
 
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
+import { useAdAnalytics } from "@/hooks/useAdAnalytics";
+import AdPerformanceMetrics from "./AdPerformanceMetrics";
 
 interface Ad {
   id: string;
