@@ -36,6 +36,7 @@ const ads: AdContent[] = [
 
 const McdonaldsAdWidget = memo(() => {
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
+  const { trackImpression, trackClick, getAdPerformance } = useAdAnalytics();
 
   // Rotate ads every 10 seconds (reduced frequency)
   useEffect(() => {
