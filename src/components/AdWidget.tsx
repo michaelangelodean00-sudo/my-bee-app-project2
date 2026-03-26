@@ -41,6 +41,14 @@ const AdWidget = () => {
   const [dismissed, setDismissed] = useState(false);
   const [isAnimating, setIsAnimating] = useState(true);
   const [progress, setProgress] = useState(0);
+  const { trackImpression, trackClick, getAdPerformance } = useAdAnalytics();
+
+  // Track impression on ad change
+  useEffect(() => {
+    trackImpression(ads[currentAdIndex].id);
+  }, [currentAdIndex, trackImpression]);
+
+  const performance = getAdPerformance(ads[currentAdIndex].id);
   
   useEffect(() => {
     // Animation trigger
