@@ -96,13 +96,14 @@ const BurgerAdWidget = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex]);
 
-  // Sync inline video on index change
+  // Track impression and sync video on index change
   useEffect(() => {
+    trackImpression(`burger-${currentIndex}`);
     const vid = videoRef.current;
     if (!vid) return;
     vid.load();
     vid.play().catch(() => {});
-  }, [currentIndex]);
+  }, [currentIndex, trackImpression]);
 
   // When modal opens: seek modal video to same time, unmute and play
   useEffect(() => {
