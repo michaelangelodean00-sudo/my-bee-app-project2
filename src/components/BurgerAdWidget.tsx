@@ -72,8 +72,10 @@ const BurgerAdWidget = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const modalVideoRef = useRef<HTMLVideoElement>(null);
   const pendingIndex = useRef<number | null>(null);
+  const { trackImpression, trackClick, getAdPerformance } = useAdAnalytics();
 
   const current = videoAds[currentIndex];
+  const performance = getAdPerformance(`burger-${currentIndex}`);
 
   const goTo = (nextIndex: number) => {
     if (pendingIndex.current !== null) return;
