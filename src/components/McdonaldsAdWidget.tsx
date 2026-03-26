@@ -49,8 +49,15 @@ const McdonaldsAdWidget = memo(() => {
 
   const currentAd = ads[currentAdIndex];
 
+  // Track impression on ad change
+  useEffect(() => {
+    trackImpression(`mcdonalds-${currentAdIndex}`);
+  }, [currentAdIndex, trackImpression]);
+
+  const performance = getAdPerformance(`mcdonalds-${currentAdIndex}`);
+
   const handleAdClick = () => {
-    // Validate URL before opening
+    trackClick(`mcdonalds-${currentAdIndex}`);
     if (isValidUrl(currentAd.linkUrl)) {
       window.open(currentAd.linkUrl, '_blank', 'noopener,noreferrer');
     } else {
