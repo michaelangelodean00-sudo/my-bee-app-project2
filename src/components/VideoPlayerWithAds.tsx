@@ -204,12 +204,17 @@ const VideoPlayerWithAds = ({
           </div>
         )}
 
-        {/* Ad Badge */}
-        {isAd && (
-          <div className="absolute top-4 left-4 z-20">
-            <Badge className="bg-green-500 text-white font-semibold px-3 py-1 rounded animate-pulse">
+        {/* Ad Badge + Metrics */}
+        {isAd && adData && (
+          <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
+            <Badge className="bg-green-500 text-white font-semibold px-3 py-1 rounded animate-pulse w-fit">
               AD
             </Badge>
+            <AdPerformanceMetrics
+              impressions={adData.impressions}
+              clicks={adData.clicks}
+              variant="overlay"
+            />
           </div>
         )}
 

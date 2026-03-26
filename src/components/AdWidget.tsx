@@ -137,9 +137,20 @@ const AdWidget = () => {
               {currentAd.description}
             </p>
             
+            {/* Ad Performance Metrics */}
+            <div className="mb-4 flex justify-center">
+              <AdPerformanceMetrics
+                impressions={performance.totalImpressions}
+                clicks={performance.totalClicks}
+                views={performance.totalViews}
+                variant="inline"
+              />
+            </div>
+
             {/* Premium gradient button */}
             <a 
               href={currentAd.linkUrl} 
+              onClick={() => trackClick(currentAd.id)}
               className="inline-flex items-center justify-center px-10 py-5 text-xl md:text-2xl font-semibold rounded-2xl
                 bg-gradient-to-r from-primary via-secondary to-accent
                 text-primary-foreground
