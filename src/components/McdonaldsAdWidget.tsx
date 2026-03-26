@@ -1,5 +1,7 @@
 import { useState, useEffect, memo } from "react";
 import { isValidUrl } from "../utils/security";
+import { useAdAnalytics } from "@/hooks/useAdAnalytics";
+import AdPerformanceMetrics from "./AdPerformanceMetrics";
 
 interface AdContent {
   imageSrc: string;
@@ -34,6 +36,7 @@ const ads: AdContent[] = [
 
 const McdonaldsAdWidget = memo(() => {
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
+  const { trackImpression, trackClick, getAdPerformance } = useAdAnalytics();
 
   // Rotate ads every 10 seconds (reduced frequency)
   useEffect(() => {
@@ -46,8 +49,15 @@ const McdonaldsAdWidget = memo(() => {
 
   const currentAd = ads[currentAdIndex];
 
+  // Track impression on ad change
+  useEffect(() => {
+    trackImpression(`mcdonalds-${currentAdIndex}`);
+  }, [currentAdIndex, trackImpression]);
+
+  const performance = getAdPerformance(`mcdonalds-${currentAdIndex}`);
+
   const handleAdClick = () => {
-    // Validate URL before opening
+    trackClick(`mcdonalds-${currentAdIndex}`);
     if (isValidUrl(currentAd.linkUrl)) {
       window.open(currentAd.linkUrl, '_blank', 'noopener,noreferrer');
     } else {
@@ -79,6 +89,13 @@ const McdonaldsAdWidget = memo(() => {
           </div>
         </div>
       </div>
+      <AdPerformanceMetrics
+        impressions={performance.totalImpressions}
+        clicks={performance.totalClicks}
+        views={performance.totalViews}
+        variant="overlay"
+        className="absolute bottom-1 right-1"
+      />
     </div>
   );
 });

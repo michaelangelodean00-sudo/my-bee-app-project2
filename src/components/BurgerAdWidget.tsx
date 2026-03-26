@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { ExternalLink, Volume2, VolumeX, Sparkles, ChevronLeft, ChevronRight, X, Maximize2 } from "lucide-react";
 import { isValidUrl } from "../utils/security";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useAdAnalytics } from "@/hooks/useAdAnalytics";
+import AdPerformanceMetrics from "./AdPerformanceMetrics";
 
 interface VideoAd {
   videoSrc: string;
@@ -70,8 +72,10 @@ const BurgerAdWidget = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const modalVideoRef = useRef<HTMLVideoElement>(null);
   const pendingIndex = useRef<number | null>(null);
+  const { trackImpression, trackClick, getAdPerformance } = useAdAnalytics();
 
   const current = videoAds[currentIndex];
+  const performance = getAdPerformance(`burger-${currentIndex}`);
 
   const goTo = (nextIndex: number) => {
     if (pendingIndex.current !== null) return;
@@ -92,13 +96,14 @@ const BurgerAdWidget = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex]);
 
-  // Sync inline video on index change
+  // Track impression and sync video on index change
   useEffect(() => {
+    trackImpression(`burger-${currentIndex}`);
     const vid = videoRef.current;
     if (!vid) return;
     vid.load();
     vid.play().catch(() => {});
-  }, [currentIndex]);
+  }, [currentIndex, trackImpression]);
 
   // When modal opens: seek modal video to same time, unmute and play
   useEffect(() => {
@@ -132,6 +137,7 @@ const BurgerAdWidget = () => {
   };
 
   const handleCTA = () => {
+    trackClick(`burger-${currentIndex}`);
     if (isValidUrl(current.linkUrl)) {
       window.open(current.linkUrl, "_blank", "noopener,noreferrer");
     }
@@ -230,6 +236,15 @@ const BurgerAdWidget = () => {
             ))}
           </div>
         </div>
+
+        {/* Ad Performance Metrics */}
+        <AdPerformanceMetrics
+          impressions={performance.totalImpressions}
+          clicks={performance.totalClicks}
+          views={performance.totalViews}
+          variant="overlay"
+          className="absolute bottom-1 left-2 z-20"
+        />
 
         {/* Nav arrows (desktop) */}
         <div className="hidden sm:flex flex-col items-end gap-1.5 pr-3">

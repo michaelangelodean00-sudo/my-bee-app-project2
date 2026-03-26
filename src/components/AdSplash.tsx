@@ -23,6 +23,7 @@ import { useAdAnalytics } from "@/hooks/useAdAnalytics";
 import ShareDialog from "./ShareDialog";
 import { Share2, Sparkles, X, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import AdPerformanceMetrics from "./AdPerformanceMetrics";
 
 // Image Preview with pinch-to-zoom
 const ZoomableImage = memo(({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) => {
@@ -454,6 +455,15 @@ const AdSplash = memo(() => {
                 {/* Text panel */}
                 <div className="w-full md:w-1/2">
                   <h3 className="text-2xl md:text-3xl font-bold mb-4">{ad.title}</h3>
+                  {!ad.isAdvertiseCTA && (
+                    <AdPerformanceMetrics
+                      impressions={getAdPerformance(ad.id).totalImpressions}
+                      clicks={getAdPerformance(ad.id).totalClicks}
+                      views={getAdPerformance(ad.id).totalViews}
+                      variant="compact"
+                      className="mb-3"
+                    />
+                  )}
                   <p className="text-lg mb-6 leading-relaxed">{ad.description}</p>
                   <div className="flex flex-wrap gap-3 items-center">
                     {ad.isAdvertiseCTA ? (
