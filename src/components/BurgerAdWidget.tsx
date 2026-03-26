@@ -137,6 +137,7 @@ const BurgerAdWidget = () => {
   };
 
   const handleCTA = () => {
+    trackClick(`burger-${currentIndex}`);
     if (isValidUrl(current.linkUrl)) {
       window.open(current.linkUrl, "_blank", "noopener,noreferrer");
     }
