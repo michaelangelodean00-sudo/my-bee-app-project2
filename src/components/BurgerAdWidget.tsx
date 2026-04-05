@@ -238,13 +238,15 @@ const BurgerAdWidget = () => {
         </div>
 
         {/* Ad Performance Metrics */}
-        <AdPerformanceMetrics
-          impressions={performance.totalImpressions}
-          clicks={performance.totalClicks}
-          views={performance.totalViews}
-          variant="overlay"
-          className="absolute bottom-1 left-2 z-20"
-        />
+        {showMetrics && (
+          <AdPerformanceMetrics
+            impressions={performance.totalImpressions}
+            clicks={performance.totalClicks}
+            views={performance.totalViews}
+            variant="overlay"
+            className="absolute bottom-1 left-2 z-20"
+          />
+        )}
 
         {/* Nav arrows (desktop) */}
         <div className="hidden sm:flex flex-col items-end gap-1.5 pr-3">

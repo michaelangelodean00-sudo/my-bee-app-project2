@@ -89,13 +89,15 @@ const McdonaldsAdWidget = memo(() => {
           </div>
         </div>
       </div>
-      <AdPerformanceMetrics
-        impressions={performance.totalImpressions}
-        clicks={performance.totalClicks}
-        views={performance.totalViews}
-        variant="overlay"
-        className="absolute bottom-1 right-1"
-      />
+      {showMetrics && (
+        <AdPerformanceMetrics
+          impressions={performance.totalImpressions}
+          clicks={performance.totalClicks}
+          views={performance.totalViews}
+          variant="overlay"
+          className="absolute bottom-1 right-1"
+        />
+      )}
     </div>
   );
 });

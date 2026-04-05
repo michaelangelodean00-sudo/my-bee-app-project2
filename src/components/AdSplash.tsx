@@ -455,7 +455,7 @@ const AdSplash = memo(() => {
                 {/* Text panel */}
                 <div className="w-full md:w-1/2">
                   <h3 className="text-2xl md:text-3xl font-bold mb-4">{ad.title}</h3>
-                  {!ad.isAdvertiseCTA && (
+                  {!ad.isAdvertiseCTA && showMetrics && (
                     <AdPerformanceMetrics
                       impressions={getAdPerformance(ad.id).totalImpressions}
                       clicks={getAdPerformance(ad.id).totalClicks}
