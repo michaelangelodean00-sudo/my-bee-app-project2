@@ -96,6 +96,8 @@ const BurgerAdWidget = ({ showMetrics = false }: { showMetrics?: boolean }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex]);
 
+  const MAX_AD_DURATION = 90; // 90 seconds max for video ads
+
   // Track impression and sync video on index change
   useEffect(() => {
     trackImpression(`burger-${currentIndex}`);
@@ -104,6 +106,34 @@ const BurgerAdWidget = ({ showMetrics = false }: { showMetrics?: boolean }) => {
     vid.load();
     vid.play().catch(() => {});
   }, [currentIndex, trackImpression]);
+
+  // Enforce 90-second max on inline video
+  useEffect(() => {
+    const vid = videoRef.current;
+    if (!vid) return;
+    const enforceLimit = () => {
+      if (vid.currentTime >= MAX_AD_DURATION) {
+        vid.currentTime = 0;
+        vid.pause();
+      }
+    };
+    vid.addEventListener('timeupdate', enforceLimit);
+    return () => vid.removeEventListener('timeupdate', enforceLimit);
+  }, [currentIndex]);
+
+  // Enforce 90-second max on modal video
+  useEffect(() => {
+    const vid = modalVideoRef.current;
+    if (!vid || !modalOpen) return;
+    const enforceLimit = () => {
+      if (vid.currentTime >= MAX_AD_DURATION) {
+        vid.currentTime = 0;
+        vid.pause();
+      }
+    };
+    vid.addEventListener('timeupdate', enforceLimit);
+    return () => vid.removeEventListener('timeupdate', enforceLimit);
+  }, [currentIndex, modalOpen]);
 
   // When modal opens: seek modal video to same time, unmute and play
   useEffect(() => {

@@ -49,6 +49,8 @@ const VideoPlayerWithAds = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const hasTrackedImpression = useRef(false);
 
+  const MAX_AD_DURATION = 90; // 90 seconds max for video ads
+
   // Auto-play when visible
   useEffect(() => {
     if (isVisible && autoPlay && !isPlaying) {
@@ -60,6 +62,21 @@ const VideoPlayerWithAds = ({
       }
     }
   }, [isVisible, autoPlay]);
+
+  // Enforce 90-second max duration for video ads
+  useEffect(() => {
+    const vid = videoRef.current;
+    if (!vid) return;
+    const enforceLimit = () => {
+      if (vid.currentTime >= MAX_AD_DURATION) {
+        vid.currentTime = 0;
+        vid.pause();
+        setIsPlaying(false);
+      }
+    };
+    vid.addEventListener('timeupdate', enforceLimit);
+    return () => vid.removeEventListener('timeupdate', enforceLimit);
+  }, []);
 
   const handleAdClick = () => {
     if (isAd && adData && onAdClick) {
