@@ -190,7 +190,7 @@ const Index = () => {
             <section aria-label="Sponsored content">
               <p className="text-xs text-muted-foreground mb-3 md:mb-4 text-center font-medium tracking-wide uppercase">Sponsored</p>
               <EnhancedCard variant="default" className="p-4 md:p-5">
-                <McdonaldsAdWidget />
+                <McdonaldsAdWidget showMetrics={isAdmin} />
               </EnhancedCard>
             </section>
           </ScrollReveal>
