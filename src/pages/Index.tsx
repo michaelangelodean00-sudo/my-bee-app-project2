@@ -98,6 +98,9 @@ const Index = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const navigate = useNavigate();
   
+  // Demo: current user role - in production this comes from auth
+  const currentUserRole = 'admin' as const;
+  const isAdmin = currentUserRole === 'admin';
   const handleNewPost = useCallback((newPost: typeof samplePosts[0]) => {
     setPosts(prev => [newPost, ...prev]);
   }, []);
