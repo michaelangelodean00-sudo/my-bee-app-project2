@@ -151,7 +151,7 @@ const Index = () => {
         <GreetingBanner />
       </Suspense>
       <Suspense fallback={<div className="h-[420px] md:h-[520px] bg-secondary animate-pulse" />}>
-        <AdSplash />
+        <AdSplash showMetrics={isAdmin} />
       </Suspense>
       {/* Video Ad Banner — directly below AdSplash */}
       <div className="w-full px-4 md:px-6 py-3 bg-card/80 border-b border-border">
