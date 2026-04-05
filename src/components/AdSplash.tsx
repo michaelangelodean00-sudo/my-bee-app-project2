@@ -226,7 +226,7 @@ const ads: Ad[] = [
 // Pre-optimize ads once at module level
 const optimizedAdsStatic = optimizeAds(ads, 'splash');
 
-const AdSplash = memo(() => {
+const AdSplash = memo(({ showMetrics = false }: { showMetrics?: boolean }) => {
   const optimizedAds = optimizedAdsStatic;
   
   const [autoplay, setAutoplay] = useState(false);

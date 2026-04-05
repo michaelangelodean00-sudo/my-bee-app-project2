@@ -34,7 +34,7 @@ const ads: AdContent[] = [
   }
 ];
 
-const McdonaldsAdWidget = memo(() => {
+const McdonaldsAdWidget = memo(({ showMetrics = false }: { showMetrics?: boolean }) => {
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
   const { trackImpression, trackClick, getAdPerformance } = useAdAnalytics();
 

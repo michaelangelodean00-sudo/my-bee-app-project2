@@ -36,7 +36,7 @@ const ads: Ad[] = [
   }
 ];
 
-const AdWidget = () => {
+const AdWidget = ({ showMetrics = false }: { showMetrics?: boolean }) => {
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
   const [dismissed, setDismissed] = useState(false);
   const [isAnimating, setIsAnimating] = useState(true);

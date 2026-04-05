@@ -23,6 +23,7 @@ interface VideoPlayerWithAdsProps {
   onAdClick?: (adId: string) => void;
   autoPlay?: boolean;
   isVisible?: boolean;
+  showMetrics?: boolean;
 }
 
 const VideoPlayerWithAds = ({ 
@@ -39,7 +40,8 @@ const VideoPlayerWithAds = ({
   onAdImpression,
   onAdClick,
   autoPlay = true,
-  isVisible = false
+  isVisible = false,
+  showMetrics = false
 }: VideoPlayerWithAdsProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [liked, setLiked] = useState(false);

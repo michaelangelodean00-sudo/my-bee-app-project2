@@ -64,7 +64,7 @@ const videoAds: VideoAd[] = [
   },
 ];
 
-const BurgerAdWidget = () => {
+const BurgerAdWidget = ({ showMetrics = false }: { showMetrics?: boolean }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMuted, setIsMuted] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
