@@ -36,7 +36,7 @@ const ads: Ad[] = [
   }
 ];
 
-const AdWidget = () => {
+const AdWidget = ({ showMetrics = false }: { showMetrics?: boolean }) => {
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
   const [dismissed, setDismissed] = useState(false);
   const [isAnimating, setIsAnimating] = useState(true);
@@ -137,15 +137,17 @@ const AdWidget = () => {
               {currentAd.description}
             </p>
             
-            {/* Ad Performance Metrics */}
-            <div className="mb-4 flex justify-center">
-              <AdPerformanceMetrics
-                impressions={performance.totalImpressions}
-                clicks={performance.totalClicks}
-                views={performance.totalViews}
-                variant="inline"
-              />
-            </div>
+            {/* Ad Performance Metrics - only visible to admin/ad owner */}
+            {showMetrics && (
+              <div className="mb-4 flex justify-center">
+                <AdPerformanceMetrics
+                  impressions={performance.totalImpressions}
+                  clicks={performance.totalClicks}
+                  views={performance.totalViews}
+                  variant="inline"
+                />
+              </div>
+            )}
 
             {/* Premium gradient button */}
             <a 

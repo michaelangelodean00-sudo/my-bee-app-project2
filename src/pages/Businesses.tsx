@@ -203,6 +203,7 @@ const VideoFeed = () => {
               onAdClick={trackClick}
               autoPlay={true}
               isVisible={currentVideoIndex === index}
+              showMetrics={false}
             />
           </div>
         );

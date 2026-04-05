@@ -34,7 +34,7 @@ const ads: AdContent[] = [
   }
 ];
 
-const McdonaldsAdWidget = memo(() => {
+const McdonaldsAdWidget = memo(({ showMetrics = false }: { showMetrics?: boolean }) => {
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
   const { trackImpression, trackClick, getAdPerformance } = useAdAnalytics();
 
@@ -89,13 +89,15 @@ const McdonaldsAdWidget = memo(() => {
           </div>
         </div>
       </div>
-      <AdPerformanceMetrics
-        impressions={performance.totalImpressions}
-        clicks={performance.totalClicks}
-        views={performance.totalViews}
-        variant="overlay"
-        className="absolute bottom-1 right-1"
-      />
+      {showMetrics && (
+        <AdPerformanceMetrics
+          impressions={performance.totalImpressions}
+          clicks={performance.totalClicks}
+          views={performance.totalViews}
+          variant="overlay"
+          className="absolute bottom-1 right-1"
+        />
+      )}
     </div>
   );
 });

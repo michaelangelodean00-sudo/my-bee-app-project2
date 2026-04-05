@@ -23,6 +23,7 @@ interface VideoPlayerWithAdsProps {
   onAdClick?: (adId: string) => void;
   autoPlay?: boolean;
   isVisible?: boolean;
+  showMetrics?: boolean;
 }
 
 const VideoPlayerWithAds = ({ 
@@ -39,7 +40,8 @@ const VideoPlayerWithAds = ({
   onAdImpression,
   onAdClick,
   autoPlay = true,
-  isVisible = false
+  isVisible = false,
+  showMetrics = false
 }: VideoPlayerWithAdsProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [liked, setLiked] = useState(false);
@@ -210,11 +212,13 @@ const VideoPlayerWithAds = ({
             <Badge className="bg-green-500 text-white font-semibold px-3 py-1 rounded animate-pulse w-fit">
               AD
             </Badge>
-            <AdPerformanceMetrics
-              impressions={adData.impressions}
-              clicks={adData.clicks}
-              variant="overlay"
-            />
+            {showMetrics && (
+              <AdPerformanceMetrics
+                impressions={adData.impressions}
+                clicks={adData.clicks}
+                variant="overlay"
+              />
+            )}
           </div>
         )}
 

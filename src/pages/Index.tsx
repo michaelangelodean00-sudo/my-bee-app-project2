@@ -98,6 +98,9 @@ const Index = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const navigate = useNavigate();
   
+  // Demo: current user role - in production this comes from auth
+  const currentUserRole = 'admin' as const;
+  const isAdmin = currentUserRole === 'admin';
   const handleNewPost = useCallback((newPost: typeof samplePosts[0]) => {
     setPosts(prev => [newPost, ...prev]);
   }, []);
@@ -148,12 +151,12 @@ const Index = () => {
         <GreetingBanner />
       </Suspense>
       <Suspense fallback={<div className="h-[420px] md:h-[520px] bg-secondary animate-pulse" />}>
-        <AdSplash />
+        <AdSplash showMetrics={isAdmin} />
       </Suspense>
       {/* Video Ad Banner — directly below AdSplash */}
       <div className="w-full px-4 md:px-6 py-3 bg-card/80 border-b border-border">
         <div className="max-w-3xl mx-auto">
-          <BurgerAdWidget />
+          <BurgerAdWidget showMetrics={isAdmin} />
         </div>
       </div>
 
@@ -187,7 +190,7 @@ const Index = () => {
             <section aria-label="Sponsored content">
               <p className="text-xs text-muted-foreground mb-3 md:mb-4 text-center font-medium tracking-wide uppercase">Sponsored</p>
               <EnhancedCard variant="default" className="p-4 md:p-5">
-                <McdonaldsAdWidget />
+                <McdonaldsAdWidget showMetrics={isAdmin} />
               </EnhancedCard>
             </section>
           </ScrollReveal>
