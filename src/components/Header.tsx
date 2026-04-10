@@ -2,6 +2,7 @@ import { memo } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import Logo from "./Logo";
+import SearchBar from "./SearchBar";
 import { useNotifications } from "../contexts/NotificationContext";
 
 interface HeaderProps {
@@ -44,7 +45,9 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
         <div className="flex-shrink-0 animate-logo-entrance overflow-hidden">
           <Logo />
         </div>
-        <div className="flex-1" />
+        <div className="flex-1 max-w-md hidden md:block">
+          <SearchBar />
+        </div>
         {/* Hamburger — tablet only (md hides it via sidebar) */}
         <div className="flex-shrink-0 md:hidden">
           <Button
