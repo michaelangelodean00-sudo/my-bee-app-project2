@@ -380,7 +380,7 @@ const AdSplash = memo(({ showMetrics = false }: { showMetrics?: boolean }) => {
   return (
     <div className="relative bg-secondary text-secondary-foreground flex justify-center z-0 overflow-hidden">
       <Carousel 
-        className="w-full max-w-7xl mx-auto py-8" 
+        className="w-full max-w-7xl mx-auto py-4" 
         opts={{ loop: true, align: "center" }}
         setApi={setApi}
       >
@@ -388,7 +388,7 @@ const AdSplash = memo(({ showMetrics = false }: { showMetrics?: boolean }) => {
           {optimizedAds.map((ad, index) => (
             <CarouselItem key={ad.id} className="pl-2 md:pl-4 basis-[80%] md:basis-[85%]">
               <div 
-                className={`flex flex-col md:flex-row items-center gap-8 px-4 transform-gpu ${
+                className={`flex flex-col md:flex-row items-center gap-4 md:gap-6 px-4 transform-gpu ${
                   isReady ? 'transition-transform duration-200' : ''
                 } ${index === currentSlide ? 'scale-100' : isReady ? 'scale-[0.97]' : 'scale-100'}`}
                 style={{ contain: 'layout' }}
@@ -410,7 +410,7 @@ const AdSplash = memo(({ showMetrics = false }: { showMetrics?: boolean }) => {
                       <img
                         src={ad.imageUrl}
                         alt="Sample advertisement — Advertise Here"
-                        className="rounded-2xl w-full h-64 md:h-80 lg:h-96 object-cover transform-gpu transition-transform duration-300 group-hover:scale-105 select-none"
+                        className="rounded-2xl w-full h-48 md:h-64 lg:h-72 object-cover transform-gpu transition-transform duration-300 group-hover:scale-105 select-none"
                         loading="lazy"
                         decoding="async"
                         draggable={false}
@@ -438,7 +438,7 @@ const AdSplash = memo(({ showMetrics = false }: { showMetrics?: boolean }) => {
                       <img 
                         src={ad.imageUrl} 
                         alt={ad.title}
-                        className="rounded-2xl w-full h-64 md:h-80 lg:h-96 object-cover transform-gpu transition-transform duration-300 group-hover:scale-105 shadow-2xl shadow-primary/30 select-none"
+                        className="rounded-2xl w-full h-48 md:h-64 lg:h-72 object-cover transform-gpu transition-transform duration-300 group-hover:scale-105 shadow-2xl shadow-primary/30 select-none"
                         loading={index === 0 ? "eager" : "lazy"}
                         decoding="async"
                         fetchPriority={index === 0 ? "high" : "auto"}
@@ -446,7 +446,7 @@ const AdSplash = memo(({ showMetrics = false }: { showMetrics?: boolean }) => {
                       />
                     </div>
                   ) : (
-                    <div className="rounded-2xl w-full h-64 md:h-80 lg:h-96 bg-gradient-to-br from-muted/50 to-muted animate-pulse flex items-center justify-center shadow-2xl">
+                    <div className="rounded-2xl w-full h-48 md:h-64 lg:h-72 bg-gradient-to-br from-muted/50 to-muted animate-pulse flex items-center justify-center shadow-2xl">
                       <span className="text-muted-foreground text-sm">Loading...</span>
                     </div>
                   )}
