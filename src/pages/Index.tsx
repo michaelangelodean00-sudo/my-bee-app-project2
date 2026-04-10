@@ -63,7 +63,7 @@ const samplePosts = [
 
 // Memoized post list to prevent unnecessary re-renders
 const PostList = memo(({ posts, userPosts }: { posts: typeof samplePosts; userPosts: typeof samplePosts }) => (
-  <section aria-label="Social media posts" className="space-y-5 md:space-y-6">
+  <section aria-label="Social media posts" className="space-y-4 md:space-y-4">
     {posts.map((post, index) => (
       <article 
         key={post.id} 
@@ -150,11 +150,11 @@ const Index = () => {
       <Suspense fallback={null}>
         <GreetingBanner />
       </Suspense>
-      <Suspense fallback={<div className="h-[420px] md:h-[520px] bg-secondary animate-pulse" />}>
+      <Suspense fallback={<div className="h-[280px] md:h-[360px] bg-secondary animate-pulse" />}>
         <AdSplash showMetrics={isAdmin} />
       </Suspense>
       {/* Video Ad Banner — directly below AdSplash */}
-      <div className="w-full px-4 md:px-6 py-3 bg-card/80 border-b border-border">
+      <div className="w-full px-4 md:px-6 py-2 bg-card/80 border-b border-border">
         <div className="max-w-3xl mx-auto">
           <BurgerAdWidget showMetrics={isAdmin} />
         </div>
@@ -182,7 +182,7 @@ const Index = () => {
           </div>
           
           <PullToRefresh onRefresh={handleRefresh} className="flex-1 overflow-y-auto">
-            <main className="w-full max-w-3xl mx-auto py-6 md:py-10 px-4 md:px-6 relative z-10 space-y-6 md:space-y-8" role="main" id="main-content">
+            <main className="w-full max-w-3xl mx-auto py-4 md:py-6 px-4 md:px-6 relative z-10 space-y-4 md:space-y-5" role="main" id="main-content">
           
           
           {/* Ad Widget */}
