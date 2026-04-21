@@ -9,7 +9,6 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { SecurityProvider } from "./components/SecurityProvider";
 import ErrorBoundary from "./components/ErrorBoundary";
 import AccessibilityEnhancements from "./components/AccessibilityEnhancements";
-import CopyrightProtection from "./components/CopyrightProtection";
 import PageLoader from "./components/PageLoader";
 
 // Eagerly import Index (home page) so it renders instantly without Suspense delay
@@ -54,7 +53,6 @@ const App = () => {
             <NotificationProvider>
               <ContentFilterProvider>
                 <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-                  <CopyrightProtection />
                   <AccessibilityEnhancements />
                   <Toaster 
                     position="bottom-right" 

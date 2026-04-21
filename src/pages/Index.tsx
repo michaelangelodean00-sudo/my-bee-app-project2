@@ -12,7 +12,6 @@ import BusinessCategorySection from "../components/BusinessCategorySection";
 import EnhancedCard from "../components/EnhancedCard";
 import ScrollReveal from "../components/ScrollReveal";
 import Footer from "../components/Footer";
-import CopyrightWatermark from "../components/CopyrightWatermark";
 import PullToRefresh from "../components/PullToRefresh";
 import PageTransition from "../components/PageTransition";
 import MobileBottomNav from "../components/MobileBottomNav";
@@ -133,12 +132,6 @@ const Index = () => {
           <Sidebar className="h-full" onLinkClick={() => setMobileSidebarOpen(false)} />
         </SheetContent>
       </Sheet>
-      
-      {/* Copyright Watermark */}
-      <CopyrightWatermark 
-        className="fixed top-4 right-4 z-50" 
-        variant="subtle" 
-      />
       
       {/* SEO Header */}
       <header>
