@@ -41,11 +41,11 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
       </div>
 
       {/* Tablet & Desktop: single horizontal row */}
-      <div className="hidden sm:flex items-center w-full px-4 py-0.5 gap-4 min-h-[56px] md:min-h-[60px]">
-        <div className="flex-shrink-0 animate-logo-entrance overflow-hidden">
+      <div className="hidden sm:flex items-center w-full px-4 py-0.5 gap-2 min-h-[56px] md:min-h-[60px]">
+        <div className="flex-shrink-0 animate-logo-entrance">
           <Logo />
         </div>
-        <div className="flex-1 max-w-md hidden md:block">
+        <div className="flex-1 hidden md:block">
           <SearchBar />
         </div>
         {/* Hamburger — tablet only (md hides it via sidebar) */}
