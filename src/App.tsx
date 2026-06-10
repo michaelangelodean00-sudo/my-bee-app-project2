@@ -7,12 +7,15 @@ import { NotificationProvider } from "./contexts/NotificationContext";
 import { ContentFilterProvider } from "./contexts/ContentFilterContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { SecurityProvider } from "./components/SecurityProvider";
+import { AuthProvider } from "./hooks/useAuth";
 import ErrorBoundary from "./components/ErrorBoundary";
 import AccessibilityEnhancements from "./components/AccessibilityEnhancements";
 import PageLoader from "./components/PageLoader";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 // Eagerly import Index (home page) so it renders instantly without Suspense delay
 import Index from "./pages/Index";
+import Auth from "./pages/Auth";
 
 // Lazy load all other pages for code splitting
 const Businesses = lazy(() => import("./pages/Businesses"));
@@ -50,6 +53,7 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <SecurityProvider>
           <ThemeProvider>
+            <AuthProvider>
             <NotificationProvider>
               <ContentFilterProvider>
                 <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
