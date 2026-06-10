@@ -12,7 +12,8 @@ import {
   Upload, Building2, User, Check, AlertCircle,
   UtensilsCrossed, Sparkles, ShoppingBag, Wrench,
   Car, CalendarDays, BriefcaseBusiness, Phone, Globe,
-  Instagram, CheckCircle2, ImageIcon,
+  Instagram, CheckCircle2, ImageIcon, MapPin, Navigation,
+  Facebook, Twitter,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { sanitizeText, validateImageFileSecure, rateLimit, LIMITS } from "@/utils/sanitization";
