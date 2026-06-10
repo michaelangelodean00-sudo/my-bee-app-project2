@@ -7,12 +7,15 @@ import { NotificationProvider } from "./contexts/NotificationContext";
 import { ContentFilterProvider } from "./contexts/ContentFilterContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { SecurityProvider } from "./components/SecurityProvider";
+import { AuthProvider } from "./hooks/useAuth";
 import ErrorBoundary from "./components/ErrorBoundary";
 import AccessibilityEnhancements from "./components/AccessibilityEnhancements";
 import PageLoader from "./components/PageLoader";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 // Eagerly import Index (home page) so it renders instantly without Suspense delay
 import Index from "./pages/Index";
+import Auth from "./pages/Auth";
 
 // Lazy load all other pages for code splitting
 const Businesses = lazy(() => import("./pages/Businesses"));
@@ -50,6 +53,7 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <SecurityProvider>
           <ThemeProvider>
+            <AuthProvider>
             <NotificationProvider>
               <ContentFilterProvider>
                 <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
@@ -68,19 +72,20 @@ const App = () => {
                   <Suspense fallback={<PageLoader type="full" message="Loading B.E.E App..." />}>
                     <Routes>
                       <Route path="/" element={<Index />} />
+                      <Route path="/auth" element={<Auth />} />
                       <Route path="/businesses" element={<Businesses />} />
                       <Route path="/events" element={<Events />} />
                       <Route path="/ecommerce" element={<Ecommerce />} />
-                      <Route path="/admin" element={<Admin />} />
-                      <Route path="/settings" element={<ProfileSettings />} />
-                      <Route path="/profile" element={<UserProfilePage />} />
+                      <Route path="/admin" element={<ProtectedRoute requireRole="admin"><Admin /></ProtectedRoute>} />
+                      <Route path="/settings" element={<ProtectedRoute><ProfileSettings /></ProtectedRoute>} />
+                      <Route path="/profile" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
                       <Route path="/profile/:id" element={<UserProfilePage />} />
-                      <Route path="/upload-video" element={<VideoUpload />} />
+                      <Route path="/upload-video" element={<ProtectedRoute><VideoUpload /></ProtectedRoute>} />
                       <Route path="/copyright" element={<Copyright />} />
                       <Route path="/terms" element={<Copyright />} />
                       <Route path="/privacy" element={<Copyright />} />
                       <Route path="/dmca" element={<Copyright />} />
-                      <Route path="/customer-analytics" element={<CustomerAnalytics />} />
+                      <Route path="/customer-analytics" element={<ProtectedRoute><CustomerAnalytics /></ProtectedRoute>} />
                       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                       <Route path="*" element={<NotFound />} />
                     </Routes>
@@ -88,6 +93,7 @@ const App = () => {
                 </BrowserRouter>
               </ContentFilterProvider>
             </NotificationProvider>
+            </AuthProvider>
           </ThemeProvider>
         </SecurityProvider>
       </QueryClientProvider>

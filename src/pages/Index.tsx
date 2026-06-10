@@ -21,6 +21,7 @@ import { Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { useAuth } from "../hooks/useAuth";
 
 // Lazy load non-critical visual components
 const AnimatedBackground = lazy(() => import("../components/AnimatedBackground"));
@@ -97,9 +98,8 @@ const Index = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const navigate = useNavigate();
   
-  // Demo: current user role - in production this comes from auth
-  const currentUserRole = 'admin' as const;
-  const isAdmin = currentUserRole === 'admin';
+  // Real role from auth context
+  const { isAdmin } = useAuth();
   const handleNewPost = useCallback((newPost: typeof samplePosts[0]) => {
     setPosts(prev => [newPost, ...prev]);
   }, []);
