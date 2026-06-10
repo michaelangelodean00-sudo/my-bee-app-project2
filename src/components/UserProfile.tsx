@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Calendar, Star, Users, Settings, Edit, Building2, User, Briefcase, Globe, Shield } from "lucide-react";
+import { MapPin, Calendar, Star, Users, Settings, Edit, Building2, User, Briefcase, Globe, Shield, ArrowUpRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import ProfileEditDialog from "./ProfileEditDialog";
 import { cn } from "@/lib/utils";
@@ -44,6 +44,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
   isCurrentUser = false
 }) => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [upgradeMode, setUpgradeMode] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   
   const isAdmin = role === 'admin';
@@ -232,6 +233,24 @@ const UserProfile: React.FC<UserProfileProps> = ({
           
           {isCurrentUser ? (
             <div className="flex flex-col gap-2">
+              {!businessOwner && (
+                <button
+                  type="button"
+                  onClick={() => { setUpgradeMode(true); setIsEditDialogOpen(true); }}
+                  className="group relative overflow-hidden rounded-lg p-3 text-left bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] touch-manipulation"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <Sparkles size={16} className="flex-shrink-0" />
+                      <div className="min-w-0">
+                        <div className="text-xs font-semibold leading-tight">Upgrade to Business</div>
+                        <div className="text-[10px] opacity-90 leading-tight truncate">Promote, sell & get listed</div>
+                      </div>
+                    </div>
+                    <ArrowUpRight size={16} className="flex-shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </div>
+                </button>
+              )}
               <div className="flex gap-2">
                 <Button asChild variant="outline" size="sm" className="flex-1">
                   <Link to="/profile">
@@ -272,14 +291,18 @@ const UserProfile: React.FC<UserProfileProps> = ({
 
       {isCurrentUser && (
         <ProfileEditDialog
+          key={upgradeMode ? "upgrade" : "edit"}
           open={isEditDialogOpen}
-          onOpenChange={setIsEditDialogOpen}
+          onOpenChange={(open) => {
+            setIsEditDialogOpen(open);
+            if (!open) setUpgradeMode(false);
+          }}
           currentUser={{
             name: editableUser.name,
             avatarUrl: editableUser.avatarUrl,
             avatarFallback: editableUser.avatarFallback,
             location: editableUser.location,
-            businessOwner: editableUser.businessOwner,
+            businessOwner: upgradeMode ? true : editableUser.businessOwner,
           }}
           onSave={handleProfileSave}
         />
