@@ -71,7 +71,7 @@ const ProfileEditDialog = ({ open, onOpenChange, currentUser, onSave }: ProfileE
   const [errors, setErrors] = useState<Record<string, string>>({});
   const hasPhoto = !!formData.avatarUrl;
   const sentenceCount = countSentences(formData.bio);
-  const hasContact = !!(formData.businessPhone || formData.businessWebsite || formData.businessSocial);
+  const hasContact = !!(formData.businessPhone || formData.businessWebsite || formData.businessInstagram || formData.businessFacebook || formData.businessTwitter || formData.businessTiktok);
 
   // Business requirement checklist
   const bizRequirements = [
@@ -118,7 +118,12 @@ const ProfileEditDialog = ({ open, onOpenChange, currentUser, onSave }: ProfileE
         businessCategory: formData.businessCategory || "",
         businessPhone: formData.businessPhone,
         businessWebsite: formData.businessWebsite,
-        businessSocial: formData.businessSocial,
+        businessInstagram: formData.businessInstagram,
+        businessFacebook: formData.businessFacebook,
+        businessTwitter: formData.businessTwitter,
+        businessTiktok: formData.businessTiktok,
+        businessStreetAddress: formData.businessStreetAddress,
+        businessGoogleMapUrl: formData.businessGoogleMapUrl,
       });
       toast.success("Submitted for review", {
         description: "Your business profile is pending admin approval.",
@@ -365,11 +370,59 @@ const ProfileEditDialog = ({ open, onOpenChange, currentUser, onSave }: ProfileE
                   />
                 </div>
                 <div className="relative">
+                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                  <Input
+                    placeholder="Street address"
+                    value={formData.businessStreetAddress}
+                    onChange={(e) => handleChange("businessStreetAddress", e.target.value, 120)}
+                    className="pl-8 h-9 text-sm"
+                  />
+                </div>
+                <div className="relative">
+                  <Navigation className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                  <Input
+                    placeholder="Google Maps link (https://maps.google.com/...)"
+                    value={formData.businessGoogleMapUrl}
+                    onChange={(e) => handleChange("businessGoogleMapUrl", e.target.value, 300)}
+                    className="pl-8 h-9 text-sm"
+                  />
+                </div>
+                <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider pt-1">Social Media</p>
+                <div className="relative">
                   <Instagram className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
                   <Input
-                    placeholder="Social media link"
-                    value={formData.businessSocial}
-                    onChange={(e) => handleChange("businessSocial", e.target.value, 200)}
+                    placeholder="Instagram link"
+                    value={formData.businessInstagram}
+                    onChange={(e) => handleChange("businessInstagram", e.target.value, 200)}
+                    className="pl-8 h-9 text-sm"
+                  />
+                </div>
+                <div className="relative">
+                  <Facebook className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                  <Input
+                    placeholder="Facebook link"
+                    value={formData.businessFacebook}
+                    onChange={(e) => handleChange("businessFacebook", e.target.value, 200)}
+                    className="pl-8 h-9 text-sm"
+                  />
+                </div>
+                <div className="relative">
+                  <Twitter className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                  <Input
+                    placeholder="Twitter / X link"
+                    value={formData.businessTwitter}
+                    onChange={(e) => handleChange("businessTwitter", e.target.value, 200)}
+                    className="pl-8 h-9 text-sm"
+                  />
+                </div>
+                <div className="relative">
+                  <svg className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.5-4.35 2.89 2.89 0 0 1 2.5-1.43c.26 0 .51.04.76.1V9.56a6.37 6.37 0 0 0-.76-.05A6.34 6.34 0 0 0 5 15.88a6.34 6.34 0 0 0 6.34 6.33 6.34 6.34 0 0 0 6.33-6.33V8.78a8.27 8.27 0 0 0 4.83 1.55V6.88a4.87 4.87 0 0 1-2.91-.19z"/>
+                  </svg>
+                  <Input
+                    placeholder="TikTok link"
+                    value={formData.businessTiktok}
+                    onChange={(e) => handleChange("businessTiktok", e.target.value, 200)}
                     className="pl-8 h-9 text-sm"
                   />
                 </div>
