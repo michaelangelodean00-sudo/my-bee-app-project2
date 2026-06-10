@@ -16,7 +16,12 @@ export interface BusinessApprovalSubmission {
   businessCategory: string;
   businessPhone: string;
   businessWebsite: string;
-  businessSocial: string;
+  businessInstagram: string;
+  businessFacebook: string;
+  businessTwitter: string;
+  businessTiktok: string;
+  businessStreetAddress: string;
+  businessGoogleMapUrl: string;
   // Owner identity (mock — single-user demo)
   ownerKey: string;
 }
