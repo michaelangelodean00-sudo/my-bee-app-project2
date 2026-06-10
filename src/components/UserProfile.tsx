@@ -129,6 +129,25 @@ const UserProfile: React.FC<UserProfileProps> = ({
           )}
         </div>
 
+        {(pendingBusiness || rejectedBusiness) && (
+          <div
+            className={cn(
+              "px-4 py-2 flex items-center gap-2 text-xs font-medium border-b",
+              pendingBusiness
+                ? "bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800"
+                : "bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800"
+            )}
+          >
+            {pendingBusiness ? <Clock size={14} /> : <XCircle size={14} />}
+            <span className="flex-1 truncate">
+              {pendingBusiness
+                ? "Business profile pending admin approval"
+                : "Business application was not approved"}
+            </span>
+          </div>
+        )}
+
+
         <CardHeader className="pb-3">
           <div className="flex items-center space-x-3">
             <div className="relative">
