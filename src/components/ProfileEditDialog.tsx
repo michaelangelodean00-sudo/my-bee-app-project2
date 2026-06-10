@@ -99,6 +99,29 @@ const ProfileEditDialog = ({ open, onOpenChange, currentUser, onSave }: ProfileE
       return;
     }
     if (!validate()) return;
+
+    // Business submissions go through admin approval.
+    // The user's account is NOT flipped to business until an admin approves.
+    if (formData.businessOwner && !currentUser.businessOwner) {
+      submitBusinessApproval({
+        ownerKey: currentUser.name || "current-user",
+        name: formData.name,
+        avatarUrl: formData.avatarUrl,
+        bio: formData.bio,
+        location: formData.location,
+        businessCategory: formData.businessCategory || "",
+        businessPhone: formData.businessPhone,
+        businessWebsite: formData.businessWebsite,
+        businessSocial: formData.businessSocial,
+      });
+      toast.success("Submitted for review", {
+        description: "Your business profile is pending admin approval.",
+      });
+      onSave({ ...formData, businessOwner: false, businessPending: true });
+      onOpenChange(false);
+      return;
+    }
+
     onSave(formData);
     onOpenChange(false);
   };
