@@ -246,12 +246,64 @@ const UserProfile: React.FC<UserProfileProps> = ({
           )}
 
           {/* Business-specific info */}
-          {businessOwner && website && (
-            <div className="flex items-center text-xs text-amber-600 dark:text-amber-400">
-              <Globe size={12} className="mr-1" />
-              <a href={website} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                {website}
-              </a>
+          {businessOwner && (
+            <div className="space-y-2">
+              {website && (
+                <div className="flex items-center text-xs text-amber-600 dark:text-amber-400">
+                  <Globe size={12} className="mr-1 flex-shrink-0" />
+                  <a href={website} target="_blank" rel="noopener noreferrer" className="hover:underline truncate">
+                    {website}
+                  </a>
+                </div>
+              )}
+              {phone && (
+                <div className="flex items-center text-xs text-amber-600 dark:text-amber-400">
+                  <Phone size={12} className="mr-1 flex-shrink-0" />
+                  <a href={`tel:${phone.replace(/\s/g, '')}`} className="hover:underline">
+                    {phone}
+                  </a>
+                </div>
+              )}
+              {streetAddress && (
+                <div className="flex items-center text-xs text-muted-foreground">
+                  <MapPin size={12} className="mr-1 flex-shrink-0" />
+                  <span>{streetAddress}</span>
+                </div>
+              )}
+              {googleMapUrl && (
+                <div className="flex items-center text-xs text-amber-600 dark:text-amber-400">
+                  <Navigation size={12} className="mr-1 flex-shrink-0" />
+                  <a href={googleMapUrl} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                    View on Google Maps
+                  </a>
+                </div>
+              )}
+              {socialMedia && (
+                <div className="flex items-center gap-2 pt-0.5">
+                  {socialMedia.instagram && (
+                    <a href={socialMedia.instagram} target="_blank" rel="noopener noreferrer" className="h-7 w-7 rounded-full bg-muted flex items-center justify-center hover:bg-rose-100 hover:text-rose-600 transition-colors" aria-label="Instagram">
+                      <Instagram size={14} />
+                    </a>
+                  )}
+                  {socialMedia.facebook && (
+                    <a href={socialMedia.facebook} target="_blank" rel="noopener noreferrer" className="h-7 w-7 rounded-full bg-muted flex items-center justify-center hover:bg-blue-100 hover:text-blue-600 transition-colors" aria-label="Facebook">
+                      <Facebook size={14} />
+                    </a>
+                  )}
+                  {socialMedia.twitter && (
+                    <a href={socialMedia.twitter} target="_blank" rel="noopener noreferrer" className="h-7 w-7 rounded-full bg-muted flex items-center justify-center hover:bg-sky-100 hover:text-sky-600 transition-colors" aria-label="Twitter">
+                      <Twitter size={14} />
+                    </a>
+                  )}
+                  {socialMedia.tiktok && (
+                    <a href={socialMedia.tiktok} target="_blank" rel="noopener noreferrer" className="h-7 w-7 rounded-full bg-muted flex items-center justify-center hover:bg-purple-100 hover:text-purple-600 transition-colors" aria-label="TikTok">
+                      <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.5-4.35 2.89 2.89 0 0 1 2.5-1.43c.26 0 .51.04.76.1V9.56a6.37 6.37 0 0 0-.76-.05A6.34 6.34 0 0 0 5 15.88a6.34 6.34 0 0 0 6.34 6.33 6.34 6.34 0 0 0 6.33-6.33V8.78a8.27 8.27 0 0 0 4.83 1.55V6.88a4.87 4.87 0 0 1-2.91-.19z"/>
+                      </svg>
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
           )}
           
