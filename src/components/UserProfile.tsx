@@ -94,7 +94,11 @@ const UserProfile: React.FC<UserProfileProps> = ({
     isVerified,
     businessOwner,
     bio: bio || "",
-    website: website || ""
+    website: website || "",
+    phone: phone || "",
+    streetAddress: streetAddress || "",
+    googleMapUrl: googleMapUrl || "",
+    socialMedia: socialMedia || {}
   });
 
   const handleProfileSave = (updatedUser: any) => {
