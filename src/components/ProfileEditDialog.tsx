@@ -60,7 +60,12 @@ const ProfileEditDialog = ({ open, onOpenChange, currentUser, onSave }: ProfileE
     businessCategory: "" as BusinessCategoryId | "",
     businessPhone: "",
     businessWebsite: "",
-    businessSocial: "",
+    businessInstagram: "",
+    businessFacebook: "",
+    businessTwitter: "",
+    businessTiktok: "",
+    businessStreetAddress: "",
+    businessGoogleMapUrl: "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
