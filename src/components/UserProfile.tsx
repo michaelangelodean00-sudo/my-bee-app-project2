@@ -62,7 +62,10 @@ const UserProfile: React.FC<UserProfileProps> = ({
   const pendingBusiness = isCurrentUser && myApproval?.status === "pending" && !businessOwner;
   const rejectedBusiness = isCurrentUser && myApproval?.status === "rejected" && !businessOwner;
 
-  const isAdmin = role === 'admin';
+  // Admin status is private — only ever surfaced to the admin themselves.
+  // Regular users and business accounts must never see admin badges, banners,
+  // or the Admin Panel entry point on someone else's profile.
+  const isAdmin = role === 'admin' && isCurrentUser;
   
   // This local state is for the edit dialog, 
   // but the source of truth is passed in as props.
