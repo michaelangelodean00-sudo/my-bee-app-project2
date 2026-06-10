@@ -94,6 +94,24 @@ export default function Auth() {
     setTab("signin");
   };
 
+  const handleOAuthSignIn = async (provider: "google" | "apple" | "microsoft" | "lovable") => {
+    setSubmitting(true);
+    const result = await lovable.auth.signInWithOAuth(provider, {
+      redirect_uri: window.location.origin,
+    });
+    setSubmitting(false);
+    if (result.error) {
+      toast.error(result.error.message || `${provider} sign-in failed`);
+      return;
+    }
+    if (result.redirected) {
+      // Browser will redirect to provider — just return
+      return;
+    }
+    toast.success("Signed in!");
+    navigate("/", { replace: true });
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-md space-y-6">
