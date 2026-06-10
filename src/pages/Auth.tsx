@@ -129,6 +129,45 @@ export default function Auth() {
                 <Button type="submit" className="w-full" disabled={submitting}>
                   {submitting ? "Signing in..." : "Sign In"}
                 </Button>
+
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-card px-2 text-muted-foreground">
+                      Or continue with
+                    </span>
+                  </div>
+                </div>
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full gap-2"
+                  onClick={() => handleOAuthSignIn("google")}
+                  disabled={submitting}
+                >
+                  <Chrome className="h-4 w-4" />
+                  Google
+                </Button>
+
+                <div className="relative group">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full gap-2 opacity-60 cursor-not-allowed"
+                    disabled
+                  >
+                    <Facebook className="h-4 w-4" />
+                    Facebook
+                  </Button>
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <span className="bg-amber-100 text-amber-800 text-xs font-medium px-2 py-1 rounded border border-amber-200 shadow-sm">
+                      Coming Soon
+                    </span>
+                  </div>
+                </div>
               </form>
             </TabsContent>
 
@@ -182,14 +221,53 @@ export default function Auth() {
                 <Button type="submit" className="w-full" disabled={submitting}>
                   {submitting ? "Creating..." : "Create Account"}
                 </Button>
+
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-card px-2 text-muted-foreground">
+                      Or continue with
+                    </span>
+                  </div>
+                </div>
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full gap-2"
+                  onClick={() => handleOAuthSignIn("google")}
+                  disabled={submitting}
+                >
+                  <Chrome className="h-4 w-4" />
+                  Google
+                </Button>
+
+                <div className="relative group">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full gap-2 opacity-60 cursor-not-allowed"
+                    disabled
+                  >
+                    <Facebook className="h-4 w-4" />
+                    Facebook
+                  </Button>
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <span className="bg-amber-100 text-amber-800 text-xs font-medium px-2 py-1 rounded border border-amber-200 shadow-sm">
+                      Coming Soon
+                    </span>
+                  </div>
+                </div>
               </form>
             </TabsContent>
           </Tabs>
         </Card>
 
         <p className="text-xs text-muted-foreground text-center">
-          By continuing you agree to our <Link to="/terms" className="underline">Terms</Link> and{" "}
-          <Link to="/privacy" className="underline">Privacy Policy</Link>.
+          By continuing you agree to our <Link to="/terms" className="underline">Terms</Link>{" "}
+          and <Link to="/privacy" className="underline">Privacy Policy</Link>.
         </p>
       </div>
     </div>
