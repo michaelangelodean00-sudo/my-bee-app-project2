@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Calendar, Star, Users, Settings, Edit, Building2, User, Briefcase, Globe, Shield, ArrowUpRight, Sparkles } from "lucide-react";
+import { MapPin, Calendar, Star, Users, Settings, Edit, Building2, User, Briefcase, Globe, Shield, ArrowUpRight, Sparkles, Clock, XCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import ProfileEditDialog from "./ProfileEditDialog";
 import { cn } from "@/lib/utils";
+import { getMyLatest, subscribeApprovals, type BusinessApprovalSubmission } from "@/utils/businessApprovals";
 
 export type UserRole = 'user' | 'admin';
 
@@ -46,7 +47,21 @@ const UserProfile: React.FC<UserProfileProps> = ({
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [upgradeMode, setUpgradeMode] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
-  
+  const ownerKey = name || "current-user";
+  const [myApproval, setMyApproval] = useState<BusinessApprovalSubmission | undefined>(
+    () => (isCurrentUser ? getMyLatest(ownerKey) : undefined)
+  );
+
+  useEffect(() => {
+    if (!isCurrentUser) return;
+    const update = () => setMyApproval(getMyLatest(ownerKey));
+    update();
+    return subscribeApprovals(update);
+  }, [isCurrentUser, ownerKey]);
+
+  const pendingBusiness = isCurrentUser && myApproval?.status === "pending" && !businessOwner;
+  const rejectedBusiness = isCurrentUser && myApproval?.status === "rejected" && !businessOwner;
+
   const isAdmin = role === 'admin';
   
   // This local state is for the edit dialog, 
@@ -113,6 +128,25 @@ const UserProfile: React.FC<UserProfileProps> = ({
             </Badge>
           )}
         </div>
+
+        {(pendingBusiness || rejectedBusiness) && (
+          <div
+            className={cn(
+              "px-4 py-2 flex items-center gap-2 text-xs font-medium border-b",
+              pendingBusiness
+                ? "bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800"
+                : "bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800"
+            )}
+          >
+            {pendingBusiness ? <Clock size={14} /> : <XCircle size={14} />}
+            <span className="flex-1 truncate">
+              {pendingBusiness
+                ? "Business profile pending admin approval"
+                : "Business application was not approved"}
+            </span>
+          </div>
+        )}
+
 
         <CardHeader className="pb-3">
           <div className="flex items-center space-x-3">
@@ -233,7 +267,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
           
           {isCurrentUser ? (
             <div className="flex flex-col gap-2">
-              {!businessOwner && (
+              {!businessOwner && !pendingBusiness && (
                 <button
                   type="button"
                   onClick={() => { setUpgradeMode(true); setIsEditDialogOpen(true); }}
@@ -243,13 +277,28 @@ const UserProfile: React.FC<UserProfileProps> = ({
                     <div className="flex items-center gap-2 min-w-0">
                       <Sparkles size={16} className="flex-shrink-0" />
                       <div className="min-w-0">
-                        <div className="text-xs font-semibold leading-tight">Upgrade to Business</div>
+                        <div className="text-xs font-semibold leading-tight">
+                          {rejectedBusiness ? "Resubmit Business Profile" : "Upgrade to Business"}
+                        </div>
                         <div className="text-[10px] opacity-90 leading-tight truncate">Promote, sell & get listed</div>
                       </div>
                     </div>
                     <ArrowUpRight size={16} className="flex-shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </div>
                 </button>
+              )}
+              {pendingBusiness && (
+                <div className="rounded-lg p-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 flex items-center gap-2">
+                  <Clock size={16} className="text-amber-600 dark:text-amber-400 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <div className="text-xs font-semibold text-amber-700 dark:text-amber-300 leading-tight">
+                      Pending Admin Review
+                    </div>
+                    <div className="text-[10px] text-amber-700/80 dark:text-amber-400/80 leading-tight truncate">
+                      We'll notify you once approved.
+                    </div>
+                  </div>
+                </div>
               )}
               <div className="flex gap-2">
                 <Button asChild variant="outline" size="sm" className="flex-1">

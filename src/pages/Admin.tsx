@@ -5,8 +5,9 @@ import RightSidebar from "../components/RightSidebar";
 import AdminVideoReview from "../components/AdminVideoReview";
 import AdManagement from "../components/admin/AdManagement";
 import GreetingManagement from "../components/admin/GreetingManagement";
+import BusinessApprovals from "../components/admin/BusinessApprovals";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Shield, Video, Users, Settings, Play, MessageSquare } from "lucide-react";
+import { Shield, Video, Users, Settings, Play, MessageSquare, Building2 } from "lucide-react";
 
 const Admin = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -44,8 +45,13 @@ const Admin = () => {
               <h1 className="heading-large">Admin Panel</h1>
             </div>
             
-            <Tabs defaultValue="videos" className="w-full">
-              <TabsList className="grid w-full grid-cols-6">
+            <Tabs defaultValue="approvals" className="w-full">
+              <TabsList className="grid w-full grid-cols-7">
+                <TabsTrigger value="approvals" className="flex items-center gap-2">
+                  <Building2 size={16} />
+                  <span className="hidden sm:inline">Approvals</span>
+                  <span className="sm:hidden">Biz</span>
+                </TabsTrigger>
                 <TabsTrigger value="videos" className="flex items-center gap-2">
                   <Video size={16} />
                   <span className="hidden sm:inline">Video Review</span>
@@ -75,6 +81,10 @@ const Admin = () => {
                 </TabsTrigger>
               </TabsList>
               
+              <TabsContent value="approvals" className="mt-6">
+                <BusinessApprovals />
+              </TabsContent>
+
               <TabsContent value="videos" className="mt-6">
                 <AdminVideoReview />
               </TabsContent>
