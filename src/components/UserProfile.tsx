@@ -51,6 +51,10 @@ const UserProfile: React.FC<UserProfileProps> = ({
   role = 'user',
   bio,
   website,
+  phone,
+  streetAddress,
+  googleMapUrl,
+  socialMedia,
   isCurrentUser = false
 }) => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
