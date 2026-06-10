@@ -1,5 +1,21 @@
 import { BusinessProfile } from "@/components/BusinessProfileCard";
 
+const slugify = (name: string) =>
+  name.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "").slice(0, 20);
+
+const mapsUrl = (address: string) =>
+  `https://maps.google.com/?q=${encodeURIComponent(address)}`;
+
+const siteUrl = (name: string) => `https://${slugify(name)}.bs`;
+
+const socials = (name: string) => {
+  const handle = slugify(name);
+  return {
+    instagram: `https://instagram.com/${handle}`,
+    facebook: `https://facebook.com/${handle}`,
+  };
+};
+
 export const mockBusinessProfiles: BusinessProfile[] = [
   // Food & Dining
   {
@@ -29,6 +45,9 @@ export const mockBusinessProfiles: BusinessProfile[] = [
     description: "Casual café serving fresh tropical juices, Bahamian breakfasts and homemade baked goods daily.",
     address: "45 Paradise Road, Nassau",
     phone: "+1 (242) 555-0102",
+    website: siteUrl("Island Bites Cafe"),
+    googleMapUrl: mapsUrl("45 Paradise Road, Nassau, Bahamas"),
+    socialMedia: socials("Island Bites Cafe"),
     rating: 4.5,
     reviewCount: 98,
     imageUrl: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=200&auto=format&fit=crop",
@@ -42,6 +61,9 @@ export const mockBusinessProfiles: BusinessProfile[] = [
     description: "Fresh-catch seafood straight from the market grilled to perfection. Lobster, grouper and snapper specials every day.",
     address: "Potter's Cay Dock, Nassau",
     phone: "+1 (242) 555-0103",
+    website: siteUrl("Nassau Fish Market Grill"),
+    googleMapUrl: mapsUrl("Potter's Cay Dock, Nassau, Bahamas"),
+    socialMedia: socials("Nassau Fish Market Grill"),
     rating: 4.7,
     reviewCount: 156,
     imageUrl: "https://images.unsplash.com/photo-1534482421-64566f976cfa?w=400&h=200&auto=format&fit=crop",
@@ -55,6 +77,9 @@ export const mockBusinessProfiles: BusinessProfile[] = [
     description: "Caribbean-style jerk chicken, ribs and plantains with homemade hot sauce. A Nassau favourite since 2005.",
     address: "98 East Hill Street, Nassau",
     phone: "+1 (242) 555-0104",
+    website: siteUrl("Junkanoo Jerk Shack"),
+    googleMapUrl: mapsUrl("98 East Hill Street, Nassau, Bahamas"),
+    socialMedia: socials("Junkanoo Jerk Shack"),
     rating: 4.6,
     reviewCount: 87,
     imageUrl: "https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=200&auto=format&fit=crop",
@@ -88,6 +113,9 @@ export const mockBusinessProfiles: BusinessProfile[] = [
     description: "Full-service beauty bar specialising in natural hair care, braiding, locs and hair colouring.",
     address: "67 Blue Hill Road, Nassau",
     phone: "+1 (242) 555-0202",
+    website: siteUrl("Island Glow Beauty Bar"),
+    googleMapUrl: mapsUrl("67 Blue Hill Road, Nassau, Bahamas"),
+    socialMedia: socials("Island Glow Beauty Bar"),
     rating: 4.6,
     reviewCount: 79,
     imageUrl: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&h=200&auto=format&fit=crop",
@@ -101,6 +129,9 @@ export const mockBusinessProfiles: BusinessProfile[] = [
     description: "Yoga, meditation and wellness coaching in a serene oceanside studio.",
     address: "5 Lighthouse Drive, Nassau",
     phone: "+1 (242) 555-0203",
+    website: siteUrl("Zen Wellness Studio"),
+    googleMapUrl: mapsUrl("5 Lighthouse Drive, Nassau, Bahamas"),
+    socialMedia: socials("Zen Wellness Studio"),
     rating: 4.8,
     reviewCount: 55,
     imageUrl: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=200&auto=format&fit=crop",
@@ -115,6 +146,9 @@ export const mockBusinessProfiles: BusinessProfile[] = [
     description: "Authentic handcrafted Bahamian souvenirs, straw work, shell art and local jewellery.",
     address: "Prince George Wharf, Nassau",
     phone: "+1 (242) 555-0301",
+    website: siteUrl("Bahamas Craft Market"),
+    googleMapUrl: mapsUrl("Prince George Wharf, Nassau, Bahamas"),
+    socialMedia: socials("Bahamas Craft Market"),
     rating: 4.4,
     reviewCount: 203,
     imageUrl: "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=400&h=200&auto=format&fit=crop",
@@ -128,6 +162,9 @@ export const mockBusinessProfiles: BusinessProfile[] = [
     description: "Trendy tropical fashion including swimwear, resort wear and locally designed clothing.",
     address: "Bay Street Mall, Nassau",
     phone: "+1 (242) 555-0302",
+    website: siteUrl("Island Threads Boutique"),
+    googleMapUrl: mapsUrl("Bay Street Mall, Nassau, Bahamas"),
+    socialMedia: socials("Island Threads Boutique"),
     rating: 4.5,
     reviewCount: 67,
     imageUrl: "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=400&h=200&auto=format&fit=crop",
@@ -143,6 +180,9 @@ export const mockBusinessProfiles: BusinessProfile[] = [
     description: "Licensed plumbing, electrical and general contracting services. Residential and commercial.",
     address: "Nassau, New Providence",
     phone: "+1 (242) 555-0401",
+    website: siteUrl("Nassau Home Solutions"),
+    googleMapUrl: mapsUrl("Nassau, New Providence, Bahamas"),
+    socialMedia: socials("Nassau Home Solutions"),
     rating: 4.7,
     reviewCount: 48,
     imageUrl: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=200&auto=format&fit=crop",
@@ -156,6 +196,9 @@ export const mockBusinessProfiles: BusinessProfile[] = [
     description: "Professional landscaping, garden design and maintenance for homes and resorts.",
     address: "Nassau, New Providence",
     phone: "+1 (242) 555-0402",
+    website: siteUrl("Tropical Landscape Gardens"),
+    googleMapUrl: mapsUrl("Nassau, New Providence, Bahamas"),
+    socialMedia: socials("Tropical Landscape Gardens"),
     rating: 4.6,
     reviewCount: 34,
     imageUrl: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=200&auto=format&fit=crop",
@@ -171,6 +214,8 @@ export const mockBusinessProfiles: BusinessProfile[] = [
     address: "Nassau International Airport, Nassau",
     phone: "+1 (242) 555-0501",
     website: "https://islandautorentals.com",
+    googleMapUrl: mapsUrl("Nassau International Airport, Nassau, Bahamas"),
+    socialMedia: socials("Island Auto Rentals"),
     rating: 4.5,
     reviewCount: 189,
     imageUrl: "https://images.unsplash.com/photo-1485291571150-772bcfc10da5?w=400&h=200&auto=format&fit=crop",
@@ -184,6 +229,9 @@ export const mockBusinessProfiles: BusinessProfile[] = [
     description: "Reliable taxi and charter transport across New Providence. Airport transfers and island tours available.",
     address: "Nassau, New Providence",
     phone: "+1 (242) 555-0502",
+    website: siteUrl("Bahamas Taxi Pro"),
+    googleMapUrl: mapsUrl("Nassau, New Providence, Bahamas"),
+    socialMedia: socials("Bahamas Taxi Pro"),
     rating: 4.6,
     reviewCount: 112,
     imageUrl: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=200&auto=format&fit=crop",
@@ -199,6 +247,8 @@ export const mockBusinessProfiles: BusinessProfile[] = [
     address: "Cable Beach, Nassau",
     phone: "+1 (242) 555-0601",
     website: "https://paradiseevents.com",
+    googleMapUrl: mapsUrl("Cable Beach, Nassau, Bahamas"),
+    socialMedia: socials("Paradise Events Co"),
     rating: 4.9,
     reviewCount: 76,
     imageUrl: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400&h=200&auto=format&fit=crop",
@@ -213,6 +263,9 @@ export const mockBusinessProfiles: BusinessProfile[] = [
     description: "Professional DJ, lighting and sound system rentals for events of all sizes.",
     address: "Nassau, New Providence",
     phone: "+1 (242) 555-0602",
+    website: siteUrl("Nassau Sound Stage"),
+    googleMapUrl: mapsUrl("Nassau, New Providence, Bahamas"),
+    socialMedia: socials("Nassau Sound Stage"),
     rating: 4.7,
     reviewCount: 43,
     imageUrl: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400&h=200&auto=format&fit=crop",
@@ -229,6 +282,8 @@ export const mockBusinessProfiles: BusinessProfile[] = [
     address: "Shirley Street, Nassau",
     phone: "+1 (242) 555-0701",
     website: "https://caribbeanlawassoc.com",
+    googleMapUrl: mapsUrl("Shirley Street, Nassau, Bahamas"),
+    socialMedia: socials("Caribbean Law Associates"),
     rating: 4.8,
     reviewCount: 38,
     imageUrl: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=400&h=200&auto=format&fit=crop",
@@ -242,6 +297,9 @@ export const mockBusinessProfiles: BusinessProfile[] = [
     description: "Strategic business consulting, accounting, and financial planning for local entrepreneurs.",
     address: "East Bay Street, Nassau",
     phone: "+1 (242) 555-0702",
+    website: siteUrl("Bahamas Business Consulting"),
+    googleMapUrl: mapsUrl("East Bay Street, Nassau, Bahamas"),
+    socialMedia: socials("Bahamas Business Consulting"),
     rating: 4.6,
     reviewCount: 29,
     imageUrl: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=200&auto=format&fit=crop",
