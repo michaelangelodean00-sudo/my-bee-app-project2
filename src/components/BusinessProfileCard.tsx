@@ -14,6 +14,13 @@ export interface BusinessProfile {
   address: string;
   phone?: string;
   website?: string;
+  googleMapUrl?: string;
+  socialMedia?: {
+    instagram?: string;
+    facebook?: string;
+    twitter?: string;
+    tiktok?: string;
+  };
   rating: number;
   reviewCount: number;
   imageUrl: string;
