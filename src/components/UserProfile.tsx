@@ -44,6 +44,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
   isCurrentUser = false
 }) => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [upgradeMode, setUpgradeMode] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   
   const isAdmin = role === 'admin';
