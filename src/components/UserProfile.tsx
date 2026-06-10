@@ -291,14 +291,18 @@ const UserProfile: React.FC<UserProfileProps> = ({
 
       {isCurrentUser && (
         <ProfileEditDialog
+          key={upgradeMode ? "upgrade" : "edit"}
           open={isEditDialogOpen}
-          onOpenChange={setIsEditDialogOpen}
+          onOpenChange={(open) => {
+            setIsEditDialogOpen(open);
+            if (!open) setUpgradeMode(false);
+          }}
           currentUser={{
             name: editableUser.name,
             avatarUrl: editableUser.avatarUrl,
             avatarFallback: editableUser.avatarFallback,
             location: editableUser.location,
-            businessOwner: editableUser.businessOwner,
+            businessOwner: upgradeMode ? true : editableUser.businessOwner,
           }}
           onSave={handleProfileSave}
         />
