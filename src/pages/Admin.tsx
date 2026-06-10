@@ -45,8 +45,13 @@ const Admin = () => {
               <h1 className="heading-large">Admin Panel</h1>
             </div>
             
-            <Tabs defaultValue="videos" className="w-full">
-              <TabsList className="grid w-full grid-cols-6">
+            <Tabs defaultValue="approvals" className="w-full">
+              <TabsList className="grid w-full grid-cols-7">
+                <TabsTrigger value="approvals" className="flex items-center gap-2">
+                  <Building2 size={16} />
+                  <span className="hidden sm:inline">Approvals</span>
+                  <span className="sm:hidden">Biz</span>
+                </TabsTrigger>
                 <TabsTrigger value="videos" className="flex items-center gap-2">
                   <Video size={16} />
                   <span className="hidden sm:inline">Video Review</span>
