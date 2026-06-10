@@ -5,8 +5,9 @@ import RightSidebar from "../components/RightSidebar";
 import AdminVideoReview from "../components/AdminVideoReview";
 import AdManagement from "../components/admin/AdManagement";
 import GreetingManagement from "../components/admin/GreetingManagement";
+import BusinessApprovals from "../components/admin/BusinessApprovals";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Shield, Video, Users, Settings, Play, MessageSquare } from "lucide-react";
+import { Shield, Video, Users, Settings, Play, MessageSquare, Building2 } from "lucide-react";
 
 const Admin = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
