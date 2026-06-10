@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { MapPin, Phone, Globe, Star, Heart } from "lucide-react";
+import { MapPin, Phone, Globe, Star, Heart, Instagram, Facebook, Twitter, Navigation } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
