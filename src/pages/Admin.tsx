@@ -81,6 +81,10 @@ const Admin = () => {
                 </TabsTrigger>
               </TabsList>
               
+              <TabsContent value="approvals" className="mt-6">
+                <BusinessApprovals />
+              </TabsContent>
+
               <TabsContent value="videos" className="mt-6">
                 <AdminVideoReview />
               </TabsContent>
