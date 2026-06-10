@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Calendar, Star, Users, Settings, Edit, Building2, User, Briefcase, Globe, Shield, ArrowUpRight, Sparkles } from "lucide-react";
+import { MapPin, Calendar, Star, Users, Settings, Edit, Building2, User, Briefcase, Globe, Shield, ArrowUpRight, Sparkles, Clock, XCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import ProfileEditDialog from "./ProfileEditDialog";
 import { cn } from "@/lib/utils";
+import { getMyLatest, subscribeApprovals, type BusinessApprovalSubmission } from "@/utils/businessApprovals";
 
 export type UserRole = 'user' | 'admin';
 
