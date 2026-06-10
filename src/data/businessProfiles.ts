@@ -10,6 +10,11 @@ export const mockBusinessProfiles: BusinessProfile[] = [
     address: "12 Bay Street, Nassau, Bahamas",
     phone: "+1 (242) 555-0101",
     website: "https://conchpalace.com",
+    googleMapUrl: "https://maps.google.com/?q=12+Bay+Street+Nassau+Bahamas",
+    socialMedia: {
+      instagram: "https://instagram.com/conchpalace",
+      facebook: "https://facebook.com/conchpalace",
+    },
     rating: 4.8,
     reviewCount: 214,
     imageUrl: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=200&auto=format&fit=crop",
