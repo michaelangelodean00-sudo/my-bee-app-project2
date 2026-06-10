@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import Logo from "@/components/Logo";
+import { Chrome, Facebook } from "lucide-react";
 
 const emailSchema = z.string().trim().email({ message: "Invalid email" }).max(255);
 const passwordSchema = z.string().min(8, { message: "Min 8 characters" }).max(72);
@@ -92,6 +94,24 @@ export default function Auth() {
     setTab("signin");
   };
 
+  const handleOAuthSignIn = async (provider: "google" | "apple" | "microsoft" | "lovable") => {
+    setSubmitting(true);
+    const result = await lovable.auth.signInWithOAuth(provider, {
+      redirect_uri: window.location.origin,
+    });
+    setSubmitting(false);
+    if (result.error) {
+      toast.error(result.error.message || `${provider} sign-in failed`);
+      return;
+    }
+    if (result.redirected) {
+      // Browser will redirect to provider — just return
+      return;
+    }
+    toast.success("Signed in!");
+    navigate("/", { replace: true });
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-md space-y-6">
@@ -127,6 +147,45 @@ export default function Auth() {
                 <Button type="submit" className="w-full" disabled={submitting}>
                   {submitting ? "Signing in..." : "Sign In"}
                 </Button>
+
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-card px-2 text-muted-foreground">
+                      Or continue with
+                    </span>
+                  </div>
+                </div>
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full gap-2"
+                  onClick={() => handleOAuthSignIn("google")}
+                  disabled={submitting}
+                >
+                  <Chrome className="h-4 w-4" />
+                  Google
+                </Button>
+
+                <div className="relative group">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full gap-2 opacity-60 cursor-not-allowed"
+                    disabled
+                  >
+                    <Facebook className="h-4 w-4" />
+                    Facebook
+                  </Button>
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <span className="bg-amber-100 text-amber-800 text-xs font-medium px-2 py-1 rounded border border-amber-200 shadow-sm">
+                      Coming Soon
+                    </span>
+                  </div>
+                </div>
               </form>
             </TabsContent>
 
@@ -180,14 +239,53 @@ export default function Auth() {
                 <Button type="submit" className="w-full" disabled={submitting}>
                   {submitting ? "Creating..." : "Create Account"}
                 </Button>
+
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-card px-2 text-muted-foreground">
+                      Or continue with
+                    </span>
+                  </div>
+                </div>
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full gap-2"
+                  onClick={() => handleOAuthSignIn("google")}
+                  disabled={submitting}
+                >
+                  <Chrome className="h-4 w-4" />
+                  Google
+                </Button>
+
+                <div className="relative group">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full gap-2 opacity-60 cursor-not-allowed"
+                    disabled
+                  >
+                    <Facebook className="h-4 w-4" />
+                    Facebook
+                  </Button>
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <span className="bg-amber-100 text-amber-800 text-xs font-medium px-2 py-1 rounded border border-amber-200 shadow-sm">
+                      Coming Soon
+                    </span>
+                  </div>
+                </div>
               </form>
             </TabsContent>
           </Tabs>
         </Card>
 
         <p className="text-xs text-muted-foreground text-center">
-          By continuing you agree to our <Link to="/terms" className="underline">Terms</Link> and{" "}
-          <Link to="/privacy" className="underline">Privacy Policy</Link>.
+          By continuing you agree to our <Link to="/terms" className="underline">Terms</Link>{" "}
+          and <Link to="/privacy" className="underline">Privacy Policy</Link>.
         </p>
       </div>
     </div>
