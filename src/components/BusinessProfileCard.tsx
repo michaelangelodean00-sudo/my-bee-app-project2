@@ -212,21 +212,85 @@ const BusinessProfileCard = ({ business, className }: BusinessProfileCardProps) 
         {/* Actions */}
         <div className="flex gap-2 pt-1">
           {business.phone && (
-            <Button size="sm" variant="outline" className="h-7 text-xs flex-1 gap-1">
-              <Phone className="h-3 w-3" />
-              Call
-            </Button>
+            <a href={`tel:${business.phone.replace(/\s/g, '')}`} className="flex-1">
+              <Button size="sm" variant="outline" className="h-7 text-xs w-full gap-1">
+                <Phone className="h-3 w-3" />
+                Call
+              </Button>
+            </a>
           )}
           {business.website && (
-            <Button size="sm" variant="outline" className="h-7 text-xs flex-1 gap-1">
-              <Globe className="h-3 w-3" />
-              Visit
-            </Button>
+            <a href={business.website} target="_blank" rel="noopener noreferrer" className="flex-1">
+              <Button size="sm" variant="outline" className="h-7 text-xs w-full gap-1">
+                <Globe className="h-3 w-3" />
+                Visit
+              </Button>
+            </a>
+          )}
+          {business.googleMapUrl && (
+            <a href={business.googleMapUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
+              <Button size="sm" variant="outline" className="h-7 text-xs w-full gap-1">
+                <Navigation className="h-3 w-3" />
+                Map
+              </Button>
+            </a>
           )}
           <Button size="sm" className="h-7 text-xs flex-1">
             View
           </Button>
         </div>
+
+        {/* Social Media */}
+        {business.socialMedia && (
+          <div className="flex items-center gap-2 pt-1">
+            {business.socialMedia.instagram && (
+              <a
+                href={business.socialMedia.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="h-7 w-7 rounded-full bg-muted flex items-center justify-center hover:bg-rose-100 hover:text-rose-600 transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram className="h-3.5 w-3.5" />
+              </a>
+            )}
+            {business.socialMedia.facebook && (
+              <a
+                href={business.socialMedia.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="h-7 w-7 rounded-full bg-muted flex items-center justify-center hover:bg-blue-100 hover:text-blue-600 transition-colors"
+                aria-label="Facebook"
+              >
+                <Facebook className="h-3.5 w-3.5" />
+              </a>
+            )}
+            {business.socialMedia.twitter && (
+              <a
+                href={business.socialMedia.twitter}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="h-7 w-7 rounded-full bg-muted flex items-center justify-center hover:bg-sky-100 hover:text-sky-600 transition-colors"
+                aria-label="Twitter"
+              >
+                <Twitter className="h-3.5 w-3.5" />
+              </a>
+            )}
+            {business.socialMedia.tiktok && (
+              <a
+                href={business.socialMedia.tiktok}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="h-7 w-7 rounded-full bg-muted flex items-center justify-center hover:bg-purple-100 hover:text-purple-600 transition-colors"
+                aria-label="TikTok"
+              >
+                <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.5-4.35 2.89 2.89 0 0 1 2.5-1.43c.26 0 .51.04.76.1V9.56a6.37 6.37 0 0 0-.76-.05A6.34 6.34 0 0 0 5 15.88a6.34 6.34 0 0 0 6.34 6.33 6.34 6.34 0 0 0 6.33-6.33V8.78a8.27 8.27 0 0 0 4.83 1.55V6.88a4.87 4.87 0 0 1-2.91-.19z"/>
+                </svg>
+              </a>
+            )}
+          </div>
+        )}
       </div>
     </Card>
   );
