@@ -70,6 +70,11 @@ export const mockBusinessProfiles: BusinessProfile[] = [
     address: "22 West Bay Street, Nassau",
     phone: "+1 (242) 555-0201",
     website: "https://palmpetalspa.com",
+    googleMapUrl: "https://maps.google.com/?q=22+West+Bay+Street+Nassau",
+    socialMedia: {
+      instagram: "https://instagram.com/palmpetalspa",
+      twitter: "https://twitter.com/palmpetalspa",
+    },
     rating: 4.9,
     reviewCount: 132,
     imageUrl: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&h=200&auto=format&fit=crop",
