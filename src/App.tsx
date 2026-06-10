@@ -72,19 +72,20 @@ const App = () => {
                   <Suspense fallback={<PageLoader type="full" message="Loading B.E.E App..." />}>
                     <Routes>
                       <Route path="/" element={<Index />} />
+                      <Route path="/auth" element={<Auth />} />
                       <Route path="/businesses" element={<Businesses />} />
                       <Route path="/events" element={<Events />} />
                       <Route path="/ecommerce" element={<Ecommerce />} />
-                      <Route path="/admin" element={<Admin />} />
-                      <Route path="/settings" element={<ProfileSettings />} />
-                      <Route path="/profile" element={<UserProfilePage />} />
+                      <Route path="/admin" element={<ProtectedRoute requireRole="admin"><Admin /></ProtectedRoute>} />
+                      <Route path="/settings" element={<ProtectedRoute><ProfileSettings /></ProtectedRoute>} />
+                      <Route path="/profile" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
                       <Route path="/profile/:id" element={<UserProfilePage />} />
-                      <Route path="/upload-video" element={<VideoUpload />} />
+                      <Route path="/upload-video" element={<ProtectedRoute><VideoUpload /></ProtectedRoute>} />
                       <Route path="/copyright" element={<Copyright />} />
                       <Route path="/terms" element={<Copyright />} />
                       <Route path="/privacy" element={<Copyright />} />
                       <Route path="/dmca" element={<Copyright />} />
-                      <Route path="/customer-analytics" element={<CustomerAnalytics />} />
+                      <Route path="/customer-analytics" element={<ProtectedRoute><CustomerAnalytics /></ProtectedRoute>} />
                       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                       <Route path="*" element={<NotFound />} />
                     </Routes>
@@ -92,6 +93,7 @@ const App = () => {
                 </BrowserRouter>
               </ContentFilterProvider>
             </NotificationProvider>
+            </AuthProvider>
           </ThemeProvider>
         </SecurityProvider>
       </QueryClientProvider>
