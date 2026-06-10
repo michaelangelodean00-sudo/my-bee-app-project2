@@ -25,6 +25,15 @@ export interface UserProfileProps {
   role?: UserRole;
   bio?: string;
   website?: string;
+  phone?: string;
+  streetAddress?: string;
+  googleMapUrl?: string;
+  socialMedia?: {
+    instagram?: string;
+    facebook?: string;
+    twitter?: string;
+    tiktok?: string;
+  };
   isCurrentUser?: boolean;
 }
 
