@@ -267,7 +267,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
           
           {isCurrentUser ? (
             <div className="flex flex-col gap-2">
-              {!businessOwner && (
+              {!businessOwner && !pendingBusiness && (
                 <button
                   type="button"
                   onClick={() => { setUpgradeMode(true); setIsEditDialogOpen(true); }}
@@ -277,13 +277,28 @@ const UserProfile: React.FC<UserProfileProps> = ({
                     <div className="flex items-center gap-2 min-w-0">
                       <Sparkles size={16} className="flex-shrink-0" />
                       <div className="min-w-0">
-                        <div className="text-xs font-semibold leading-tight">Upgrade to Business</div>
+                        <div className="text-xs font-semibold leading-tight">
+                          {rejectedBusiness ? "Resubmit Business Profile" : "Upgrade to Business"}
+                        </div>
                         <div className="text-[10px] opacity-90 leading-tight truncate">Promote, sell & get listed</div>
                       </div>
                     </div>
                     <ArrowUpRight size={16} className="flex-shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </div>
                 </button>
+              )}
+              {pendingBusiness && (
+                <div className="rounded-lg p-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 flex items-center gap-2">
+                  <Clock size={16} className="text-amber-600 dark:text-amber-400 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <div className="text-xs font-semibold text-amber-700 dark:text-amber-300 leading-tight">
+                      Pending Admin Review
+                    </div>
+                    <div className="text-[10px] text-amber-700/80 dark:text-amber-400/80 leading-tight truncate">
+                      We'll notify you once approved.
+                    </div>
+                  </div>
+                </div>
               )}
               <div className="flex gap-2">
                 <Button asChild variant="outline" size="sm" className="flex-1">
