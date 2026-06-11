@@ -78,7 +78,7 @@ const mockPendingVideos: PendingVideo[] = [
   },
 ];
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE_OPTIONS = [5, 10, 25, 50];
 
 const getYouTubeEmbed = (url: string) => {
   const m = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
@@ -96,6 +96,7 @@ const AdminVideoReview = () => {
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
 
   const setStatus = (ids: string[], status: PendingVideo['status']) => {
     setVideos(prev => prev.map(v => (ids.includes(v.id) ? { ...v, status } : v)));
@@ -172,9 +173,10 @@ const AdminVideoReview = () => {
     [videos, filter]
   );
 
-  const totalPages = Math.max(1, Math.ceil(filteredVideos.length / PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(filteredVideos.length / pageSize));
   const currentPage = Math.min(page, totalPages);
-  const pageVideos = filteredVideos.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+  const startIdx = (currentPage - 1) * pageSize;
+  const pageVideos = filteredVideos.slice(startIdx, startIdx + pageSize);
 
   const pendingCount = videos.filter(v => v.status === 'pending').length;
 
@@ -431,36 +433,57 @@ const AdminVideoReview = () => {
         </div>
       )}
 
-      {totalPages > 1 && (
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                href="#"
-                onClick={(e) => { e.preventDefault(); setPage(p => Math.max(1, p - 1)); }}
-                className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
-              />
-            </PaginationItem>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(n => (
-              <PaginationItem key={n}>
-                <PaginationLink
+      {filteredVideos.length > 0 && (
+        <div className="flex items-center justify-between flex-wrap gap-3">
+          <div className="flex items-center gap-3 text-sm text-muted-foreground">
+            <span>
+              Showing <span className="font-medium text-foreground">{startIdx + 1}</span>–
+              <span className="font-medium text-foreground">{Math.min(startIdx + pageSize, filteredVideos.length)}</span>{' '}
+              of <span className="font-medium text-foreground">{filteredVideos.length}</span>
+            </span>
+            <div className="flex items-center gap-2">
+              <label htmlFor="page-size" className="text-xs">Rows per page</label>
+              <select
+                id="page-size"
+                value={pageSize}
+                onChange={(e) => { setPageSize(Number(e.target.value)); setPage(1); }}
+                className="h-8 rounded-md border bg-background px-2 text-sm"
+              >
+                {PAGE_SIZE_OPTIONS.map(n => <option key={n} value={n}>{n}</option>)}
+              </select>
+            </div>
+          </div>
+
+          <Pagination className="mx-0 w-auto justify-end">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
                   href="#"
-                  isActive={n === currentPage}
-                  onClick={(e) => { e.preventDefault(); setPage(n); }}
-                >
-                  {n}
-                </PaginationLink>
+                  onClick={(e) => { e.preventDefault(); setPage(p => Math.max(1, p - 1)); }}
+                  className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
+                />
               </PaginationItem>
-            ))}
-            <PaginationItem>
-              <PaginationNext
-                href="#"
-                onClick={(e) => { e.preventDefault(); setPage(p => Math.min(totalPages, p + 1)); }}
-                className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(n => (
+                <PaginationItem key={n}>
+                  <PaginationLink
+                    href="#"
+                    isActive={n === currentPage}
+                    onClick={(e) => { e.preventDefault(); setPage(n); }}
+                  >
+                    {n}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+              <PaginationItem>
+                <PaginationNext
+                  href="#"
+                  onClick={(e) => { e.preventDefault(); setPage(p => Math.min(totalPages, p + 1)); }}
+                  className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
       )}
     </div>
   );
