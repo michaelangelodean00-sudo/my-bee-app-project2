@@ -13,7 +13,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { Check, X, Eye, Clock, ExternalLink, Undo2 } from "lucide-react";
+import { Check, X, Eye, Clock, ExternalLink, Undo2, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 
 interface PendingVideo {
