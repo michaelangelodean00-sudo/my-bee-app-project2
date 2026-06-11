@@ -16,6 +16,7 @@ import {
 import { Check, X, Eye, Clock, ExternalLink, Undo2, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import RejectionReasonDialog from "@/components/admin/RejectionReasonDialog";
 
 interface PendingVideo {
   id: string;
