@@ -68,7 +68,19 @@ const countSentences = (text: string) =>
   (text.match(/[^.!?]*[.!?]+/g) ?? []).filter(s => s.trim().length > 3).length;
 
 const ProfileSettings = () => {
+  const { user, isBusiness } = useAuth();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [upgradeDialogOpen, setUpgradeDialogOpen] = useState(false);
+  const ownerKey = user?.id || "current-user";
+  const [myApproval, setMyApproval] = useState<BusinessApprovalSubmission | undefined>(
+    () => getMyLatest(ownerKey)
+  );
+  useEffect(() => {
+    const update = () => setMyApproval(getMyLatest(ownerKey));
+    update();
+    return subscribeApprovals(update);
+  }, [ownerKey]);
+  const pendingUpgrade = !isBusiness && myApproval?.status === "pending";
   const [profileData, setProfileData] = useState({
     firstName: "John",
     lastName: "Doe",
