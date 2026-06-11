@@ -45,6 +45,7 @@ const STATUS_META: Record<
 const BusinessApprovals = () => {
   const [rows, setRows] = useState<BusinessApprovalSubmission[]>(listApprovals());
   const [filter, setFilter] = useState<Filter>("pending");
+  const [rejectTarget, setRejectTarget] = useState<BusinessApprovalSubmission | null>(null);
 
   useEffect(() => subscribeApprovals(() => setRows(listApprovals())), []);
 
