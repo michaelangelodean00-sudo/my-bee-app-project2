@@ -196,11 +196,6 @@ const Index = () => {
           </main>
         </PullToRefresh>
         </div>
-        
-        {/* Right Sidebar - Desktop only */}
-        <aside aria-label="Additional content and widgets">
-          <RightSidebar />
-        </aside>
       </div>
       
         <Footer />
