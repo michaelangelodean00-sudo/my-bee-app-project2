@@ -23,8 +23,12 @@ import {
   subscribeApprovals,
   type BusinessApprovalSubmission,
 } from "@/utils/businessApprovals";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+
+// A valid v4 UUID — used to detect submissions tied to a real auth user
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 type Filter = "pending" | "approved" | "rejected" | "all";
 
@@ -51,11 +55,39 @@ const BusinessApprovals = () => {
     all: rows.length,
   };
 
-  const handleApprove = (r: BusinessApprovalSubmission) => {
+  const handleApprove = async (r: BusinessApprovalSubmission) => {
+    if (UUID_RE.test(r.ownerKey)) {
+      const userId = r.ownerKey;
+      const { error: profileErr } = await supabase
+        .from("profiles")
+        .update({ status: "approved", account_type: "business" })
+        .eq("id", userId);
+      if (profileErr) {
+        toast.error(`Could not approve ${r.name}: ${profileErr.message}`);
+        return;
+      }
+      // Grant the business role (idempotent — unique (user_id, role))
+      const { error: roleErr } = await supabase
+        .from("user_roles")
+        .upsert({ user_id: userId, role: "business" }, { onConflict: "user_id,role" });
+      if (roleErr && !roleErr.message.includes("duplicate")) {
+        toast.error(`Profile approved but role grant failed: ${roleErr.message}`);
+      }
+    }
     setApprovalStatus(r.id, "approved");
     toast.success(`Approved ${r.name}`);
   };
-  const handleReject = (r: BusinessApprovalSubmission) => {
+  const handleReject = async (r: BusinessApprovalSubmission) => {
+    if (UUID_RE.test(r.ownerKey)) {
+      const { error } = await supabase
+        .from("profiles")
+        .update({ status: "rejected" })
+        .eq("id", r.ownerKey);
+      if (error) {
+        toast.error(`Could not reject ${r.name}: ${error.message}`);
+        return;
+      }
+    }
     setApprovalStatus(r.id, "rejected");
     toast.message(`Rejected ${r.name}`);
   };

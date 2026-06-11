@@ -18,6 +18,7 @@ import {
 import { cn } from "@/lib/utils";
 import { sanitizeText, validateImageFileSecure, rateLimit, LIMITS } from "@/utils/sanitization";
 import { submitBusinessApproval } from "@/utils/businessApprovals";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 const BUSINESS_CATEGORIES = [
@@ -98,7 +99,7 @@ const ProfileEditDialog = ({ open, onOpenChange, currentUser, onSave }: ProfileE
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!rateLimit("profile-save", 5, 60_000)) {
       toast.error("Too many save attempts. Please wait a moment.");
@@ -109,8 +110,34 @@ const ProfileEditDialog = ({ open, onOpenChange, currentUser, onSave }: ProfileE
     // Business submissions go through admin approval.
     // The user's account is NOT flipped to business until an admin approves.
     if (formData.businessOwner && !currentUser.businessOwner) {
+      // Get the authenticated user so we can tie the submission to their DB row
+      const { data: { user } } = await supabase.auth.getUser();
+      const ownerKey = user?.id || currentUser.name || "current-user";
+
+      // Persist the upgrade request to the database so it survives across devices
+      // and so an admin approval can flip account_type + role server-side.
+      if (user?.id) {
+        const { error: profileErr } = await supabase
+          .from("profiles")
+          .update({
+            account_type: "business",
+            status: "pending",
+            business_name: formData.name,
+            business_category: formData.businessCategory || null,
+            phone: formData.businessPhone || null,
+            address: formData.businessStreetAddress || null,
+            avatar_url: formData.avatarUrl || null,
+            display_name: formData.name,
+          })
+          .eq("id", user.id);
+        if (profileErr) {
+          toast.error("Could not submit upgrade. Please try again.");
+          return;
+        }
+      }
+
       submitBusinessApproval({
-        ownerKey: currentUser.name || "current-user",
+        ownerKey,
         name: formData.name,
         avatarUrl: formData.avatarUrl,
         bio: formData.bio,

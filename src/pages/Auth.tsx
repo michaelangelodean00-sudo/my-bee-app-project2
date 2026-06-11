@@ -252,6 +252,7 @@ export default function Auth() {
                 <Button
                   className="w-full"
                   onClick={() => {
+                    setSiEmail(suEmail);
                     setShowBusinessConfirm(false);
                     setTab("signin");
                   }}
