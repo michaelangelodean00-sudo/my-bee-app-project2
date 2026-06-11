@@ -253,7 +253,7 @@ const BusinessApprovals = () => {
                       size="sm"
                       variant="outline"
                       className="flex-1 border-rose-300 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30"
-                      onClick={() => handleReject(r)}
+                      onClick={() => setRejectTarget(r)}
                     >
                       <X size={14} className="mr-1" /> Reject
                     </Button>
