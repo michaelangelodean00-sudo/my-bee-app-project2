@@ -142,8 +142,12 @@ export default function Auth() {
       toast.error(error.message.includes("registered") ? "Email already registered" : error.message);
       return;
     }
-    toast.success("Account created! Check your email to confirm.");
-    setTab("signin");
+    if (suAccountType === "business") {
+      setShowBusinessConfirm(true);
+    } else {
+      toast.success("Account created! Check your email to confirm.");
+      setTab("signin");
+    }
   };
 
   const handleOAuthSignIn = async (provider: "google" | "apple" | "microsoft" | "lovable") => {
