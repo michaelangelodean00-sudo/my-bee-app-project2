@@ -100,6 +100,10 @@ const AdminVideoReview = () => {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
+  const [rejectTarget, setRejectTarget] = useState<
+    | { kind: 'single' | 'revoke' | 'bulk'; ids: string[]; label: string; successMsg: string }
+    | null
+  >(null);
 
   // On mount, hydrate moderation decisions (status + rejection reason) from DB
   useEffect(() => {
