@@ -188,10 +188,6 @@ export default function Auth() {
     toast.success("Signed in!");
     navigate("/", { replace: true });
   };
-    if (result.redirected) return;
-    toast.success("Signed in!");
-    navigate("/", { replace: true });
-  };
 
   const GoogleButton = () => (
     <Button
