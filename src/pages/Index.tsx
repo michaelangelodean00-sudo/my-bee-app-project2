@@ -193,8 +193,6 @@ const Index = () => {
             <PostList posts={samplePosts} userPosts={posts} />
           )}
           
-          {/* Mobile Widgets Section */}
-          <MobileWidgetsSection />
           </main>
         </PullToRefresh>
         </div>
