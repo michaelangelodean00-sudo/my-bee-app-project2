@@ -13,7 +13,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { Check, X, Eye, Clock, ExternalLink, Undo2 } from "lucide-react";
+import { Check, X, Eye, Clock, ExternalLink, Undo2, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 
 interface PendingVideo {
@@ -114,6 +114,11 @@ const AdminVideoReview = () => {
   const handleRevoke = (id: string) => {
     setStatus([id], 'rejected');
     toast.success("Approval revoked. Video is no longer live.");
+  };
+
+  const handleRestore = (id: string) => {
+    setStatus([id], 'pending');
+    toast.success("Video restored to pending queue for re-review.");
   };
 
   const bulkApprove = () => {
@@ -399,6 +404,17 @@ const AdminVideoReview = () => {
                         onClick={() => handleRevoke(video.id)}
                       >
                         <Undo2 size={14} className="mr-1" /> Revoke
+                      </Button>
+                    )}
+
+                    {video.status === 'rejected' && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-amber-600 hover:text-amber-700 hover:bg-amber-50 border-amber-200"
+                        onClick={() => handleRestore(video.id)}
+                      >
+                        <RotateCcw size={14} className="mr-1" /> Restore
                       </Button>
                     )}
                   </div>
