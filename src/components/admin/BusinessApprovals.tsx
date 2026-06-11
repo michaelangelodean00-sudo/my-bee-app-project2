@@ -264,6 +264,16 @@ const BusinessApprovals = () => {
           })}
         </div>
       )}
+
+      <RejectionReasonDialog
+        open={!!rejectTarget}
+        onOpenChange={(o) => !o && setRejectTarget(null)}
+        title="Reject business submission"
+        subjectLabel={rejectTarget?.name ?? ""}
+        onConfirm={async (reason) => {
+          if (rejectTarget) await performReject(rejectTarget, reason);
+        }}
+      />
     </div>
   );
 };
