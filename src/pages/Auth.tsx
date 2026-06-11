@@ -272,7 +272,9 @@ export default function Auth() {
                   <div className="space-y-2">
                     <Label htmlFor="si-email">Email</Label>
                     <Input id="si-email" type="email" autoComplete="email" required
-                      value={siEmail} onChange={(e) => setSiEmail(e.target.value)} />
+                      value={siEmail}
+                      onChange={(e) => { setSiEmail(e.target.value); setNeedsConfirmation(false); }}
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="si-password">Password</Label>
