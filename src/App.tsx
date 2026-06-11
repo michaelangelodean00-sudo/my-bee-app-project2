@@ -12,6 +12,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import AccessibilityEnhancements from "./components/AccessibilityEnhancements";
 import PageLoader from "./components/PageLoader";
 import ProtectedRoute from "./components/ProtectedRoute";
+import IdlePrefetcher from "./components/IdlePrefetcher";
 
 // Eagerly import Index (home page) so it renders instantly without Suspense delay
 import Index from "./pages/Index";
@@ -58,6 +59,7 @@ const App = () => {
               <ContentFilterProvider>
                 <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
                   <AccessibilityEnhancements />
+                  <IdlePrefetcher />
                   <Toaster 
                     position="bottom-right" 
                     toastOptions={{
