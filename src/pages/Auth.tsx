@@ -67,6 +67,7 @@ export default function Auth() {
   const [tab, setTab] = useState<"signin" | "signup">("signin");
   const [submitting, setSubmitting] = useState(false);
   const [showBusinessConfirm, setShowBusinessConfirm] = useState(false);
+  const [needsConfirmation, setNeedsConfirmation] = useState(false);
 
   // Sign in
   const [siEmail, setSiEmail] = useState("");
@@ -102,6 +103,7 @@ export default function Auth() {
     if (error) {
       const msg = error.message;
       if (msg.includes("Email not confirmed") || msg.includes("not confirmed")) {
+        setNeedsConfirmation(true);
         toast.error("Please verify your email first. Check your inbox for a confirmation link.");
       } else if (msg === "Invalid login credentials") {
         toast.error("Wrong email or password");
@@ -155,6 +157,21 @@ export default function Auth() {
       toast.success("Account created! Check your email to confirm.");
       setTab("signin");
     }
+  };
+
+  const handleResendConfirmation = async () => {
+    if (!siEmail) return;
+    setSubmitting(true);
+    const { error } = await supabase.auth.resend({
+      type: "signup",
+      email: siEmail,
+    });
+    setSubmitting(false);
+    if (error) {
+      toast.error(error.message || "Could not resend email. Try again later.");
+      return;
+    }
+    toast.success("Confirmation email resent. Check your inbox.");
   };
 
   const handleOAuthSignIn = async (provider: "google" | "apple" | "microsoft" | "lovable") => {
@@ -255,7 +272,9 @@ export default function Auth() {
                   <div className="space-y-2">
                     <Label htmlFor="si-email">Email</Label>
                     <Input id="si-email" type="email" autoComplete="email" required
-                      value={siEmail} onChange={(e) => setSiEmail(e.target.value)} />
+                      value={siEmail}
+                      onChange={(e) => { setSiEmail(e.target.value); setNeedsConfirmation(false); }}
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="si-password">Password</Label>
@@ -265,6 +284,18 @@ export default function Auth() {
                   <Button type="submit" className="w-full" disabled={submitting}>
                     {submitting ? "Signing in..." : "Sign In"}
                   </Button>
+
+                  {needsConfirmation && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full"
+                      onClick={handleResendConfirmation}
+                      disabled={submitting || !siEmail}
+                    >
+                      {submitting ? "Resending..." : "Resend confirmation email"}
+                    </Button>
+                  )}
 
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
