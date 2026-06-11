@@ -201,6 +201,42 @@ const ProfileSettings = () => {
               </div>
               {/* General Settings */}
               <TabsContent value="general" className="space-y-6 mt-0">
+                {!isBusiness && (
+                  <Card className={cn(
+                    "border-amber-200 dark:border-amber-800",
+                    pendingUpgrade
+                      ? "bg-amber-50/60 dark:bg-amber-950/20"
+                      : "bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/20"
+                  )}>
+                    <CardContent className="p-5 flex items-center justify-between gap-4 flex-wrap">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="h-11 w-11 rounded-full bg-amber-500/15 flex items-center justify-center flex-shrink-0">
+                          <Building2 className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                        </div>
+                        <div className="min-w-0">
+                          <h3 className="text-base font-semibold leading-tight">
+                            {pendingUpgrade ? "Business profile under review" : "Upgrade to Business Account"}
+                          </h3>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            {pendingUpgrade
+                              ? "We'll notify you once approved."
+                              : "Get listed in the directory, promote your services, and reach more customers."}
+                          </p>
+                        </div>
+                      </div>
+                      {!pendingUpgrade && (
+                        <Button
+                          onClick={() => setUpgradeDialogOpen(true)}
+                          className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-sm"
+                        >
+                          <SparklesIcon size={16} className="mr-1.5" />
+                          Upgrade Now
+                          <ArrowUpRight size={14} className="ml-1" />
+                        </Button>
+                      )}
+                    </CardContent>
+                  </Card>
+                )}
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
