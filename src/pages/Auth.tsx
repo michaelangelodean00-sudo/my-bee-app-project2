@@ -210,132 +210,160 @@ export default function Auth() {
         </div>
 
         <Card className="p-6">
-          <Tabs value={tab} onValueChange={(v) => setTab(v as "signin" | "signup")}>
-            <TabsList className="grid grid-cols-2 w-full mb-6">
-              <TabsTrigger value="signin">Sign In</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="signin">
-              <form onSubmit={handleSignIn} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="si-email">Email</Label>
-                  <Input id="si-email" type="email" autoComplete="email" required
-                    value={siEmail} onChange={(e) => setSiEmail(e.target.value)} />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="si-password">Password</Label>
-                  <PasswordInput id="si-password" autoComplete="current-password"
-                    value={siPassword} onChange={setSiPassword} />
-                </div>
-                <Button type="submit" className="w-full" disabled={submitting}>
-                  {submitting ? "Signing in..." : "Sign In"}
+          {showBusinessConfirm ? (
+            <div className="flex flex-col items-center text-center space-y-5 py-4">
+              <div className="rounded-full bg-amber-100 p-4">
+                <CheckCircle className="h-10 w-10 text-amber-600" />
+              </div>
+              <div className="space-y-2">
+                <h2 className="text-xl font-heading font-semibold">Account Created</h2>
+                <p className="text-sm text-muted-foreground max-w-xs">
+                  Your business profile is pending review. We'll notify you once it's approved.
+                </p>
+              </div>
+              <div className="w-full space-y-3">
+                <p className="text-xs text-muted-foreground">
+                  Check your email to confirm your account before signing in.
+                </p>
+                <Button
+                  className="w-full"
+                  onClick={() => {
+                    setShowBusinessConfirm(false);
+                    setTab("signin");
+                  }}
+                >
+                  Got it — Sign In
                 </Button>
+              </div>
+            </div>
+          ) : (
+            <Tabs value={tab} onValueChange={(v) => setTab(v as "signin" | "signup")}>
+              <TabsList className="grid grid-cols-2 w-full mb-6">
+                <TabsTrigger value="signin">Sign In</TabsTrigger>
+                <TabsTrigger value="signup">Sign Up</TabsTrigger>
+              </TabsList>
 
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t" />
+              <TabsContent value="signin">
+                <form onSubmit={handleSignIn} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="si-email">Email</Label>
+                    <Input id="si-email" type="email" autoComplete="email" required
+                      value={siEmail} onChange={(e) => setSiEmail(e.target.value)} />
                   </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+                  <div className="space-y-2">
+                    <Label htmlFor="si-password">Password</Label>
+                    <PasswordInput id="si-password" autoComplete="current-password"
+                      value={siPassword} onChange={setSiPassword} />
                   </div>
-                </div>
+                  <Button type="submit" className="w-full" disabled={submitting}>
+                    {submitting ? "Signing in..." : "Sign In"}
+                  </Button>
 
-                <GoogleButton />
-                <FacebookButton />
-              </form>
-            </TabsContent>
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+                    </div>
+                  </div>
 
-            <TabsContent value="signup">
-              <form onSubmit={handleSignUp} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="su-name">Display name</Label>
-                  <Input id="su-name" required maxLength={80}
-                    value={suName} onChange={(e) => setSuName(e.target.value)} />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="su-email">Email</Label>
-                  <Input id="su-email" type="email" autoComplete="email" required
-                    value={suEmail} onChange={(e) => setSuEmail(e.target.value)} />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="su-password">Password</Label>
-                  <PasswordInput id="su-password" autoComplete="new-password" minLength={8}
-                    value={suPassword} onChange={setSuPassword} />
-                  <p className="text-xs text-muted-foreground">At least 8 characters</p>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="su-confirm">Confirm password</Label>
-                  <PasswordInput id="su-confirm" autoComplete="new-password" minLength={8}
-                    value={suConfirm} onChange={setSuConfirm} />
-                  {suConfirm && suPassword !== suConfirm && (
-                    <p className="text-xs text-destructive">Passwords do not match</p>
+                  <GoogleButton />
+                  <FacebookButton />
+                </form>
+              </TabsContent>
+
+              <TabsContent value="signup">
+                <form onSubmit={handleSignUp} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="su-name">Display name</Label>
+                    <Input id="su-name" required maxLength={80}
+                      value={suName} onChange={(e) => setSuName(e.target.value)} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="su-email">Email</Label>
+                    <Input id="su-email" type="email" autoComplete="email" required
+                      value={suEmail} onChange={(e) => setSuEmail(e.target.value)} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="su-password">Password</Label>
+                    <PasswordInput id="su-password" autoComplete="new-password" minLength={8}
+                      value={suPassword} onChange={setSuPassword} />
+                    <p className="text-xs text-muted-foreground">At least 8 characters</p>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="su-confirm">Confirm password</Label>
+                    <PasswordInput id="su-confirm" autoComplete="new-password" minLength={8}
+                      value={suConfirm} onChange={setSuConfirm} />
+                    {suConfirm && suPassword !== suConfirm && (
+                      <p className="text-xs text-destructive">Passwords do not match</p>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Account type</Label>
+                    <RadioGroup
+                      value={suAccountType}
+                      onValueChange={(v) => setSuAccountType(v as "personal" | "business")}
+                      className="grid grid-cols-2 gap-2"
+                    >
+                      <Label htmlFor="at-personal"
+                        className="flex items-center gap-2 border rounded-md px-3 py-2 cursor-pointer hover:bg-accent">
+                        <RadioGroupItem value="personal" id="at-personal" />
+                        <span>Personal</span>
+                      </Label>
+                      <Label htmlFor="at-business"
+                        className="flex items-center gap-2 border rounded-md px-3 py-2 cursor-pointer hover:bg-accent">
+                        <RadioGroupItem value="business" id="at-business" />
+                        <span>Business</span>
+                      </Label>
+                    </RadioGroup>
+                  </div>
+
+                  {suAccountType === "business" && (
+                    <div className="space-y-3 rounded-md border border-amber-200 bg-amber-50/50 p-3">
+                      <p className="text-xs font-semibold text-amber-800 uppercase tracking-wide">
+                        Business profile
+                      </p>
+                      <div className="space-y-2">
+                        <Label htmlFor="su-bizname">Business name</Label>
+                        <Input id="su-bizname" required maxLength={120}
+                          value={suBusinessName} onChange={(e) => setSuBusinessName(e.target.value)} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="su-bizcat">Category</Label>
+                        <Input id="su-bizcat" required maxLength={60} placeholder="e.g. Restaurant, Retail, Services"
+                          value={suBusinessCategory} onChange={(e) => setSuBusinessCategory(e.target.value)} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="su-bizphone">Contact phone</Label>
+                        <Input id="su-bizphone" type="tel" required maxLength={30}
+                          value={suBusinessPhone} onChange={(e) => setSuBusinessPhone(e.target.value)} />
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Business profiles require admin approval before being listed publicly.
+                      </p>
+                    </div>
                   )}
-                </div>
-                <div className="space-y-2">
-                  <Label>Account type</Label>
-                  <RadioGroup
-                    value={suAccountType}
-                    onValueChange={(v) => setSuAccountType(v as "personal" | "business")}
-                    className="grid grid-cols-2 gap-2"
-                  >
-                    <Label htmlFor="at-personal"
-                      className="flex items-center gap-2 border rounded-md px-3 py-2 cursor-pointer hover:bg-accent">
-                      <RadioGroupItem value="personal" id="at-personal" />
-                      <span>Personal</span>
-                    </Label>
-                    <Label htmlFor="at-business"
-                      className="flex items-center gap-2 border rounded-md px-3 py-2 cursor-pointer hover:bg-accent">
-                      <RadioGroupItem value="business" id="at-business" />
-                      <span>Business</span>
-                    </Label>
-                  </RadioGroup>
-                </div>
 
-                {suAccountType === "business" && (
-                  <div className="space-y-3 rounded-md border border-amber-200 bg-amber-50/50 p-3">
-                    <p className="text-xs font-semibold text-amber-800 uppercase tracking-wide">
-                      Business profile
-                    </p>
-                    <div className="space-y-2">
-                      <Label htmlFor="su-bizname">Business name</Label>
-                      <Input id="su-bizname" required maxLength={120}
-                        value={suBusinessName} onChange={(e) => setSuBusinessName(e.target.value)} />
+                  <Button type="submit" className="w-full" disabled={submitting}>
+                    {submitting ? "Creating..." : "Create Account"}
+                  </Button>
+
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t" />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="su-bizcat">Category</Label>
-                      <Input id="su-bizcat" required maxLength={60} placeholder="e.g. Restaurant, Retail, Services"
-                        value={suBusinessCategory} onChange={(e) => setSuBusinessCategory(e.target.value)} />
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="su-bizphone">Contact phone</Label>
-                      <Input id="su-bizphone" type="tel" required maxLength={30}
-                        value={suBusinessPhone} onChange={(e) => setSuBusinessPhone(e.target.value)} />
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                      Business profiles require admin approval before being listed publicly.
-                    </p>
                   </div>
-                )}
 
-                <Button type="submit" className="w-full" disabled={submitting}>
-                  {submitting ? "Creating..." : "Create Account"}
-                </Button>
-
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t" />
-                  </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
-                  </div>
-                </div>
-
-                <GoogleButton />
-                <FacebookButton />
-              </form>
-            </TabsContent>
-          </Tabs>
+                  <GoogleButton />
+                  <FacebookButton />
+                </form>
+              </TabsContent>
+            </Tabs>
+          )}
         </Card>
 
         <p className="text-xs text-muted-foreground text-center">
