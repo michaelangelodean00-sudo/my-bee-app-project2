@@ -78,17 +78,22 @@ const BusinessApprovals = () => {
     toast.success(`Approved ${r.name}`);
   };
   const handleReject = async (r: BusinessApprovalSubmission) => {
+    const reason = window.prompt(`Reason for rejecting "${r.name}"?\n(Shown to the business and stored for the audit log.)`)?.trim();
+    if (!reason) {
+      toast.message("Rejection cancelled — a reason is required.");
+      return;
+    }
     if (UUID_RE.test(r.ownerKey)) {
       const { error } = await supabase
         .from("profiles")
-        .update({ status: "rejected" })
+        .update({ status: "rejected", rejection_reason: reason })
         .eq("id", r.ownerKey);
       if (error) {
         toast.error(`Could not reject ${r.name}: ${error.message}`);
         return;
       }
     }
-    setApprovalStatus(r.id, "rejected");
+    setApprovalStatus(r.id, "rejected", reason);
     toast.message(`Rejected ${r.name}`);
   };
 
@@ -213,6 +218,12 @@ const BusinessApprovals = () => {
                     </span>
                   )}
                 </div>
+
+                {r.status === "rejected" && r.rejectionReason && (
+                  <div className="rounded-lg border border-rose-200/60 bg-rose-50/60 dark:bg-rose-950/20 px-3 py-2 text-xs text-rose-700 dark:text-rose-300">
+                    <span className="font-semibold">Rejection reason:</span> {r.rejectionReason}
+                  </div>
+                )}
 
                 {r.status === "pending" && (
                   <div className="flex gap-2 pt-1">
