@@ -18,6 +18,7 @@ import {
 import { cn } from "@/lib/utils";
 import { sanitizeText, validateImageFileSecure, rateLimit, LIMITS } from "@/utils/sanitization";
 import { submitBusinessApproval } from "@/utils/businessApprovals";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 const BUSINESS_CATEGORIES = [
