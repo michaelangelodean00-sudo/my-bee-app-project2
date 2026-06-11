@@ -219,6 +219,12 @@ const BusinessApprovals = () => {
                   )}
                 </div>
 
+                {r.status === "rejected" && r.rejectionReason && (
+                  <div className="rounded-lg border border-rose-200/60 bg-rose-50/60 dark:bg-rose-950/20 px-3 py-2 text-xs text-rose-700 dark:text-rose-300">
+                    <span className="font-semibold">Rejection reason:</span> {r.rejectionReason}
+                  </div>
+                )}
+
                 {r.status === "pending" && (
                   <div className="flex gap-2 pt-1">
                     <Button
