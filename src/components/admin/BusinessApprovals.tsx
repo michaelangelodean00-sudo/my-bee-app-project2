@@ -23,8 +23,12 @@ import {
   subscribeApprovals,
   type BusinessApprovalSubmission,
 } from "@/utils/businessApprovals";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+
+// A valid v4 UUID — used to detect submissions tied to a real auth user
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 type Filter = "pending" | "approved" | "rejected" | "all";
 
