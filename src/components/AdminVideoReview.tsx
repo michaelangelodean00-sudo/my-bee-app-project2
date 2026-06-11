@@ -377,6 +377,11 @@ const AdminVideoReview = () => {
                   <div>
                     <h4 className="font-semibold text-sm">{video.title}</h4>
                     <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{video.description}</p>
+                    {video.status === 'rejected' && video.rejectionReason && (
+                      <p className="text-[11px] mt-1 text-rose-600 dark:text-rose-400">
+                        <span className="font-semibold">Rejected:</span> {video.rejectionReason}
+                      </p>
+                    )}
                   </div>
                 </TableCell>
                 <TableCell>
