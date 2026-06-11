@@ -25,6 +25,7 @@ export type Database = {
           display_name: string | null
           id: string
           phone: string | null
+          rejection_reason: string | null
           status: Database["public"]["Enums"]["business_status"]
           updated_at: string
         }
@@ -38,6 +39,7 @@ export type Database = {
           display_name?: string | null
           id: string
           phone?: string | null
+          rejection_reason?: string | null
           status?: Database["public"]["Enums"]["business_status"]
           updated_at?: string
         }
@@ -51,6 +53,7 @@ export type Database = {
           display_name?: string | null
           id?: string
           phone?: string | null
+          rejection_reason?: string | null
           status?: Database["public"]["Enums"]["business_status"]
           updated_at?: string
         }
@@ -74,6 +77,39 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      video_moderation: {
+        Row: {
+          created_at: string
+          id: string
+          rejection_reason: string | null
+          reviewed_at: string
+          reviewer_id: string | null
+          status: string
+          updated_at: string
+          video_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          rejection_reason?: string | null
+          reviewed_at?: string
+          reviewer_id?: string | null
+          status: string
+          updated_at?: string
+          video_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          rejection_reason?: string | null
+          reviewed_at?: string
+          reviewer_id?: string | null
+          status?: string
+          updated_at?: string
+          video_id?: string
         }
         Relationships: []
       }
