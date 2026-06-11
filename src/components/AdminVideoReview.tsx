@@ -100,8 +100,66 @@ const AdminVideoReview = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
 
-  const setStatus = (ids: string[], status: PendingVideo['status']) => {
-    setVideos(prev => prev.map(v => (ids.includes(v.id) ? { ...v, status } : v)));
+  // On mount, hydrate moderation decisions (status + rejection reason) from DB
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await supabase
+        .from("video_moderation")
+        .select("video_id,status,rejection_reason");
+      if (error || cancelled || !data) return;
+      const map = new Map(data.map((r) => [r.video_id, r]));
+      setVideos((prev) =>
+        prev.map((v) => {
+          const m = map.get(v.id);
+          if (!m) return v;
+          return {
+            ...v,
+            status: (m.status as PendingVideo["status"]) ?? v.status,
+            rejectionReason: m.rejection_reason ?? undefined,
+          };
+        })
+      );
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  const persistModeration = async (
+    ids: string[],
+    status: PendingVideo['status'],
+    rejectionReason?: string
+  ) => {
+    const { data: userRes } = await supabase.auth.getUser();
+    const reviewerId = userRes?.user?.id ?? null;
+    const rows = ids.map((video_id) => ({
+      video_id,
+      status,
+      rejection_reason: status === 'rejected' ? rejectionReason ?? null : null,
+      reviewer_id: reviewerId,
+      reviewed_at: new Date().toISOString(),
+    }));
+    const { error } = await supabase
+      .from("video_moderation")
+      .upsert(rows, { onConflict: "video_id" });
+    if (error) {
+      toast.error(`Saved locally but DB sync failed: ${error.message}`);
+    }
+  };
+
+  const setStatus = (ids: string[], status: PendingVideo['status'], rejectionReason?: string) => {
+    setVideos(prev => prev.map(v => (ids.includes(v.id)
+      ? { ...v, status, rejectionReason: status === 'rejected' ? rejectionReason ?? v.rejectionReason : undefined }
+      : v)));
+    void persistModeration(ids, status, rejectionReason);
+  };
+
+  const promptReason = (label: string): string | null => {
+    const reason = window.prompt(`Reason for rejecting ${label}?\n(Stored for the audit log.)`)?.trim();
+    if (!reason) {
+      toast.message("Rejection cancelled — a reason is required.");
+      return null;
+    }
+    return reason;
   };
 
   const handleApprove = (id: string) => {
@@ -110,12 +168,18 @@ const AdminVideoReview = () => {
   };
 
   const handleReject = (id: string) => {
-    setStatus([id], 'rejected');
+    const v = videos.find(x => x.id === id);
+    const reason = promptReason(`"${v?.title ?? 'this video'}"`);
+    if (!reason) return;
+    setStatus([id], 'rejected', reason);
     toast.success("Video rejected and removed from pending queue.");
   };
 
   const handleRevoke = (id: string) => {
-    setStatus([id], 'rejected');
+    const v = videos.find(x => x.id === id);
+    const reason = promptReason(`"${v?.title ?? 'this video'}"`);
+    if (!reason) return;
+    setStatus([id], 'rejected', reason);
     toast.success("Approval revoked. Video is no longer live.");
   };
 
@@ -135,7 +199,9 @@ const AdminVideoReview = () => {
   const bulkReject = () => {
     const ids = Array.from(selectedIds);
     if (!ids.length) return;
-    setStatus(ids, 'rejected');
+    const reason = promptReason(`${ids.length} selected video${ids.length > 1 ? 's' : ''}`);
+    if (!reason) return;
+    setStatus(ids, 'rejected', reason);
     setSelectedIds(new Set());
     toast.success(`Rejected ${ids.length} video${ids.length > 1 ? 's' : ''}.`);
   };
