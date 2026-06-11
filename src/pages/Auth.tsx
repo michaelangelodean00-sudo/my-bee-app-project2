@@ -66,6 +66,7 @@ export default function Auth() {
   const { user, loading } = useAuth();
   const [tab, setTab] = useState<"signin" | "signup">("signin");
   const [submitting, setSubmitting] = useState(false);
+  const [showBusinessConfirm, setShowBusinessConfirm] = useState(false);
 
   // Sign in
   const [siEmail, setSiEmail] = useState("");
