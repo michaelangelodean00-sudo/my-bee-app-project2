@@ -28,6 +28,7 @@ interface PendingVideo {
   submittedBy: string;
   submittedAt: string;
   status: 'pending' | 'approved' | 'rejected';
+  rejectionReason?: string;
   fileSize?: number;
 }
 
