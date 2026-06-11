@@ -78,17 +78,22 @@ const BusinessApprovals = () => {
     toast.success(`Approved ${r.name}`);
   };
   const handleReject = async (r: BusinessApprovalSubmission) => {
+    const reason = window.prompt(`Reason for rejecting "${r.name}"?\n(Shown to the business and stored for the audit log.)`)?.trim();
+    if (!reason) {
+      toast.message("Rejection cancelled — a reason is required.");
+      return;
+    }
     if (UUID_RE.test(r.ownerKey)) {
       const { error } = await supabase
         .from("profiles")
-        .update({ status: "rejected" })
+        .update({ status: "rejected", rejection_reason: reason })
         .eq("id", r.ownerKey);
       if (error) {
         toast.error(`Could not reject ${r.name}: ${error.message}`);
         return;
       }
     }
-    setApprovalStatus(r.id, "rejected");
+    setApprovalStatus(r.id, "rejected", reason);
     toast.message(`Rejected ${r.name}`);
   };
 
