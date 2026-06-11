@@ -12,11 +12,54 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import Logo from "@/components/Logo";
-import { Chrome, Facebook } from "lucide-react";
+import { Facebook, Eye, EyeOff } from "lucide-react";
 
 const emailSchema = z.string().trim().email({ message: "Invalid email" }).max(255);
 const passwordSchema = z.string().min(8, { message: "Min 8 characters" }).max(72);
 const nameSchema = z.string().trim().min(1, { message: "Required" }).max(80);
+
+// Official Google "G" mark
+const GoogleIcon = ({ className = "h-4 w-4" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 48 48" aria-hidden="true">
+    <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.2 6.1 29.4 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.2-.1-2.3-.4-3.5z"/>
+    <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 16 19 13 24 13c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.2 6.1 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
+    <path fill="#4CAF50" d="M24 44c5.3 0 10.1-2 13.7-5.3l-6.3-5.3C29.4 35 26.8 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/>
+    <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.7l6.3 5.3C41.2 35.6 44 30.2 44 24c0-1.2-.1-2.3-.4-3.5z"/>
+  </svg>
+);
+
+interface PasswordInputProps {
+  id: string;
+  value: string;
+  onChange: (v: string) => void;
+  autoComplete?: string;
+  minLength?: number;
+}
+const PasswordInput = ({ id, value, onChange, autoComplete, minLength }: PasswordInputProps) => {
+  const [show, setShow] = useState(false);
+  return (
+    <div className="relative">
+      <Input
+        id={id}
+        type={show ? "text" : "password"}
+        autoComplete={autoComplete}
+        required
+        minLength={minLength}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="pr-10"
+      />
+      <button
+        type="button"
+        onClick={() => setShow((s) => !s)}
+        aria-label={show ? "Hide password" : "Show password"}
+        className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground"
+      >
+        {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+      </button>
+    </div>
+  );
+};
 
 export default function Auth() {
   const navigate = useNavigate();
@@ -32,8 +75,11 @@ export default function Auth() {
   const [suName, setSuName] = useState("");
   const [suEmail, setSuEmail] = useState("");
   const [suPassword, setSuPassword] = useState("");
+  const [suConfirm, setSuConfirm] = useState("");
   const [suAccountType, setSuAccountType] = useState<"personal" | "business">("personal");
   const [suBusinessName, setSuBusinessName] = useState("");
+  const [suBusinessCategory, setSuBusinessCategory] = useState("");
+  const [suBusinessPhone, setSuBusinessPhone] = useState("");
 
   useEffect(() => {
     if (!loading && user) navigate("/", { replace: true });
@@ -68,8 +114,11 @@ export default function Auth() {
     if (!nameParsed.success) return toast.error("Display name required");
     if (!emailParsed.success) return toast.error(emailParsed.error.issues[0].message);
     if (!passParsed.success) return toast.error(passParsed.error.issues[0].message);
-    if (suAccountType === "business" && !suBusinessName.trim()) {
-      return toast.error("Business name required");
+    if (suPassword !== suConfirm) return toast.error("Passwords do not match");
+    if (suAccountType === "business") {
+      if (!suBusinessName.trim()) return toast.error("Business name required");
+      if (!suBusinessCategory.trim()) return toast.error("Business category required");
+      if (!suBusinessPhone.trim()) return toast.error("Contact phone required");
     }
 
     setSubmitting(true);
@@ -82,6 +131,8 @@ export default function Auth() {
           display_name: nameParsed.data,
           account_type: suAccountType,
           business_name: suAccountType === "business" ? suBusinessName.trim() : null,
+          business_category: suAccountType === "business" ? suBusinessCategory.trim() : null,
+          business_phone: suAccountType === "business" ? suBusinessPhone.trim() : null,
         },
       },
     });
@@ -104,13 +155,41 @@ export default function Auth() {
       toast.error(result.error.message || `${provider} sign-in failed`);
       return;
     }
-    if (result.redirected) {
-      // Browser will redirect to provider — just return
-      return;
-    }
+    if (result.redirected) return;
     toast.success("Signed in!");
     navigate("/", { replace: true });
   };
+
+  const GoogleButton = () => (
+    <Button
+      type="button"
+      variant="outline"
+      className="w-full gap-2 bg-white text-[#3c4043] border-[#dadce0] hover:bg-white hover:text-[#3c4043] hover:border-[#dadce0] hover:shadow-sm font-medium"
+      onClick={() => handleOAuthSignIn("google")}
+      disabled={submitting}
+    >
+      <GoogleIcon />
+      Continue with Google
+    </Button>
+  );
+
+  const FacebookButton = () => (
+    <Button
+      type="button"
+      variant="outline"
+      className="w-full gap-2 opacity-70 cursor-not-allowed justify-between"
+      disabled
+      aria-label="Facebook sign-in coming soon"
+    >
+      <span className="flex items-center gap-2">
+        <Facebook className="h-4 w-4 text-[#1877F2]" />
+        Facebook
+      </span>
+      <span className="text-[10px] font-semibold uppercase tracking-wide bg-amber-100 text-amber-800 px-2 py-0.5 rounded border border-amber-200">
+        Coming Soon
+      </span>
+    </Button>
+  );
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
@@ -141,8 +220,8 @@ export default function Auth() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="si-password">Password</Label>
-                  <Input id="si-password" type="password" autoComplete="current-password" required
-                    value={siPassword} onChange={(e) => setSiPassword(e.target.value)} />
+                  <PasswordInput id="si-password" autoComplete="current-password"
+                    value={siPassword} onChange={setSiPassword} />
                 </div>
                 <Button type="submit" className="w-full" disabled={submitting}>
                   {submitting ? "Signing in..." : "Sign In"}
@@ -153,39 +232,12 @@ export default function Auth() {
                     <span className="w-full border-t" />
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-card px-2 text-muted-foreground">
-                      Or continue with
-                    </span>
+                    <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
                   </div>
                 </div>
 
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full gap-2"
-                  onClick={() => handleOAuthSignIn("google")}
-                  disabled={submitting}
-                >
-                  <Chrome className="h-4 w-4" />
-                  Google
-                </Button>
-
-                <div className="relative group">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="w-full gap-2 opacity-60 cursor-not-allowed"
-                    disabled
-                  >
-                    <Facebook className="h-4 w-4" />
-                    Facebook
-                  </Button>
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    <span className="bg-amber-100 text-amber-800 text-xs font-medium px-2 py-1 rounded border border-amber-200 shadow-sm">
-                      Coming Soon
-                    </span>
-                  </div>
-                </div>
+                <GoogleButton />
+                <FacebookButton />
               </form>
             </TabsContent>
 
@@ -203,9 +255,17 @@ export default function Auth() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="su-password">Password</Label>
-                  <Input id="su-password" type="password" autoComplete="new-password" required minLength={8}
-                    value={suPassword} onChange={(e) => setSuPassword(e.target.value)} />
+                  <PasswordInput id="su-password" autoComplete="new-password" minLength={8}
+                    value={suPassword} onChange={setSuPassword} />
                   <p className="text-xs text-muted-foreground">At least 8 characters</p>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="su-confirm">Confirm password</Label>
+                  <PasswordInput id="su-confirm" autoComplete="new-password" minLength={8}
+                    value={suConfirm} onChange={setSuConfirm} />
+                  {suConfirm && suPassword !== suConfirm && (
+                    <p className="text-xs text-destructive">Passwords do not match</p>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label>Account type</Label>
@@ -226,16 +286,33 @@ export default function Auth() {
                     </Label>
                   </RadioGroup>
                 </div>
+
                 {suAccountType === "business" && (
-                  <div className="space-y-2">
-                    <Label htmlFor="su-bizname">Business name</Label>
-                    <Input id="su-bizname" required maxLength={120}
-                      value={suBusinessName} onChange={(e) => setSuBusinessName(e.target.value)} />
+                  <div className="space-y-3 rounded-md border border-amber-200 bg-amber-50/50 p-3">
+                    <p className="text-xs font-semibold text-amber-800 uppercase tracking-wide">
+                      Business profile
+                    </p>
+                    <div className="space-y-2">
+                      <Label htmlFor="su-bizname">Business name</Label>
+                      <Input id="su-bizname" required maxLength={120}
+                        value={suBusinessName} onChange={(e) => setSuBusinessName(e.target.value)} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="su-bizcat">Category</Label>
+                      <Input id="su-bizcat" required maxLength={60} placeholder="e.g. Restaurant, Retail, Services"
+                        value={suBusinessCategory} onChange={(e) => setSuBusinessCategory(e.target.value)} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="su-bizphone">Contact phone</Label>
+                      <Input id="su-bizphone" type="tel" required maxLength={30}
+                        value={suBusinessPhone} onChange={(e) => setSuBusinessPhone(e.target.value)} />
+                    </div>
                     <p className="text-xs text-muted-foreground">
                       Business profiles require admin approval before being listed publicly.
                     </p>
                   </div>
                 )}
+
                 <Button type="submit" className="w-full" disabled={submitting}>
                   {submitting ? "Creating..." : "Create Account"}
                 </Button>
@@ -245,39 +322,12 @@ export default function Auth() {
                     <span className="w-full border-t" />
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-card px-2 text-muted-foreground">
-                      Or continue with
-                    </span>
+                    <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
                   </div>
                 </div>
 
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full gap-2"
-                  onClick={() => handleOAuthSignIn("google")}
-                  disabled={submitting}
-                >
-                  <Chrome className="h-4 w-4" />
-                  Google
-                </Button>
-
-                <div className="relative group">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="w-full gap-2 opacity-60 cursor-not-allowed"
-                    disabled
-                  >
-                    <Facebook className="h-4 w-4" />
-                    Facebook
-                  </Button>
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    <span className="bg-amber-100 text-amber-800 text-xs font-medium px-2 py-1 rounded border border-amber-200 shadow-sm">
-                      Coming Soon
-                    </span>
-                  </div>
-                </div>
+                <GoogleButton />
+                <FacebookButton />
               </form>
             </TabsContent>
           </Tabs>
