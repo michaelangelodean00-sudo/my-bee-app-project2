@@ -45,7 +45,14 @@ import {
   CalendarDays,
   BriefcaseBusiness,
   AlertCircle,
+  Building2,
+  ArrowUpRight,
+  Sparkles as SparklesIcon,
 } from "lucide-react";
+import ProfileEditDialog from "@/components/ProfileEditDialog";
+import { useAuth } from "@/hooks/useAuth";
+import { getMyLatest, subscribeApprovals, type BusinessApprovalSubmission } from "@/utils/businessApprovals";
+import { useEffect } from "react";
 
 const BUSINESS_CATEGORIES = [
   { id: "food-dining",           label: "Food & Dining",         icon: UtensilsCrossed },
@@ -61,7 +68,19 @@ const countSentences = (text: string) =>
   (text.match(/[^.!?]*[.!?]+/g) ?? []).filter(s => s.trim().length > 3).length;
 
 const ProfileSettings = () => {
+  const { user, isBusiness } = useAuth();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [upgradeDialogOpen, setUpgradeDialogOpen] = useState(false);
+  const ownerKey = user?.id || "current-user";
+  const [myApproval, setMyApproval] = useState<BusinessApprovalSubmission | undefined>(
+    () => getMyLatest(ownerKey)
+  );
+  useEffect(() => {
+    const update = () => setMyApproval(getMyLatest(ownerKey));
+    update();
+    return subscribeApprovals(update);
+  }, [ownerKey]);
+  const pendingUpgrade = !isBusiness && myApproval?.status === "pending";
   const [profileData, setProfileData] = useState({
     firstName: "John",
     lastName: "Doe",
@@ -125,6 +144,7 @@ const ProfileSettings = () => {
   };
 
   return (
+    <>
     <div className="min-h-screen bg-background transition-colors">
       <Header toggleMobileSidebar={toggleMobileSidebar} />
       
@@ -182,6 +202,42 @@ const ProfileSettings = () => {
               </div>
               {/* General Settings */}
               <TabsContent value="general" className="space-y-6 mt-0">
+                {!isBusiness && (
+                  <Card className={cn(
+                    "border-amber-200 dark:border-amber-800",
+                    pendingUpgrade
+                      ? "bg-amber-50/60 dark:bg-amber-950/20"
+                      : "bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/20"
+                  )}>
+                    <CardContent className="p-5 flex items-center justify-between gap-4 flex-wrap">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="h-11 w-11 rounded-full bg-amber-500/15 flex items-center justify-center flex-shrink-0">
+                          <Building2 className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                        </div>
+                        <div className="min-w-0">
+                          <h3 className="text-base font-semibold leading-tight">
+                            {pendingUpgrade ? "Business profile under review" : "Upgrade to Business Account"}
+                          </h3>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            {pendingUpgrade
+                              ? "We'll notify you once approved."
+                              : "Get listed in the directory, promote your services, and reach more customers."}
+                          </p>
+                        </div>
+                      </div>
+                      {!pendingUpgrade && (
+                        <Button
+                          onClick={() => setUpgradeDialogOpen(true)}
+                          className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-sm"
+                        >
+                          <SparklesIcon size={16} className="mr-1.5" />
+                          Upgrade Now
+                          <ArrowUpRight size={14} className="ml-1" />
+                        </Button>
+                      )}
+                    </CardContent>
+                  </Card>
+                )}
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
@@ -1036,6 +1092,20 @@ const ProfileSettings = () => {
         </div>
       </div>
     </div>
+
+    <ProfileEditDialog
+      open={upgradeDialogOpen}
+      onOpenChange={setUpgradeDialogOpen}
+      currentUser={{
+        name: `${profileData.firstName} ${profileData.lastName}`.trim(),
+        avatarUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&auto=format&fit=crop&crop=face",
+        avatarFallback: `${profileData.firstName[0] ?? ""}${profileData.lastName[0] ?? ""}`,
+        location: profileData.location,
+        businessOwner: true,
+      }}
+      onSave={() => setUpgradeDialogOpen(false)}
+    />
+    </>
   );
 };
 
