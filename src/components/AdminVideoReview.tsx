@@ -517,8 +517,7 @@ const AdminVideoReview = () => {
                     {video.status === 'rejected' && (
                       <Button
                         size="sm"
-                        variant="outline"
-                        className="text-amber-600 hover:text-amber-700 hover:bg-amber-50 border-amber-200"
+                        className="bg-green-600 hover:bg-green-700 text-white"
                         onClick={() => handleRestore(video.id)}
                       >
                         <RotateCcw size={14} className="mr-1" /> Restore
