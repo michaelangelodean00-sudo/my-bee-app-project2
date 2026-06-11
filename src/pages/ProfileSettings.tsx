@@ -1091,6 +1091,20 @@ const ProfileSettings = () => {
         </div>
       </div>
     </div>
+
+    <ProfileEditDialog
+      open={upgradeDialogOpen}
+      onOpenChange={setUpgradeDialogOpen}
+      currentUser={{
+        name: `${profileData.firstName} ${profileData.lastName}`.trim(),
+        avatarUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&auto=format&fit=crop&crop=face",
+        avatarFallback: `${profileData.firstName[0] ?? ""}${profileData.lastName[0] ?? ""}`,
+        location: profileData.location,
+        businessOwner: true,
+      }}
+      onSave={() => setUpgradeDialogOpen(false)}
+    />
+    </>
   );
 };
 
