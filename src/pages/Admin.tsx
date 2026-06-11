@@ -6,6 +6,7 @@ import AdminVideoReview from "../components/AdminVideoReview";
 import AdManagement from "../components/admin/AdManagement";
 import GreetingManagement from "../components/admin/GreetingManagement";
 import BusinessApprovals from "../components/admin/BusinessApprovals";
+import UserManagement from "../components/admin/UserManagement";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Shield, Video, Users, Settings, Play, MessageSquare, Building2 } from "lucide-react";
 
@@ -98,10 +99,9 @@ const Admin = () => {
               </TabsContent>
               
               <TabsContent value="users" className="mt-6">
-                <div className="text-center py-8 text-muted-foreground">
-                  User management coming soon...
-                </div>
+                <UserManagement />
               </TabsContent>
+              
               
               <TabsContent value="posts" className="mt-6">
                 <div className="text-center py-8 text-muted-foreground">

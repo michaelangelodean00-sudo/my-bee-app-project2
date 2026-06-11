@@ -27,6 +27,7 @@ export type Database = {
           phone: string | null
           rejection_reason: string | null
           status: Database["public"]["Enums"]["business_status"]
+          suspended: boolean
           updated_at: string
         }
         Insert: {
@@ -41,6 +42,7 @@ export type Database = {
           phone?: string | null
           rejection_reason?: string | null
           status?: Database["public"]["Enums"]["business_status"]
+          suspended?: boolean
           updated_at?: string
         }
         Update: {
@@ -55,6 +57,7 @@ export type Database = {
           phone?: string | null
           rejection_reason?: string | null
           status?: Database["public"]["Enums"]["business_status"]
+          suspended?: boolean
           updated_at?: string
         }
         Relationships: []
