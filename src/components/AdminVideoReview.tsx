@@ -406,6 +406,17 @@ const AdminVideoReview = () => {
                         <Undo2 size={14} className="mr-1" /> Revoke
                       </Button>
                     )}
+
+                    {video.status === 'rejected' && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-amber-600 hover:text-amber-700 hover:bg-amber-50 border-amber-200"
+                        onClick={() => handleRestore(video.id)}
+                      >
+                        <RotateCcw size={14} className="mr-1" /> Restore
+                      </Button>
+                    )}
                   </div>
                 </TableCell>
               </TableRow>
