@@ -590,6 +590,14 @@ const AdminVideoReview = () => {
           </Pagination>
         </div>
       )}
+
+      <RejectionReasonDialog
+        open={!!rejectTarget}
+        onOpenChange={(o) => !o && setRejectTarget(null)}
+        title={rejectTarget?.kind === 'revoke' ? "Revoke approval" : "Reject video submission"}
+        subjectLabel={rejectTarget?.label ?? ""}
+        onConfirm={confirmRejection}
+      />
     </div>
   );
 };
