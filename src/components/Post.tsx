@@ -163,9 +163,9 @@ const Post = memo(({
               onMouseEnter={() => setShowReactions(true)}
             >
               {userReaction ? (
-                <span className="mr-2 text-base">{userReaction}</span>
+                <span key={userReaction} className="mr-2 text-base animate-reaction-pop">{userReaction}</span>
               ) : (
-                <ThumbsUp size={18} className="mr-2" />
+                <ThumbsUp size={18} className="mr-2 transition-transform group-hover/like:scale-110" />
               )}
               Like
             </Button>
