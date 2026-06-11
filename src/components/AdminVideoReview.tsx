@@ -111,9 +111,9 @@ const AdminVideoReview = () => {
     toast.success("Video rejected and removed from pending queue.");
   };
 
-  const handleRevoke = (id: string) => {
-    setStatus([id], 'rejected');
-    toast.success("Approval revoked. Video is no longer live.");
+  const handleRestore = (id: string) => {
+    setStatus([id], 'pending');
+    toast.success("Video restored to pending queue for re-review.");
   };
 
   const bulkApprove = () => {
