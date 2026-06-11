@@ -79,12 +79,7 @@ const BusinessApprovals = () => {
     setApprovalStatus(r.id, "approved");
     toast.success(`Approved ${r.name}`);
   };
-  const handleReject = async (r: BusinessApprovalSubmission) => {
-    const reason = window.prompt(`Reason for rejecting "${r.name}"?\n(Shown to the business and stored for the audit log.)`)?.trim();
-    if (!reason) {
-      toast.message("Rejection cancelled — a reason is required.");
-      return;
-    }
+  const performReject = async (r: BusinessApprovalSubmission, reason: string) => {
     if (UUID_RE.test(r.ownerKey)) {
       const { error } = await supabase
         .from("profiles")
@@ -93,6 +88,24 @@ const BusinessApprovals = () => {
       if (error) {
         toast.error(`Could not reject ${r.name}: ${error.message}`);
         return;
+      }
+      // Fire-and-forget email notification. Will fail silently until the
+      // email domain + send-transactional-email function are configured.
+      try {
+        await supabase.functions.invoke("send-transactional-email", {
+          body: {
+            templateName: "submission-rejected",
+            recipientUserId: r.ownerKey,
+            idempotencyKey: `reject-business-${r.id}`,
+            templateData: {
+              submissionType: "business",
+              submissionName: r.name,
+              rejectionReason: reason,
+            },
+          },
+        });
+      } catch {
+        /* email infra not yet provisioned — DB state is authoritative */
       }
     }
     setApprovalStatus(r.id, "rejected", reason);
