@@ -159,7 +159,21 @@ export default function Auth() {
     }
   };
 
-  const handleOAuthSignIn = async (provider: "google" | "apple" | "microsoft" | "lovable") => {
+  const handleResendConfirmation = async () => {
+    if (!siEmail) return;
+    setSubmitting(true);
+    const { error } = await supabase.auth.resend({
+      type: "signup",
+      email: siEmail,
+    });
+    setSubmitting(false);
+    if (error) {
+      toast.error(error.message || "Could not resend email. Try again later.");
+      return;
+    }
+    toast.success("Confirmation email resent. Check your inbox.");
+  };
+
     setSubmitting(true);
     const result = await lovable.auth.signInWithOAuth(provider, {
       redirect_uri: window.location.origin,
