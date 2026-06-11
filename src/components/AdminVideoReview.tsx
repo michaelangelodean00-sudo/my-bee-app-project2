@@ -158,13 +158,27 @@ const AdminVideoReview = () => {
     void persistModeration(ids, status, rejectionReason);
   };
 
-  const promptReason = (label: string): string | null => {
-    const reason = window.prompt(`Reason for rejecting ${label}?\n(Stored for the audit log.)`)?.trim();
-    if (!reason) {
-      toast.message("Rejection cancelled — a reason is required.");
-      return null;
+  const sendRejectionEmails = async (ids: string[], reason: string) => {
+    for (const id of ids) {
+      const v = videos.find(x => x.id === id);
+      if (!v) continue;
+      try {
+        await supabase.functions.invoke("send-transactional-email", {
+          body: {
+            templateName: "submission-rejected",
+            recipientEmail: v.submittedBy.includes("@") ? v.submittedBy : undefined,
+            idempotencyKey: `reject-video-${id}-${Date.now()}`,
+            templateData: {
+              submissionType: "video",
+              submissionName: v.title,
+              rejectionReason: reason,
+            },
+          },
+        });
+      } catch {
+        /* email infra not yet provisioned — DB state is authoritative */
+      }
     }
-    return reason;
   };
 
   const handleApprove = (id: string) => {
@@ -174,18 +188,22 @@ const AdminVideoReview = () => {
 
   const handleReject = (id: string) => {
     const v = videos.find(x => x.id === id);
-    const reason = promptReason(`"${v?.title ?? 'this video'}"`);
-    if (!reason) return;
-    setStatus([id], 'rejected', reason);
-    toast.success("Video rejected and removed from pending queue.");
+    setRejectTarget({
+      kind: 'single',
+      ids: [id],
+      label: `"${v?.title ?? 'this video'}"`,
+      successMsg: "Video rejected and removed from pending queue.",
+    });
   };
 
   const handleRevoke = (id: string) => {
     const v = videos.find(x => x.id === id);
-    const reason = promptReason(`"${v?.title ?? 'this video'}"`);
-    if (!reason) return;
-    setStatus([id], 'rejected', reason);
-    toast.success("Approval revoked. Video is no longer live.");
+    setRejectTarget({
+      kind: 'revoke',
+      ids: [id],
+      label: `"${v?.title ?? 'this video'}"`,
+      successMsg: "Approval revoked. Video is no longer live.",
+    });
   };
 
   const handleRestore = (id: string) => {
@@ -204,11 +222,20 @@ const AdminVideoReview = () => {
   const bulkReject = () => {
     const ids = Array.from(selectedIds);
     if (!ids.length) return;
-    const reason = promptReason(`${ids.length} selected video${ids.length > 1 ? 's' : ''}`);
-    if (!reason) return;
-    setStatus(ids, 'rejected', reason);
-    setSelectedIds(new Set());
-    toast.success(`Rejected ${ids.length} video${ids.length > 1 ? 's' : ''}.`);
+    setRejectTarget({
+      kind: 'bulk',
+      ids,
+      label: `${ids.length} selected video${ids.length > 1 ? 's' : ''}`,
+      successMsg: `Rejected ${ids.length} video${ids.length > 1 ? 's' : ''}.`,
+    });
+  };
+
+  const confirmRejection = async (reason: string) => {
+    if (!rejectTarget) return;
+    setStatus(rejectTarget.ids, 'rejected', reason);
+    await sendRejectionEmails(rejectTarget.ids, reason);
+    if (rejectTarget.kind === 'bulk') setSelectedIds(new Set());
+    toast.success(rejectTarget.successMsg);
   };
 
   const getStatusColor = (status: string) => {
