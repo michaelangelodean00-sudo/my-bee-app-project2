@@ -103,6 +103,7 @@ export default function Auth() {
     if (error) {
       const msg = error.message;
       if (msg.includes("Email not confirmed") || msg.includes("not confirmed")) {
+        setNeedsConfirmation(true);
         toast.error("Please verify your email first. Check your inbox for a confirmation link.");
       } else if (msg === "Invalid login credentials") {
         toast.error("Wrong email or password");
