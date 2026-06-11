@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export type AppRole = "admin" | "business" | "user";
 
@@ -29,7 +30,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(newSession?.user ?? null);
       if (newSession?.user) {
         // Defer DB call to avoid deadlock inside callback
-        setTimeout(() => fetchRoles(newSession.user.id), 0);
+        setTimeout(() => {
+          checkSuspended(newSession.user.id);
+          fetchRoles(newSession.user.id);
+        }, 0);
       } else {
         setRoles([]);
       }
@@ -40,6 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setSession(existing);
       setUser(existing?.user ?? null);
       if (existing?.user) {
+        checkSuspended(existing.user.id);
         fetchRoles(existing.user.id).finally(() => setLoading(false));
       } else {
         setLoading(false);
@@ -48,6 +53,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  const checkSuspended = async (userId: string) => {
+    const { data } = await supabase
+      .from("profiles")
+      .select("suspended")
+      .eq("id", userId)
+      .maybeSingle();
+    if (data?.suspended) {
+      toast.error("Your account has been suspended. Contact support.");
+      await supabase.auth.signOut();
+      setUser(null);
+      setSession(null);
+      setRoles([]);
+    }
+  };
+
 
   const fetchRoles = async (userId: string) => {
     const { data, error } = await supabase
