@@ -285,6 +285,18 @@ export default function Auth() {
                     {submitting ? "Signing in..." : "Sign In"}
                   </Button>
 
+                  {needsConfirmation && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full"
+                      onClick={handleResendConfirmation}
+                      disabled={submitting || !siEmail}
+                    >
+                      {submitting ? "Resending..." : "Resend confirmation email"}
+                    </Button>
+                  )}
+
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
                       <span className="w-full border-t" />
