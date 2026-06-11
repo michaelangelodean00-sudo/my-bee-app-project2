@@ -79,10 +79,18 @@ export const submitBusinessApproval = (
 
 export const setApprovalStatus = (
   id: string,
-  status: Exclude<BusinessApprovalStatus, "pending">
+  status: Exclude<BusinessApprovalStatus, "pending">,
+  rejectionReason?: string
 ) => {
   const rows = read().map((r) =>
-    r.id === id ? { ...r, status, reviewedAt: Date.now() } : r
+    r.id === id
+      ? {
+          ...r,
+          status,
+          reviewedAt: Date.now(),
+          rejectionReason: status === "rejected" ? rejectionReason ?? r.rejectionReason : undefined,
+        }
+      : r
   );
   write(rows);
 };
