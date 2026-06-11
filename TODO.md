@@ -1,5 +1,17 @@
 # Pre-Launch To-Do List
 
+## 🔴 Today / Before Launch
+- [ ] **Rejection notification emails** — wire up delivery for admin rejections (business approvals + video review)
+  - Set up sending domain (e.g. `notify.yourdomain.com`) via Cloud → Emails
+  - Scaffold transactional email infrastructure + `submission-rejected` template
+    - Subject: `Your B.E.E App submission was not approved`
+    - Body: includes the rejection reason captured in the admin modal
+  - Add admin-only helper to resolve a user's email from `user_id` (emails live in `auth.users`, not `profiles`)
+  - Verify end-to-end: reject a test business + test video → email arrives with reason
+  - Rejection modal UI + DB storage of `rejection_reason` are already shipped
+
+
+
 ## Backend Setup (Requires Lovable Cloud)
 - [ ] **Enable Lovable Cloud**
   - Set up authentication system
