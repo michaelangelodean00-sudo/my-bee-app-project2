@@ -100,7 +100,14 @@ export default function Auth() {
     });
     setSubmitting(false);
     if (error) {
-      toast.error(error.message === "Invalid login credentials" ? "Wrong email or password" : error.message);
+      const msg = error.message;
+      if (msg.includes("Email not confirmed") || msg.includes("not confirmed")) {
+        toast.error("Please verify your email first. Check your inbox for a confirmation link.");
+      } else if (msg === "Invalid login credentials") {
+        toast.error("Wrong email or password");
+      } else {
+        toast.error(msg);
+      }
       return;
     }
     toast.success("Welcome back!");
