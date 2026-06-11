@@ -12,7 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import Logo from "@/components/Logo";
-import { Facebook, Eye, EyeOff } from "lucide-react";
+import { Facebook, Eye, EyeOff, CheckCircle } from "lucide-react";
 
 const emailSchema = z.string().trim().email({ message: "Invalid email" }).max(255);
 const passwordSchema = z.string().min(8, { message: "Min 8 characters" }).max(72);
