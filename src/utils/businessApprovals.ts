@@ -8,6 +8,7 @@ export interface BusinessApprovalSubmission {
   submittedAt: number;
   status: BusinessApprovalStatus;
   reviewedAt?: number;
+  rejectionReason?: string;
   // Submitted profile snapshot
   name: string;
   avatarUrl: string;
