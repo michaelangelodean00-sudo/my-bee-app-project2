@@ -174,6 +174,7 @@ export default function Auth() {
     toast.success("Confirmation email resent. Check your inbox.");
   };
 
+  const handleOAuthSignIn = async (provider: "google" | "apple" | "microsoft" | "lovable") => {
     setSubmitting(true);
     const result = await lovable.auth.signInWithOAuth(provider, {
       redirect_uri: window.location.origin,
@@ -183,6 +184,10 @@ export default function Auth() {
       toast.error(result.error.message || `${provider} sign-in failed`);
       return;
     }
+    if (result.redirected) return;
+    toast.success("Signed in!");
+    navigate("/", { replace: true });
+  };
     if (result.redirected) return;
     toast.success("Signed in!");
     navigate("/", { replace: true });
