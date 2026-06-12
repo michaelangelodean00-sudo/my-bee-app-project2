@@ -88,11 +88,15 @@ const BurgerAdWidget = ({ showMetrics = false }: { showMetrics?: boolean }) => {
     }, 250);
   };
 
+  // Advance to next ad when inline video ends
   useEffect(() => {
-    const timer = setInterval(() => {
+    const vid = videoRef.current;
+    if (!vid) return;
+    const onEnded = () => {
       goTo((currentIndex + 1) % videoAds.length);
-    }, 30000);
-    return () => clearInterval(timer);
+    };
+    vid.addEventListener('ended', onEnded);
+    return () => vid.removeEventListener('ended', onEnded);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex]);
 
@@ -115,25 +119,14 @@ const BurgerAdWidget = ({ showMetrics = false }: { showMetrics?: boolean }) => {
       if (vid.currentTime >= MAX_AD_DURATION) {
         vid.currentTime = 0;
         vid.pause();
+        // Trigger rotation when max duration is hit
+        goTo((currentIndex + 1) % videoAds.length);
       }
     };
     vid.addEventListener('timeupdate', enforceLimit);
     return () => vid.removeEventListener('timeupdate', enforceLimit);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex]);
-
-  // Enforce 90-second max on modal video
-  useEffect(() => {
-    const vid = modalVideoRef.current;
-    if (!vid || !modalOpen) return;
-    const enforceLimit = () => {
-      if (vid.currentTime >= MAX_AD_DURATION) {
-        vid.currentTime = 0;
-        vid.pause();
-      }
-    };
-    vid.addEventListener('timeupdate', enforceLimit);
-    return () => vid.removeEventListener('timeupdate', enforceLimit);
-  }, [currentIndex, modalOpen]);
 
   // When modal opens: seek modal video to same time, unmute and play
   useEffect(() => {
