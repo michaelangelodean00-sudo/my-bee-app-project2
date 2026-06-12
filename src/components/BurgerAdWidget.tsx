@@ -200,7 +200,6 @@ const BurgerAdWidget = ({ showMetrics = false }: { showMetrics?: boolean }) => {
             poster={current.posterSrc}
             muted={isMuted}
             autoPlay
-            loop
             playsInline
             preload="metadata"
             className="absolute inset-0 w-full h-full object-cover"
