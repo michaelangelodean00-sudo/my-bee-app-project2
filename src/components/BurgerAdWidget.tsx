@@ -100,7 +100,7 @@ const BurgerAdWidget = ({ showMetrics = false }: { showMetrics?: boolean }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex]);
 
-  const MAX_AD_DURATION = 90; // 90 seconds max for video ads
+  const MAX_AD_DURATION = 120; // allow ads up to 120s; auto-loop to next when finished
 
   // Track impression and sync video on index change
   useEffect(() => {
@@ -111,15 +111,13 @@ const BurgerAdWidget = ({ showMetrics = false }: { showMetrics?: boolean }) => {
     vid.play().catch(() => {});
   }, [currentIndex, trackImpression]);
 
-  // Enforce 90-second max on inline video
+  // Hard cap at 120s — advance to next ad if exceeded
   useEffect(() => {
     const vid = videoRef.current;
     if (!vid) return;
     const enforceLimit = () => {
       if (vid.currentTime >= MAX_AD_DURATION) {
-        vid.currentTime = 0;
         vid.pause();
-        // Trigger rotation when max duration is hit
         goTo((currentIndex + 1) % videoAds.length);
       }
     };
