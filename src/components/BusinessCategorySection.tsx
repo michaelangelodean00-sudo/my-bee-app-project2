@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { UtensilsCrossed, Sparkles, ShoppingBag, Wrench, Car, CalendarDays, BriefcaseBusiness } from "lucide-react";
+import { UtensilsCrossed, Sparkles, ShoppingBag, Wrench, Car, HeartPulse, BriefcaseBusiness } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const CATEGORIES = [
