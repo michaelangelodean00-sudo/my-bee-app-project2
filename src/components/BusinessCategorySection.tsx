@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { UtensilsCrossed, Sparkles, ShoppingBag, Wrench, Car, CalendarDays, BriefcaseBusiness } from "lucide-react";
+import { UtensilsCrossed, Sparkles, ShoppingBag, Wrench, Car, HeartPulse, BriefcaseBusiness } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const CATEGORIES = [
@@ -8,7 +8,7 @@ const CATEGORIES = [
   { id: "retail-shopping",       label: "Retail & Shopping",     icon: ShoppingBag,     color: "from-violet-500 to-purple-400" },
   { id: "home-trade-services",   label: "Home & Trade Services", icon: Wrench,          color: "from-sky-500 to-blue-400" },
   { id: "auto-transport",        label: "Auto & Transport",      icon: Car,             color: "from-slate-500 to-zinc-400" },
-  { id: "events",                label: "Events",                icon: CalendarDays,    color: "from-fuchsia-500 to-pink-400" },
+  { id: "health-medical",      label: "Health & Medical",      icon: HeartPulse,      color: "from-fuchsia-500 to-pink-400" },
   { id: "professional-services", label: "Professional Services", icon: BriefcaseBusiness, color: "from-teal-500 to-emerald-400" },
 ] as const;
 
