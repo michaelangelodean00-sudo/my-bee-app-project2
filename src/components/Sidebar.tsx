@@ -62,7 +62,7 @@ const Sidebar = memo(({ className = "", onLinkClick }: SidebarProps) => {
                   )} />
                   <div className="flex items-center gap-1 lg:gap-2 min-w-0 flex-1">
                     <span className={cn(
-                      "font-heading font-medium text-[9px] lg:text-sm truncate tracking-tight",
+                      "font-heading font-medium text-xs lg:text-sm truncate tracking-tight",
                       isActive && "text-primary"
                     )}>{item.label}</span>
                     {hasNotification && (

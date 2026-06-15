@@ -159,8 +159,7 @@ const Post = memo(({
             <Button 
               variant="ghost" 
               className={`flex-1 font-medium transition-colors duration-200 ${userReaction ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}
-              onClick={() => setShowReactions(!showReactions)}
-              onMouseEnter={() => setShowReactions(true)}
+              onClick={() => setShowReactions((v) => !v)}
             >
               {userReaction ? (
                 <span key={userReaction} className="mr-2 text-base animate-reaction-pop">{userReaction}</span>
@@ -171,21 +170,25 @@ const Post = memo(({
             </Button>
             
             {showReactions && (
-              <div 
-                className="absolute bottom-full left-0 mb-2 bg-card border border-border rounded-xl shadow-lg p-2 flex gap-1 z-10 animate-pop-in"
-                onMouseLeave={() => setShowReactions(false)}
-              >
-                {reactions.map((reaction) => (
-                  <button
-                    key={reaction.emoji}
-                    onClick={() => handleReaction(reaction.emoji)}
-                    className="text-2xl hover:scale-125 transition-transform duration-200 p-2 min-w-[44px] min-h-[44px] flex items-center justify-center touch-manipulation active:scale-110 rounded-lg hover:bg-accent/50"
-                    title={reaction.label}
-                  >
-                    {reaction.emoji}
-                  </button>
-                ))}
-              </div>
+              <>
+                <div
+                  className="fixed inset-0 z-10"
+                  onClick={() => setShowReactions(false)}
+                  aria-hidden
+                />
+                <div className="absolute bottom-full left-0 mb-2 bg-card border border-border rounded-xl shadow-lg p-2 flex gap-1 z-20 animate-pop-in">
+                  {reactions.map((reaction) => (
+                    <button
+                      key={reaction.emoji}
+                      onClick={() => handleReaction(reaction.emoji)}
+                      className="text-2xl hover:scale-125 transition-transform duration-200 p-2 min-w-[44px] min-h-[44px] flex items-center justify-center touch-manipulation active:scale-110 rounded-lg hover:bg-accent/50"
+                      title={reaction.label}
+                    >
+                      {reaction.emoji}
+                    </button>
+                  ))}
+                </div>
+              </>
             )}
           </div>
           

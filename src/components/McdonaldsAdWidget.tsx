@@ -16,21 +16,21 @@ interface AdContent {
 const ads: AdContent[] = [
   {
     imageSrc: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=256&h=256&q=90&fm=webp&fit=crop",
-    altText: "McDonald's Promotion",
-    title: "Try the new",
-    highlight: "McSaver Deal",
-    bgColor: "bg-gradient-to-r from-red-600 to-red-500",
-    highlightColor: "text-yellow-300",
-    linkUrl: "https://www.mcdonalds.com"
+    altText: "Feature your business here",
+    title: "Feature your brand",
+    highlight: "Advertise on B.E.E",
+    bgColor: "bg-gradient-to-r from-primary to-amber-500",
+    highlightColor: "text-primary-foreground",
+    linkUrl: "mailto:hello@beeapp.bs?subject=Advertise%20on%20B.E.E"
   },
   {
     imageSrc: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=256&h=256&q=90&fm=webp&fit=crop",
-    altText: "Burger Special",
-    title: "Limited time",
-    highlight: "Big Mac Combo",
-    bgColor: "bg-gradient-to-r from-amber-600 to-orange-500",
-    highlightColor: "text-yellow-200",
-    linkUrl: "https://www.mcdonalds.com"
+    altText: "Promote your event",
+    title: "Promote your event",
+    highlight: "Reach Bahamians today",
+    bgColor: "bg-gradient-to-r from-amber-500 to-primary",
+    highlightColor: "text-primary-foreground",
+    linkUrl: "mailto:hello@beeapp.bs?subject=Promote%20my%20event"
   }
 ];
 
@@ -67,7 +67,7 @@ const McdonaldsAdWidget = memo(({ showMetrics = false }: { showMetrics?: boolean
 
   return (
     <div 
-      className={`${currentAd.bgColor} text-white rounded-xl flex items-center transition-colors duration-300 cursor-pointer hover:brightness-110 hover:shadow-xl w-full max-w-full min-h-[56px] px-3 py-3 shadow-lg border border-white/10 backdrop-blur-sm overflow-hidden`}
+      className={`${currentAd.bgColor} text-primary-foreground rounded-xl flex items-center transition-colors duration-300 cursor-pointer hover:brightness-110 hover:shadow-xl w-full max-w-full min-h-[56px] px-3 py-3 shadow-lg border border-primary/20 backdrop-blur-sm overflow-hidden`}
       onClick={handleAdClick}
       style={{ contain: 'layout style' }}
     >
