@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import Logo from "./Logo";
 import SearchBar from "./SearchBar";
+import OccasionsBanner from "./OccasionsBanner";
 import { useNotifications } from "../contexts/NotificationContext";
 
 interface HeaderProps {
@@ -20,9 +21,12 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
       
       {/* Mobile: logo row */}
       <div className="sm:hidden">
-        <div className="flex items-center justify-between px-3 py-2">
-          <div className="overflow-hidden rounded-md">
-            <Logo />
+        <div className="flex items-center justify-between px-3 py-2 gap-2">
+          <div className="flex items-center gap-2 overflow-hidden">
+            <div className="overflow-hidden rounded-md flex-shrink-0">
+              <Logo />
+            </div>
+            <OccasionsBanner />
           </div>
           <Button
             variant="ghost"
@@ -41,9 +45,12 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
       </div>
 
       {/* Tablet & Desktop: single horizontal row */}
-      <div className="hidden sm:flex items-center w-full px-4 py-0.5 gap-2 min-h-[56px] md:min-h-[60px]">
-        <div className="flex-shrink-0 overflow-hidden rounded-md">
-          <Logo />
+      <div className="hidden sm:flex items-center w-full px-4 py-0.5 gap-3 min-h-[56px] md:min-h-[60px]">
+        <div className="flex items-center gap-3 flex-shrink-0 overflow-hidden">
+          <div className="overflow-hidden rounded-md">
+            <Logo />
+          </div>
+          <OccasionsBanner />
         </div>
         <div className="flex-1 hidden md:block">
           <SearchBar />
