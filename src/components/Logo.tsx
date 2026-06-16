@@ -27,9 +27,7 @@ const Logo = ({ className }: LogoProps) => {
       onClick={handleTap}
     >
       <div
-        className={`transition-transform duration-150 ease-out flex items-center will-change-transform backface-hidden origin-center overflow-hidden ${
-          isPressed ? 'scale-90' : 'scale-100 hover:scale-105'
-        }`}
+        className="flex items-center will-change-transform backface-hidden origin-center overflow-hidden scale-100"
       >
         {/* Logo image + tagline */}
         <div className="flex flex-col items-center gap-0 flex-shrink-0">
