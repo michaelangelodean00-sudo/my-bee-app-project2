@@ -1,5 +1,4 @@
 import { memo } from "react";
-import { Sparkles } from "lucide-react";
 
 interface Occasion {
   label: string;
@@ -51,12 +50,11 @@ const OccasionsBanner = memo(() => {
   if (!occasion) return null;
 
   return (
-    <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-gradient-to-r from-primary/15 via-primary/5 to-primary/15 border border-primary/20 shadow-sm backdrop-blur-sm animate-shimmer whitespace-nowrap">
-      <Sparkles size={12} className="text-primary flex-shrink-0" />
-      <span className="text-[10px] sm:text-xs font-heading font-semibold text-primary tracking-wide select-none">
-        {occasion.icon} {occasion.label}
+    <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gradient-to-r from-primary/15 via-primary/5 to-primary/15 border border-primary/20 shadow-sm backdrop-blur-sm animate-shimmer whitespace-nowrap max-w-full">
+      <span className="text-xs sm:text-sm leading-none" role="img" aria-label="occasion">{occasion.icon}</span>
+      <span className="text-[10px] sm:text-xs font-heading font-semibold text-primary tracking-wide select-none truncate">
+        {occasion.label}
       </span>
-      <Sparkles size={12} className="text-primary flex-shrink-0" />
     </div>
   );
 });
