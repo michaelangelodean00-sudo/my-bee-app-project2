@@ -21,7 +21,7 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
       {/* Mobile: logo row */}
       <div className="sm:hidden">
         <div className="flex items-center justify-between px-3 py-2">
-          <div className="animate-logo-entrance overflow-hidden rounded-md">
+          <div className="overflow-hidden rounded-md">
             <Logo />
           </div>
           <Button
