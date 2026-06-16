@@ -1,4 +1,3 @@
-import { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import LogoImage from "./LogoImage";
 
@@ -7,29 +6,13 @@ interface LogoProps {
 }
 
 const Logo = ({ className }: LogoProps) => {
-  const [isPressed, setIsPressed] = useState(false);
-
-  const handleTap = useCallback(() => {
-    if ('vibrate' in navigator) {
-      navigator.vibrate(50);
-    }
-  }, []);
-
   return (
     <Link
       to="/"
       className={`flex items-center gap-0 ${className ?? ''}`}
-      onMouseDown={() => setIsPressed(true)}
-      onMouseUp={() => setIsPressed(false)}
-      onMouseLeave={() => setIsPressed(false)}
-      onTouchStart={() => setIsPressed(true)}
-      onTouchEnd={() => setIsPressed(false)}
-      onClick={handleTap}
     >
       <div
-        className={`transition-transform duration-150 ease-out flex items-center will-change-transform backface-hidden origin-center overflow-hidden ${
-          isPressed ? 'scale-90' : 'scale-100 hover:scale-105'
-        }`}
+        className="flex items-center will-change-transform backface-hidden origin-center overflow-hidden scale-100"
       >
         {/* Logo image + tagline */}
         <div className="flex flex-col items-center gap-0 flex-shrink-0">
