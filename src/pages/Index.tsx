@@ -144,15 +144,15 @@ const Index = () => {
       <Suspense fallback={<div className="h-[280px] md:h-[360px] bg-secondary animate-pulse" />}>
         <AdSplash showMetrics={isAdmin} />
       </Suspense>
-      {/* Video Ad Banner — directly below AdSplash */}
+      {/* Business Category Browse — directly below AdSplash */}
+      <BusinessCategorySection />
+
+      {/* Video Ad Banner — directly below Browse Categories */}
       <div className="w-full px-4 md:px-6 py-2 bg-card/80 border-b border-border">
         <div className="max-w-3xl mx-auto">
           <BurgerAdWidget showMetrics={isAdmin} />
         </div>
       </div>
-
-      {/* Business Category Browse — directly below Video Ad */}
-      <BusinessCategorySection />
       
       <div className="flex relative">
         {/* Tablet & Desktop Sidebar */}
