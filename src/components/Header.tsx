@@ -21,7 +21,7 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
       {/* Mobile: logo row */}
       <div className="sm:hidden">
         <div className="flex items-center justify-between px-3 py-2">
-          <div className="animate-logo-entrance">
+          <div className="animate-logo-entrance overflow-hidden rounded-md">
             <Logo />
           </div>
           <Button
@@ -42,7 +42,7 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
 
       {/* Tablet & Desktop: single horizontal row */}
       <div className="hidden sm:flex items-center w-full px-4 py-0.5 gap-2 min-h-[56px] md:min-h-[60px]">
-        <div className="flex-shrink-0 animate-logo-entrance">
+        <div className="flex-shrink-0 animate-logo-entrance overflow-hidden rounded-md">
           <Logo />
         </div>
         <div className="flex-1 hidden md:block">
