@@ -1,5 +1,4 @@
 import { memo } from "react";
-import { Sparkles } from "lucide-react";
 
 interface Occasion {
   label: string;
