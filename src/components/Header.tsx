@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import Logo from "./Logo";
 import SearchBar from "./SearchBar";
-import OccasionsBanner from "./OccasionsBanner";
 import { useNotifications } from "../contexts/NotificationContext";
 
 interface HeaderProps {
@@ -39,10 +38,6 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
             <span className="sr-only">Open menu</span>
           </Button>
         </div>
-        {/* Occasions banner — own row on mobile for space */}
-        <div className="px-3 pb-1.5">
-          <OccasionsBanner />
-        </div>
       </div>
 
       {/* Tablet & Desktop: single horizontal row */}
@@ -51,7 +46,6 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
           <div className="overflow-hidden rounded-md">
             <Logo />
           </div>
-          <OccasionsBanner />
         </div>
         <div className="flex-1 hidden md:block">
           <SearchBar />
