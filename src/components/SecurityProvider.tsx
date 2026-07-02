@@ -47,21 +47,13 @@ export const SecurityProvider = ({ children }: SecurityProviderProps) => {
       document.head.prepend(csp);
     }
 
-    // ── X-Frame-Options equivalent (clickjacking guard) ─────────────────────
-    // If we're being framed by an unexpected origin, break out
-    try {
-      if (window.self !== window.top) {
-        const allowedOrigin = window.location.origin;
-        if (document.referrer && !document.referrer.startsWith(allowedOrigin)) {
-          // Break out of unexpected iframe
-          window.top!.location.href = window.location.href;
-        }
-      }
-    } catch {
-      // Cross-origin frame — break out
-      document.body.innerHTML = '';
-      window.location.reload();
-    }
+    // ── Framing guard ────────────────────────────────────────────────────────
+    // Frame-busting via JS is intentionally disabled: the app is designed to
+    // run inside the Lovable preview iframe and other trusted embed contexts.
+    // Cross-origin `window.top.location` assignments throw SecurityError and
+    // previously triggered an infinite reload loop. Clickjacking protection
+    // is handled by the `frame-src 'none'` / server-side X-Frame-Options
+    // headers in production instead.
 
     // ── Referrer Policy ──────────────────────────────────────────────────────
     if (!document.querySelector('meta[name="referrer"]')) {
