@@ -20,7 +20,6 @@ export interface UserProfileProps {
   postsCount: number;
   followersCount: number;
   followingCount: number;
-  isVerified: boolean;
   businessOwner: boolean;
   role?: UserRole;
   bio?: string;
@@ -46,7 +45,6 @@ const UserProfile: React.FC<UserProfileProps> = ({
   postsCount,
   followersCount,
   followingCount,
-  isVerified,
   businessOwner,
   role = 'user',
   bio,
@@ -80,7 +78,6 @@ const UserProfile: React.FC<UserProfileProps> = ({
     postsCount,
     followersCount,
     followingCount,
-    isVerified,
     businessOwner,
     bio: bio || "",
     website: website || "",
@@ -188,20 +185,6 @@ const UserProfile: React.FC<UserProfileProps> = ({
                   <Badge className="text-xs px-1.5 py-0.5 bg-red-500 hover:bg-red-600 text-white">
                     <Shield size={10} className="mr-1" />
                     Admin
-                  </Badge>
-                )}
-                {isVerified && (
-                  <Badge 
-                    variant="secondary" 
-                    className={cn(
-                      "text-xs px-1.5 py-0.5",
-                      businessOwner 
-                        ? "bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300" 
-                        : ""
-                    )}
-                  >
-                    <Star size={10} className="mr-1" />
-                    Verified
                   </Badge>
                 )}
               </div>

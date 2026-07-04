@@ -23,7 +23,6 @@ const RightSidebar = memo(() => {
     postsCount: 12,
     followersCount: 150,
     followingCount: 89,
-    isVerified: true,
     businessOwner: false,
     role: 'admin' as const,
     bio: "Welcome to B.E.E App! Connect with local businesses and community.",

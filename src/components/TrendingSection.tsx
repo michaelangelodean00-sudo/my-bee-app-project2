@@ -37,14 +37,12 @@ const TrendingSection = () => {
       id: 1,
       name: "Green Leaf Cafe",
       category: "Restaurant",
-      rating: 4.8,
       image: "https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=60&h=60&auto=format&fit=crop"
     },
     {
       id: 2,
       name: "Tech Solutions Inc",
       category: "Technology",
-      rating: 4.9,
       image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=60&h=60&auto=format&fit=crop"
     }
   ];
