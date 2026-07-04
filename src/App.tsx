@@ -29,6 +29,7 @@ const UserProfilePage = lazy(() => import("./pages/UserProfilePage"));
 const Copyright = lazy(() => import("./pages/Copyright"));
 const VideoUpload = lazy(() => import("./pages/VideoUpload"));
 const CustomerAnalytics = lazy(() => import("./pages/CustomerAnalytics"));
+const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -88,6 +89,7 @@ const App = () => {
                       <Route path="/privacy" element={<Copyright />} />
                       <Route path="/dmca" element={<Copyright />} />
                       <Route path="/customer-analytics" element={<ProtectedRoute><CustomerAnalytics /></ProtectedRoute>} />
+                      <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
                       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                       <Route path="*" element={<NotFound />} />
                     </Routes>
