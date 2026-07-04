@@ -190,20 +190,6 @@ const UserProfile: React.FC<UserProfileProps> = ({
                     Admin
                   </Badge>
                 )}
-                {isVerified && (
-                  <Badge 
-                    variant="secondary" 
-                    className={cn(
-                      "text-xs px-1.5 py-0.5",
-                      businessOwner 
-                        ? "bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300" 
-                        : ""
-                    )}
-                  >
-                    <Star size={10} className="mr-1" />
-                    Verified
-                  </Badge>
-                )}
               </div>
               {businessOwner ? (
                 <div className="flex items-center gap-1 mt-1">
