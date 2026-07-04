@@ -79,7 +79,7 @@ const BusinessApprovals = () => {
     fetchRows();
   }, [fetchRows]);
 
-  const writeAudit = async (action: string, targetId: string, detail?: object) => {
+  const writeAudit = async (action: string, targetId: string, detail?: Record<string, unknown>) => {
     const { data: userRes } = await supabase.auth.getUser();
     if (!userRes?.user) return;
     await supabase
