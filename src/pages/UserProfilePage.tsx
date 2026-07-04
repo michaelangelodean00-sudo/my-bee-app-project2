@@ -95,7 +95,6 @@ const UserProfilePage: React.FC = () => {
                     postsCount={0}
                     followersCount={0}
                     followingCount={0}
-                    isVerified={profile.status === 'approved'}
                     businessOwner={isCompany}
                     phone={profile.phone || undefined}
                     isCurrentUser={isCurrentUser}

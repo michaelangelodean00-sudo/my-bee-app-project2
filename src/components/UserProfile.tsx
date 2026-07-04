@@ -20,7 +20,6 @@ export interface UserProfileProps {
   postsCount: number;
   followersCount: number;
   followingCount: number;
-  isVerified: boolean;
   businessOwner: boolean;
   role?: UserRole;
   bio?: string;
@@ -46,7 +45,6 @@ const UserProfile: React.FC<UserProfileProps> = ({
   postsCount,
   followersCount,
   followingCount,
-  isVerified,
   businessOwner,
   role = 'user',
   bio,
@@ -80,7 +78,6 @@ const UserProfile: React.FC<UserProfileProps> = ({
     postsCount,
     followersCount,
     followingCount,
-    isVerified,
     businessOwner,
     bio: bio || "",
     website: website || "",
