@@ -89,7 +89,7 @@ const BusinessApprovals = () => {
         action,
         target_type: "business_profile",
         target_id: targetId,
-        detail: detail ?? null,
+        detail: (detail ?? null) as never,
       })
       .then(undefined, () => {}); // audit failure never blocks the action
   };
