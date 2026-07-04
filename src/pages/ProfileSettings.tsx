@@ -71,16 +71,8 @@ const ProfileSettings = () => {
   const { user, isBusiness } = useAuth();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [upgradeDialogOpen, setUpgradeDialogOpen] = useState(false);
-  const ownerKey = user?.id || "current-user";
-  const [myApproval, setMyApproval] = useState<BusinessApprovalSubmission | undefined>(
-    () => getMyLatest(ownerKey)
-  );
-  useEffect(() => {
-    const update = () => setMyApproval(getMyLatest(ownerKey));
-    update();
-    return subscribeApprovals(update);
-  }, [ownerKey]);
-  const pendingUpgrade = !isBusiness && myApproval?.status === "pending";
+  const pendingUpgrade = false;
+
   const [profileData, setProfileData] = useState({
     firstName: "John",
     lastName: "Doe",
