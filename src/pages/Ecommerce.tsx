@@ -849,16 +849,7 @@ const ProductCard = ({
         </div>
       </CardHeader>
       <CardContent className="pb-2">
-        <div className="flex items-center mb-2">
-          {[...Array(5)].map((_, i) => (
-            <Star 
-              key={i} 
-              size={14} 
-              className={i < Math.floor(product.rating) ? "text-primary fill-primary" : "text-muted-foreground/30"} 
-            />
-          ))}
-          <span className="ml-1 body-small text-muted-foreground">{product.rating}</span>
-        </div>
+
         
         {product.description && showDetails && (
           <div className="mt-2">
