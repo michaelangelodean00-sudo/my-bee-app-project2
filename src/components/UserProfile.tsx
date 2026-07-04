@@ -7,7 +7,7 @@ import { MapPin, Calendar, Star, Users, Settings, Edit, Building2, User, Briefca
 import { Link } from "react-router-dom";
 import ProfileEditDialog from "./ProfileEditDialog";
 import { cn } from "@/lib/utils";
-import { getMyLatest, subscribeApprovals, type BusinessApprovalSubmission } from "@/utils/businessApprovals";
+
 
 export type UserRole = 'user' | 'admin';
 
