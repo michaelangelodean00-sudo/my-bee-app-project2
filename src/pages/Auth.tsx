@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useState, useEffect, useMemo } from "react";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
@@ -63,11 +63,22 @@ const PasswordInput = ({ id, value, onChange, autoComplete, minLength }: Passwor
 
 export default function Auth() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user, loading } = useAuth();
   const [tab, setTab] = useState<"signin" | "signup">("signin");
   const [submitting, setSubmitting] = useState(false);
   const [showBusinessConfirm, setShowBusinessConfirm] = useState(false);
   const [needsConfirmation, setNeedsConfirmation] = useState(false);
+
+  // Same-origin relative `next` path preserves the intended destination
+  // (e.g. /.lovable/oauth/consent?authorization_id=...) across every sign-in path.
+  const nextPath = useMemo(() => {
+    const raw = searchParams.get("next");
+    if (!raw) return "/";
+    // must be same-origin relative
+    if (!raw.startsWith("/") || raw.startsWith("//")) return "/";
+    return raw;
+  }, [searchParams]);
 
   // Sign in
   const [siEmail, setSiEmail] = useState("");
@@ -84,8 +95,14 @@ export default function Auth() {
   const [suBusinessPhone, setSuBusinessPhone] = useState("");
 
   useEffect(() => {
-    if (!loading && user) navigate("/", { replace: true });
-  }, [user, loading, navigate]);
+    if (!loading && user) {
+      if (nextPath.startsWith("/")) {
+        window.location.href = nextPath;
+      } else {
+        navigate("/", { replace: true });
+      }
+    }
+  }, [user, loading, navigate, nextPath]);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -113,7 +130,11 @@ export default function Auth() {
       return;
     }
     toast.success("Welcome back!");
-    navigate("/", { replace: true });
+    if (nextPath !== "/") {
+      window.location.href = nextPath;
+    } else {
+      navigate("/", { replace: true });
+    }
   };
 
   const handleSignUp = async (e: React.FormEvent) => {
@@ -136,7 +157,7 @@ export default function Auth() {
       email: emailParsed.data,
       password: passParsed.data,
       options: {
-        emailRedirectTo: `${window.location.origin}/`,
+        emailRedirectTo: `${window.location.origin}${nextPath}`,
         data: {
           display_name: nameParsed.data,
           account_type: suAccountType,
@@ -177,7 +198,7 @@ export default function Auth() {
   const handleOAuthSignIn = async (provider: "google" | "apple" | "microsoft" | "lovable") => {
     setSubmitting(true);
     const result = await lovable.auth.signInWithOAuth(provider, {
-      redirect_uri: window.location.origin,
+      redirect_uri: `${window.location.origin}${nextPath}`,
     });
     setSubmitting(false);
     if (result.error) {
@@ -186,7 +207,11 @@ export default function Auth() {
     }
     if (result.redirected) return;
     toast.success("Signed in!");
-    navigate("/", { replace: true });
+    if (nextPath !== "/") {
+      window.location.href = nextPath;
+    } else {
+      navigate("/", { replace: true });
+    }
   };
 
   const GoogleButton = () => (
