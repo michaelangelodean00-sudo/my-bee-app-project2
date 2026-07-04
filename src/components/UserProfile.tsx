@@ -7,7 +7,7 @@ import { MapPin, Calendar, Star, Users, Settings, Edit, Building2, User, Briefca
 import { Link } from "react-router-dom";
 import ProfileEditDialog from "./ProfileEditDialog";
 import { cn } from "@/lib/utils";
-import { getMyLatest, subscribeApprovals, type BusinessApprovalSubmission } from "@/utils/businessApprovals";
+
 
 export type UserRole = 'user' | 'admin';
 
@@ -60,20 +60,9 @@ const UserProfile: React.FC<UserProfileProps> = ({
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [upgradeMode, setUpgradeMode] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
-  const ownerKey = name || "current-user";
-  const [myApproval, setMyApproval] = useState<BusinessApprovalSubmission | undefined>(
-    () => (isCurrentUser ? getMyLatest(ownerKey) : undefined)
-  );
+  const pendingBusiness = false;
+  const rejectedBusiness = false;
 
-  useEffect(() => {
-    if (!isCurrentUser) return;
-    const update = () => setMyApproval(getMyLatest(ownerKey));
-    update();
-    return subscribeApprovals(update);
-  }, [isCurrentUser, ownerKey]);
-
-  const pendingBusiness = isCurrentUser && myApproval?.status === "pending" && !businessOwner;
-  const rejectedBusiness = isCurrentUser && myApproval?.status === "rejected" && !businessOwner;
 
   // Admin status is private — only ever surfaced to the admin themselves.
   // Regular users and business accounts must never see admin badges, banners,

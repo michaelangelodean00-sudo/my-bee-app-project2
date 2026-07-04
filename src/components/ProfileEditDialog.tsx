@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { sanitizeText, validateImageFileSecure, rateLimit, LIMITS } from "@/utils/sanitization";
-import { submitBusinessApproval } from "@/utils/businessApprovals";
+
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -112,7 +112,6 @@ const ProfileEditDialog = ({ open, onOpenChange, currentUser, onSave }: ProfileE
     if (formData.businessOwner && !currentUser.businessOwner) {
       // Get the authenticated user so we can tie the submission to their DB row
       const { data: { user } } = await supabase.auth.getUser();
-      const ownerKey = user?.id || currentUser.name || "current-user";
 
       // Persist the upgrade request to the database so it survives across devices
       // and so an admin approval can flip account_type + role server-side.
@@ -136,22 +135,6 @@ const ProfileEditDialog = ({ open, onOpenChange, currentUser, onSave }: ProfileE
         }
       }
 
-      submitBusinessApproval({
-        ownerKey,
-        name: formData.name,
-        avatarUrl: formData.avatarUrl,
-        bio: formData.bio,
-        location: formData.location,
-        businessCategory: formData.businessCategory || "",
-        businessPhone: formData.businessPhone,
-        businessWebsite: formData.businessWebsite,
-        businessInstagram: formData.businessInstagram,
-        businessFacebook: formData.businessFacebook,
-        businessTwitter: formData.businessTwitter,
-        businessTiktok: formData.businessTiktok,
-        businessStreetAddress: formData.businessStreetAddress,
-        businessGoogleMapUrl: formData.businessGoogleMapUrl,
-      });
       toast.success("Submitted for review", {
         description: "Your business profile is pending admin approval.",
       });
