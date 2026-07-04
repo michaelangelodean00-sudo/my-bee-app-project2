@@ -8,7 +8,7 @@ import { auth, defineMcp } from "npm:@lovable.dev/mcp-js@0.20.0";
 // src/lib/mcp/tools/list-approved-businesses.ts
 import { createClient } from "npm:@supabase/supabase-js@^2.108.1";
 import { defineTool } from "npm:@lovable.dev/mcp-js@0.20.0";
-import { z } from "npm:zod@^4.4.3";
+import { z } from "npm:zod@^3.23.8";
 var list_approved_businesses_default = defineTool({
   name: "list_approved_businesses",
   title: "List approved businesses",
