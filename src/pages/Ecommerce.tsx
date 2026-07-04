@@ -142,7 +142,7 @@ const Ecommerce = () => {
       id: `user-${Date.now()}`,
       name: data.name,
       price: data.price,
-      rating: 5.0,
+      
       image: imagePreview || "https://images.unsplash.com/photo-1493962853295-0fd70327578a?w=1000",
       category: data.category,
       subCategory: data.subCategory,
