@@ -163,7 +163,7 @@ export default function Auth() {
           account_type: suAccountType,
           business_name: suAccountType === "business" ? suBusinessName.trim() : null,
           business_category: suAccountType === "business" ? suBusinessCategory.trim() : null,
-          business_phone: suAccountType === "business" ? suBusinessPhone.trim() : null,
+          phone: suAccountType === "business" ? suBusinessPhone.trim() : null,
         },
       },
     });
