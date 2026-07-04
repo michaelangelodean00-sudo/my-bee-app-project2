@@ -51,7 +51,7 @@ import {
 } from "lucide-react";
 import ProfileEditDialog from "@/components/ProfileEditDialog";
 import { useAuth } from "@/hooks/useAuth";
-import { getMyLatest, subscribeApprovals, type BusinessApprovalSubmission } from "@/utils/businessApprovals";
+
 import { useEffect } from "react";
 
 const BUSINESS_CATEGORIES = [
