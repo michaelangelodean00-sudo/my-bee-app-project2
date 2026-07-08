@@ -26,66 +26,46 @@ const AnimatedBackground = lazy(() => import("../components/AnimatedBackground")
 const AdSplash = lazy(() => import("../components/AdSplash"));
 const GreetingBanner = lazy(() => import("../components/GreetingBanner"));
 
-// Static sample posts - defined outside component to prevent recreation
-const samplePosts = [
-  {
-    id: "1",
-    author: {
-      id: "user1",
-      name: "John Doe",
-      avatarUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&auto=format&fit=crop&crop=face",
-      avatarFallback: "JD"
-    },
-    content: "Just launched my new business! Check out our amazing products and services. Excited to be part of the B.E.E community! 🚀",
-    timestamp: "2 hours ago",
-    likes: 15,
-    comments: 3,
-    shares: 2
-  },
-  {
-    id: "2",
-    author: {
-      id: "user2",
-      name: "Sarah Wilson",
-      avatarUrl: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&auto=format&fit=crop&crop=face",
-      avatarFallback: "SW"
-    },
-    content: "Beautiful sunset from our event venue today! Can't wait to host more amazing events here. 🌅",
-    imageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&auto=format&fit=crop",
-    timestamp: "4 hours ago",
-    likes: 28,
-    comments: 7,
-    shares: 5
-  }
-];
+interface FeedPost {
+  id: string;
+  author: {
+    id: string;
+    name: string;
+    avatarUrl: string;
+    avatarFallback: string;
+  };
+  content: string;
+  imageUrl?: string;
+  timestamp: string;
+  likes: number;
+  comments: number;
+  shares: number;
+}
 
-// Memoized post list to prevent unnecessary re-renders
-const PostList = memo(({ posts, userPosts }: { posts: typeof samplePosts; userPosts: typeof samplePosts }) => (
-  <section aria-label="Social media posts" className="space-y-4 md:space-y-4">
-    {posts.map((post, index) => (
-      <article 
-        key={post.id} 
-        className="animate-fade-in-up"
-        style={{ animationDelay: `${index * 50}ms` }}
-      >
-        <EnhancedCard variant="default" hover>
-          <Post {...post} />
-        </EnhancedCard>
-      </article>
-    ))}
-    
-    {userPosts.map((post, index) => (
-      <article 
-        key={`user-${index}`}
-        className="animate-fade-in-up"
-      >
-        <EnhancedCard variant="premium" hover>
-          <Post {...post} />
-        </EnhancedCard>
-      </article>
-    ))}
-  </section>
-));
+const PostList = memo(({ userPosts }: { userPosts: FeedPost[] }) => {
+  if (userPosts.length === 0) {
+    return (
+      <div className="text-center py-12 text-muted-foreground">
+        <p className="text-sm">No posts yet. Be the first to share something.</p>
+      </div>
+    );
+  }
+  return (
+    <section aria-label="Community posts" className="space-y-4 md:space-y-4">
+      {userPosts.map((post, index) => (
+        <article
+          key={post.id}
+          className="animate-fade-in-up"
+          style={{ animationDelay: `${index * 50}ms` }}
+        >
+          <EnhancedCard variant="premium" hover>
+            <Post {...post} />
+          </EnhancedCard>
+        </article>
+      ))}
+    </section>
+  );
+});
 
 PostList.displayName = 'PostList';
 
