@@ -27,7 +27,7 @@ const CATEGORIES = [
   { id: "other",                 label: "Other",                 icon: Building2 },
 ] as const;
 
-const VALID_CATEGORY_IDS = new Set(CATEGORIES.map(c => c.id));
+const VALID_CATEGORY_IDS = new Set<string>(CATEGORIES.map(c => c.id));
 
 const normalizeCategory = (raw: string | null | undefined): string => {
   if (!raw) return "other";
