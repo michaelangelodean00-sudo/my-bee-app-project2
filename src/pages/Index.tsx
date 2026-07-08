@@ -170,7 +170,7 @@ const Index = () => {
           {isLoading ? (
             <PageLoader type="posts" />
           ) : (
-            <PostList posts={samplePosts} userPosts={posts} />
+            <PostList userPosts={posts} />
           )}
           
           </main>
