@@ -70,15 +70,15 @@ const PostList = memo(({ userPosts }: { userPosts: FeedPost[] }) => {
 PostList.displayName = 'PostList';
 
 const Index = () => {
-  const [posts, setPosts] = useState<typeof samplePosts>([]);
+  const [posts, setPosts] = useState<FeedPost[]>([]);
   // Start with isLoading false for instant render
   const [isLoading] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const navigate = useNavigate();
-  
+
   // Real role from auth context
   const { isAdmin } = useAuth();
-  const handleNewPost = useCallback((newPost: typeof samplePosts[0]) => {
+  const handleNewPost = useCallback((newPost: FeedPost) => {
     setPosts(prev => [newPost, ...prev]);
   }, []);
 
