@@ -172,13 +172,6 @@ const ads: Ad[] = [
     linkUrl: "https://www.instagram.com/localbusiness"
   },
   {
-    id: "ad3",
-    title: "Island Tour Specials",
-    description: "Explore the beauty of our islands with special discounts on tours and excursions.",
-    imageUrl: "https://images.unsplash.com/photo-1548574505-5e239809ee19?w=1200&h=675&q=75&fm=webp&fit=crop",
-    linkUrl: "https://www.islandtours.com"
-  },
-  {
     id: "ad4",
     title: "Bamboo Shack Special",
     description: "Taste the best of the Bahamas! Visit Bamboo Shack for delicious local cuisine and unbeatable deals.",
@@ -191,27 +184,6 @@ const ads: Ad[] = [
     description: "Try kayaking, snorkeling, and diving with professional instructors. Equipment provided.",
     imageUrl: "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=1200&h=675&q=75&fm=webp&fit=crop",
     linkUrl: "https://www.adventuresports.com"
-  },
-  {
-    id: "ad6",
-    title: "Beachfront Yoga Retreat",
-    description: "Find your zen with sunrise yoga sessions on pristine beaches. All skill levels welcome.",
-    imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&h=675&q=75&fm=webp&fit=crop",
-    linkUrl: "https://www.beachyoga.com"
-  },
-  {
-    id: "ad7",
-    title: "Tropical Spa Retreat",
-    description: "Relax and rejuvenate with our signature treatments using natural island ingredients.",
-    imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&h=675&q=75&fm=webp&fit=crop",
-    linkUrl: "https://www.tropicalspa.com"
-  },
-  {
-    id: "ad8",
-    title: "Artisan Market",
-    description: "Shop unique handcrafted items from local artisans. Support our creative community.",
-    imageUrl: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=675&q=75&fm=webp&fit=crop",
-    linkUrl: "https://www.artisanmarket.com"
   },
   {
     id: "ad-advertise",
