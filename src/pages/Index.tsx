@@ -4,8 +4,8 @@ import Header from "../components/Header";
 import CreatePost from "../components/CreatePost";
 import Post from "../components/Post";
 import PageLoader from "../components/PageLoader";
-import McdonaldsAdWidget from "../components/McdonaldsAdWidget";
-import BurgerAdWidget from "../components/BurgerAdWidget";
+import FeaturedVideoAdWidget from "../components/FeaturedVideoAdWidget";
+import SponsoredVideoWidget from "../components/SponsoredVideoWidget";
 import BusinessCategorySection from "../components/BusinessCategorySection";
 
 import EnhancedCard from "../components/EnhancedCard";
@@ -45,8 +45,27 @@ interface FeedPost {
 const PostList = memo(({ userPosts }: { userPosts: FeedPost[] }) => {
   if (userPosts.length === 0) {
     return (
-      <div className="text-center py-12 text-muted-foreground">
-        <p className="text-sm">No posts yet. Be the first to share something.</p>
+      <div className="flex flex-col items-center text-center py-12 px-4">
+        <img
+          src="/lovable-uploads/bee-mascot-logo.png"
+          alt="B.E.E mascot"
+          width={96}
+          height={96}
+          className="w-24 h-24 mb-4 select-none"
+          draggable={false}
+        />
+        <h3 className="font-heading text-lg font-semibold text-foreground mb-1">The hive is quiet</h3>
+        <p className="text-sm text-muted-foreground mb-4">Be the first to share something with the community.</p>
+        <button
+          type="button"
+          onClick={() => {
+            const target = document.getElementById('main-content');
+            target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }}
+          className="bee-btn px-5 py-2.5 min-h-[44px]"
+        >
+          Create a post
+        </button>
       </div>
     );
   }
@@ -130,7 +149,7 @@ const Index = () => {
       {/* Video Ad Banner — below categories */}
       <div className="w-full px-4 md:px-6 py-2 bg-card/80 border-b border-border">
         <div className="max-w-3xl mx-auto">
-          <BurgerAdWidget showMetrics={isAdmin} />
+          <SponsoredVideoWidget showMetrics={isAdmin} />
         </div>
       </div>
       
@@ -161,7 +180,7 @@ const Index = () => {
             <section aria-label="Sponsored content">
               <p className="text-xs text-muted-foreground mb-3 md:mb-4 text-center font-medium tracking-wide uppercase">Sponsored</p>
               <EnhancedCard variant="default" className="p-4 md:p-5">
-                <McdonaldsAdWidget showMetrics={isAdmin} />
+                <FeaturedVideoAdWidget showMetrics={isAdmin} />
               </EnhancedCard>
             </section>
           </ScrollReveal>

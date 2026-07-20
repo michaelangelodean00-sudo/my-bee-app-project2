@@ -4,15 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Enhanced Font Loading */
-@font-face {
-  font-family: 'SF Pro Display';
-  src: url('https://fonts.cdnfonts.com/css/sf-pro-display');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'pnum' 1, 'tnum' 0, 'onum' 1, 'lnum' 0, 'dlig' 0;
-}
+/* Fonts loaded via <link> in index.html (Space Grotesk, DM Sans, Inter) */
 
 @layer base {
   :root {
@@ -185,13 +177,6 @@
   button, a, [role="button"] {
     -webkit-tap-highlight-color: transparent;
     @apply transition-all duration-200;
-  }
-  
-  /* Interactive elements subtle lift on hover */
-  button:not(:disabled):hover,
-  a:hover,
-  [role="button"]:not(:disabled):hover {
-    @apply transform -translate-y-0.5;
   }
   
   @media (hover: none) and (pointer: coarse) {
@@ -491,8 +476,7 @@
   /* Enhanced Typography System */
   .heading-display {
     @apply font-heading text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter
-           bg-gradient-to-r from-foreground via-primary to-secondary bg-clip-text text-transparent
-           leading-tight;
+           text-foreground leading-tight;
   }
   
   .heading-large {
@@ -921,7 +905,7 @@
 
 @layer utilities {
   .font-sf-pro {
-    font-family: 'SF Pro', system-ui, sans-serif;
+    font-family: 'DM Sans', system-ui, sans-serif;
   }
   
   .safe-area-bottom {
@@ -936,4 +920,14 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+}
+
+/* Reduced motion — respect user OS preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
 }

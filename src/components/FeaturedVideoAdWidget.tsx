@@ -16,8 +16,8 @@ interface AdContent {
 const ads: AdContent[] = [
   {
     imageSrc: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=256&h=256&q=90&fm=webp&fit=crop",
-    altText: "Feature your business here",
-    title: "Feature your brand",
+    altText: "Sample Sponsored Video — feature your brand",
+    title: "Sample Sponsored Video",
     highlight: "Advertise on B.E.E",
     bgColor: "bg-gradient-to-r from-primary to-amber-500",
     highlightColor: "text-primary-foreground",
@@ -25,8 +25,8 @@ const ads: AdContent[] = [
   },
   {
     imageSrc: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=256&h=256&q=90&fm=webp&fit=crop",
-    altText: "Promote your event",
-    title: "Promote your event",
+    altText: "Sample Sponsored Video — promote your event",
+    title: "Sample Sponsored Video",
     highlight: "Reach Bahamians today",
     bgColor: "bg-gradient-to-r from-amber-500 to-primary",
     highlightColor: "text-primary-foreground",
@@ -34,47 +34,42 @@ const ads: AdContent[] = [
   }
 ];
 
-const McdonaldsAdWidget = memo(({ showMetrics = false }: { showMetrics?: boolean }) => {
+const FeaturedVideoAdWidget = memo(({ showMetrics = false }: { showMetrics?: boolean }) => {
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
   const { trackImpression, trackClick, getAdPerformance } = useAdAnalytics();
 
-  // Rotate ads every 10 seconds (reduced frequency)
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentAdIndex((prevIndex) => (prevIndex + 1) % ads.length);
     }, 10000);
-
     return () => clearInterval(interval);
   }, []);
 
   const currentAd = ads[currentAdIndex];
 
-  // Track impression on ad change
   useEffect(() => {
-    trackImpression(`mcdonalds-${currentAdIndex}`);
+    trackImpression(`featured-${currentAdIndex}`);
   }, [currentAdIndex, trackImpression]);
 
-  const performance = getAdPerformance(`mcdonalds-${currentAdIndex}`);
+  const performance = getAdPerformance(`featured-${currentAdIndex}`);
 
   const handleAdClick = () => {
-    trackClick(`mcdonalds-${currentAdIndex}`);
+    trackClick(`featured-${currentAdIndex}`);
     if (isValidUrl(currentAd.linkUrl)) {
       window.open(currentAd.linkUrl, '_blank', 'noopener,noreferrer');
-    } else {
-      console.warn('Invalid URL detected:', currentAd.linkUrl);
     }
   };
 
   return (
-    <div 
+    <div
       className={`${currentAd.bgColor} text-primary-foreground rounded-xl flex items-center transition-colors duration-300 cursor-pointer hover:brightness-110 hover:shadow-xl w-full max-w-full min-h-[56px] px-3 py-3 shadow-lg border border-primary/20 backdrop-blur-sm overflow-hidden`}
       onClick={handleAdClick}
       style={{ contain: 'layout style' }}
     >
       <div className="flex items-center w-full min-w-0 gap-2">
-        <img 
+        <img
           src={currentAd.imageSrc}
-          alt={currentAd.altText} 
+          alt={currentAd.altText}
           className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg object-cover flex-shrink-0 shadow-md border-2 border-white/20"
           loading="lazy"
           decoding="async"
@@ -102,6 +97,6 @@ const McdonaldsAdWidget = memo(({ showMetrics = false }: { showMetrics?: boolean
   );
 });
 
-McdonaldsAdWidget.displayName = 'McdonaldsAdWidget';
+FeaturedVideoAdWidget.displayName = 'FeaturedVideoAdWidget';
 
-export default McdonaldsAdWidget;
+export default FeaturedVideoAdWidget;

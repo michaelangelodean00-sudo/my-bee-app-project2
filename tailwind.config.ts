@@ -94,9 +94,9 @@ export default {
         xs: '2px',
       },
       fontFamily: {
-        'sans': ['DM Sans', 'Inter', 'SF Pro Display', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+        'sans': ['DM Sans', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
         'display': ['Space Grotesk', 'Outfit', 'system-ui', 'sans-serif'],
-        'body': ['DM Sans', 'Inter', 'SF Pro Display', 'system-ui', 'sans-serif'],
+        'body': ['DM Sans', 'Inter', 'system-ui', 'sans-serif'],
         'heading': ['Space Grotesk', 'Outfit', 'Inter', 'system-ui', 'sans-serif']
       },
       fontSize: {

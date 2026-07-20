@@ -15,8 +15,8 @@ const Header = memo(({ toggleMobileSidebar }: HeaderProps) => {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-card/95 backdrop-blur-md border-b border-border animate-fade-in-down relative overflow-hidden">
-      {/* Animated honey-gold accent line at top */}
-      <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-primary/60 via-primary to-primary/60 animate-shimmer" style={{ backgroundSize: '200% 100%' }} />
+      {/* Static honey-gold accent line at top */}
+      <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-primary/60 via-primary to-primary/60" />
       
       {/* Mobile: logo row */}
       <div className="sm:hidden">
