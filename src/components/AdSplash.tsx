@@ -381,7 +381,7 @@ const AdSplash = memo(({ showMetrics = false }: { showMetrics?: boolean }) => {
                 <div className="w-full md:w-1/2 relative group">
                   {ad.isAdvertiseCTA ? (
                     /* "Advertise Here" — real sample photo with overlay banner */
-                    <div className="relative overflow-hidden rounded-2xl shadow-2xl shadow-primary/40 group">
+                    <div className="relative overflow-hidden rounded-xl shadow-2xl shadow-primary/40 group">
                       {/* "Sample Ad" ribbon */}
                       <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-bold tracking-wide shadow-lg">
                         <Sparkles size={11} />
@@ -394,18 +394,18 @@ const AdSplash = memo(({ showMetrics = false }: { showMetrics?: boolean }) => {
                       <img
                         src={ad.imageUrl}
                         alt="Sample advertisement — Advertise Here"
-                        className="rounded-2xl w-full h-48 md:h-64 lg:h-72 object-cover transform-gpu transition-transform duration-300 group-hover:scale-105 select-none"
+                        className="rounded-xl w-full h-48 md:h-64 lg:h-72 object-cover transform-gpu transition-transform duration-300 group-hover:scale-105 select-none"
                         loading="lazy"
                         decoding="async"
                         draggable={false}
                       />
                     </div>
                   ) : loadedImages.has(index) ? (
-                    <div className="relative overflow-hidden rounded-2xl group">
+                    <div className="relative overflow-hidden rounded-xl group">
                       {/* Sponsored badge */}
                       <div className="absolute bottom-3 right-3 z-20 flex items-center gap-1 bg-black/30 backdrop-blur-sm px-2 py-1 rounded-md border border-white/10 pointer-events-none">
-                        <Sparkles size={10} className="text-white/70" />
-                        <span className="text-[9px] font-medium text-white/70 uppercase tracking-wide">Sponsored</span>
+                        <Sparkles size={10} className="text-white/90" />
+                        <span className="text-[9px] font-medium text-white/90 uppercase tracking-wide">Sponsored</span>
                       </div>
                       
                       {/* Invisible tap overlay to open zoom */}
@@ -422,7 +422,7 @@ const AdSplash = memo(({ showMetrics = false }: { showMetrics?: boolean }) => {
                       <img 
                         src={ad.imageUrl} 
                         alt={ad.title}
-                        className="rounded-2xl w-full h-48 md:h-64 lg:h-72 object-cover transform-gpu transition-transform duration-300 group-hover:scale-105 shadow-2xl shadow-primary/30 select-none"
+                        className="rounded-xl w-full h-48 md:h-64 lg:h-72 object-cover transform-gpu transition-transform duration-300 group-hover:scale-105 shadow-2xl shadow-primary/30 select-none"
                         loading={index === 0 ? "eager" : "lazy"}
                         decoding="async"
                         fetchPriority={index === 0 ? "high" : "auto"}
@@ -430,7 +430,7 @@ const AdSplash = memo(({ showMetrics = false }: { showMetrics?: boolean }) => {
                       />
                     </div>
                   ) : (
-                    <div className="rounded-2xl w-full h-48 md:h-64 lg:h-72 bg-gradient-to-br from-muted/50 to-muted animate-pulse flex items-center justify-center shadow-2xl">
+                    <div className="rounded-xl w-full h-48 md:h-64 lg:h-72 bg-gradient-to-br from-muted/50 to-muted animate-pulse flex items-center justify-center shadow-2xl">
                       <span className="text-muted-foreground text-sm">Loading...</span>
                     </div>
                   )}
@@ -466,21 +466,19 @@ const AdSplash = memo(({ showMetrics = false }: { showMetrics?: boolean }) => {
                         >
                           Get More Info
                         </button>
-                        <button
+                        <Button
                           type="button"
-                          onClick={() => {
-                            console.log('Share button clicked for ad:', ad.id);
-                            handleShare(ad);
-                          }}
-                          className="relative z-50 inline-flex items-center justify-center text-white hover:bg-white/10 border border-white/20 hover:border-white/40 backdrop-blur-sm min-h-[44px] gap-2 px-5 transition-all active:scale-95 font-medium rounded-md"
-                          style={{ touchAction: 'manipulation', pointerEvents: 'auto' }}
+                          variant="outline"
+                          size="lg"
+                          onClick={() => handleShare(ad)}
+                          className="border-white/40 text-white hover:bg-white/10 bg-transparent min-h-[44px] gap-2"
                         >
                           <Share2 size={18} className="pointer-events-none" />
                           <span className="pointer-events-none">Share</span>
                           {shareCounts[ad.id] > 0 && (
-                            <span className="ml-0.5 text-sm opacity-80 pointer-events-none">· {shareCounts[ad.id]}</span>
+                            <span className="ml-0.5 text-sm opacity-90 pointer-events-none">· {shareCounts[ad.id]}</span>
                           )}
-                        </button>
+                        </Button>
                       </>
                     )}
                   </div>
