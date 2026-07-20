@@ -20,51 +20,51 @@ interface VideoAd {
 const videoAds: VideoAd[] = [
   {
     videoSrc: "https://www.w3schools.com/html/mov_bbb.mp4",
-    posterSrc: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&h=450&auto=format&fit=crop",
-    title: "Try the new",
-    highlight: "Deluxe Burger",
+    posterSrc: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&h=450&auto=format&fit=crop",
+    title: "Sample Sponsored Video",
+    highlight: "Your brand here",
     gradientFrom: "from-amber-500",
     gradientTo: "to-orange-600",
-    highlightColor: "text-amber-200",
-    linkUrl: "https://www.mcdonalds.com",
-    label: "Food & Dining",
+    highlightColor: "text-amber-100",
+    linkUrl: "mailto:hello@beeapp.bs?subject=Advertise%20on%20B.E.E",
+    label: "Sponsored",
   },
   {
     videoSrc: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
     posterSrc: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=450&auto=format&fit=crop",
-    title: "Escape to",
-    highlight: "Paradise Beaches",
+    title: "Sample Sponsored Video",
+    highlight: "Reach Bahamians today",
     gradientFrom: "from-cyan-500",
     gradientTo: "to-blue-600",
-    highlightColor: "text-cyan-200",
-    linkUrl: "https://www.bahamas.com",
-    label: "Travel",
+    highlightColor: "text-cyan-100",
+    linkUrl: "mailto:hello@beeapp.bs?subject=Advertise%20on%20B.E.E",
+    label: "Sponsored",
   },
   {
     videoSrc: "https://www.w3schools.com/html/movie.mp4",
     posterSrc: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=450&auto=format&fit=crop",
-    title: "Relax & unwind",
-    highlight: "Spa Day Packages",
+    title: "Sample Sponsored Video",
+    highlight: "Promote your event",
     gradientFrom: "from-teal-500",
     gradientTo: "to-emerald-600",
-    highlightColor: "text-teal-200",
-    linkUrl: "https://www.spafinder.com",
-    label: "Wellness",
+    highlightColor: "text-teal-100",
+    linkUrl: "mailto:hello@beeapp.bs?subject=Advertise%20on%20B.E.E",
+    label: "Sponsored",
   },
   {
     videoSrc: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
     posterSrc: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&h=450&auto=format&fit=crop",
-    title: "New arrivals",
-    highlight: "Shop the Look",
+    title: "Sample Sponsored Video",
+    highlight: "Feature your business",
     gradientFrom: "from-rose-500",
     gradientTo: "to-pink-600",
-    highlightColor: "text-rose-200",
-    linkUrl: "https://www.shopbahamas.com",
-    label: "Fashion",
+    highlightColor: "text-rose-100",
+    linkUrl: "mailto:hello@beeapp.bs?subject=Advertise%20on%20B.E.E",
+    label: "Sponsored",
   },
 ];
 
-const BurgerAdWidget = ({ showMetrics = false }: { showMetrics?: boolean }) => {
+const SponsoredVideoWidget = ({ showMetrics = false }: { showMetrics?: boolean }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMuted, setIsMuted] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -343,4 +343,4 @@ const BurgerAdWidget = ({ showMetrics = false }: { showMetrics?: boolean }) => {
   );
 };
 
-export default BurgerAdWidget;
+export default SponsoredVideoWidget;
