@@ -212,6 +212,18 @@ const AdSplash = memo(({ showMetrics = false }: { showMetrics?: boolean }) => {
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null);
   const [shareCounts, setShareCounts] = useState<Record<string, number>>({});
   const [imagePreview, setImagePreview] = useState<{ url: string; title: string } | null>(null);
+  const [showSwipeHint, setShowSwipeHint] = useState(true);
+  const [swipeHintVisible, setSwipeHintVisible] = useState(true);
+
+  // Swipe hint: visible 4s on first mount, fade out (500ms), unmount
+  useEffect(() => {
+    const fadeTimer = setTimeout(() => setSwipeHintVisible(false), 4000);
+    const removeTimer = setTimeout(() => setShowSwipeHint(false), 4500);
+    return () => {
+      clearTimeout(fadeTimer);
+      clearTimeout(removeTimer);
+    };
+  }, []);
   
   // Tap detection state for distinguishing taps from swipes
   const tapStartRef = useRef<{ x: number; y: number; time: number; imageUrl: string; title: string } | null>(null);
