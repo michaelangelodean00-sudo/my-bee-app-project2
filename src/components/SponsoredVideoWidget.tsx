@@ -75,7 +75,7 @@ const SponsoredVideoWidget = ({ showMetrics = false }: { showMetrics?: boolean }
   const { trackImpression, trackClick, getAdPerformance } = useAdAnalytics();
 
   const current = videoAds[currentIndex];
-  const performance = getAdPerformance(`burger-${currentIndex}`);
+  const performance = getAdPerformance(`sponsored-${currentIndex}`);
 
   const goTo = (nextIndex: number) => {
     if (pendingIndex.current !== null) return;
@@ -104,7 +104,7 @@ const SponsoredVideoWidget = ({ showMetrics = false }: { showMetrics?: boolean }
 
   // Track impression and sync video on index change
   useEffect(() => {
-    trackImpression(`burger-${currentIndex}`);
+    trackImpression(`sponsored-${currentIndex}`);
     const vid = videoRef.current;
     if (!vid) return;
     vid.load();
@@ -158,7 +158,7 @@ const SponsoredVideoWidget = ({ showMetrics = false }: { showMetrics?: boolean }
   };
 
   const handleCTA = () => {
-    trackClick(`burger-${currentIndex}`);
+    trackClick(`sponsored-${currentIndex}`);
     if (isValidUrl(current.linkUrl)) {
       window.open(current.linkUrl, "_blank", "noopener,noreferrer");
     }
