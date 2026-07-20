@@ -490,24 +490,28 @@ const AdSplash = memo(({ showMetrics = false }: { showMetrics?: boolean }) => {
         <CarouselPrevious className="left-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30 z-20" />
         <CarouselNext className="right-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-white/30 z-20" />
         
-        {/* Swipe indicator - Mobile hint */}
-        <div className="md:hidden flex items-center justify-center mt-6 gap-2 animate-pulse">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-white/60">
-            <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          <span className="text-white/60 text-sm font-medium">Swipe to explore ads</span>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-white/60">
-            <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </div>
-        
-        {/* Slide indicators */}
+        {/* Swipe indicator — show once on first mount, then fade out */}
+        {showSwipeHint && (
+          <div
+            className={`md:hidden flex items-center justify-center mt-6 gap-2 transition-opacity duration-500 ${swipeHintVisible ? 'opacity-100' : 'opacity-0'}`}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-white/90">
+              <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <span className="text-white/90 text-sm font-medium">Swipe to explore ads</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-white/90">
+              <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+        )}
+
+        {/* Slide indicators — capped at 5 */}
         <div className="flex justify-center mt-4 space-x-2">
-          {optimizedAds.map((_, index) => (
+          {optimizedAds.slice(0, 5).map((_, index) => (
             <button
               key={index}
               className={`h-2 rounded-full transition-all duration-300 active:scale-90 touch-manipulation ${
-                index === currentSlide ? 'bg-white w-8' : 'bg-white/40 w-2 hover:bg-white/60'
+                index === currentSlide ? 'bg-white w-8' : 'bg-white/50 w-2 hover:bg-white/70'
               }`}
               onClick={() => handleSlideChange(index)}
               aria-label={`Go to slide ${index + 1}`}
