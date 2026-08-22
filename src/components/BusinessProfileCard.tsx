@@ -114,6 +114,29 @@ const BusinessProfileCard = ({ business, className }: BusinessProfileCardProps) 
           </p>
         </div>
 
+        {/* Follow */}
+        <div className="flex items-center gap-2">
+          <Button
+            size="sm"
+            variant={isFollowing ? "secondary" : "default"}
+            disabled={pending}
+            onClick={() =>
+              isSignedIn
+                ? canFollow
+                  ? toggleFollow()
+                  : toast.info("This is your own business profile.")
+                : toast.info("Sign in to follow businesses.")
+            }
+            className="h-8 text-xs gap-1 touch-manipulation active:scale-95"
+          >
+            {isFollowing ? <UserCheck className="h-3.5 w-3.5" /> : <UserPlus className="h-3.5 w-3.5" />}
+            {isFollowing ? "Following" : "Follow"}
+          </Button>
+          <span className="text-xs text-muted-foreground">
+            {followers} {followers === 1 ? "follower" : "followers"}
+          </span>
+        </div>
+
         {engagement.likes > 0 && (
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
             <Heart className="h-3 w-3 fill-rose-500 text-rose-500" />
