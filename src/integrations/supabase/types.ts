@@ -44,6 +44,35 @@ export type Database = {
         }
         Relationships: []
       }
+      business_follows: {
+        Row: {
+          business_id: string
+          created_at: string
+          follower_id: string
+          id: string
+        }
+        Insert: {
+          business_id: string
+          created_at?: string
+          follower_id: string
+          id?: string
+        }
+        Update: {
+          business_id?: string
+          created_at?: string
+          follower_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_follows_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           account_type: Database["public"]["Enums"]["account_type"]
