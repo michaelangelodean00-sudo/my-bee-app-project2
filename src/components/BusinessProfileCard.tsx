@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
-import { MapPin, Phone, Globe, Heart, Instagram, Facebook, Twitter, Navigation } from "lucide-react";
+import { MapPin, Phone, Globe, Heart, Instagram, Facebook, Twitter, Navigation, UserPlus, UserCheck } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useBusinessFollow } from "@/hooks/useBusinessFollow";
+import { toast } from "sonner";
+
 
 export interface BusinessProfile {
   id: string;
