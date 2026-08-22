@@ -56,6 +56,8 @@ const loadEngagement = (b: BusinessProfile): Engagement => {
 
 const BusinessProfileCard = ({ business, className }: BusinessProfileCardProps) => {
   const [engagement, setEngagement] = useState<Engagement>(() => loadEngagement(business));
+  const { followers, isFollowing, canFollow, isSignedIn, pending, toggleFollow } = useBusinessFollow(business.id);
+
 
   useEffect(() => {
     localStorage.setItem(storageKey(business.id), JSON.stringify(engagement));
