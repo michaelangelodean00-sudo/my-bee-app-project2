@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
-import { MapPin, Phone, Globe, Heart, Instagram, Facebook, Twitter, Navigation } from "lucide-react";
+import { MapPin, Phone, Globe, Heart, Instagram, Facebook, Twitter, Navigation, UserPlus, UserCheck } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useBusinessFollow } from "@/hooks/useBusinessFollow";
+import { toast } from "sonner";
+
 
 export interface BusinessProfile {
   id: string;
@@ -53,6 +56,8 @@ const loadEngagement = (b: BusinessProfile): Engagement => {
 
 const BusinessProfileCard = ({ business, className }: BusinessProfileCardProps) => {
   const [engagement, setEngagement] = useState<Engagement>(() => loadEngagement(business));
+  const { followers, isFollowing, canFollow, isSignedIn, pending, toggleFollow } = useBusinessFollow(business.id);
+
 
   useEffect(() => {
     localStorage.setItem(storageKey(business.id), JSON.stringify(engagement));
@@ -107,6 +112,29 @@ const BusinessProfileCard = ({ business, className }: BusinessProfileCardProps) 
           <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">
             {business.description}
           </p>
+        </div>
+
+        {/* Follow */}
+        <div className="flex items-center gap-2">
+          <Button
+            size="sm"
+            variant={isFollowing ? "secondary" : "default"}
+            disabled={pending}
+            onClick={() =>
+              isSignedIn
+                ? canFollow
+                  ? toggleFollow()
+                  : toast.info("This is your own business profile.")
+                : toast.info("Sign in to follow businesses.")
+            }
+            className="h-8 text-xs gap-1 touch-manipulation active:scale-95"
+          >
+            {isFollowing ? <UserCheck className="h-3.5 w-3.5" /> : <UserPlus className="h-3.5 w-3.5" />}
+            {isFollowing ? "Following" : "Follow"}
+          </Button>
+          <span className="text-xs text-muted-foreground">
+            {followers} {followers === 1 ? "follower" : "followers"}
+          </span>
         </div>
 
         {engagement.likes > 0 && (
