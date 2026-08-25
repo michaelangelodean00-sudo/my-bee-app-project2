@@ -404,21 +404,21 @@ const Ecommerce = () => {
           </div>
 
           {/* Coming Soon Banner */}
-          <div className="relative overflow-hidden rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/10 via-card to-card p-6 mb-8 shadow-[0_0_24px_hsl(var(--primary)/0.12)]">
+          <div className="relative overflow-hidden rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/10 via-card to-card p-6 sm:p-8 mb-8 shadow-[0_0_24px_hsl(var(--primary)/0.12)]">
             <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-primary/20 blur-2xl" />
             <div className="relative flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <div className="flex-shrink-0 rounded-full bg-primary/20 p-3">
-                <Sparkles className="h-6 w-6 text-primary" />
+              <div className="flex-shrink-0 rounded-full bg-primary/20 p-3 sm:p-4">
+                <Sparkles className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
               </div>
               <div className="flex-1 min-w-0">
-                <h2 className="font-heading text-lg sm:text-xl font-bold text-foreground tracking-tight">
+                <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground tracking-tight">
                   BEE APP Marketplace is Coming Soon!
                 </h2>
-                <p className="mt-1 text-sm text-muted-foreground">
+                <p className="mt-2 text-sm sm:text-base text-muted-foreground">
                   We're building a better way to buy, sell, and discover local items. Listings will be live once the marketplace opens.
                 </p>
               </div>
-              <div className="flex-shrink-0 inline-flex items-center gap-2 text-xs font-medium text-primary bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
+              <div className="flex-shrink-0 inline-flex items-center gap-2 text-xs sm:text-sm font-medium text-primary bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
                 <Clock className="h-3.5 w-3.5" />
                 <span>Launching soon</span>
               </div>
