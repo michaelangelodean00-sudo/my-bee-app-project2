@@ -707,6 +707,7 @@ const Ecommerce = () => {
               </TabsContent>
             ))}
           </Tabs>
+          </div>
         </div>
       </div>
     </div>
