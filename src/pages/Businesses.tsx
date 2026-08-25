@@ -104,7 +104,7 @@ const CategoryProfileView = ({ categoryId }: { categoryId: string }) => {
         >
           <ArrowLeft className="h-4 w-4" />
         </Button>
-        {Icon && <Icon className="h-5 w-5 text-primary" />}
+        {Icon && <Icon className="h-5 w-5 text-foreground" />}
         <h2 className="font-semibold text-foreground">{category?.label ?? "Businesses"}</h2>
         <span className="text-xs text-muted-foreground ml-auto">
           {isLoading ? "…" : `${profiles.length} listings`}

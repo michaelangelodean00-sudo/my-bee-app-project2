@@ -51,19 +51,19 @@ const Sidebar = memo(({ className = "", onLinkClick }: SidebarProps) => {
                 className={cn(
                   "flex items-center justify-between px-3 lg:px-4 py-3 rounded-lg transition-all duration-200 min-h-[48px] group touch-manipulation active:scale-[0.98]",
                   isActive
-                    ? "bg-gradient-to-r from-primary/15 to-primary/5 text-primary border border-primary/25 shadow-[0_0_12px_hsl(var(--primary)/0.15)] shadow-inner"
-                    : "text-muted-foreground hover:bg-accent hover:text-foreground hover:translate-x-1 active:bg-accent/70"
+                    ? "bg-muted text-foreground border border-border"
+                    : "text-muted-foreground hover:bg-muted/60 hover:text-foreground hover:translate-x-1 active:bg-muted/70"
                 )}
               >
                 <div className="flex items-center gap-2 lg:gap-3 min-w-0 flex-1">
                   <Icon size={18} className={cn(
                     "flex-shrink-0 transition-all duration-200 group-hover:scale-110 lg:w-5 lg:h-5",
-                    isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
+                    isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"
                   )} />
                   <div className="flex items-center gap-1 lg:gap-2 min-w-0 flex-1">
                     <span className={cn(
                       "font-heading font-medium text-xs lg:text-sm truncate tracking-tight",
-                      isActive && "text-primary"
+                      isActive && "text-foreground"
                     )}>{item.label}</span>
                     {hasNotification && (
                       <Badge className="hidden lg:inline-flex text-[10px] px-1.5 py-0.5 bg-destructive text-destructive-foreground font-semibold animate-pulse">
