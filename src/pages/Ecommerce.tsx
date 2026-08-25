@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Phone, Armchair, Shirt, Quote, Baby, Smartphone, Tv, MessageCircle, Microwave, Truck, Trash2, Ban, Shield, Edit } from "lucide-react";
+import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Phone, Armchair, Shirt, Quote, Baby, Smartphone, Tv, MessageCircle, Microwave, Truck, Trash2, Ban, Shield, Edit, Sparkles, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -401,6 +401,28 @@ const Ecommerce = () => {
                 </Form>
               </DialogContent>
             </Dialog>
+          </div>
+
+          {/* Coming Soon Banner */}
+          <div className="relative overflow-hidden rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/10 via-card to-card p-6 mb-8 shadow-[0_0_24px_hsl(var(--primary)/0.12)]">
+            <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-primary/20 blur-2xl" />
+            <div className="relative flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <div className="flex-shrink-0 rounded-full bg-primary/20 p-3">
+                <Sparkles className="h-6 w-6 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h2 className="font-heading text-lg sm:text-xl font-bold text-foreground tracking-tight">
+                  BEE APP Marketplace is Coming Soon!
+                </h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  We're building a better way to buy, sell, and discover local items. Listings will be live once the marketplace opens.
+                </p>
+              </div>
+              <div className="flex-shrink-0 inline-flex items-center gap-2 text-xs font-medium text-primary bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
+                <Clock className="h-3.5 w-3.5" />
+                <span>Launching soon</span>
+              </div>
+            </div>
           </div>
 
           {/* Message Dialog */}
