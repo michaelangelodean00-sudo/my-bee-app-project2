@@ -299,14 +299,10 @@ const AdManagement = () => {
         {(['all', 'business', 'events'] as const).map((category) => (
           <Button
             key={category}
-            variant="outline"
+            variant={filter === category ? "default" : "outline"}
             size="sm"
             onClick={() => setFilter(category)}
-            className={`capitalize text-xs border border-border ${
-              filter === category
-                ? "bg-muted text-foreground"
-                : "bg-background text-muted-foreground hover:bg-muted/50 hover:text-foreground"
-            }`}
+            className="capitalize"
           >
             {category} ({filteredAds.filter(ad => category === 'all' || ad.category === category).length})
           </Button>
@@ -337,7 +333,7 @@ const AdManagement = () => {
                   </div>
                 </TableCell>
                 <TableCell>
-                  <Badge variant="outline" className="capitalize bg-muted/30 text-foreground border-border">
+                  <Badge variant="outline" className="capitalize">
                     {ad.category}
                   </Badge>
                   <p className="text-xs text-gray-500 mt-1">{ad.targetSection}</p>

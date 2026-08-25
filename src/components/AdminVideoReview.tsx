@@ -261,7 +261,11 @@ const AdminVideoReview = () => {
   };
 
   const getCategoryColor = (category: string) => {
-    return 'bg-muted text-foreground';
+    switch (category) {
+      case 'business': return 'bg-emerald-100 text-emerald-800';
+      case 'events': return 'bg-orange-100 text-orange-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
   };
 
   const filteredVideos = useMemo(
@@ -344,14 +348,10 @@ const AdminVideoReview = () => {
         {(['all', 'pending', 'approved', 'rejected'] as const).map((status) => (
           <Button
             key={status}
-            variant="outline"
+            variant={filter === status ? "default" : "outline"}
             size="sm"
             onClick={() => { setFilter(status); setPage(1); }}
-            className={`capitalize text-xs border border-border ${
-              filter === status
-                ? "bg-muted text-foreground"
-                : "bg-background text-muted-foreground hover:bg-muted/50 hover:text-foreground"
-            }`}
+            className="capitalize"
           >
             {status} ({videos.filter(v => status === 'all' || v.status === status).length})
           </Button>

@@ -43,14 +43,14 @@ const MobileBottomNav = memo(() => {
               className={cn(
                 "flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all duration-200 relative min-w-[60px] min-h-[44px] touch-manipulation active:scale-95",
                 isActive
-                  ? "text-foreground"
-                  : "text-muted-foreground hover:text-foreground active:bg-muted/50"
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground active:bg-accent/50"
               )}
             >
               <div className="relative flex flex-col items-center gap-1">
                 <Icon size={20} className={cn(
                   "transition-all duration-200",
-                  isActive && "scale-110"
+                  isActive && "scale-110 drop-shadow-[0_0_6px_hsl(var(--primary)/0.5)]"
                 )} />
                 {hasNotification && (
                   <div className="absolute -top-1 -right-1 w-2 h-2 bg-destructive rounded-full animate-pulse" />
@@ -60,7 +60,7 @@ const MobileBottomNav = memo(() => {
                   isActive && "font-semibold"
                 )}>{item.label}</span>
                 {isActive && (
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-5 h-1 rounded-full bg-foreground" />
+                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-5 h-1 rounded-full bg-primary shadow-[0_0_8px_hsl(var(--primary)/0.7)]" />
                 )}
               </div>
             </Link>

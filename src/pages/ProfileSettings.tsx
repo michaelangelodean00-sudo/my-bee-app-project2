@@ -500,8 +500,8 @@ const ProfileSettings = () => {
                                   className={cn(
                                     "flex items-center gap-2 px-3 py-2 rounded-lg border text-xs font-medium transition-all text-left",
                                     profileData.businessCategory === id
-                                      ? "border-border bg-muted text-foreground"
-                                      : "border-border bg-background text-muted-foreground hover:bg-muted/50"
+                                      ? "border-amber-500 bg-amber-500/10 text-amber-700 dark:text-amber-400"
+                                      : "border-border bg-background text-muted-foreground hover:border-amber-300"
                                   )}
                                 >
                                   <Icon size={14} className="flex-shrink-0" />
