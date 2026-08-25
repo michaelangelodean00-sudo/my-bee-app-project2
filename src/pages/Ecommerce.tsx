@@ -511,7 +511,8 @@ const Ecommerce = () => {
             </DialogContent>
           </Dialog>
           
-          <Tabs defaultValue="products" className="mb-6">
+          <div className="pointer-events-none opacity-50 grayscale select-none transition-opacity">
+            <Tabs defaultValue="products" className="mb-6">
             <TabsList className="flex flex-wrap w-full gap-2 h-auto p-3 bg-card border rounded-lg">
               <TabsTrigger value="products" className="text-base font-semibold py-3 px-6 rounded-md bg-background text-foreground border border-border data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-primary shadow-sm transition-all whitespace-nowrap">
                 Products
