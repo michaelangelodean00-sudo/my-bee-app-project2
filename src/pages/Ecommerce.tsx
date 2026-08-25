@@ -513,10 +513,10 @@ const Ecommerce = () => {
           
           <Tabs defaultValue="products" className="mb-6">
             <TabsList className="flex flex-wrap w-full gap-2 h-auto p-3 bg-card border rounded-lg">
-              <TabsTrigger value="products" className="text-base font-semibold py-3 px-6 rounded-md bg-background text-foreground border border-border data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-primary shadow-sm transition-all whitespace-nowrap">
+              <TabsTrigger value="products" className="text-sm font-semibold py-2 px-4 rounded-md bg-background text-foreground border border-border data-[state=active]:bg-muted data-[state=active]:text-foreground data-[state=active]:border-border shadow-sm transition-all hover:bg-muted/50 hover:text-foreground whitespace-nowrap">
                 Products
               </TabsTrigger>
-              <TabsTrigger value="wishlist" className="text-base font-semibold py-3 px-6 rounded-md bg-background text-foreground border border-border data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-primary shadow-sm transition-all whitespace-nowrap">
+              <TabsTrigger value="wishlist" className="text-sm font-semibold py-2 px-4 rounded-md bg-background text-foreground border border-border data-[state=active]:bg-muted data-[state=active]:text-foreground data-[state=active]:border-border shadow-sm transition-all hover:bg-muted/50 hover:text-foreground whitespace-nowrap">
                 <Heart size={16} className="mr-2" />
                 Wishlist ({wishlistItems.length})
               </TabsTrigger>
@@ -524,7 +524,7 @@ const Ecommerce = () => {
                 <TabsTrigger 
                   key={category.id} 
                   value={category.id} 
-                  className="text-base font-semibold py-3 px-6 rounded-md bg-background text-foreground border border-border flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-primary shadow-sm transition-all hover:bg-accent hover:text-accent-foreground whitespace-nowrap"
+                  className="text-sm font-semibold py-2 px-4 rounded-md bg-background text-foreground border border-border flex items-center gap-2 data-[state=active]:bg-muted data-[state=active]:text-foreground data-[state=active]:border-border shadow-sm transition-all hover:bg-muted/50 hover:text-foreground whitespace-nowrap"
                 >
                   <span className="flex-shrink-0">{category.icon}</span>
                   <span className="font-medium">{category.name}</span>

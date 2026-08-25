@@ -1,4 +1,3 @@
-
 import { Handshake, Calendar, ShoppingCart, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -17,9 +16,9 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
 
       {/* Single shared Explore heading */}
       <div className="flex items-center justify-center md:justify-start gap-2 mb-4 px-2 sm:px-4">
-        <span className="text-2xl md:text-3xl font-bold text-primary font-heading tracking-tight">Explore</span>
-        <ChevronRight size={24} className="text-primary md:hidden" />
-        <ChevronRight size={28} className="text-primary hidden md:block" />
+        <span className="text-2xl md:text-3xl font-bold text-foreground font-heading tracking-tight">Explore</span>
+        <ChevronRight size={24} className="text-muted-foreground md:hidden" />
+        <ChevronRight size={28} className="text-muted-foreground hidden md:block" />
       </div>
 
       <div className="px-2 sm:px-4">
@@ -28,37 +27,34 @@ const CreatePost = ({ onPostCreated }: { onPostCreated?: (post: any) => void }) 
           <Button
             onClick={() => navigateTo("/businesses")}
             variant="outline"
-            className="w-full h-28 md:h-36 flex flex-col items-center justify-center gap-3 md:gap-4 text-lg font-semibold border-primary/30 hover:bg-primary/10 py-4 md:py-6 hover:scale-105 transition-all duration-300 hover:shadow-lg group animate-slide-in-bottom"
-            style={{ animationDelay: '0.1s' }}
+            className="w-full h-28 md:h-36 flex flex-col items-center justify-center gap-3 md:gap-4 text-lg font-semibold border-border hover:bg-muted/50 py-4 md:py-6 hover:scale-105 transition-all duration-300 hover:shadow-sm group active:scale-95"
           >
-            <div className="rounded-full bg-gradient-to-br from-secondary to-secondary/80 p-3 md:p-4 mb-1 md:mb-2 group-hover:animate-bounce group-active:animate-button-press">
-              <Handshake size={36} className="md:w-12 md:h-12 text-secondary-foreground transition-transform duration-300 group-hover:scale-110" />
+            <div className="rounded-full bg-muted p-3 md:p-4 mb-1 md:mb-2 group-active:animate-button-press">
+              <Handshake size={36} className="md:w-12 md:h-12 text-muted-foreground group-hover:text-foreground transition-transform duration-300 group-hover:scale-110" />
             </div>
-            <span className="font-heading text-base md:text-lg lg:text-base font-bold text-primary tracking-tight">Business Videos</span>
+            <span className="font-heading text-base md:text-lg lg:text-base font-bold text-foreground tracking-tight">Business Videos</span>
           </Button>
 
           <Button
             onClick={() => navigateTo("/events")}
             variant="outline"
-            className="w-full h-28 md:h-36 flex flex-col items-center justify-center gap-3 md:gap-4 text-lg font-semibold border-primary/30 hover:bg-accent py-4 md:py-6 hover:scale-105 transition-all duration-300 hover:shadow-lg group animate-slide-in-bottom"
-            style={{ animationDelay: '0.2s' }}
+            className="w-full h-28 md:h-36 flex flex-col items-center justify-center gap-3 md:gap-4 text-lg font-semibold border-border hover:bg-muted/50 py-4 md:py-6 hover:scale-105 transition-all duration-300 hover:shadow-sm group active:scale-95"
           >
-            <div className="rounded-full bg-gradient-to-br from-pink-400 via-purple-400 to-indigo-400 p-3 md:p-4 mb-1 md:mb-2 group-hover:animate-bounce group-active:animate-button-press">
-              <Calendar size={36} className="md:w-12 md:h-12 text-white transition-transform duration-300 group-hover:scale-110" />
+            <div className="rounded-full bg-muted p-3 md:p-4 mb-1 md:mb-2 group-active:animate-button-press">
+              <Calendar size={36} className="md:w-12 md:h-12 text-muted-foreground group-hover:text-foreground transition-transform duration-300 group-hover:scale-110" />
             </div>
-            <span className="font-heading text-base md:text-lg lg:text-base font-bold text-secondary tracking-tight">Events Videos</span>
+            <span className="font-heading text-base md:text-lg lg:text-base font-bold text-foreground tracking-tight">Events Videos</span>
           </Button>
 
           <Button
             onClick={() => navigateTo("/ecommerce")}
             variant="outline"
-            className="w-full h-28 md:h-36 flex flex-col items-center justify-center gap-3 md:gap-4 text-lg font-semibold border-primary/30 hover:bg-primary/10 py-4 md:py-6 hover:scale-105 transition-all duration-300 hover:shadow-lg group animate-slide-in-bottom"
-            style={{ animationDelay: '0.3s' }}
+            className="w-full h-28 md:h-36 flex flex-col items-center justify-center gap-3 md:gap-4 text-lg font-semibold border-border hover:bg-muted/50 py-4 md:py-6 hover:scale-105 transition-all duration-300 hover:shadow-sm group active:scale-95"
           >
-            <div className="rounded-full bg-gradient-to-br from-green-400 to-green-600 p-3 md:p-4 mb-1 md:mb-2 group-hover:animate-bounce group-active:animate-button-press">
-              <ShoppingCart size={36} className="md:w-12 md:h-12 text-white transition-transform duration-300 group-hover:scale-110" />
+            <div className="rounded-full bg-muted p-3 md:p-4 mb-1 md:mb-2 group-active:animate-button-press">
+              <ShoppingCart size={36} className="md:w-12 md:h-12 text-muted-foreground group-hover:text-foreground transition-transform duration-300 group-hover:scale-110" />
             </div>
-            <span className="font-heading text-lg md:text-xl lg:text-xl font-bold text-primary tracking-tight">E-commerce</span>
+            <span className="font-heading text-base md:text-lg lg:text-xl font-bold text-foreground tracking-tight">E-commerce</span>
           </Button>
         </div>
       </div>
