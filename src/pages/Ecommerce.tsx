@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Phone, Armchair, Shirt, Quote, Baby, Smartphone, Tv, MessageCircle, Microwave, Truck, Trash2, Ban, Shield, Edit } from "lucide-react";
+import { Tag, Heart, ShoppingCart, Star, Upload, Car, Home, Phone, Armchair, Shirt, Quote, Baby, Smartphone, Tv, MessageCircle, Microwave, Truck, Trash2, Ban, Shield, Edit, Sparkles, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
