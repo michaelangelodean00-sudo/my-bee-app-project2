@@ -1,0 +1,12 @@
+# Netlify / Cloudflare Pages header rules.
+#
+# frame-ancestors is the clickjacking control. It MUST be delivered as a real
+# HTTP header - browsers ignore it inside a <meta> CSP tag, which is why the
+# policy in index.html cannot carry it. The Lovable origins are allowlisted so
+# the editor preview iframe keeps working; every other embedder is refused.
+/*
+  Content-Security-Policy: frame-ancestors 'self' https://lovable.dev https://*.lovable.dev https://*.lovable.app https://*.lovableproject.com
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Cross-Origin-Opener-Policy: same-origin-allow-popups

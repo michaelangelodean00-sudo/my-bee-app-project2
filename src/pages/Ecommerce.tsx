@@ -16,6 +16,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useNotifications } from "../contexts/NotificationContext";
+import { useAuth } from "@/hooks/useAuth";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 // Mock e-commerce videos
@@ -95,8 +96,12 @@ const Ecommerce = () => {
   const [editDialog, setEditDialog] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
   
-  // Simple admin check - in a real app this would come from authentication
-  const isAdmin = true; // Set to true for demo purposes
+  // Admin controls are gated on the real role from the database, never a
+  // literal. /ecommerce is a public route, so a hardcoded `true` here handed
+  // the admin UI to every anonymous visitor - harmless only for as long as this
+  // page's products stay local mock state. This is still presentation-only
+  // gating: any write this unlocks must be enforced by RLS server-side too.
+  const { isAdmin } = useAuth();
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),

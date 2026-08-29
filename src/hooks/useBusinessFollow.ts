@@ -12,11 +12,11 @@ export const useBusinessFollow = (businessId: string) => {
     queryKey,
     staleTime: 30_000,
     queryFn: async () => {
-      const [{ count }, mine] = await Promise.all([
-        supabase
-          .from("business_follows")
-          .select("id", { count: "exact", head: true })
-          .eq("business_id", businessId),
+      // Follower counts come from an aggregate RPC rather than a row count.
+      // business_follows no longer exposes other people's follower_id to the
+      // client, so counting rows directly would only ever see your own.
+      const [{ data: count }, mine] = await Promise.all([
+        supabase.rpc("business_follower_count", { _business_id: businessId }),
         user
           ? supabase
               .from("business_follows")

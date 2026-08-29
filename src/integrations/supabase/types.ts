@@ -180,6 +180,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      business_follower_count: {
+        Args: {
+          _business_id: string
+        }
+        Returns: number
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

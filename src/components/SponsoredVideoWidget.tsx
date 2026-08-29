@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { ExternalLink, Volume2, VolumeX, Sparkles, ChevronLeft, ChevronRight, X, Maximize2 } from "lucide-react";
-import { isValidUrl } from "../utils/security";
+import { isValidUrl, openExternal } from "../utils/security";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useAdAnalytics } from "@/hooks/useAdAnalytics";
 import AdPerformanceMetrics from "./AdPerformanceMetrics";
@@ -160,7 +160,7 @@ const SponsoredVideoWidget = ({ showMetrics = false }: { showMetrics?: boolean }
   const handleCTA = () => {
     trackClick(`sponsored-${currentIndex}`);
     if (isValidUrl(current.linkUrl)) {
-      window.open(current.linkUrl, "_blank", "noopener,noreferrer");
+      openExternal(current.linkUrl);
     }
   };
 

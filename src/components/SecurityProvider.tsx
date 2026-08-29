@@ -32,16 +32,17 @@ export const SecurityProvider = ({ children }: SecurityProviderProps) => {
         'content',
         [
           "default-src 'self'",
-          "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+          "script-src 'self' 'unsafe-inline'",
           "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
           "font-src 'self' https://fonts.gstatic.com data:",
-          "img-src 'self' data: blob: https: http:",
+          "img-src 'self' data: blob: https:",
           "media-src 'self' blob: https:",
           "connect-src 'self' https: wss:",
           "frame-src 'none'",
           "object-src 'none'",
           "base-uri 'self'",
           "form-action 'self'",
+          "upgrade-insecure-requests",
         ].join('; ')
       );
       document.head.prepend(csp);
@@ -51,9 +52,15 @@ export const SecurityProvider = ({ children }: SecurityProviderProps) => {
     // Frame-busting via JS is intentionally disabled: the app is designed to
     // run inside the Lovable preview iframe and other trusted embed contexts.
     // Cross-origin `window.top.location` assignments throw SecurityError and
-    // previously triggered an infinite reload loop. Clickjacking protection
-    // is handled by the `frame-src 'none'` / server-side X-Frame-Options
-    // headers in production instead.
+    // previously triggered an infinite reload loop.
+    //
+    // NOTE: `frame-src` above does NOT provide clickjacking protection - it
+    // restricts what this page may embed, not who may embed this page. The
+    // actual control is the `frame-ancestors` directive, which browsers only
+    // honour from a real HTTP response header (never from a <meta> tag). It is
+    // configured per-host in public/_headers, vercel.json and public/.htaccess.
+    // If this app is served from a host none of those cover, that header must
+    // be added there or the app is framable by anyone.
 
     // ── Referrer Policy ──────────────────────────────────────────────────────
     if (!document.querySelector('meta[name="referrer"]')) {

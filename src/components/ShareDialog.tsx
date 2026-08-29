@@ -67,7 +67,7 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
       icon: MessageCircle,
       bgColor: '#25D366',
       action: () => {
-        window.open(`https://wa.me/?text=${encodeURIComponent(shareText + '\n' + shareUrl)}`, '_blank');
+        window.open(`https://wa.me/?text=${encodeURIComponent(shareText + '\n' + shareUrl)}`, '_blank', 'noopener,noreferrer');
         onShareComplete?.();
         handleClose();
       }
@@ -77,7 +77,7 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
       icon: Facebook,
       bgColor: '#1877F2',
       action: () => {
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`, '_blank');
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`, '_blank', 'noopener,noreferrer');
         onShareComplete?.();
         handleClose();
       }
@@ -91,7 +91,7 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
       ),
       bgColor: '#000000',
       action: () => {
-        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`, '_blank');
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`, '_blank', 'noopener,noreferrer');
         onShareComplete?.();
         handleClose();
       }
@@ -101,7 +101,7 @@ const ShareDialog: React.FC<ShareDialogProps> = ({
       icon: Send,
       bgColor: '#0088CC',
       action: () => {
-        window.open(`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`, '_blank');
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`, '_blank', 'noopener,noreferrer');
         onShareComplete?.();
         handleClose();
       }

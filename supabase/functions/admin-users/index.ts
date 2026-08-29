@@ -18,16 +18,31 @@ const corsFor = (req: Request) => {
   };
 };
 
+// Per-isolate best-effort throttle. Supabase may run several isolates, so the
+// effective ceiling is 30/min *per isolate*, not globally - treat this as a
+// brake on runaway clients, not as an authorization control. Expired entries
+// are swept on write so the map cannot grow without bound in a long-lived
+// isolate.
+const WINDOW_MS = 60_000;
+const MAX_HITS = 30;
 const hits = new Map<string, { n: number; reset: number }>();
+
+const sweep = (now: number) => {
+  for (const [k, v] of hits) {
+    if (now > v.reset) hits.delete(k);
+  }
+};
+
 const rateLimited = (key: string): boolean => {
   const now = Date.now();
   const h = hits.get(key);
   if (!h || now > h.reset) {
-    hits.set(key, { n: 1, reset: now + 60_000 });
+    sweep(now);
+    hits.set(key, { n: 1, reset: now + WINDOW_MS });
     return false;
   }
   h.n += 1;
-  return h.n > 30;
+  return h.n > MAX_HITS;
 };
 
 const json = (body: unknown, status: number, cors: Record<string, string>) =>
