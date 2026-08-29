@@ -111,3 +111,48 @@ END;
 $$;
 
 REVOKE EXECUTE ON FUNCTION public.protect_profile_columns() FROM PUBLIC, anon, authenticated;
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- SEC-D: restore EXECUTE on has_role() to `authenticated`, without handing out
+--        a role-enumeration oracle.
+--
+-- Migration 20260610190656 ran `REVOKE EXECUTE ... FROM PUBLIC, anon`. The
+-- implicit PUBLIC grant was the only grant the function ever had, so that
+-- revoke stripped `authenticated` too. RLS policy expressions are evaluated as
+-- the querying role, so every policy calling has_role() - on profiles,
+-- user_roles, video_moderation, admin_actions and business_follows - raised
+-- "permission denied for function has_role" for every signed-in user. Not a
+-- disclosure (it fails closed) but it takes the whole app down once you log in,
+-- and it silently defeats the admin policies those tables rely on.
+--
+-- Granting EXECUTE back would expose has_role as a PostgREST RPC, letting any
+-- signed-in user probe `has_role('<someone else>', 'admin')` and enumerate the
+-- admins. The guard below removes that: a request carrying a real end-user JWT
+-- may only ask about itself. RLS always calls has_role(auth.uid(), ...) so
+-- policies are unaffected, and service_role callers (the admin-users function)
+-- have no auth.uid() and keep the unrestricted behaviour they need.
+-- ─────────────────────────────────────────────────────────────────────────────
+CREATE OR REPLACE FUNCTION public.has_role(_user_id UUID, _role public.app_role)
+RETURNS BOOLEAN
+LANGUAGE plpgsql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  -- End-user requests may only ask about themselves. Returning false rather
+  -- than raising keeps this from becoming an oracle: probing another account
+  -- is indistinguishable from that account simply not holding the role.
+  IF auth.uid() IS NOT NULL AND _user_id IS DISTINCT FROM auth.uid() THEN
+    RETURN false;
+  END IF;
+
+  RETURN EXISTS (
+    SELECT 1 FROM public.user_roles
+    WHERE user_id = _user_id AND role = _role
+  );
+END;
+$$;
+
+REVOKE EXECUTE ON FUNCTION public.has_role(UUID, public.app_role) FROM PUBLIC, anon;
+GRANT EXECUTE ON FUNCTION public.has_role(UUID, public.app_role) TO authenticated;

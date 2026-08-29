@@ -17,6 +17,28 @@ knowingly left open. Re-read the "Still open" section before any deploy.
 | 8 | **Guard failed open.** `protect_profile_columns()` returned early whenever `auth.uid()` was `NULL`, so any future service-role writer would silently bypass the `suspended` / `rejection_reason` / `status` guards. The bypass is now conditional on the request actually being service-role (or having no PostgREST JWT at all). | same migration |
 | 9 | **Unbounded memory.** The `admin-users` rate-limit map never evicted expired entries. Now swept on write. | `supabase/functions/admin-users/index.ts` |
 | 10 | **Bypassable sanitiser.** Removed the regex-based `sanitizeInput()` (unused, trivially defeated, invited false confidence). Added `openExternal()`, which enforces http(s) — blocking `javascript:` URLs that `window.open` would otherwise execute in this origin — and severs `window.opener` to prevent reverse tabnabbing. Applied to the supplier-controlled ad click URLs. | `src/utils/security.ts`, ad + share components |
+| 11 | **`has_role()` was not executable by `authenticated`, breaking every admin RLS policy.** Migration `20260610190656` ran `REVOKE EXECUTE ... FROM PUBLIC`, and the implicit `PUBLIC` grant was the only grant the function had — so `authenticated` lost it too. RLS policy expressions are evaluated as the querying role, so *every* query against `profiles`, `user_roles`, `video_moderation`, `admin_actions` and `business_follows` raised `permission denied for function has_role` for any signed-in user. Fails closed, so not a disclosure, but it takes the app down at login and silently disables the admin policies. EXECUTE restored to `authenticated` only. | same migration (SEC-D) |
+| 12 | **Role-enumeration oracle, pre-empted.** Restoring EXECUTE would have exposed `has_role` as a PostgREST RPC, letting any signed-in user probe `has_role('<someone else>','admin')` and enumerate admins. The function now returns `false` for any end-user request asking about an account other than its own. RLS is unaffected (it always calls `has_role(auth.uid(), ...)`), and `service_role` keeps unrestricted access for the `admin-users` function. | same migration (SEC-D) |
+| 13 | **`isAdmin` hardcoded to `true`** on `/ecommerce`, a public route — every visitor, signed in or not, got the admin badge and product controls. Presentation-only today because that page's products are local mock state, but it becomes a real hole the moment the page is wired to the database. Now reads the real role from `useAuth()`. | `src/pages/Ecommerce.tsx` |
+
+## Verification
+
+The database rules are covered by `supabase/tests/rls-regression.sh`, which applies
+`supabase/migrations/` to a scratch Postgres and asserts 22 access-control
+properties: who can see which profiles, that `has_role` is usable by RLS but not
+as an enumeration oracle, that users cannot self-grant admin / self-approve a
+business / set `suspended` / read the moderation queue / forge another user's
+follow, that the admin approval workflow works end to end, that the follower
+graph is private while counts stay public, and that the `service_role` bypass
+the edge function depends on still works.
+
+```
+PGHOST=/tmp PGPORT=5432 ./supabase/tests/rls-regression.sh
+```
+
+The suite was checked against a deliberately reverted fix and reports 11
+failures without SEC-D, so it genuinely detects the regression rather than
+passing vacuously.
 
 ## Still open — read before deploying
 
@@ -24,7 +46,8 @@ knowingly left open. Re-read the "Still open" section before any deploy.
 - **`vite` / `esbuild` advisories are dev-server-only** and never ship to production. Fixing them means vite 8, another breaking major. Until then, avoid running `npm run dev` on an untrusted network.
 - **`.env` is still tracked on purpose.** It holds only `VITE_*` publishable values — the project URL and the anon key — which are compiled into the client bundle and public by design, and Lovable's build expects the file in the repo. No secret is exposed. This does technically conflict with the "never commit `.env`" house rule, so if you would rather untrack it, move those values into Lovable's env settings first or local dev will break. A service-role key must *never* go in this file.
 - **The live database was never verified.** The audit read migrations, not live state. The Supabase MCP connection points at a different org (project `spphnzotrwudukxtjwfb`), while the app uses `uadghawuvfzdqomklvha`, so `get_advisors` was unavailable and direct probes were blocked by network policy. Before launch, run `get_advisors` from a session connected to the right Supabase org and confirm: RLS is enabled on every table, no extra tables or policies were added through the Lovable UI, and auth has leaked-password protection on with a sane OTP expiry.
-- **The new migration has not been run.** It was written against the committed migration history and is unapplied and untested on a live database.
+- **The migration has been tested, but not against your database.** It applies cleanly on top of the committed migration history and passes the suite above on a local Postgres 16. It has still never run against the real project.
+- **Evidence that live state differs from these migrations.** Applied as committed, finding 11 makes the app unusable for every signed-in user. If the deployed app works, the live database must already differ from `supabase/migrations/` — most likely an EXECUTE grant added through the Supabase UI. Reconcile the two before trusting either.
 
 ## Verified sound (no change needed)
 
