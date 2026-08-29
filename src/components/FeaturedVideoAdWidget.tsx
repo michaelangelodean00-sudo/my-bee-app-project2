@@ -1,5 +1,5 @@
 import { useState, useEffect, memo } from "react";
-import { isValidUrl } from "../utils/security";
+import { isValidUrl, openExternal } from "../utils/security";
 import { useAdAnalytics } from "@/hooks/useAdAnalytics";
 import AdPerformanceMetrics from "./AdPerformanceMetrics";
 
@@ -56,7 +56,7 @@ const FeaturedVideoAdWidget = memo(({ showMetrics = false }: { showMetrics?: boo
   const handleAdClick = () => {
     trackClick(`featured-${currentAdIndex}`);
     if (isValidUrl(currentAd.linkUrl)) {
-      window.open(currentAd.linkUrl, '_blank', 'noopener,noreferrer');
+      openExternal(currentAd.linkUrl);
     }
   };
 

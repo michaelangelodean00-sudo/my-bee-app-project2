@@ -4,6 +4,7 @@ import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/useAuth";
+import { safeInternalPath } from "@/utils/security";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -72,13 +73,15 @@ export default function Auth() {
 
   // Same-origin relative `next` path preserves the intended destination
   // (e.g. /.lovable/oauth/consent?authorization_id=...) across every sign-in path.
-  const nextPath = useMemo(() => {
-    const raw = searchParams.get("next");
-    if (!raw) return "/";
-    // must be same-origin relative
-    if (!raw.startsWith("/") || raw.startsWith("//")) return "/";
-    return raw;
-  }, [searchParams]);
+  // safeInternalPath() resolves the value against this origin and rejects
+  // anything that escapes it. A string-prefix check is NOT sufficient: the
+  // value `/\evil.com` starts with "/" and not "//", yet the URL parser
+  // resolves it to https://evil.com/ because backslashes are normalised to
+  // slashes for special schemes.
+  const nextPath = useMemo(
+    () => safeInternalPath(searchParams.get("next")),
+    [searchParams]
+  );
 
   // Sign in
   const [siEmail, setSiEmail] = useState("");

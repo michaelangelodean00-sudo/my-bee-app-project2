@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, memo, useRef } from "react";
+import { openExternal } from "@/utils/security";
 import {
   Carousel,
   CarouselContent,
@@ -307,7 +308,9 @@ const AdSplash = memo(({ showMetrics = false }: { showMetrics?: boolean }) => {
 
   const handleGetMoreInfo = useCallback((adId: string, linkUrl: string) => {
     trackClick(adId);
-    window.open(linkUrl, '_blank', 'noopener,noreferrer');
+    // Scheme-checked: a `javascript:` linkUrl would otherwise execute in this
+    // origin when passed to window.open().
+    openExternal(linkUrl);
   }, [trackClick]);
 
   const handleSlideChange = useCallback((index: number) => {

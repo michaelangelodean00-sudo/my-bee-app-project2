@@ -1,5 +1,6 @@
 
 import { useState, useEffect, useRef } from "react";
+import { openExternal } from "@/utils/security";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -82,7 +83,10 @@ const VideoPlayerWithAds = ({
     if (isAd && adData && onAdClick) {
       onAdClick(adData.id);
       if (adData.clickUrl) {
-        window.open(adData.clickUrl, '_blank');
+        // openExternal() enforces http(s) and severs window.opener. The ad
+        // click URL is supplier-controlled, so a bare window.open() here would
+        // allow both reverse tabnabbing and `javascript:` execution.
+        openExternal(adData.clickUrl);
       }
     }
   };

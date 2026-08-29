@@ -6,7 +6,9 @@
     Header set X-Content-Copyright "© 2024 B.E.E App Bahamas. All rights reserved."
     Header set X-App-Protected "true"
     Header set X-Rights-Management "strict"
-    Header set X-Frame-Options "SAMEORIGIN"
+    # Clickjacking control. frame-ancestors supersedes X-Frame-Options and,
+    # unlike XFO, can allowlist the Lovable preview origins as well as self.
+    Header always set Content-Security-Policy "frame-ancestors 'self' https://lovable.dev https://*.lovable.dev https://*.lovable.app https://*.lovableproject.com"
     Header set X-Content-Type-Options "nosniff"
     Header set Referrer-Policy "strict-origin-when-cross-origin"
 </IfModule>
