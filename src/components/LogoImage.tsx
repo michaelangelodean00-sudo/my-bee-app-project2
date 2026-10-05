@@ -1,5 +1,6 @@
 
 import React from 'react';
+import logoAsset from '@/assets/bee-app-bahamas-logo.png.asset.json';
 
 interface LogoImageProps {
   className?: string;
@@ -17,8 +18,8 @@ const LogoImage = ({ className, size = 'default' }: LogoImageProps) => {
 
   return (
     <img 
-      src="/lovable-uploads/bee-mascot-logo.png" 
-      alt="B.E.E App Bahamas Logo - © 2024 All Rights Reserved"
+      src={logoAsset.url} 
+      alt="Bee App Bahamas"
       className={`object-contain ${sizeClasses[size]} ${className ?? ''}`}
       loading="eager"
       decoding="sync"
