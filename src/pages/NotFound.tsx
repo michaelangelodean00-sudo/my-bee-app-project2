@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import logoAsset from "@/assets/bee-app-bahamas-logo.png.asset.json";
 
 const NotFound = () => {
   const location = useLocation();
@@ -17,9 +18,9 @@ const NotFound = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4">
       <img 
-        src="/lovable-uploads/new-bee-logo.png" 
-        alt="B.E.E App Bahamas Logo" 
-        className="h-24 mb-6"
+        src={logoAsset.url} 
+        alt="Bee App Bahamas" 
+        className="h-24 w-auto mb-6"
       />
       <h1 className="heading-large mb-4">Page Not Found</h1>
       <p className="body-large text-muted-foreground mb-8 text-center">
