@@ -21,7 +21,7 @@ import { toast } from "sonner";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useAuth } from "../hooks/useAuth";
 
-const LOGO_URL = "/brand/bee-app-bahamas-logo.png";
+const LOGO_URL = "/brand/bee-app-bahamas-logo-v3.png";
 
 // Lazy load non-critical visual components
 const AnimatedBackground = lazy(() => import("../components/AnimatedBackground"));

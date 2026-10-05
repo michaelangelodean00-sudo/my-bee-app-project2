@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
-const LOGO_URL = "/brand/bee-app-bahamas-logo.png";
+const LOGO_URL = "/brand/bee-app-bahamas-logo-v3.png";
 
 const NotFound = () => {
   const location = useLocation();
