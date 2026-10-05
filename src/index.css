@@ -854,12 +854,12 @@
   }
 
   @keyframes holiday-ticker-scroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-25%); }
+    from { transform: translateX(-100%); }
+    to { transform: translateX(100vw); }
   }
 
   .holiday-ticker-track {
-    animation: holiday-ticker-scroll 18s linear infinite;
+    animation: holiday-ticker-scroll 14s linear infinite;
   }
   
   @keyframes micro-bounce {

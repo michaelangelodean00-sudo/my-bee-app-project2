@@ -49,6 +49,11 @@ export const getHolidayGreeting = (date = new Date()): HolidayGreeting | null =>
     return { message: "Merry Christmas from B.E.E App Bahamas", symbol: "🎄" };
   }
 
+  const newYear = new Date(date.getMonth() === 11 ? year + 1 : year, 0, 1);
+  if (isWithinDays(date, newYear, 2, 1)) {
+    return { message: "Happy New Year from B.E.E App Bahamas", symbol: "🎆" };
+  }
+
   if (isWithinDays(date, easterSunday(year), 2, 1)) {
     return { message: "Happy Easter from B.E.E App Bahamas", symbol: "🐣" };
   }
@@ -73,25 +78,16 @@ const HolidayTicker = () => {
 
   if (!greeting) return null;
 
-  const item = (
-    <span className="inline-flex shrink-0 items-center gap-3 px-8" aria-hidden="true">
-      <span>{greeting.symbol}</span>
-      <span>{greeting.message}</span>
-      <span>{greeting.symbol}</span>
-    </span>
-  );
-
   return (
     <div
       className="overflow-hidden border-b border-primary/20 bg-primary text-primary-foreground"
       role="status"
       aria-label={greeting.message}
     >
-      <div className="holiday-ticker-track flex w-max py-1.5 font-heading text-xs font-semibold sm:text-sm">
-        {item}
-        {item}
-        {item}
-        {item}
+      <div className="holiday-ticker-track flex w-max items-center gap-3 whitespace-nowrap py-1.5 font-heading text-xs font-semibold sm:text-sm">
+        <span>{greeting.symbol}</span>
+        <span>{greeting.message}</span>
+        <span>{greeting.symbol}</span>
       </div>
     </div>
   );
