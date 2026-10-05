@@ -852,6 +852,15 @@
     0% { transform: translateX(0); }
     100% { transform: translateX(-60px); }
   }
+
+  @keyframes holiday-ticker-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-25%); }
+  }
+
+  .holiday-ticker-track {
+    animation: holiday-ticker-scroll 18s linear infinite;
+  }
   
   @keyframes micro-bounce {
     0% { transform: scale(1); }
@@ -930,4 +939,8 @@
     transition-duration: 0.01ms !important;
   }
   html { scroll-behavior: auto; }
+
+  .holiday-ticker-track {
+    transform: translateX(0);
+  }
 }
