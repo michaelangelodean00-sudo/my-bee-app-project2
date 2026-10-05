@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v9';
+const CACHE_VERSION = 'v10';
 const STATIC_CACHE = `bee-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `bee-dynamic-${CACHE_VERSION}`;
 const IMAGE_CACHE = `bee-images-${CACHE_VERSION}`;
