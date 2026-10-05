@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useMyProfile, MY_PROFILE_KEY } from "@/hooks/useMyProfile";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -48,6 +50,9 @@ interface ProfileEditDialogProps {
 }
 
 const ProfileEditDialog = ({ open, onOpenChange, currentUser, onSave }: ProfileEditDialogProps) => {
+  const queryClient = useQueryClient();
+  const { data: myProfile } = useMyProfile();
+  const isExistingBusiness = myProfile?.account_type === "business" && myProfile?.status === "approved";
   const [formData, setFormData] = useState({
     name: sanitizeText(currentUser.name, LIMITS.NAME_MAX),
     bio: "",
@@ -61,6 +66,19 @@ const ProfileEditDialog = ({ open, onOpenChange, currentUser, onSave }: ProfileE
     businessFacebook: "",
     businessStreetAddress: "",
   });
+
+  // Hydrate saved business details whenever the dialog opens
+  useEffect(() => {
+    if (!open || !myProfile || myProfile.account_type !== "business") return;
+    setFormData(prev => ({
+      ...prev,
+      name: myProfile.business_name || prev.name,
+      businessCategory: (myProfile.business_category as BusinessCategoryId) || prev.businessCategory,
+      businessPhone: myProfile.phone || prev.businessPhone,
+      businessStreetAddress: myProfile.address || prev.businessStreetAddress,
+      avatarUrl: myProfile.avatar_url || prev.avatarUrl,
+    }));
+  }, [open, myProfile]);
 
   const [step, setStep] = useState(0); // 0..2 for business wizard
   const [uploading, setUploading] = useState(false);
@@ -110,7 +128,7 @@ const ProfileEditDialog = ({ open, onOpenChange, currentUser, onSave }: ProfileE
     if (s === 0) {
       if (!formData.name.trim()) e.name = "What's your business name?";
       if (!formData.businessCategory) e.businessCategory = "Pick the category that fits best.";
-      if (formData.bio.trim().length < 20) e.bio = "Add a short description (at least 20 characters).";
+      if (!isExistingBusiness && formData.bio.trim().length < 20) e.bio = "Add a short description (at least 20 characters).";
     }
     if (s === 1) {
       if (!formData.businessPhone.trim()) e.businessPhone = "A phone number helps customers reach you.";
@@ -154,10 +172,16 @@ const ProfileEditDialog = ({ open, onOpenChange, currentUser, onSave }: ProfileE
         return;
       }
     }
-    toast.success("Sent for review", {
-      description: "We'll let you know once your business profile is approved.",
-    });
-    onSave({ ...formData, businessOwner: false, businessPending: true });
+    queryClient.invalidateQueries({ queryKey: MY_PROFILE_KEY });
+    if (isExistingBusiness) {
+      toast.success("Profile updated");
+      onSave({ ...formData, businessOwner: true });
+    } else {
+      toast.success("Sent for review", {
+        description: "We'll let you know once your business profile is approved.",
+      });
+      onSave({ ...formData, businessOwner: false, businessPending: true });
+    }
     onOpenChange(false);
   };
 

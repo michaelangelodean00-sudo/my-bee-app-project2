@@ -51,6 +51,7 @@ import {
 } from "lucide-react";
 import ProfileEditDialog from "@/components/ProfileEditDialog";
 import { useAuth } from "@/hooks/useAuth";
+import { useMyProfile } from "@/hooks/useMyProfile";
 
 import { useEffect } from "react";
 
@@ -71,7 +72,8 @@ const ProfileSettings = () => {
   const { user, isBusiness } = useAuth();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [upgradeDialogOpen, setUpgradeDialogOpen] = useState(false);
-  const pendingUpgrade = false;
+  const { data: myProfile } = useMyProfile();
+  const pendingUpgrade = myProfile?.account_type === "business" && myProfile?.status === "pending";
 
   const [profileData, setProfileData] = useState({
     firstName: "John",

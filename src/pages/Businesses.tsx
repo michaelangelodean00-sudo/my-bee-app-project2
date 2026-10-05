@@ -134,15 +134,30 @@ const CategoryProfileView = ({ categoryId }: { categoryId: string }) => {
   );
 };
 
-// ─── Video Feed (real videos only) ──────────────────────────────────────────
+// ─── Category Directory (default view) ──────────────────────────────────────
 const VideoFeed = () => {
+  const navigate = useNavigate();
+  const { data: businesses = [] } = useApprovedBusinesses();
   return (
-    <div className="flex-1 flex items-center justify-center p-8">
-      <div className="text-center max-w-md">
-        <h2 className="text-lg font-semibold text-foreground mb-2">No business videos yet</h2>
-        <p className="text-sm text-muted-foreground">
-          Approved business videos will appear here.
-        </p>
+    <div className="flex-1 overflow-y-auto p-4">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-lg font-semibold text-foreground mb-4">Browse businesses</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {CATEGORIES.map(({ id, label, icon: Icon }) => {
+            const count = businesses.filter(b => b.category === id).length;
+            return (
+              <button
+                key={id}
+                onClick={() => navigate(`/businesses?category=${id}`)}
+                className="min-h-[44px] touch-manipulation active:scale-95 transition-all duration-200 rounded-lg border border-border bg-card p-4 flex flex-col items-start gap-2 hover:border-primary"
+              >
+                <Icon className="h-5 w-5 text-primary" />
+                <span className="text-sm font-medium text-foreground text-left">{label}</span>
+                <span className="text-xs text-muted-foreground">{count} listings</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
