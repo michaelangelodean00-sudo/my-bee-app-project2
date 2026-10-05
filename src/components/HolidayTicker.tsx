@@ -49,7 +49,8 @@ export const getHolidayGreeting = (date = new Date()): HolidayGreeting | null =>
     return { message: "Merry Christmas from B.E.E App Bahamas", symbol: "🎄" };
   }
 
-  if (isWithinDays(date, new Date(year, 0, 1), 2, 1)) {
+  const newYear = new Date(date.getMonth() === 11 ? year + 1 : year, 0, 1);
+  if (isWithinDays(date, newYear, 2, 1)) {
     return { message: "Happy New Year from B.E.E App Bahamas", symbol: "🎆" };
   }
 
