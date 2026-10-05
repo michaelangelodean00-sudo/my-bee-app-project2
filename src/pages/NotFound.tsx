@@ -3,7 +3,8 @@ import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import logoAsset from "@/assets/bee-app-bahamas-logo.png.asset.json";
+
+const LOGO_URL = "/brand/bee-app-bahamas-logo.png";
 
 const NotFound = () => {
   const location = useLocation();
@@ -18,7 +19,7 @@ const NotFound = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4">
       <img 
-        src={logoAsset.url} 
+        src={LOGO_URL} 
         alt="Bee App Bahamas" 
         className="h-24 w-auto mb-6"
       />
