@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v10';
+const CACHE_VERSION = 'v11';
 const STATIC_CACHE = `bee-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `bee-dynamic-${CACHE_VERSION}`;
 const IMAGE_CACHE = `bee-images-${CACHE_VERSION}`;
@@ -12,7 +12,7 @@ const PRECACHE_ASSETS = [
   '/icons/apple-touch-icon.png',
   '/icons/app-icon-192.png',
   '/icons/app-icon-512.png',
-  '/brand/bee-app-bahamas-logo.png',
+  '/brand/bee-app-bahamas-logo-v3.png',
 ];
 
 // Ad images — match EXACT URLs used in AdSplash component (1200w for quality/size balance)

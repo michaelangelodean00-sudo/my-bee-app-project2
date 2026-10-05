@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-const LOGO_URL = '/brand/bee-app-bahamas-logo.png';
+const LOGO_URL = '/brand/bee-app-bahamas-logo-v3.png';
 
 interface LogoImageProps {
   className?: string;
