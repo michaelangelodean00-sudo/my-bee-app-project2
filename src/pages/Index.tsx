@@ -20,7 +20,8 @@ import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useAuth } from "../hooks/useAuth";
-import logoAsset from "@/assets/bee-app-bahamas-logo.png.asset.json";
+
+const LOGO_URL = "/brand/bee-app-bahamas-logo.png";
 
 // Lazy load non-critical visual components
 const AnimatedBackground = lazy(() => import("../components/AnimatedBackground"));
@@ -48,7 +49,7 @@ const PostList = memo(({ userPosts }: { userPosts: FeedPost[] }) => {
     return (
       <div className="flex flex-col items-center text-center py-12 px-4">
         <img
-          src={logoAsset.url}
+          src={LOGO_URL}
           alt="Bee App Bahamas"
           width={240}
           height={90}
