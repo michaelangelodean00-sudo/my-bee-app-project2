@@ -7,6 +7,7 @@ import { MapPin, Calendar, Star, Users, Settings, Edit, Building2, User, Briefca
 import { Link } from "react-router-dom";
 import ProfileEditDialog from "./ProfileEditDialog";
 import { cn } from "@/lib/utils";
+import { useMyProfile } from "@/hooks/useMyProfile";
 
 
 export type UserRole = 'user' | 'admin';
@@ -58,8 +59,10 @@ const UserProfile: React.FC<UserProfileProps> = ({
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [upgradeMode, setUpgradeMode] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
-  const pendingBusiness = false;
-  const rejectedBusiness = false;
+  const { data: myProfile } = useMyProfile();
+  const isMyBusinessRequest = isCurrentUser && !businessOwner && myProfile?.account_type === "business";
+  const pendingBusiness = isMyBusinessRequest && myProfile?.status === "pending";
+  const rejectedBusiness = isMyBusinessRequest && myProfile?.status === "rejected";
 
 
   // Admin status is private — only ever surfaced to the admin themselves.
