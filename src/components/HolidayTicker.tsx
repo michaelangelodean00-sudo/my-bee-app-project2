@@ -46,28 +46,28 @@ export const getHolidayGreeting = (date = new Date()): HolidayGreeting | null =>
   const year = date.getFullYear();
 
   if (isWithinDays(date, new Date(year, 11, 25), 7, 1)) {
-    return { message: "Merry Christmas from B.E.E App Bahamas", symbol: "🎄" };
+    return { message: "Merry Christmas from B.E.E App Bahamas", symbol: "🎄🎅✨🎁" };
   }
 
   const newYear = new Date(date.getMonth() === 11 ? year + 1 : year, 0, 1);
   if (isWithinDays(date, newYear, 2, 1)) {
-    return { message: "Happy New Year from B.E.E App Bahamas", symbol: "🎆" };
+    return { message: "Happy New Year from B.E.E App Bahamas", symbol: "🎆🎉🥳✨" };
   }
 
   if (isWithinDays(date, easterSunday(year), 2, 1)) {
-    return { message: "Happy Easter from B.E.E App Bahamas", symbol: "🐣" };
+    return { message: "Happy Easter from B.E.E App Bahamas", symbol: "🐣🐰🌷🥚" };
   }
 
   if (isWithinDays(date, nthWeekdayOfMonth(year, 4, 0, 2), 2, 0)) {
-    return { message: "Happy Mother’s Day from B.E.E App Bahamas", symbol: "💐" };
+    return { message: "Happy Mother’s Day from B.E.E App Bahamas", symbol: "💐💖🌸" };
   }
 
   if (isWithinDays(date, nthWeekdayOfMonth(year, 5, 0, 3), 2, 0)) {
-    return { message: "Happy Father’s Day from B.E.E App Bahamas", symbol: "💙" };
+    return { message: "Happy Father’s Day from B.E.E App Bahamas", symbol: "👔💙🎣" };
   }
 
   if (isWithinDays(date, new Date(year, 6, 10), 3, 1)) {
-    return { message: "Happy Independence Day, Bahamas", symbol: "🇧🇸" };
+    return { message: "Happy Independence Day, Bahamas", symbol: "🇧🇸🎉✨" };
   }
 
   return null;
@@ -75,18 +75,18 @@ export const getHolidayGreeting = (date = new Date()): HolidayGreeting | null =>
 
 const HolidayTicker = () => {
   const greeting = getHolidayGreeting() ?? (import.meta.env.DEV
-    ? { message: "Merry Christmas from B.E.E App Bahamas", symbol: "🎄" }
+    ? { message: "Merry Christmas from B.E.E App Bahamas", symbol: "🎄🎅✨🎁" }
     : null);
 
   if (!greeting) return null;
 
   return (
     <div
-      className="overflow-hidden border-b border-primary/20 bg-primary text-primary-foreground"
+      className="overflow-hidden bg-transparent border-b border-primary/15"
       role="status"
       aria-label={greeting.message}
     >
-      <div className="holiday-ticker-track flex w-max items-center gap-3 whitespace-nowrap py-1.5 font-heading text-xs font-semibold sm:text-sm">
+      <div className="holiday-ticker-track flex w-max items-center gap-3 whitespace-nowrap py-1.5 font-heading text-xs font-semibold sm:text-sm text-foreground">
         <span>{greeting.symbol}</span>
         <span>{greeting.message}</span>
         <span>{greeting.symbol}</span>
