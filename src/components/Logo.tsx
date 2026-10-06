@@ -15,7 +15,7 @@ const Logo = ({ className }: LogoProps) => {
         className="flex items-center will-change-transform backface-hidden origin-center overflow-hidden scale-100"
       >
         <div className="flex items-center flex-shrink-0">
-          <LogoImage size="default" className="h-28 sm:h-[72px] md:h-[88px] w-auto" />
+          <LogoImage size="default" className="h-[120px] sm:h-[78px] md:h-[94px] w-auto" />
         </div>
       </div>
     </Link>
