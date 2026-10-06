@@ -45,28 +45,28 @@ const isWithinDays = (date: Date, occasion: Date, daysBefore: number, daysAfter:
 export const getHolidayGreeting = (date = new Date()): HolidayGreeting | null => {
   const year = date.getFullYear();
 
-  if (isWithinDays(date, new Date(year, 11, 25), 7, 1)) {
+  if (isWithinDays(date, new Date(year, 11, 25), 7, 5)) {
     return { message: "Merry Christmas from B.E.E App Bahamas", symbol: "🎄🎅✨🎁" };
   }
 
   const newYear = new Date(date.getMonth() === 11 ? year + 1 : year, 0, 1);
-  if (isWithinDays(date, newYear, 2, 1)) {
+  if (isWithinDays(date, newYear, 1, 1)) {
     return { message: "Happy New Year from B.E.E App Bahamas", symbol: "🎆🎉🥳✨" };
   }
 
-  if (isWithinDays(date, easterSunday(year), 2, 1)) {
+  if (isWithinDays(date, easterSunday(year), 1, 1)) {
     return { message: "Happy Easter from B.E.E App Bahamas", symbol: "🐣🐰🌷🥚" };
   }
 
-  if (isWithinDays(date, nthWeekdayOfMonth(year, 4, 0, 2), 2, 0)) {
+  if (isWithinDays(date, nthWeekdayOfMonth(year, 4, 0, 2), 1, 1)) {
     return { message: "Happy Mother’s Day from B.E.E App Bahamas", symbol: "💐💖🌸" };
   }
 
-  if (isWithinDays(date, nthWeekdayOfMonth(year, 5, 0, 3), 2, 0)) {
+  if (isWithinDays(date, nthWeekdayOfMonth(year, 5, 0, 3), 1, 1)) {
     return { message: "Happy Father’s Day from B.E.E App Bahamas", symbol: "👔💙🎣" };
   }
 
-  if (isWithinDays(date, new Date(year, 6, 10), 3, 1)) {
+  if (isWithinDays(date, new Date(year, 6, 10), 1, 1)) {
     return { message: "Happy Independence Day, Bahamas", symbol: "🇧🇸🎉✨" };
   }
 
@@ -82,7 +82,7 @@ const HolidayTicker = () => {
 
   return (
     <div
-      className="overflow-hidden bg-transparent border-b border-primary/15"
+      className="overflow-hidden bg-transparent"
       role="status"
       aria-label={greeting.message}
     >
