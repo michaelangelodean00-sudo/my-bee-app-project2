@@ -74,7 +74,9 @@ export const getHolidayGreeting = (date = new Date()): HolidayGreeting | null =>
 };
 
 const HolidayTicker = () => {
-  const greeting = getHolidayGreeting();
+  const greeting = getHolidayGreeting() ?? (import.meta.env.DEV
+    ? { message: "Merry Christmas from B.E.E App Bahamas", symbol: "🎄" }
+    : null);
 
   if (!greeting) return null;
 
