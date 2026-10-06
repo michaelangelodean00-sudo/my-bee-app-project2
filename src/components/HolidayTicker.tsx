@@ -45,11 +45,18 @@ const isWithinDays = (date: Date, occasion: Date, daysBefore: number, daysAfter:
 
 /** Splits a symbol string into single grapheme clusters (keeps flag emojis intact). */
 const splitEmojis = (value: string): string[] => {
-  if (typeof Intl !== "undefined" && "Segmenter" in Intl) {
-    const segmenter = new Intl.Segmenter("en", { granularity: "grapheme" });
-    return Array.from(segmenter.segment(value), (part) => part.segment);
+  const chars = Array.from(value);
+  const result: string[] = [];
+  for (let i = 0; i < chars.length; i++) {
+    const isRegionalIndicator = (c: string) => /^[\u{1F1E6}-\u{1F1FF}]$/u.test(c);
+    if (i + 1 < chars.length && isRegionalIndicator(chars[i]) && isRegionalIndicator(chars[i + 1])) {
+      result.push(chars[i] + chars[i + 1]);
+      i++;
+    } else {
+      result.push(chars[i]);
+    }
   }
-  return Array.from(value);
+  return result;
 };
 
 export const getHolidayGreeting = (date = new Date()): HolidayGreeting | null => {
