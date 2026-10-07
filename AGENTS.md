@@ -1,4 +1,4 @@
 # Project Rules
 
 - Keep date-aware holiday presentation isolated in `HolidayTicker`; this prevents seasonal logic from spreading through shared navigation.
-- Show a holiday greeting fallback only in development preview; this makes seasonal presentation reviewable without affecting production dates.
+- Never show a holiday greeting fallback in the preview; the ticker must appear only during actual holiday windows (per user request).
