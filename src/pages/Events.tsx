@@ -11,6 +11,7 @@ import { useNotifications } from "../contexts/NotificationContext";
 import { useContentFilter } from "../contexts/ContentFilterContext";
 import { useAdAnalytics } from "../hooks/useAdAnalytics";
 import { VideoAd, SponsoredContent } from "@/types/ads";
+import { usePreviewMode } from "@/hooks/usePreviewMode";
 
 interface EventVideo {
   id: string;
@@ -30,6 +31,7 @@ const Events = () => {
   const { markEventsVideosAsViewed } = useNotifications();
   const { trackImpression, trackClick } = useAdAnalytics();
   const { isEventVideoBlocked } = useContentFilter();
+  const { isPreview } = usePreviewMode();
   const [isAutoScrolling, setIsAutoScrolling] = useState(false);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
