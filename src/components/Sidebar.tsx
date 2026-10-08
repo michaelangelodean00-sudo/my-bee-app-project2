@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Building2, Calendar, ShoppingCart, Settings, Home, UserCircle } from "lucide-react";
+import { Building2, Calendar, ShoppingCart, Settings, Home, UserCircle, Clapperboard } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useNotifications } from "../contexts/NotificationContext";
 import { usePrefetch } from "../hooks/usePrefetch";
@@ -14,6 +14,7 @@ interface SidebarProps {
 
 const navigationItems = [
   { icon: Home, label: "Home", path: "/", notificationKey: null },
+  { icon: Clapperboard, label: "BeeNow", path: "/beenow", notificationKey: null },
   { icon: Building2, label: "Business", path: "/businesses", notificationKey: "hasNewBusinessVideos" },
   { icon: Calendar, label: "Events", path: "/events", notificationKey: "hasNewEventsVideos" },
   { icon: ShoppingCart, label: "E-commerce", path: "/ecommerce", notificationKey: "hasNewEcommerceItems" },

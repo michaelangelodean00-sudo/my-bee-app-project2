@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Building2, Calendar, ShoppingCart, Home, UserCircle } from "lucide-react";
+import { Building2, Calendar, Clapperboard, Home, UserCircle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useNotifications } from "../contexts/NotificationContext";
 import { usePrefetch } from "../hooks/usePrefetch";
@@ -12,11 +12,12 @@ interface NavItem {
   notificationKey?: string;
 }
 
+// E-commerce stays available from the menu (Sidebar).
 const navigationItems: NavItem[] = [
   { icon: Home, label: "Home", path: "/" },
-  { icon: Building2, label: "Business", path: "/businesses", notificationKey: "hasNewBusinessVideos" },
+  { icon: Clapperboard, label: "BeeNow", path: "/beenow" },
   { icon: Calendar, label: "Events", path: "/events", notificationKey: "hasNewEventsVideos" },
-  { icon: ShoppingCart, label: "Shop", path: "/ecommerce", notificationKey: "hasNewEcommerceItems" },
+  { icon: Building2, label: "Business", path: "/businesses", notificationKey: "hasNewBusinessVideos" },
   { icon: UserCircle, label: "Profile", path: "/profile" },
 ];
 

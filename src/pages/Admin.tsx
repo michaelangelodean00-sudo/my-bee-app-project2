@@ -9,9 +9,18 @@ import BusinessApprovals from "../components/admin/BusinessApprovals";
 import UserManagement from "../components/admin/UserManagement";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Shield, Video, Users, Settings, Play, MessageSquare, Building2 } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { usePreviewMode } from "@/hooks/usePreviewMode";
+
+const DemoDataNotice = ({ text }: { text: string }) => (
+  <div role="note" className="mb-4 rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-foreground">
+    <strong>Demo data:</strong> {text}
+  </div>
+);
 
 const Admin = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const { isPreview, setPreview } = usePreviewMode();
   
   const toggleMobileSidebar = () => {
     setMobileSidebarOpen(!mobileSidebarOpen);
@@ -41,9 +50,18 @@ const Admin = () => {
         {/* Main Content */}
         <div className="flex-1 w-full max-w-5xl mx-auto py-6 px-4">
           <div className="bee-card p-6">
-            <div className="flex items-center gap-3 mb-6">
-              <Shield className="h-8 w-8 text-primary" />
-              <h1 className="heading-large">Admin Panel</h1>
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+              <div className="flex items-center gap-3">
+                <Shield className="h-8 w-8 text-primary" />
+                <h1 className="heading-large">Admin Panel</h1>
+              </div>
+              <label className="flex min-h-[44px] items-center gap-3 rounded-lg border border-border px-3 text-sm">
+                <span>
+                  <span className="font-semibold">Design preview</span>
+                  <span className="block text-xs text-muted-foreground">Shows labelled DEMO content to you only, this tab</span>
+                </span>
+                <Switch checked={isPreview} onCheckedChange={setPreview} aria-label="Design preview" />
+              </label>
             </div>
             
             <Tabs defaultValue="approvals" className="w-full">
@@ -87,10 +105,12 @@ const Admin = () => {
               </TabsContent>
 
               <TabsContent value="videos" className="mt-6">
+                <DemoDataNotice text="This queue currently lists sample videos. Real uploads and moderation arrive in Checkpoint 3." />
                 <AdminVideoReview />
               </TabsContent>
               
               <TabsContent value="ads" className="mt-6">
+                <DemoDataNotice text="These ads and figures are sample data, not real campaigns or analytics. Real campaigns and tracking arrive in Checkpoint 2." />
                 <AdManagement />
               </TabsContent>
               
