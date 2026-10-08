@@ -79,7 +79,7 @@ const BeeNowSection = ({ layout = "home", forceDemo = false }: { layout?: "home"
         </TabsList>
         {TABS.map((t) => (
           <TabsContent key={t.value} value={t.value} className="mt-3">
-            <TabBody tab={t.value} empty={t.empty} layout={layout} />
+            <TabBody tab={t.value} empty={t.empty} layout={layout} demoRoute={demoRoute} />
           </TabsContent>
         ))}
       </Tabs>
