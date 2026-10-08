@@ -30,6 +30,7 @@ const Copyright = lazy(() => import("./pages/Copyright"));
 const VideoUpload = lazy(() => import("./pages/VideoUpload"));
 const CustomerAnalytics = lazy(() => import("./pages/CustomerAnalytics"));
 const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
+const BeeNow = lazy(() => import("./pages/BeeNow"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -78,6 +79,7 @@ const App = () => {
                       <Route path="/auth" element={<Auth />} />
                       <Route path="/businesses" element={<Businesses />} />
                       <Route path="/events" element={<Events />} />
+                      <Route path="/beenow" element={<BeeNow />} />
                       <Route path="/ecommerce" element={<Ecommerce />} />
                       <Route path="/admin" element={<ProtectedRoute requireRole="admin"><Admin /></ProtectedRoute>} />
                       <Route path="/settings" element={<ProtectedRoute><ProfileSettings /></ProtectedRoute>} />

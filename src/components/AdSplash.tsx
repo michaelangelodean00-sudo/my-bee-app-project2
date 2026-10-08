@@ -24,6 +24,7 @@ import ShareDialog from "./ShareDialog";
 import { Share2, Sparkles, X, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AdPerformanceMetrics from "./AdPerformanceMetrics";
+import { usePreviewMode } from "@/hooks/usePreviewMode";
 
 // Image Preview with pinch-to-zoom
 const ZoomableImage = memo(({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) => {
@@ -384,6 +385,103 @@ const AdSplash = memo(({ showMetrics = false, variant = "default" }: AdSplashPro
     setShareDialog(false);
   }, [selectedAd]);
   
+  if (isCompact) {
+    const isDemo = isPreview;
+    return (
+      <section aria-label="Splash ads" className="relative bg-secondary text-secondary-foreground overflow-hidden">
+        <Carousel className="w-full max-w-3xl mx-auto pt-3 pb-2" opts={{ loop: optimizedAds.length > 1, align: "center" }} setApi={setApi}>
+          <CarouselContent className="-ml-2" style={{ touchAction: "pan-y pinch-zoom" }}>
+            {optimizedAds.map((ad, index) => {
+              const isHouse = ad.id === HOUSE_AD.id;
+              const chip = isHouse ? "Bee App" : isDemo ? "DEMO – not a real ad" : "Sponsored";
+              return (
+                <CarouselItem key={ad.id} className={optimizedAds.length > 1 ? "pl-2 basis-[92%] md:basis-[88%]" : "pl-2 basis-full px-2"}>
+                  <div className="relative overflow-hidden rounded-xl aspect-[2/1] md:aspect-[21/9] bg-muted">
+                    {loadedImages.has(index) && (
+                      <img
+                        src={ad.imageUrl}
+                        alt={ad.title}
+                        className="absolute inset-0 h-full w-full object-cover select-none"
+                        loading={index === 0 ? "eager" : "lazy"}
+                        decoding="async"
+                        fetchPriority={index === 0 ? "high" : "auto"}
+                        draggable={false}
+                      />
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => setImagePreview({ url: ad.imageUrl, title: ad.title })}
+                      className="absolute inset-0 z-10 cursor-zoom-in"
+                      aria-label={`View ${ad.title} full size`}
+                    />
+                    <span className={`pointer-events-none absolute left-2 top-2 z-20 rounded-md px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${isDemo && !isHouse ? "bg-destructive text-destructive-foreground" : "bg-background/85 text-foreground"}`}>
+                      {chip}
+                    </span>
+                    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-background/90 via-background/50 to-transparent px-3 pb-2 pt-6">
+                      <p className="truncate font-heading text-base font-semibold text-foreground">{ad.title}</p>
+                      <p className="hidden md:block truncate text-sm text-muted-foreground">{ad.description}</p>
+                    </div>
+                  </div>
+                  <div className="mt-2 flex items-center gap-2 px-0.5">
+                    {isHouse ? (
+                      <a href={ad.linkUrl} className="inline-flex min-h-[44px] items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground touch-manipulation active:scale-95">
+                        Contact us
+                      </a>
+                    ) : isDemo ? (
+                      <button type="button" disabled className="inline-flex min-h-[44px] items-center rounded-full bg-muted px-5 text-sm font-semibold text-muted-foreground cursor-not-allowed">
+                        Demo CTA (disabled)
+                      </button>
+                    ) : (
+                      <button type="button" onClick={() => handleGetMoreInfo(ad.id, ad.linkUrl)} className="inline-flex min-h-[44px] items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground touch-manipulation active:scale-95">
+                        Learn more
+                      </button>
+                    )}
+                    {!isHouse && !isDemo && (
+                      <Button type="button" variant="ghost" size="icon" onClick={() => handleShare(ad)} className="min-h-[44px] min-w-[44px]" aria-label={`Share ${ad.title}`}>
+                        <Share2 size={18} />
+                      </Button>
+                    )}
+                  </div>
+                </CarouselItem>
+              );
+            })}
+          </CarouselContent>
+          {optimizedAds.length > 1 && (
+            <>
+              <CarouselPrevious className="hidden md:flex left-2 z-20" />
+              <CarouselNext className="hidden md:flex right-2 z-20" />
+              <div className="flex justify-center gap-1 pt-1">
+                {optimizedAds.map((ad, index) => (
+                  <button
+                    key={ad.id}
+                    type="button"
+                    onClick={() => handleSlideChange(index)}
+                    aria-label={`Go to ad ${index + 1}`}
+                    aria-current={index === currentSlide}
+                    className="flex h-6 min-w-6 items-center justify-center touch-manipulation"
+                  >
+                    <span className={`h-1.5 rounded-full transition-all duration-200 ${index === currentSlide ? "w-5 bg-primary" : "w-1.5 bg-muted-foreground/50"}`} />
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+        </Carousel>
+        {selectedAd && (
+          <ShareDialog open={shareDialog} onOpenChange={setShareDialog} postId={selectedAd.id} postContent={selectedAd.title} onShareComplete={handleShareComplete} />
+        )}
+        <Dialog open={!!imagePreview} onOpenChange={() => setImagePreview(null)}>
+          <DialogContent className="!fixed !inset-0 !left-0 !top-0 !translate-x-0 !translate-y-0 !max-w-none !w-screen !h-screen !p-0 !border-none !bg-background/95 !rounded-none flex items-center justify-center">
+            <VisuallyHidden.Root>
+              <DialogTitle>{imagePreview?.title || "Image Preview"}</DialogTitle>
+            </VisuallyHidden.Root>
+            {imagePreview && <ZoomableImage src={imagePreview.url} alt={imagePreview.title} onClose={() => setImagePreview(null)} />}
+          </DialogContent>
+        </Dialog>
+      </section>
+    );
+  }
+
   return (
     <div className="relative bg-secondary text-secondary-foreground flex justify-center z-0 overflow-hidden">
       <Carousel 
