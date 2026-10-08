@@ -39,6 +39,10 @@
     --input: 40 20% 90%;
     --ring: 42 92% 55%;
 
+    /* Fixed photo-overlay roles, readable in either theme. */
+    --preview-ink: 220 25% 8%;
+    --preview-on-media: 0 0% 100%;
+
     --radius: 0.75rem;
 
     /* Minimal gradients */
@@ -965,6 +969,62 @@
 }
 
 /* Reduced motion — respect user OS preference */
+.bee-demo-card {
+  color: hsl(var(--preview-on-media));
+}
+.bee-demo-shade {
+  background: linear-gradient(to bottom, hsl(var(--preview-ink) / .18), transparent 30%, hsl(var(--preview-ink) / .2) 48%, hsl(var(--preview-ink) / .96));
+}
+.bee-demo-glass {
+  background: hsl(var(--preview-ink) / .65);
+  color: hsl(var(--preview-on-media));
+}
+.bee-demo-photo {
+  animation: bee-demo-pan 15s ease-in-out both;
+  animation-play-state: paused;
+}
+.bee-demo-photo.is-playing { animation-play-state: running; }
+@keyframes bee-demo-pan {
+  from { transform: scale(1); }
+  to { transform: scale(1.13) translateY(-1.5%); }
+}
+.bee-demo-feed-immersive {
+  height: min(760px, calc(100dvh - 235px));
+  min-height: 480px;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior-y: contain;
+}
+.bee-demo-feed-immersive .bee-demo-card {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  height: 100%;
+  aspect-ratio: auto;
+}
+.bee-preview-ad-copy {
+  color: hsl(var(--preview-on-media));
+  background: linear-gradient(90deg, hsl(var(--preview-ink) / .88), hsl(var(--preview-ink) / .15));
+}
+.bee-preview-ad-copy[data-style="editorial"],
+.bee-preview-ad-copy[data-style="beauty"] {
+  inset: auto 10px 10px 10px;
+  background: hsl(var(--background) / .95);
+  color: hsl(var(--foreground));
+  border-left: 3px solid hsl(var(--primary));
+}
+.bee-preview-ad-copy[data-style="night"] {
+  background: linear-gradient(0deg, hsl(var(--preview-ink) / .96), hsl(var(--preview-ink) / .15));
+  justify-content: flex-end;
+}
+.bee-preview-ad-copy[data-style="house"] {
+  background: hsl(var(--primary) / .96);
+  color: hsl(var(--primary-foreground));
+}
+@media (prefers-reduced-motion: reduce) {
+  .bee-demo-photo { animation: none; }
+  .bee-demo-feed-immersive { scroll-snap-type: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
