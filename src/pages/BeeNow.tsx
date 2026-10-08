@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import MobileBottomNav from "../components/MobileBottomNav";
 import BeeNowSection from "../components/beenow/BeeNowSection";
+import DesignPreviewControl from "../components/DesignPreviewControl";
 import SEOHead from "../components/SEOHead";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 
@@ -25,6 +26,7 @@ const BeeNow = () => {
           <Sidebar className="h-full" />
         </aside>
         <main id="main-content" className="flex-1 w-full max-w-3xl mx-auto px-4 md:px-6 py-4">
+          <DesignPreviewControl page="beenow" />
           <BeeNowSection layout="page" />
         </main>
       </div>
