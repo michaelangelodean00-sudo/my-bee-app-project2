@@ -138,10 +138,15 @@ const Events = () => {
   
   // Combine filtered videos with ads
   const videosWithAds: FeedItem[] = [...filteredEventVideos];
-  if (!isPreview) eventAds.length = 0;
+
+  // Sample ads belong to admin design preview only. Build a fresh, clearly named
+  // list instead of mutating the shared eventAds array, so public mode never
+  // touches or clears the sample data.
+  const previewEventAds: VideoAd[] = isPreview ? [...eventAds] : [];
+
   
   // Insert ads after every 2 videos
-  eventAds.forEach((ad, index) => {
+  previewEventAds.forEach((ad, index) => {
     const insertIndex = (index + 1) * 2; // Insert after every 2 videos
     const adWithFlag: EventVideoWithAd = { ...ad, isAd: true };
     if (insertIndex < videosWithAds.length) {
@@ -166,8 +171,19 @@ const Events = () => {
   };
 
   const startAutoScroll = () => {
+    // Nothing to advance through: never start an interval over an empty feed,
+    // because (prevIndex + 1) % 0 evaluates to NaN.
+    if (videosWithAds.length === 0) return;
+    if (autoScrollInterval.current) {
+      clearInterval(autoScrollInterval.current);
+      autoScrollInterval.current = null;
+    }
     setIsAutoScrolling(true);
     autoScrollInterval.current = setInterval(() => {
+      if (videosWithAds.length === 0) {
+        stopAutoScroll();
+        return;
+      }
       setCurrentVideoIndex((prevIndex) => {
         const nextIndex = (prevIndex + 1) % videosWithAds.length;
         scrollToVideo(nextIndex);
@@ -175,6 +191,7 @@ const Events = () => {
       });
     }, 8000); // 8 seconds per video
   };
+
 
   const stopAutoScroll = () => {
     setIsAutoScrolling(false);
@@ -192,7 +209,19 @@ const Events = () => {
     }
   };
 
+  // If the feed empties (e.g. admin preview is switched off), stop any running
+  // auto-scroll instead of leaving an interval cycling over zero items.
+  useEffect(() => {
+    if (videosWithAds.length > 0) return;
+    if (autoScrollInterval.current) {
+      clearInterval(autoScrollInterval.current);
+      autoScrollInterval.current = null;
+    }
+    setIsAutoScrolling(false);
+  }, [videosWithAds.length]);
+
   // Track scroll to detect visible video
+
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -234,8 +263,10 @@ const Events = () => {
         
         {/* Main Content - TikTok Style Feed */}
         <div className="flex-1 overflow-y-auto h-screen snap-y snap-mandatory scroll-smooth overscroll-none" ref={containerRef} style={{ scrollBehavior: 'smooth' }}>
-          {/* Auto-scroll toggle button - positioned on media */}
+          {/* Auto-scroll toggle - positioned on media. Hidden when the feed is empty. */}
+          {videosWithAds.length > 0 && (
           <Button
+
             onClick={toggleAutoScroll}
             className="fixed top-1/2 right-4 z-50 h-12 px-4 rounded-full shadow-lg touch-manipulation active:scale-95 flex items-center gap-2 font-medium bg-black/60 text-white hover:bg-black/80 backdrop-blur-sm border border-white/20"
             aria-label={isAutoScrolling ? "Pause auto-scroll" : "Start auto-scroll"}
@@ -252,6 +283,8 @@ const Events = () => {
               </>
             )}
           </Button>
+          )}
+
           
           {/* Vertical TikTok-style feed */}
           {videosWithAds.length === 0 && (
