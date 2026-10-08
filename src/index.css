@@ -989,6 +989,8 @@
   to { transform: scale(1.13) translateY(-1.5%); }
 }
 .bee-demo-feed-immersive {
+  display: flex;
+  flex-direction: column;
   height: min(760px, calc(100dvh - 235px));
   min-height: 480px;
   overflow-y: auto;
@@ -996,6 +998,7 @@
   overscroll-behavior-y: contain;
 }
 .bee-demo-feed-immersive .bee-demo-card {
+  flex-shrink: 0;
   scroll-snap-align: start;
   scroll-snap-stop: always;
   height: 100%;

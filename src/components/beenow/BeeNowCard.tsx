@@ -53,7 +53,7 @@ const BeeNowCard = memo(({ item }: { item: DemoBeeNowItem }) => {
           <Button key={name} variant="ghost" size="icon" disabled aria-label={`${name} — preview only`} title={`${name} — preview only`} className="bee-demo-glass rounded-full disabled:opacity-80"><Icon aria-hidden="true" /></Button>
         ))}
       </div>
-      <div className="absolute inset-x-0 bottom-0 p-4">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 p-4">
         <p className="mb-2 flex items-center gap-1 text-xs"><MapPin size={12} aria-hidden="true" />{item.island} · Sample</p>
         <h3 className="max-w-[85%] font-heading text-xl font-bold leading-tight">{item.title}</h3>
         <p className="mt-2 max-w-[85%] text-sm leading-snug">{item.description}</p>
