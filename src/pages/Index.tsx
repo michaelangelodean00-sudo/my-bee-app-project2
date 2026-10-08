@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import PageTransition from "../components/PageTransition";
 import MobileBottomNav from "../components/MobileBottomNav";
 import BeeNowSection from "../components/beenow/BeeNowSection";
+import DesignPreviewControl from "../components/DesignPreviewControl";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 
 // Home = Header -> compact Splash Ads -> BeeNow.
@@ -40,6 +41,7 @@ const Index = () => {
         </header>
 
         <Header toggleMobileSidebar={toggleMobileSidebar} />
+        <DesignPreviewControl />
 
         <Suspense fallback={<div className="h-[250px] md:h-[360px] bg-secondary" />}>
           <AdSplash variant="compact" />
