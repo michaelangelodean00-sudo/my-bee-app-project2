@@ -42,6 +42,13 @@ const Index = () => {
 
         <Header toggleMobileSidebar={toggleMobileSidebar} />
         <DesignPreviewControl />
+        {isDesignDemoHost() && (
+          <div className="flex justify-end px-4 max-w-3xl mx-auto">
+            <Link to="/design-demo" className="inline-flex min-h-[44px] items-center text-xs font-semibold text-primary touch-manipulation active:scale-95">
+              Preview only: View sample layout (fictional ads &amp; BeeNow) →
+            </Link>
+          </div>
+        )}
 
         <Suspense fallback={<div className="h-[250px] md:h-[360px] bg-secondary" />}>
           <AdSplash variant="compact" />
