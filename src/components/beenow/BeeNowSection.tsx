@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useBeeNowFeed } from "@/lib/beenow";
 import { filterDemoByTab, type BeeNowTab } from "@/lib/demoContent";
 import { usePreviewMode } from "@/hooks/usePreviewMode";
+import { isDesignDemoHost } from "@/lib/designDemoHost";
 import { useAuth } from "@/hooks/useAuth";
 import BeeNowCard from "./BeeNowCard";
 import { cn } from "@/lib/utils";
