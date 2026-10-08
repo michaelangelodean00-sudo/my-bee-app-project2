@@ -25,6 +25,7 @@ import { Share2, Sparkles, X, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AdPerformanceMetrics from "./AdPerformanceMetrics";
 import { usePreviewMode } from "@/hooks/usePreviewMode";
+import { isDesignDemoHost } from "@/lib/designDemoHost";
 import { DEMO_SPLASH_ADS } from "@/lib/demoAds";
 
 // Image Preview with pinch-to-zoom
