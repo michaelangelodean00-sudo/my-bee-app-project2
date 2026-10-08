@@ -6,6 +6,8 @@ import PageTransition from "../components/PageTransition";
 import MobileBottomNav from "../components/MobileBottomNav";
 import BeeNowSection from "../components/beenow/BeeNowSection";
 import DesignPreviewControl from "../components/DesignPreviewControl";
+import { Link } from "react-router-dom";
+import { isDesignDemoHost } from "@/lib/designDemoHost";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 
 // Home = Header -> compact Splash Ads -> BeeNow.
