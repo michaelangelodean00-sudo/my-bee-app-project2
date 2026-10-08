@@ -6,4 +6,4 @@
 
 # Preview discoverability fix
 - [x] Add shared admin-only Home and BeeNow controls with guarded same-tab URL activation.
-- [ ] Verify admin on/off synchronization, guest isolation, and mobile layouts; report checks without publishing.
+- [x] Verify admin on/off synchronization, guest isolation, and mobile layouts; report checks without publishing.
