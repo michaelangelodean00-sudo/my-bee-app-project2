@@ -25,6 +25,7 @@ import { Share2, Sparkles, X, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AdPerformanceMetrics from "./AdPerformanceMetrics";
 import { usePreviewMode } from "@/hooks/usePreviewMode";
+import { DEMO_SPLASH_ADS } from "@/lib/demoAds";
 
 // Image Preview with pinch-to-zoom
 const ZoomableImage = memo(({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) => {
@@ -221,7 +222,7 @@ const AdSplash = memo(({ showMetrics = false, variant = "default" }: AdSplashPro
   const { isPreview } = usePreviewMode();
   // Compact mode: local in-memory analytics are NOT real; suspended until Checkpoint 2B.
   const analyticsOn = !isCompact;
-  const optimizedAds = isCompact ? (isPreview ? optimizedAdsStatic : HOUSE_ADS) : optimizedAdsStatic;
+   const optimizedAds = isCompact ? (isPreview ? DEMO_SPLASH_ADS : HOUSE_ADS) : optimizedAdsStatic;
   const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
   
   const [autoplay, setAutoplay] = useState(false);
@@ -292,14 +293,23 @@ const AdSplash = memo(({ showMetrics = false, variant = "default" }: AdSplashPro
 
   useEffect(() => {
     if (!api) return;
-    api.on("select", () => {
+    const onSelect = () => {
       const newSlide = api.selectedScrollSnap();
       setCurrentSlide(newSlide);
       if (analyticsOn && optimizedAds[newSlide]) {
         trackImpression(optimizedAds[newSlide].id);
       }
-    });
+    };
+    api.on("select", onSelect);
+    return () => { api.off("select", onSelect); };
   }, [api, optimizedAds, trackImpression, analyticsOn]);
+
+  useEffect(() => {
+    if (!isCompact || !api) return;
+    api.scrollTo(0, true);
+    setCurrentSlide(0);
+    setImagePreview(null);
+  }, [api, isCompact, isPreview]);
   
   // Track initial impression
   useEffect(() => {
@@ -393,7 +403,8 @@ const AdSplash = memo(({ showMetrics = false, variant = "default" }: AdSplashPro
           <CarouselContent className="-ml-2" style={{ touchAction: "pan-y pinch-zoom" }}>
             {optimizedAds.map((ad, index) => {
               const isHouse = ad.id === HOUSE_AD.id;
-              const chip = isHouse ? "Bee App" : isDemo ? "DEMO – not a real ad" : "Sponsored";
+              const demoCreative = isDemo ? DEMO_SPLASH_ADS[index] : undefined;
+              const chip = isDemo ? "DEMO · NOT A REAL AD" : isHouse ? "Bee App" : "Sponsored";
               return (
                 <CarouselItem key={ad.id} className={optimizedAds.length > 1 ? "pl-2 basis-[92%] md:basis-[88%]" : "pl-2 basis-full px-2"}>
                   <div className="relative overflow-hidden rounded-xl aspect-[2/1] md:aspect-[21/9] bg-muted">
@@ -406,35 +417,49 @@ const AdSplash = memo(({ showMetrics = false, variant = "default" }: AdSplashPro
                         decoding="async"
                         fetchPriority={index === 0 ? "high" : "auto"}
                         draggable={false}
+                         onError={(event) => { event.currentTarget.hidden = true; }}
                       />
                     )}
-                    <button
+                     <Button
                       type="button"
+                       variant="ghost"
                       onClick={() => setImagePreview({ url: ad.imageUrl, title: ad.title })}
-                      className="absolute inset-0 z-10 cursor-zoom-in"
+                       className="absolute inset-0 z-10 h-full w-full cursor-zoom-in rounded-none hover:bg-transparent active:scale-100"
                       aria-label={`View ${ad.title} full size`}
                     />
-                    <span className={`pointer-events-none absolute left-2 top-2 z-20 rounded-md px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${isDemo && !isHouse ? "bg-destructive text-destructive-foreground" : "bg-background/85 text-foreground"}`}>
+                     <span className={`pointer-events-none absolute left-2 top-2 z-20 rounded-md px-2 py-0.5 text-[10px] font-bold uppercase ${isDemo ? "bg-destructive text-destructive-foreground" : "bg-background/85 text-foreground"}`}>
                       {chip}
                     </span>
-                    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-background/90 via-background/50 to-transparent px-3 pb-2 pt-6">
+                     {demoCreative ? (
+                       <div data-style={demoCreative.style} className="bee-preview-ad-copy pointer-events-none absolute inset-0 z-20 flex flex-col justify-center px-4 pb-3 pt-9">
+                         <p className="text-[10px] font-semibold uppercase md:text-xs">{demoCreative.eyebrow}</p>
+                         <p className="mt-1 max-w-[75%] font-heading text-xl font-bold leading-tight md:text-3xl">{demoCreative.headline}</p>
+                       </div>
+                     ) : <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-background/90 via-background/50 to-transparent px-3 pb-2 pt-6">
                       <p className="truncate font-heading text-base font-semibold text-foreground">{ad.title}</p>
                       <p className="hidden md:block truncate text-sm text-muted-foreground">{ad.description}</p>
-                    </div>
+                     </div>}
                   </div>
                   <div className="mt-2 flex items-center gap-2 px-0.5">
-                    {isHouse ? (
+                     {isDemo ? (
+                       <>
+                         <div className="min-w-0 flex-1">
+                           <p className="truncate font-heading text-sm font-semibold text-foreground">{ad.title}</p>
+                           <p className="text-[10px] text-muted-foreground">Fictional creative · Preview only</p>
+                         </div>
+                         <Button disabled className="shrink-0 px-3 text-xs disabled:opacity-80" aria-label={`${demoCreative?.cta || "Learn more"} — preview only`}>
+                           {demoCreative?.cta || "Learn more"}
+                         </Button>
+                         <Button variant="ghost" size="icon" disabled aria-label={`Share ${ad.title} — preview only`} className="hidden sm:inline-flex"><Share2 size={18} /></Button>
+                       </>
+                     ) : isHouse ? (
                       <a href={ad.linkUrl} className="inline-flex min-h-[44px] items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground touch-manipulation active:scale-95">
                         Contact us
                       </a>
-                    ) : isDemo ? (
-                      <button type="button" disabled className="inline-flex min-h-[44px] items-center rounded-full bg-muted px-5 text-sm font-semibold text-muted-foreground cursor-not-allowed">
-                        Demo CTA (disabled)
-                      </button>
                     ) : (
-                      <button type="button" onClick={() => handleGetMoreInfo(ad.id, ad.linkUrl)} className="inline-flex min-h-[44px] items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground touch-manipulation active:scale-95">
+                       <Button type="button" onClick={() => handleGetMoreInfo(ad.id, ad.linkUrl)}>
                         Learn more
-                      </button>
+                       </Button>
                     )}
                     {!isHouse && !isDemo && (
                       <Button type="button" variant="ghost" size="icon" onClick={() => handleShare(ad)} className="min-h-[44px] min-w-[44px]" aria-label={`Share ${ad.title}`}>
@@ -450,18 +475,19 @@ const AdSplash = memo(({ showMetrics = false, variant = "default" }: AdSplashPro
             <>
               <CarouselPrevious className="hidden md:flex left-2 z-20" />
               <CarouselNext className="hidden md:flex right-2 z-20" />
-              <div className="flex justify-center gap-1 pt-1">
+               <div className="flex justify-center gap-0">
                 {optimizedAds.map((ad, index) => (
-                  <button
+                   <Button
                     key={ad.id}
                     type="button"
+                     variant="ghost"
                     onClick={() => handleSlideChange(index)}
                     aria-label={`Go to ad ${index + 1}`}
                     aria-current={index === currentSlide}
-                    className="flex h-6 min-w-6 items-center justify-center touch-manipulation"
+                     className="h-11 w-11 min-w-11 p-0 touch-manipulation"
                   >
                     <span className={`h-1.5 rounded-full transition-all duration-200 ${index === currentSlide ? "w-5 bg-primary" : "w-1.5 bg-muted-foreground/50"}`} />
-                  </button>
+                   </Button>
                 ))}
               </div>
             </>
