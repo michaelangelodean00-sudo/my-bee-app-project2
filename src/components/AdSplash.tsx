@@ -198,8 +198,30 @@ const ads: Ad[] = [
 // Pre-optimize ads once at module level
 const optimizedAdsStatic = optimizeAds(ads, 'splash');
 
-const AdSplash = memo(({ showMetrics = false }: { showMetrics?: boolean }) => {
-  const optimizedAds = optimizedAdsStatic;
+// Bee App's own house placement — shown publicly until real paid campaigns exist (Checkpoint 2).
+const HOUSE_AD: Ad = {
+  id: "house-advertise",
+  title: "Advertise on Bee App",
+  description: "Put your Bahamian business in front of people discovering what's happening.",
+  imageUrl: advertiseHereSample,
+  linkUrl: "mailto:advertise@beeapp.com",
+  isAdvertiseCTA: true,
+};
+const HOUSE_ADS: Ad[] = [HOUSE_AD];
+
+interface AdSplashProps {
+  showMetrics?: boolean;
+  /** "compact" = Home-only mobile-first mode. Hard-coded sample ads appear only in admin preview, labelled DEMO. */
+  variant?: "default" | "compact";
+}
+
+const AdSplash = memo(({ showMetrics = false, variant = "default" }: AdSplashProps) => {
+  const isCompact = variant === "compact";
+  const { isPreview } = usePreviewMode();
+  // Compact mode: local in-memory analytics are NOT real; suspended until Checkpoint 2B.
+  const analyticsOn = !isCompact;
+  const optimizedAds = isCompact ? (isPreview ? optimizedAdsStatic : HOUSE_ADS) : optimizedAdsStatic;
+  const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
   
   const [autoplay, setAutoplay] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -256,30 +278,31 @@ const AdSplash = memo(({ showMetrics = false }: { showMetrics?: boolean }) => {
   
   useEffect(() => {
     let interval: number;
-    if (autoplay && api && isReady) {
+    const shouldRotate = !(isCompact && (prefersReducedMotion || optimizedAds.length < 2));
+    if (autoplay && api && isReady && shouldRotate) {
       interval = window.setInterval(() => {
-        api.scrollNext();
-      }, 5000);
+        if (document.visibilityState === "visible") api.scrollNext();
+      }, isCompact ? 6000 : 5000);
     }
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [autoplay, api, isReady]);
+  }, [autoplay, api, isReady, isCompact, prefersReducedMotion, optimizedAds.length]);
 
   useEffect(() => {
     if (!api) return;
     api.on("select", () => {
       const newSlide = api.selectedScrollSnap();
       setCurrentSlide(newSlide);
-      if (optimizedAds[newSlide]) {
+      if (analyticsOn && optimizedAds[newSlide]) {
         trackImpression(optimizedAds[newSlide].id);
       }
     });
-  }, [api, optimizedAds, trackImpression]);
+  }, [api, optimizedAds, trackImpression, analyticsOn]);
   
   // Track initial impression
   useEffect(() => {
-    if (isReady && optimizedAds[0]) {
+    if (analyticsOn && isReady && optimizedAds[0]) {
       trackImpression(optimizedAds[0].id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -306,9 +329,9 @@ const AdSplash = memo(({ showMetrics = false }: { showMetrics?: boolean }) => {
   }, [currentSlide, optimizedAds.length]);
 
   const handleGetMoreInfo = useCallback((adId: string, linkUrl: string) => {
-    trackClick(adId);
+    if (analyticsOn) trackClick(adId);
     window.open(linkUrl, '_blank', 'noopener,noreferrer');
-  }, [trackClick]);
+  }, [trackClick, analyticsOn]);
 
   const handleSlideChange = useCallback((index: number) => {
     if (api) api.scrollTo(index);
