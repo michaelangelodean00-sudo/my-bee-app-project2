@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useBeeNowFeed } from "@/lib/beenow";
 import { filterDemoByTab, type BeeNowTab } from "@/lib/demoContent";
 import { usePreviewMode } from "@/hooks/usePreviewMode";
+import { isDesignDemoHost } from "@/lib/designDemoHost";
 import { useAuth } from "@/hooks/useAuth";
 import BeeNowCard from "./BeeNowCard";
 import { cn } from "@/lib/utils";
@@ -30,9 +31,10 @@ const EmptyState = ({ message, tall }: { message: string; tall?: boolean }) => {
   );
 };
 
-const TabBody = ({ tab, empty, layout }: { tab: BeeNowTab; empty: string; layout: "home" | "page" }) => {
+const TabBody = ({ tab, empty, layout, demoRoute }: { tab: BeeNowTab; empty: string; layout: "home" | "page"; demoRoute: boolean }) => {
   const { videos } = useBeeNowFeed(tab);
-  const { isPreview } = usePreviewMode();
+  const { isPreview: adminPreview } = usePreviewMode();
+  const isPreview = adminPreview || demoRoute;
 
   if (videos.length === 0 && !isPreview) return <EmptyState message={empty} tall={layout === "page"} />;
 
@@ -41,7 +43,7 @@ const TabBody = ({ tab, empty, layout }: { tab: BeeNowTab; empty: string; layout
   return (
     <div>
       <p role="note" className="mb-2 text-[11px] text-muted-foreground">
-        Admin preview · Fictional stories · Generated-photo motion, not recorded video
+        {demoRoute ? "Design demo" : "Admin preview"} · Fictional stories · Generated-photo motion, not recorded video
       </p>
       <div className={cn("bee-demo-feed mx-auto grid w-full max-w-[440px] grid-cols-1 gap-4", layout === "page" && "bee-demo-feed-immersive")}>
         {demo.map((item) => (
@@ -52,8 +54,9 @@ const TabBody = ({ tab, empty, layout }: { tab: BeeNowTab; empty: string; layout
   );
 };
 
-const BeeNowSection = ({ layout = "home" }: { layout?: "home" | "page" }) => {
+const BeeNowSection = ({ layout = "home", forceDemo = false }: { layout?: "home" | "page"; forceDemo?: boolean }) => {
   const [tab, setTab] = useState<BeeNowTab>("for-you");
+  const demoRoute = forceDemo && isDesignDemoHost();
   return (
     <section aria-labelledby="beenow-heading" className="w-full">
       <div className="flex items-center justify-between mb-2">
@@ -61,7 +64,7 @@ const BeeNowSection = ({ layout = "home" }: { layout?: "home" | "page" }) => {
           BeeNow
         </h2>
         {layout === "home" && (
-          <Link to="/beenow" className="inline-flex min-h-[44px] items-center px-2 text-sm font-semibold text-primary touch-manipulation active:scale-95">
+          <Link to={demoRoute ? "/design-demo/beenow" : "/beenow"} className="inline-flex min-h-[44px] items-center px-2 text-sm font-semibold text-primary touch-manipulation active:scale-95">
             Watch BeeNow →
           </Link>
         )}
@@ -76,7 +79,7 @@ const BeeNowSection = ({ layout = "home" }: { layout?: "home" | "page" }) => {
         </TabsList>
         {TABS.map((t) => (
           <TabsContent key={t.value} value={t.value} className="mt-3">
-            <TabBody tab={t.value} empty={t.empty} layout={layout} />
+            <TabBody tab={t.value} empty={t.empty} layout={layout} demoRoute={demoRoute} />
           </TabsContent>
         ))}
       </Tabs>

@@ -25,6 +25,7 @@ import { Share2, Sparkles, X, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AdPerformanceMetrics from "./AdPerformanceMetrics";
 import { usePreviewMode } from "@/hooks/usePreviewMode";
+import { isDesignDemoHost } from "@/lib/designDemoHost";
 import { DEMO_SPLASH_ADS } from "@/lib/demoAds";
 
 // Image Preview with pinch-to-zoom
@@ -213,15 +214,17 @@ const HOUSE_ADS: Ad[] = [HOUSE_AD];
 
 interface AdSplashProps {
   showMetrics?: boolean;
-  /** "compact" = Home-only mobile-first mode. Hard-coded sample ads appear only in admin preview, labelled DEMO. */
   variant?: "default" | "compact";
+  /** Design-demo route only; ignored unless on the allowlisted preview host. */
+  forceDemo?: boolean;
 }
 
-const AdSplash = memo(({ showMetrics = false, variant = "default" }: AdSplashProps) => {
+const AdSplash = memo(({ showMetrics = false, variant = "default", forceDemo = false }: AdSplashProps) => {
   const isCompact = variant === "compact";
-  const { isPreview } = usePreviewMode();
-  // Compact mode: local in-memory analytics are NOT real; suspended until Checkpoint 2B.
-  const analyticsOn = !isCompact;
+  const { isPreview: adminPreview } = usePreviewMode();
+  const demoRoute = forceDemo && isDesignDemoHost();
+  const isPreview = adminPreview || demoRoute;
+  const analyticsOn = !isCompact && !demoRoute;
    const optimizedAds = isCompact ? (isPreview ? DEMO_SPLASH_ADS : HOUSE_ADS) : optimizedAdsStatic;
   const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
   
