@@ -131,11 +131,12 @@ const Events = () => {
     }
   ];
 
-  // Filter out blocked videos
-  const filteredEventVideos = eventVideos.filter(video => !isEventVideoBlocked(video.id));
+  // Sample videos/ads above are placeholders: shown ONLY in admin design preview.
+  const filteredEventVideos = isPreview ? eventVideos.filter(video => !isEventVideoBlocked(video.id)) : [];
   
   // Combine filtered videos with ads
   const videosWithAds: FeedItem[] = [...filteredEventVideos];
+  if (!isPreview) eventAds.length = 0;
   
   // Insert ads after every 2 videos
   eventAds.forEach((ad, index) => {
@@ -251,6 +252,16 @@ const Events = () => {
           </Button>
           
           {/* Vertical TikTok-style feed */}
+          {videosWithAds.length === 0 && (
+            <div className="flex min-h-[60vh] flex-col items-center justify-center px-6 text-center">
+              <img src="/icons/app-icon-192.png" alt="" width={72} height={72} className="mb-3 h-[72px] w-[72px] rounded-2xl" />
+              <h2 className="font-heading text-lg font-semibold text-foreground">No events posted yet</h2>
+              <p className="mt-1 max-w-xs text-sm text-muted-foreground">Real Bahamian events will appear here once organizers publish them.</p>
+            </div>
+          )}
+          {isPreview && (
+            <p className="sticky top-0 z-40 bg-destructive px-3 py-1 text-center text-xs font-semibold text-destructive-foreground">DEMO – sample events, not real listings</p>
+          )}
           <div>
             {videosWithAds.map((video, index) => {
               const videoIsAd = isAd(video);
