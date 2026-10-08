@@ -1,163 +1,209 @@
-# Bee App Bahamas — Restructure Plan (Events + Local Business Discovery)
+# Bee App Bahamas — Phase 1 Homepage Plan: Splash Ads → BeeNow
 
-Plan only. Nothing here is executed until approved, and each stage is built in its own turn.
+Status: planning only. **No changes were made** to app code, styles, routes, the database, storage, secrets or publishing. This plan replaces the earlier "events calendar first" plan.
 
-## 0. What we keep no matter what
-Approved business accounts, users, sign-in, follows, admin and moderation tools, audit log, the bee mascot and logo files (exactly as they are), the holiday ticker and its date windows, and the backend. Nothing gets deleted. Old screens are hidden or redirected, not removed.
+## A. Current-state audit (verified by reading the code this turn)
 
-## 1. Audit: keep / rework / defer
-
-Checked in this turn: the data calls in `src`, the sample data in `Events.tsx`, the edge functions (`admin-users`, `mcp`) and the table list.
-
-| Area | Current state | Decision |
+| Feature | Verdict | Evidence |
 |---|---|---|
-| `/` Index.tsx | AdSplash first, then category buttons, sponsored videos, and a post feed held only in React state (`useState`), so posts are lost on reload | **Rework** into "What's Buzzing". Move AdSplash below the organic content, shrink it to one labeled card, remove CreatePost and the post feed |
-| `/events` Events.tsx | Hard-coded sample videos ("…Festival 2024", example links) | **Rework**: read real events from the database and show an empty state when there are none. Delete the sample array |
-| `/businesses` Businesses.tsx | Reads approved businesses from `profiles`; has a category grid | **Keep**, move it under `/discover`, and redirect `/businesses` there |
-| `/ecommerce` Ecommerce.tsx | "Coming Soon" page | **Defer**: remove it from the nav but keep the page reachable from the footer. The memory rule "E-commerce label preserved" still applies, so the label is not renamed. Needs your confirmation (see section 6) |
-| `/upload-video`, VideoUpload, AdminVideoReview, video_moderation | Business videos limited to 90 seconds | **Keep**, and reuse them as optional event/business preview clips |
-| `/admin` (BusinessApprovals, UserManagement, AdManagement, GreetingManagement) | Works | **Keep**. Add tabs for Events, Spotlight, Sponsors and Stale info |
-| `/profile`, `/settings`, ProfileEditDialog, useMyProfile | Works | **Keep**. Add "My business" and "My events" entries |
-| BusinessProfileCard, useBusinessFollow | Works | **Keep**, and add a business detail page (`/b/:id`) |
-| MobileBottomNav / Sidebar | Home, Business, Events, Shop, Profile | **Rework** to Home, Events, Discover, Saved, Profile |
-| SponsoredVideoWidget, FeaturedVideoAdWidget, AdSplash | Promo content above the feed | **Rework**: move below the organic content, add a clear "Sponsored" label, one placement at a time |
-| TrendingSection, RightSidebar | Not mounted, or barely used | **Defer** |
-| HolidayTicker, Header, Logo | Works | **Keep, unchanged** |
-| Tables: profiles, user_roles, business_follows, admin_actions, video_moderation | RLS is on | **Keep**, add columns only (section 3) |
-| Missing | No tables yet for events, saved items, spotlight, sponsors or business hours | **Add** (section 3) |
+| Header, logo, holiday ticker | Real, keep unchanged | Header.tsx, Logo.tsx, HolidayTicker.tsx |
+| Splash carousel (AdSplash.tsx) | **Works as a carousel, but the content is sample** | Auto-rotates on a timer, has swipe, share and zoom. Ads are hard-coded in the code, including an "Advertise Here" sample image. There is no ads table. Images are h-48 on mobile, plus a long description and a 44px CTA, so the section is about 380–420px tall |
+| Ad analytics (useAdAnalytics.ts) | **Not real** | Counts are kept only in memory and printed to the browser console. Nothing is saved. Any numbers shown are not trustworthy |
+| Ad Management admin tab | **Mock** | Uses a `mockAds` array in local state. Nothing persists |
+| Sponsored video widget | **Sample** | Plays a Google sample clip (`ForBiggerFun.mp4`) |
+| Video upload (VideoUploadForm / VideoUpload page) | **Not real** | Submit only logs to the console. No file is stored, and **no storage buckets exist** |
+| Admin video review | **Partly real** | The list is `mockPendingVideos`. Only approve/reject decisions are saved to `video_moderation`, keyed by mock IDs |
+| BeeNow vertical feed | **Missing** | Nothing exists |
+| Events page | **Sample** | Static "…2024" videos with example links. No events table |
+| Business directory | **Real** | Reads approved businesses from `profiles`. Follows are real (`business_follows`) |
+| Business approvals, users, suspension, audit log | **Real** | Backed by the database, with RLS |
+| Home post feed | **Not real** | Lives in React state only and is lost on reload |
+| Build | OK | Latest build log |
+| Publish | Not published | Project URLs show no published site |
 
-## 2. Page map and component hierarchy
+Conclusion: the only parts that could go in front of real visitors today are the header, the business directory and the follows. Splash Ads and BeeNow both need a real content source before launch. Until then, Phase 1 layout can ship with honest placeholders.
+
+The Figma file (ze4AiBAVtYL1bubJ6RXqLt) needs a Figma login and can't be fetched from here. It is treated as a written design reference only. Its letter-B mark and illustrations will not be used.
+
+## B. Before / after structure (mobile 390×844 first)
 
 ```text
-/                 Home "What's Buzzing"
-  HomeTopBar: IslandPicker (All, New Providence, Grand Bahama, Abaco, Eleuthera, Exuma, Andros, Bimini, Other) + SearchBar
-  QuickChips: Today | This Weekend | New Businesses
-  TodayRail (EventCard x N, empty state)
-  WeekendRail
-  NewBusinessSpotlight (rotating, equal exposure)
-  ExploreByCategory (7 segments)
-  SponsoredSlot (labeled "Sponsored", 1 card, lazy)
-/events           Tabs: Today / This Weekend / Upcoming; filters: island, date, category
-/e/:slug          EventDetail: cover, title, date/time (Bahamas time), venue, map link, organizer, booking link, Save, Share, optional clip
-/discover         Spotlight, categories, BeeNow previews (optional, tap to play)
-/b/:id            BusinessDetail: logo, open-now, weekly hours incl. Sunday, phone/WhatsApp/socials, map, Follow, optional clip
-/saved            Saved events + followed businesses (sign-in required; guests see a sign-in prompt)
-/profile          + "My business", "My events" (owners) -> /owner/events, /owner/events/new
-/admin            + Events queue, Spotlight, Sponsors, Stale info
+BEFORE                                  AFTER
+Header + ticker   ~ 110-150px            Header + ticker (unchanged)   ~ 110-150px
+GreetingBanner                           SPLASH ADS (compact)          ~ 240px total
+AdSplash          ~ 400px                  image 16:9 = 358x201 (cover)
+Category grid                              overlay: "Sponsored" chip, title (1 line),
+Sponsored video                            CTA pill, share icon; dots under image
+CreatePost (Explore)                     BeeNow title + tabs           ~ 52px
+Featured widget                            For You | Businesses | Events
+In-memory posts                          BeeNow feed starts             first card top visible
+                                         Bottom nav                    ~ 64px + safe area
 ```
 
-Shared UI: EventCard, BusinessCard, LazyMedia (poster first, video loads only on tap; muted autoplay only when a "data saver" check passes), EmptyState (bee mascot), FilterSheet (bottom sheet). Touch targets are at least 44px. Every card links to a detail page.
+**Above the fold at 390×844:** the header (about 130px), the splash (about 240px), the tabs (52px) and roughly 330px of the first BeeNow card, with the bottom nav fixed. That shows the first video's poster and title, as in the Figma opening screen. The ticker only appears in holiday windows. When it shows, the first card loses about 28px. That trade-off is acceptable.
 
-## 3. Database changes (additive only, not run yet)
+**Proposed change (needs your approval):** drop the long ad description on mobile and keep only a 1-line title with a CTA. The full description and the zoom view open when the ad is tapped.
 
-New enums: `event_status` (draft, pending, approved, rejected, archived) and `island`.
+**Gestures**
+- The splash uses horizontal swipe only (touch-action: pan-y), so vertical drags scroll the page.
+- BeeNow is a normal vertical list on Home. Tapping a card, or "Watch BeeNow", opens the immersive full-height view at `/beenow`. That view uses CSS scroll-snap-y, one video per screen, and the browser's Back button returns to Home.
+- I recommend against putting a scroll-snapping feed inside the home page. It traps the page scroll and fights the carousel, especially on iOS Safari.
 
-**events**
-- Columns: id, organizer_id uuid (owner), business_id uuid null → profiles, title, slug unique, description, category, island, venue_name, venue_address, lat/lng null, starts_at timestamptz, ends_at timestamptz, timezone text default 'America/Nassau', cover_url, video_url null (90 seconds or less), booking_url, status default 'pending', rejection_reason, published_at, expires_at, is_sponsored bool default false, sponsor_label text, last_verified_at, created_at, updated_at.
-- Validation trigger: ends_at ≥ starts_at, booking_url must be https, and expires_at defaults to ends_at + 1 day.
-- RLS:
-  - anon and signed-in users can read rows where status='approved' and coalesce(expires_at, ends_at) > now().
-  - The owner can read and insert their own rows (organizer_id = auth.uid()). On insert the status is forced to 'pending' by a trigger.
-  - The owner can update their own rows only while they are pending or rejected. Any owner edit sends the event back to pending.
-  - Admins (has_role) have full access.
-- Grants: select to anon; select, insert, update to authenticated; all to service_role.
+**Tablet/desktop**
+- The splash goes in a max-w-3xl centered column with 16:9 creatives at 21:9 crop ≥1024px.
+- BeeNow becomes a 2–3 column grid of 9:16 posters. Clicking one opens the immersive view as a centered 9:16 player with keyboard ↑/↓.
+- The left sidebar stays.
 
-**saved_events**
-- Columns: user_id, event_id, created_at.
-- Unique on (user_id, event_id).
-- RLS: users can select, insert and delete only their own rows. No anon access.
+## C. File-by-file plan
 
-**business_hours**
-- Columns: business_id → profiles, weekday 0–6 (Sunday = 0), opens time, closes time, closed bool.
-- Unique on (business_id, weekday).
-- RLS: public read for approved businesses. The owner (business_id = auth.uid()) can write. Admins have full access.
+**Keep unchanged:**
+- Header.tsx, Logo.tsx, LogoImage.tsx, HolidayTicker.tsx and the ticker CSS
+- logo and icon assets, Businesses.tsx, BusinessProfileCard, useBusinessFollow
+- Admin approvals, users, admin-users, mcp, Auth, ProtectedRoute, useAuth, useMyProfile
 
-**spotlights**
-- Columns: id, business_id, starts_on date, ends_on date, created_by.
-- RLS: public read of active rows. Only admins can write.
+**Modify (Phase 1, layout only):**
+- `src/pages/Index.tsx`
+  - New order: Header → AdSplash (compact) → BeeNowSection.
+  - Remove GreetingBanner, BusinessCategorySection, SponsoredVideoWidget, CreatePost, FeaturedVideoAdWidget and PostList from Home. The components themselves stay in the codebase.
+- `src/components/AdSplash.tsx`
+  - Add a `variant="compact"` prop: 16:9 image, overlay text, a "Sponsored" chip on every paid slide, and the description hidden on mobile.
+  - Keep the swipe, timer, share and zoom.
+  - Hide AdPerformanceMetrics until analytics are real.
+  - Pause auto-rotate under reduced motion.
+- `src/components/MobileBottomNav.tsx` → Home, BeeNow, Events, Business, Profile. Shop moves to the Sidebar menu, which keeps the "E-commerce" label.
+- `src/components/Sidebar.tsx`: add a BeeNow link.
+- `src/App.tsx`: add the `/beenow` route (lazy).
 
-**sponsored_placements**
-- Columns: id, slot, target_type, target_id, label default 'Sponsored', starts_at, ends_at, active.
-- RLS: public read of active rows. Only admins can write.
+**Add:**
+- `src/components/beenow/BeeNowSection.tsx`: the title, Tabs (shadcn), a feed preview list, and the empty state.
+- `src/components/beenow/BeeNowCard.tsx`: a 9:16 poster with a title, a business/event name and a CTA. The video is loaded only when the card is visible and tapped.
+- `src/components/beenow/BeeNowPlayer.tsx`: muted by default, with play/pause and mute buttons (44px), `playsInline`, `preload="none"`, and a poster.
+- `src/pages/BeeNow.tsx`: the immersive scroll-snap view.
+- `src/lib/beenow.ts`: a `useBeeNowFeed(tab)` hook. In Phase 1 it returns `[]`, because there is no real source yet. There will be no sample clips.
 
-**profiles (new nullable columns)**
-- New columns: island, whatsapp, website, instagram, facebook, description, last_verified_at.
-- Update `protect_profile_columns` so users can't change last_verified_at themselves.
+**Defer:**
+- Real uploads and storage, ads tables, real analytics, Events data, saves.
+- Removing the mock arrays in AdminVideoReview and AdManagement. Phase 1 adds an admin-only "Demo data" banner to those tabs.
 
-**Other rules**
-- Open-now is calculated in the app using `Intl` with timeZone 'America/Nassau'. Nothing is stored for it.
-- Spotlight rotation: active spotlights are shuffled with a seed based on the date, so every business gets equal exposure each day. No ranking algorithm.
+## D. BeeNow journeys
 
-**Backfill:** set profiles.island = null (owners fill it in). There are no events to backfill, and sample data is never inserted.
+- **Visitor (guest):**
+  1. Opens Home, watches the splash and scrolls to BeeNow.
+  2. Taps a card to open the immersive view.
+  3. The CTA "View business" goes to the business profile, and "View event" goes to the event page.
+  - Follow, Save and Share: Share works for guests. Follow and Save ask the user to sign in.
+- **Creator (approved business only):**
+  1. Goes to Profile → Upload video.
+  2. Fills in the clip (10–20 s recommended, 90 s max), a 9:16 poster, a title, the type (business/event) and a link target.
+  3. Ticks a rights/consent checkbox.
+  4. The video goes to pending review.
+- **Admin:** reviews the video in Video Review (with the real queue), then approves or rejects it with a reason. Only approved videos appear in the feed. A report button follows later.
+- **Tabs:**
+  - For You = all approved videos, newest first, interleaved so the same business doesn't appear twice in a row.
+  - Businesses = type 'business'.
+  - Events = type 'event', hidden after the event date.
+- **Empty state:** a bee mascot with "BeeNow is warming up — local businesses and events are coming soon." For approved businesses, add an "Upload your first video" button. Each tab gets its own empty message.
 
-**Rollback:** every new table and column is unused by existing code. Rolling back means turning off the UI and adding a `COMMENT ... DEPRECATED`. Nothing is dropped.
+## E. Splash Ads requirements
 
-## 4. Stages
+- **Mechanics:**
+  - Rotates every 6 s, pauses on touch, hover or when off-screen, and stops under reduced motion.
+  - Swipe and arrow keys work, and the dots are buttons (44px hit area).
+  - At most 8 slides (from memory).
+- Every paid slide shows a visible "Sponsored" chip, and the advertiser's name is shown as given.
+- One CTA per slide with an https link that opens in a new tab with `rel="noopener sponsored"`. Internal links go to a business page.
+- **Schedule:** start/end date and time in Nassau time. Expired ads disappear automatically. If no ads are active, show a single honest "Advertise on Bee App" slide (house ad, labeled as such).
+- **Creative spec:** 1920×1080 (16:9), WebP at 90% quality, under 400 KB. Keep a safe text area in the middle 80%, because a mobile overlay covers the bottom 30%. Titles are capped at 40 characters and the CTA at 18.
+- **Analytics (later):**
+  - Count an impression when the ad is ≥50% visible for 1 s, once per session per ad.
+  - Count every click.
+  - Show admins only. Nothing is shown to advertisers until the numbers are real.
+- **Revenue:** no prices or reach figures are invented. Real tables make it possible to sell by date range or slot later. Payments are out of scope.
 
-**Stage 1 — Real events + new navigation (read side)**
-- Acceptance criteria:
-  - The events table and saved_events exist.
-  - Events page and EventDetail read only approved, unexpired events, with a proper empty state. There is no sample data anywhere.
-  - Bottom nav shows Home, Events, Discover, Saved, Profile. `/businesses` redirects to `/discover`.
-  - Home leads with the island picker, search, chips, the Today/Weekend rails and the Spotlight placeholder (approved businesses, newest first). The sponsored widgets move below and are labeled.
-  - An admin can approve or reject events, with the reason saved and logged in admin_actions.
-  - Owners and admins can create events through a simple form.
+## F. Backend dependencies (additive only, not run)
 
-**Stage 2 — Business detail + spotlight + saved**
-- Acceptance criteria:
-  - `/b/:id` shows hours including Sunday and a correct open/closed status in Nassau time (also checked from a device set to a different timezone).
-  - WhatsApp opens wa.me with a prefilled message.
-  - The map opens the device's maps app.
-  - Spotlight windows and rotation work.
-  - Saved page works.
+For MVP content (Checkpoint 3):
+- **Storage:** a `beenow` bucket (public read, so approved files can be served), max 50 MB. Uploads go to the user's own folder (`auth.uid()/...`). Pending files should not be visible publicly. Either use a private bucket with signed URLs, or a public bucket where only approved paths are referenced. **Your decision is needed.**
+- **`videos` table:**
+  - Columns: id, owner_id, type (business/event), title, description, video_path, poster_path, duration_s ≤ 90, link_type, link_target, status (pending/approved/rejected), rejection_reason, rights_confirmed bool, event_ends_at null, created_at, approved_at.
+  - RLS:
+    - Public can read approved rows.
+    - The owner can insert, but only as an approved business; status is forced to pending by a trigger.
+    - The owner can read their own rows.
+    - Admins have full access.
+  - Grants: select to anon; select, insert, update to authenticated; all to service_role.
+- **video_moderation:** keep it. Point it at the new videos.id by adding a nullable `video_uuid`. The old text `video_id` rows stay and are marked deprecated.
+- **For ads (Checkpoint 4):**
+  - Table `splash_ads`: id, advertiser_name, title, image_path, cta_label, cta_url, is_house_ad, starts_at, ends_at, priority, active. Public reads active rows; admins write.
+  - Table `ad_events`: ad_id, kind, session_hash, created_at. Anyone can insert with limited columns, and only admins can read. Abuse risk: no rate limiting, so counts are indicative only.
+- **Later:** saved_videos, events, payments.
+- **Blockers:**
+  - No storage bucket exists.
+  - The upload form saves nothing.
+  - No email sender domain is set up.
+- **Rollback:** the UI is turned off, tables get DEPRECATED comments, and nothing is dropped.
 
-**Stage 3 — Admin ops + sponsors + stale info + optional clips**
-- Acceptance criteria:
-  - Sponsors tab with a date window and a forced "Sponsored" label.
-  - Stale tab lists businesses or events whose last_verified_at is older than 90 days, with a one-tap "Verified" action.
-  - Events auto-archive after they expire (filtered out by the query).
-  - Optional 10–20 second clips are poster-first and tap-to-play with sound off, with a caption.
+## G. Checkpoints
 
-**Manual QA for every stage:**
-- Devices: iPhone Safari (notch and safe area), Android Chrome (back button), and a desktop browser at 390px and 1280px widths.
-- Checks:
-  - Browse as a guest, sign in, and save.
-  - All tap targets work, and the screen-reader labels make sense.
-  - Reduced-motion setting is respected.
-  - Slow 3G throttle: the first screen is usable without media, and videos don't load until tapped.
-  - Holiday ticker is unchanged.
+**1. Layout only (no database)**
+- Done when:
+  - Home order is Header → compact splash → BeeNow tabs → empty state.
+  - The removed widgets no longer render on Home.
+  - The nav shows Home, BeeNow, Events, Business, Profile, and Shop is in the menu.
+  - `/beenow` shows the empty state.
+  - The ticker and logo are pixel-identical.
+  - The build is OK.
+- Rollback: revert this one turn in History.
 
-## 5. Stage 1 — exact build instructions
+**2. Player and immersive view, using one admin-verified real clip at most**
+- Done when:
+  - Snap scroll works and the player is muted by default.
+  - Off-screen videos are paused and unloaded.
+  - No video downloads until it is near the viewport.
 
-1. **Migration `create_events`:**
-   - Create the enums, the events table, the validation and force-pending triggers (SECURITY DEFINER, search_path=public), saved_events, the indexes (status, starts_at, island), and the grants, then enable RLS and add the policies, all as in section 3.
-   - Add `COMMENT ON` for the deferred features.
-2. **`src/lib/events.ts`:**
-   - Types plus `todayRange()`, `weekendRange()` (Fri 17:00 – Sun 23:59 Nassau) and `formatEventTime()` using America/Nassau.
-   - Hooks `useEvents({range, island, category})`, `useEvent(slug)`, `useSaveEvent`, using react-query with a staleTime of 60 seconds.
-3. **Components:** `EventCard`, `EventRail`, `IslandPicker` (value saved in localStorage), `QuickChips`, `EmptyState`.
-4. **Events page:** rewrite `src/pages/Events.tsx` with tabs (Today / This Weekend / Upcoming), a filter sheet, and real data only. Delete the sample array.
-5. **Event detail:** new `src/pages/EventDetail.tsx` at `/e/:slug`. Booking link opens with `rel="noopener noreferrer"`. Show the "Add to calendar" .ics download only if it's simple to do. Add SEOHead.
-6. **Event form:** new `src/pages/OwnerEventForm.tsx` at `/owner/events/new`, protected, validated with zod (title ≤120, description ≤2000, https URLs). Cover upload uses the existing image-optimization util. Show the message "Submitted for review".
-7. **Admin:** new `src/components/admin/EventApprovals.tsx` tab in Admin.tsx that reuses RejectionReasonDialog and admin_actions.
-8. **Home:** in `Index.tsx`:
-   - Remove CreatePost and PostList.
-   - New order: Header (with ticker) → IslandPicker + Search → QuickChips → Today rail → Weekend rail → New Businesses (approved profiles, newest 8) → BusinessCategorySection → one labeled SponsoredVideoWidget.
-   - AdSplash is removed from Home. The component file stays.
-9. **Navigation:**
-   - Update MobileBottomNav and Sidebar to Home, Events, Discover (`/discover` → Businesses page), Saved (`/saved`, simple list), Profile.
-   - Add `<Navigate>` from `/businesses` to `/discover`.
-   - E-commerce stays as a footer link.
-10. **Records:** update `AGENTS.md` (events read path and timezone rule) and save the new positioning to memory.
+**3. Real uploads, moderation and feed** (storage + `videos` table + rewired AdminVideoReview)
+- Done when:
+  - An approved business uploads a clip, an admin approves it, and it appears in the correct tab.
+  - A rejected clip never appears.
+  - Guests can see approved clips only.
 
-## 6. Risks and unknowns
-- **Content cold start:** with no fabricated events, the app will start empty. You'd need to seed real events by hand (an admin enters them from posters, Facebook and the tourism calendar) or recruit 10–20 organizers before launch. An honest empty state plus a "Submit an event" call to action is essential.
-- **Admin workload:** every event needs review. Estimate 2–5 minutes each. Options: auto-approve trusted organizers later, and a queue that sorts by start date so urgent ones come first.
-- **Stale information:** hours and events go out of date. The 90-day verify prompt and auto-expiry help.
-- **Memory conflict:** "E-commerce label strictly preserved" — the plan keeps the label but takes it out of the main nav. Please confirm.
-- **Timezone and DST:** Nassau observes DST, so always use the IANA zone, never a fixed offset.
-- **Video:** consent/rights checkbox on upload, captions, no autoplay with sound, 90-second cap kept (10–20 seconds recommended).
-- **Privacy and safety:** collect only an organizer contact. Booking links are external and https-only. Add a report button (stage 3). No exact private addresses for home-based businesses unless the owner opts in.
-- **Email notices:** still waiting on a sender domain.
-- **Maps:** external links only in the MVP. An embedded map would need the Google Maps connection and is deferred.
-- **Out of scope:** AI concierge, payments, rewards, e-commerce, ranking algorithms.
+**4. Real Splash Ads and analytics** (`splash_ads` + AdManagement rewired)
+- Done when:
+  - Scheduled ads appear and expire on time, Nassau time.
+  - The house ad appears when no ads are active.
+  - Impression and click counts show in admin.
+
+**Test every checkpoint on:**
+- Android Chrome (back gesture, data saver)
+- iPhone Safari: inline playback, the mute rule, safe-area bottom nav, and that the swipe doesn't trigger browser back navigation
+- desktop Chrome/Safari at 1280px and 768px
+- slow 3G throttling
+- VoiceOver/TalkBack labels
+- reduced-motion setting
+
+## H. Risks and decisions for you
+
+1. **Empty launch:** with honest data, both the Splash and BeeNow will start nearly empty. Do you approve showing house ads and the empty state, rather than the current sample ads?
+2. **Current sample ads and the sponsored clip:** remove them from Home in Checkpoint 1 (recommended), or keep them, clearly marked as a demo, until real ads exist?
+3. **Metrics:** "AdPerformanceMetrics" shows numbers that are not real. I recommend hiding them now.
+4. **Nav label:** taking "Business" out of the first slot, and moving "Shop/E-commerce" to the menu, touches a memory rule. Please confirm.
+5. **GreetingBanner:** removing it from Home overlaps with the holiday ticker. Please confirm.
+6. **Mobile ad description:** keep the 1-line title only on mobile?
+7. **Pending video privacy:** private bucket with signed URLs, or public? Private is safer but adds complexity.
+8. **Admin workload:** every clip needs manual review. Estimate about 1 minute each.
+9. **Rights:** music in clips may be copyrighted. A rights checkbox is required, plus a report flow later.
+10. **Mobile data:** autoplaying on mobile data is a cost to users. The default is tap-to-play, with muted autoplay only on Wi-Fi when that can be detected.
+11. **Concept challenge:** "Bahamian TikTok" plus ads works only with a steady supply of fresh clips. Without 20–30 approved clips at launch, the feed looks empty. Consider recruiting the first businesses before announcing.
+
+## I. First build-turn prompt (after approval)
+
+> Phase 1 Checkpoint 1, layout only. Do not touch the database, storage, auth, Header, Logo, LogoImage, HolidayTicker, logo files or the ticker CSS.
+> 1. In src/pages/Index.tsx render, in order: Header, AdSplash with variant="compact", then a new BeeNowSection. Stop rendering GreetingBanner, BusinessCategorySection, SponsoredVideoWidget, CreatePost, FeaturedVideoAdWidget and PostList on Home. Do not delete those files. Keep the desktop Sidebar, Footer and MobileBottomNav.
+> 2. In AdSplash.tsx add an optional `variant` prop. "compact" uses a 16:9 image (aspect-video, object-cover, max ~240px total section on 390px), overlays a "Sponsored" chip, a 1-line title, a CTA pill and a share icon, and hides the long description below md. Keep swipe, auto-rotate, dots, share and zoom. Set touch-action: pan-y and pause rotation under prefers-reduced-motion. Hide AdPerformanceMetrics in compact.
+> 3. Create src/components/beenow/BeeNowSection.tsx with the heading "BeeNow" and shadcn Tabs For You | Businesses | Events (44px targets). Data comes from src/lib/beenow.ts `useBeeNowFeed(tab)`, which returns an empty array for now (no sample videos). Show a bee-mascot empty state per tab, plus "Upload your first video" for approved businesses linking to /upload-video.
+> 4. Add a lazy /beenow route (src/pages/BeeNow.tsx) with the same tabs and empty state.
+> 5. MobileBottomNav: Home, BeeNow (/beenow), Events, Business (/businesses), Profile. Add a BeeNow link to Sidebar. Keep E-commerce in the Sidebar unchanged.
+> 6. Use semantic tokens only, and verify at 390×844 and 1280px with screenshots.
+
+## J. Status
+No changes made, apart from writing this plan document. Please approve the plan and answer the decisions in H (especially 1, 2, 4 and 7) before Checkpoint 1 is built.
