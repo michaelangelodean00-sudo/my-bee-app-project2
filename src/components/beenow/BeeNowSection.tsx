@@ -36,14 +36,14 @@ const TabBody = ({ tab, empty, layout }: { tab: BeeNowTab; empty: string; layout
 
   if (videos.length === 0 && !isPreview) return <EmptyState message={empty} tall={layout === "page"} />;
 
-  // Only demo items exist today (admin preview). Real videos render in Checkpoint 4.
+  // This preview is isolated from the real feed and never claims recorded playback.
   const demo = isPreview ? filterDemoByTab(tab) : [];
   return (
     <div>
-      <p className="mb-3 rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2 text-xs text-foreground">
-        Admin design preview — placeholders only. Guests see the empty state.
+      <p role="note" className="mb-2 text-[11px] text-muted-foreground">
+        Admin preview · Fictional stories · Generated-photo motion, not recorded video
       </p>
-      <div className={cn("grid gap-3", layout === "home" ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4" : "grid-cols-2 md:grid-cols-3")}>
+      <div className={cn("bee-demo-feed mx-auto grid w-full max-w-[440px] grid-cols-1 gap-4", layout === "page" && "bee-demo-feed-immersive")}>
         {demo.map((item) => (
           <BeeNowCard key={item.id} item={item} />
         ))}
@@ -57,7 +57,7 @@ const BeeNowSection = ({ layout = "home" }: { layout?: "home" | "page" }) => {
   return (
     <section aria-labelledby="beenow-heading" className="w-full">
       <div className="flex items-center justify-between mb-2">
-        <h2 id="beenow-heading" className="font-heading text-xl font-bold tracking-tight text-foreground">
+        <h2 id="beenow-heading" className="font-heading text-xl font-bold text-foreground">
           BeeNow
         </h2>
         {layout === "home" && (
@@ -69,7 +69,7 @@ const BeeNowSection = ({ layout = "home" }: { layout?: "home" | "page" }) => {
       <Tabs value={tab} onValueChange={(v) => setTab(v as BeeNowTab)}>
         <TabsList className="grid w-full grid-cols-3 h-11">
           {TABS.map((t) => (
-            <TabsTrigger key={t.value} value={t.value} className="min-h-[40px] touch-manipulation">
+            <TabsTrigger key={t.value} value={t.value} className="min-h-[44px] touch-manipulation">
               {t.label}
             </TabsTrigger>
           ))}
