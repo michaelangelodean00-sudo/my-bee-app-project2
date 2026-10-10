@@ -1,5 +1,7 @@
 # Project Rules
 
+- Serve typography through local font files and shared CSS family tokens for headings and body/UI text; this prevents device-specific or external-provider font substitutions across app surfaces.
+
 - Keep date-aware holiday presentation isolated in `HolidayTicker`; this prevents seasonal logic from spreading through shared navigation.
 - Never show a holiday greeting fallback in the preview; the ticker must appear only during actual holiday windows (per user request).- Demo/sample content renders only through `usePreviewMode` (admin role + session toggle), never by build mode alone; preview links can be public.
 - Home is Header → optional admin-only preview control → `AdSplash variant="compact"` → `BeeNowSection`; nothing goes between the splash and BeeNow to preserve the public content hierarchy.
