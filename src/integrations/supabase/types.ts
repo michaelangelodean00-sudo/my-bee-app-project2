@@ -163,6 +163,27 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles_backup_20261011_b: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          role: Database["public"]["Enums"]["app_role"] | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string | null
+          role?: Database["public"]["Enums"]["app_role"] | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string | null
+          role?: Database["public"]["Enums"]["app_role"] | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       video_moderation: {
         Row: {
           created_at: string
@@ -204,6 +225,18 @@ export type Database = {
       admin_review_business: {
         Args: { _decision: string; _reason?: string; _target: string }
         Returns: Database["public"]["Enums"]["business_status"]
+      }
+      admin_set_role: {
+        Args: {
+          _grant: boolean
+          _role: Database["public"]["Enums"]["app_role"]
+          _target: string
+        }
+        Returns: undefined
+      }
+      admin_set_suspended: {
+        Args: { _reason?: string; _suspended: boolean; _target: string }
+        Returns: undefined
       }
       has_role: {
         Args: {

@@ -28,6 +28,7 @@ export default defineTool({
       .select("id, business_name, business_category, phone, address, avatar_url")
       .eq("account_type", "business")
       .eq("status", "approved")
+        .eq("suspended", false)
       .limit(limit ?? 25);
     if (error) {
       return { content: [{ type: "text", text: error.message }], isError: true };
