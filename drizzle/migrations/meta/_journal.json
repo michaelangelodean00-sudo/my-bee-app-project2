@@ -8,6 +8,13 @@
       "when": 1791748486386,
       "tag": "0000_business_role_after_approval",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791748551068,
+      "tag": "0001_fix_sync_business_role_trigger",
+      "breakpoints": true
     }
   ]
 }
