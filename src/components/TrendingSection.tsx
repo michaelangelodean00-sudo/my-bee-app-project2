@@ -20,6 +20,7 @@ const TrendingSection = () => {
         .select("id, business_name, display_name, business_category, avatar_url, updated_at")
         .eq("account_type", "business")
         .eq("status", "approved")
+        .eq("suspended", false)
         .order("updated_at", { ascending: false })
         .limit(3);
       if (error) throw error;

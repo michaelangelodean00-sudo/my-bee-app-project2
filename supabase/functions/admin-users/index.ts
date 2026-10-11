@@ -112,20 +112,19 @@ Deno.serve(async (req) => {
       }
       const suspend = action === "suspend";
 
+      // Atomic: suspended flag + business role sync + audit, authorized as the caller.
+      const { error: rpcErr } = await userClient.rpc("admin_set_suspended", {
+        _target: targetId,
+        _suspended: suspend,
+      });
+      if (rpcErr) throw rpcErr;
+
       const { error: banErr } = await admin.auth.admin.updateUserById(targetId, {
         ban_duration: suspend ? "876000h" : "none",
       });
       if (banErr) throw banErr;
 
-      const { error: upErr } = await admin
-        .from("profiles")
-        .update({ suspended: suspend })
-        .eq("id", targetId);
-      if (upErr) throw upErr;
-
       if (suspend) await admin.auth.admin.signOut(targetId).catch(() => {});
-
-      await audit(suspend ? "user.suspend" : "user.unsuspend", targetId);
       return json({ ok: true }, 200, cors);
     }
 

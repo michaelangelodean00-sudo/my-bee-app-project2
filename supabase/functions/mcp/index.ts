@@ -23,7 +23,7 @@ var list_approved_businesses_default = defineTool({
       process.env.SUPABASE_PUBLISHABLE_KEY,
       { auth: { persistSession: false, autoRefreshToken: false } }
     );
-    const { data, error } = await client.from("profiles").select("id, business_name, business_category, phone, address, avatar_url").eq("account_type", "business").eq("status", "approved").limit(limit ?? 25);
+    const { data, error } = await client.from("profiles").select("id, business_name, business_category, phone, address, avatar_url").eq("account_type", "business").eq("status", "approved").eq("suspended", false).limit(limit ?? 25);
     if (error) {
       return { content: [{ type: "text", text: error.message }], isError: true };
     }
