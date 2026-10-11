@@ -5,11 +5,15 @@ const ALLOWED_ORIGINS = [
   "https://beeappbahamas.com",
   "https://www.beeappbahamas.com",
   "https://uadghawuvfzdqomklvha.lovableproject.com",
+  "https://id-preview--fd0fbee7-53c9-4c82-885d-3738f7504d4f.lovable.app",
+  "https://fd0fbee7-53c9-4c82-885d-3738f7504d4f.lovableproject.com",
+  "http://localhost:8080",
 ];
 
 const corsFor = (req: Request) => {
   const origin = req.headers.get("Origin") ?? "";
-  const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  // Exact-match allowlist; unknown origins get no ACAO header (browser blocks).
+  const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : "null";
   return {
     "Access-Control-Allow-Origin": allowed,
     "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -74,7 +78,9 @@ Deno.serve(async (req) => {
         target_type: "user",
         target_id: targetId,
         detail: detail ?? null,
-      }).then(() => {}, () => {});
+      }).then(({ error }) => {
+        if (error) console.error("admin-users: audit insert failed", error.message);
+      });
 
     if (action === "list") {
       const { data: profiles, error: pErr } = await admin
@@ -112,17 +118,33 @@ Deno.serve(async (req) => {
       }
       const suspend = action === "suspend";
 
-      // Atomic: suspended flag + business role sync + audit, authorized as the caller.
+      // Step 1: DB flag + business role sync + audit, atomic and authorized as the caller.
       const { error: rpcErr } = await userClient.rpc("admin_set_suspended", {
         _target: targetId,
         _suspended: suspend,
       });
-      if (rpcErr) throw rpcErr;
+      if (rpcErr) return json({ error: `Could not ${action}: ${rpcErr.message}` }, 400, cors);
 
+      // Step 2: sign-in ban/unban. On failure, compensate step 1 so both stay consistent.
       const { error: banErr } = await admin.auth.admin.updateUserById(targetId, {
         ban_duration: suspend ? "876000h" : "none",
       });
-      if (banErr) throw banErr;
+      if (banErr) {
+        const { error: undoErr } = await userClient.rpc("admin_set_suspended", {
+          _target: targetId,
+          _suspended: !suspend,
+          _reason: `compensation: sign-in ${suspend ? "ban" : "unban"} failed`,
+        });
+        await audit(`user.${action}.failed`, targetId, {
+          stage: "auth_ban", error: banErr.message, compensated: !undoErr,
+          compensation_error: undoErr?.message ?? null,
+        });
+        return json({
+          error: undoErr
+            ? `Sign-in ${suspend ? "block" : "unblock"} failed and the change could not be reverted. Retry now.`
+            : `Sign-in ${suspend ? "block" : "unblock"} failed; no change was made. Please retry.`,
+        }, 502, cors);
+      }
 
       if (suspend) await admin.auth.admin.signOut(targetId).catch(() => {});
       return json({ ok: true }, 200, cors);
@@ -134,13 +156,22 @@ Deno.serve(async (req) => {
       if (targetId === userData.user.id) {
         return json({ error: "Cannot delete yourself" }, 400, cors);
       }
-      await admin.from("profiles").delete().eq("id", targetId);
-      await admin.from("user_roles").delete().eq("user_id", targetId);
-      const { error: dErr } = await admin.auth.admin.deleteUser(targetId);
-      if (dErr) throw dErr;
+      // Step 1: authorize + snapshot audit row (refuses self / last admin / unknown user).
+      const { error: reqErr } = await userClient.rpc("admin_request_user_deletion", { _target: targetId });
+      if (reqErr) return json({ error: `Could not delete: ${reqErr.message}` }, 400, cors);
 
-      await audit("user.delete", targetId);
-      return json({ ok: true }, 200, cors);
+      // Step 2: delete the sign-in account; profile, roles and follows cascade in the database.
+      const { error: dErr } = await admin.auth.admin.deleteUser(targetId);
+      if (dErr) {
+        await audit("user.delete.failed", targetId, { stage: "auth_delete", error: dErr.message });
+        return json({ error: "Delete failed; the account was not removed. Please retry." }, 502, cors);
+      }
+      const { error: aErr } = await admin.from("admin_actions").insert({
+        actor_id: userData.user.id, action: "user.delete.completed",
+        target_type: "user", target_id: targetId, detail: null,
+      });
+      if (aErr) console.error("admin-users: completion audit failed", aErr.message);
+      return json({ ok: true, audit_complete: !aErr }, 200, cors);
     }
 
     return json({ error: "Unknown action" }, 400, cors);

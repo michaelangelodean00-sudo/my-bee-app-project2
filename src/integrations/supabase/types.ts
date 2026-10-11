@@ -222,6 +222,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_request_user_deletion: {
+        Args: { _target: string }
+        Returns: undefined
+      }
       admin_review_business: {
         Args: { _decision: string; _reason?: string; _target: string }
         Returns: Database["public"]["Enums"]["business_status"]

@@ -9,3 +9,4 @@
 - Keep fictional Splash inventory in `demoAds` and generated-photo feed inventory in `demoContent`, separate from real feed hooks; this prevents creative preview content leaking into production records.
 - Use tap-controlled CSS photo motion for demo feed media and stop active motion through shared scroll/visibility events, not per-card observers; this keeps preview media lightweight and silent without implying recorded video.
 - Role and suspension changes go only through security-definer admin functions that audit in the same transaction (the business role is derived solely by `sync_business_role`); clients have SELECT-only on `user_roles` and business capabilities are enforced in RLS or edge functions, so permissions cannot run ahead of approval.
+- admin-users suspend/delete run the audited database step first, then the sign-in step, and compensate or log `*.failed` on error; deletion relies on auth.users cascades so no orphan rows remain.
