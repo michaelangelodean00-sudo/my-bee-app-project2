@@ -54,6 +54,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Pick up approval/revocation without requiring a sign-out.
+  useEffect(() => {
+    if (!user?.id) return;
+    const id = user.id;
+    const onFocus = () => {
+      if (document.visibilityState === "visible") fetchRoles(id);
+    };
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onFocus);
+    return () => {
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onFocus);
+    };
+  }, [user?.id]);
+
   const checkSuspended = async (userId: string) => {
     const { data } = await supabase
       .from("profiles")

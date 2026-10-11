@@ -76,6 +76,7 @@ const useApprovedBusinesses = () =>
         .select("id, display_name, avatar_url, business_name, business_category, phone, address, created_at")
         .eq("account_type", "business")
         .eq("status", "approved")
+        .eq("suspended", false)
         .order("created_at", { ascending: false });
       if (error) throw error;
       return (data as ApprovedBusinessRow[]).map(mapRow);

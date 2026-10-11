@@ -8,3 +8,4 @@
 - Share preview discoverability controls through `DesignPreviewControl` and the existing `usePreviewMode` gate; URL activation waits for admin authorization and remains tab-local.
 - Keep fictional Splash inventory in `demoAds` and generated-photo feed inventory in `demoContent`, separate from real feed hooks; this prevents creative preview content leaking into production records.
 - Use tap-controlled CSS photo motion for demo feed media and stop active motion through shared scroll/visibility events, not per-card observers; this keeps preview media lightweight and silent without implying recorded video.
+- The business role is derived only by the database (`sync_business_role`) from approved, non-suspended business profiles, and admins review through `admin_review_business`; clients never write `user_roles`, so permissions cannot run ahead of approval.

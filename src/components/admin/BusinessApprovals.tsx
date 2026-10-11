@@ -79,43 +79,26 @@ const BusinessApprovals = () => {
     fetchRows();
   }, [fetchRows]);
 
-  const writeAudit = async (action: string, targetId: string, detail?: Record<string, unknown>) => {
-    const { data: userRes } = await supabase.auth.getUser();
-    if (!userRes?.user) return;
-    await supabase
-      .from("admin_actions")
-      .insert({
-        actor_id: userRes.user.id,
-        action,
-        target_type: "business_profile",
-        target_id: targetId,
-        detail: (detail ?? null) as never,
-      })
-      .then(undefined, () => {}); // audit failure never blocks the action
-  };
 
   const displayName = (r: BusinessRow) =>
     r.business_name || r.display_name || "Unnamed business";
 
+  // Status, role and audit entry change together in one server transaction.
+  const review = (r: BusinessRow, decision: "approve" | "reject", reason?: string) =>
+    supabase.rpc("admin_review_business", {
+      _target: r.id,
+      _decision: decision,
+      _reason: reason ?? null,
+    } as never);
+
   const handleApprove = async (r: BusinessRow) => {
     setBusyId(r.id);
-    const { error: profileErr } = await supabase
-      .from("profiles")
-      .update({ status: "approved", rejection_reason: null })
-      .eq("id", r.id);
-    if (profileErr) {
+    const { error } = await review(r, "approve");
+    if (error) {
       setBusyId(null);
-      toast.error(`Could not approve ${displayName(r)}: ${profileErr.message}`);
+      toast.error(`Could not approve ${displayName(r)}: ${error.message}`);
       return;
     }
-    // Grant the business role (idempotent — unique (user_id, role))
-    const { error: roleErr } = await supabase
-      .from("user_roles")
-      .upsert({ user_id: r.id, role: "business" }, { onConflict: "user_id,role" });
-    if (roleErr && !roleErr.message.includes("duplicate")) {
-      toast.error(`Profile approved but role grant failed: ${roleErr.message}`);
-    }
-    await writeAudit("business.approve", r.id);
     setBusyId(null);
     toast.success(`Approved ${displayName(r)}`);
     fetchRows();
@@ -123,16 +106,12 @@ const BusinessApprovals = () => {
 
   const performReject = async (r: BusinessRow, reason: string) => {
     setBusyId(r.id);
-    const { error } = await supabase
-      .from("profiles")
-      .update({ status: "rejected", rejection_reason: reason })
-      .eq("id", r.id);
+    const { error } = await review(r, "reject", reason);
     if (error) {
       setBusyId(null);
       toast.error(`Could not reject ${displayName(r)}: ${error.message}`);
       return;
     }
-    await writeAudit("business.reject", r.id, { reason });
     // Fire-and-forget email notification. Fails silently until the
     // send-transactional-email function + sending domain exist.
     try {
