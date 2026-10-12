@@ -52,6 +52,7 @@ import {
 import ProfileEditDialog from "@/components/ProfileEditDialog";
 import { useAuth } from "@/hooks/useAuth";
 import { useMyProfile } from "@/hooks/useMyProfile";
+import BusinessDetailsForm from "@/components/business/BusinessDetailsForm";
 
 import { useEffect } from "react";
 
@@ -196,6 +197,7 @@ const ProfileSettings = () => {
               </div>
               {/* General Settings */}
               <TabsContent value="general" className="space-y-6 mt-0">
+                {myProfile?.account_type === "business" && <BusinessDetailsForm />}
                 {!isBusiness && (
                   <Card className={cn(
                     "border-amber-200 dark:border-amber-800",

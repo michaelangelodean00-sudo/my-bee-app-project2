@@ -44,6 +44,57 @@ export type Database = {
         }
         Relationships: []
       }
+      business_details: {
+        Row: {
+          business_id: string
+          description: string | null
+          facebook: string | null
+          hours: Json | null
+          instagram: string | null
+          island: string | null
+          updated_at: string
+          website: string | null
+          whatsapp: string | null
+        }
+        Insert: {
+          business_id: string
+          description?: string | null
+          facebook?: string | null
+          hours?: Json | null
+          instagram?: string | null
+          island?: string | null
+          updated_at?: string
+          website?: string | null
+          whatsapp?: string | null
+        }
+        Update: {
+          business_id?: string
+          description?: string | null
+          facebook?: string | null
+          hours?: Json | null
+          instagram?: string | null
+          island?: string | null
+          updated_at?: string
+          website?: string | null
+          whatsapp?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_details_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_details_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: true
+            referencedRelation: "public_businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       business_follows: {
         Row: {
           business_id: string
@@ -69,6 +120,13 @@ export type Database = {
             columns: ["business_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_follows_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "public_businesses"
             referencedColumns: ["id"]
           },
         ]
@@ -219,7 +277,39 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_businesses: {
+        Row: {
+          address: string | null
+          avatar_url: string | null
+          business_category: string | null
+          business_name: string | null
+          created_at: string | null
+          display_name: string | null
+          id: string | null
+          phone: string | null
+        }
+        Insert: {
+          address?: string | null
+          avatar_url?: string | null
+          business_category?: string | null
+          business_name?: string | null
+          created_at?: string | null
+          display_name?: string | null
+          id?: string | null
+          phone?: string | null
+        }
+        Update: {
+          address?: string | null
+          avatar_url?: string | null
+          business_category?: string | null
+          business_name?: string | null
+          created_at?: string | null
+          display_name?: string | null
+          id?: string | null
+          phone?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       admin_request_user_deletion: {
@@ -249,6 +339,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_valid_business_hours: { Args: { _h: Json }; Returns: boolean }
       sync_business_role: { Args: { _user_id: string }; Returns: undefined }
     }
     Enums: {

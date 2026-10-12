@@ -11,6 +11,10 @@ import BusinessProfileCard, { BusinessProfile } from "../components/BusinessProf
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNotifications } from "../contexts/NotificationContext";
 import { supabase } from "@/integrations/supabase/client";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { ISLANDS } from "@/lib/businessLinks";
+import { getOpenStatus, WeekHours } from "@/lib/bahamasTime";
 import {
   UtensilsCrossed, Sparkles, ShoppingBag, Wrench,
   Car, CalendarDays, BriefcaseBusiness, Building2
@@ -54,43 +58,115 @@ interface ApprovedBusinessRow {
   address: string | null;
   created_at: string;
 }
-
-const mapRow = (row: ApprovedBusinessRow): BusinessProfile => ({
-  id: row.id,
-  name: row.business_name || row.display_name || "Unnamed business",
-  category: normalizeCategory(row.business_category),
-  description: "",
-  address: row.address || "",
-  phone: row.phone || undefined,
-  imageUrl: row.avatar_url || "/placeholder.svg",
-  tags: [],
-});
+interface DetailsRow { business_id: string; description: string | null; island: string | null; hours: unknown }
 
 const useApprovedBusinesses = () =>
   useQuery({
     queryKey: ["approved-businesses"],
     staleTime: 60_000,
     queryFn: async (): Promise<BusinessProfile[]> => {
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("id, display_name, avatar_url, business_name, business_category, phone, address, created_at")
-        .eq("account_type", "business")
-        .eq("status", "approved")
-        .eq("suspended", false)
-        .order("created_at", { ascending: false });
+      const [{ data, error }, { data: det, error: dErr }] = await Promise.all([
+        supabase.from("public_businesses")
+          .select("id, display_name, avatar_url, business_name, business_category, phone, address, created_at")
+          .order("created_at", { ascending: false }),
+        supabase.from("business_details").select("business_id, description, island, hours"),
+      ]);
       if (error) throw error;
-      return (data as ApprovedBusinessRow[]).map(mapRow);
+      if (dErr) throw dErr;
+      const byId = new Map((det as DetailsRow[] ?? []).map((d) => [d.business_id, d]));
+      return ((data ?? []) as ApprovedBusinessRow[]).map((row) => {
+        const d = byId.get(row.id);
+        return {
+          id: row.id,
+          name: row.business_name || row.display_name || "Unnamed business",
+          category: normalizeCategory(row.business_category),
+          description: d?.description ?? "",
+          address: row.address || "",
+          phone: row.phone || undefined,
+          imageUrl: row.avatar_url || "/placeholder.svg",
+          tags: [],
+          island: d?.island ?? undefined,
+          hours: (d?.hours as WeekHours) ?? undefined,
+        };
+      });
     },
   });
+
+const useFilters = () => {
+  const [params, setParams] = useSearchParams();
+  const q = params.get("q") ?? "";
+  const island = params.get("island") ?? "";
+  const openNow = params.get("open") === "1";
+  const set = (k: string, v: string) => {
+    const next = new URLSearchParams(params);
+    if (v) next.set(k, v); else next.delete(k);
+    setParams(next, { replace: true });
+  };
+  return { q, island, openNow, set, active: !!(q || island || openNow) };
+};
+
+const applyFilters = (list: BusinessProfile[], f: { q: string; island: string; openNow: boolean }) => {
+  const needle = f.q.trim().toLowerCase();
+  return list.filter((b) =>
+    (!needle || b.name.toLowerCase().includes(needle) || b.description.toLowerCase().includes(needle)) &&
+    (!f.island || b.island === f.island) &&
+    (!f.openNow || getOpenStatus(b.hours)?.open === true)
+  );
+};
+
+const FilterBar = () => {
+  const f = useFilters();
+  const [text, setText] = useState(f.q);
+  const timer = useRef<ReturnType<typeof setTimeout>>();
+  useEffect(() => () => clearTimeout(timer.current), []);
+  return (
+    <div className="flex flex-col sm:flex-row gap-2 mb-4" role="search">
+      <Input
+        type="search" value={text} placeholder="Search businesses" aria-label="Search businesses"
+        className="h-11 flex-1" maxLength={60}
+        onChange={(e) => {
+          const v = e.target.value; setText(v);
+          clearTimeout(timer.current);
+          timer.current = setTimeout(() => f.set("q", v.trim()), 250);
+        }}
+      />
+      <select
+        aria-label="Island" value={f.island} onChange={(e) => f.set("island", e.target.value)}
+        className="h-11 rounded-md border border-input bg-background px-3 text-sm text-foreground"
+      >
+        <option value="">All islands</option>
+        {ISLANDS.map((i) => <option key={i} value={i}>{i}</option>)}
+      </select>
+      <label className="flex h-11 items-center gap-2 rounded-md border border-input px-3 text-sm">
+        <Switch checked={f.openNow} onCheckedChange={(v) => f.set("open", v ? "1" : "")} aria-label="Open now" />
+        Open now
+      </label>
+    </div>
+  );
+};
+
+const ResultsGrid = ({ items, loading, empty }: { items: BusinessProfile[]; loading: boolean; empty: string }) =>
+  loading ? (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-64 rounded-lg" />)}
+    </div>
+  ) : items.length === 0 ? (
+    <div className="text-center py-16 text-muted-foreground"><p className="text-sm">{empty}</p></div>
+  ) : (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {items.map((b) => <BusinessProfileCard key={b.id} business={b} />)}
+    </div>
+  );
 
 // ─── Category Profile View ──────────────────────────────────────────────────
 const CategoryProfileView = ({ categoryId }: { categoryId: string }) => {
   const navigate = useNavigate();
   const category = CATEGORIES.find(c => c.id === categoryId);
   const { data: businesses = [], isLoading } = useApprovedBusinesses();
+  const f = useFilters();
   const profiles = useMemo(
-    () => businesses.filter(b => b.category === categoryId),
-    [businesses, categoryId]
+    () => applyFilters(businesses.filter(b => b.category === categoryId), f),
+    [businesses, categoryId, f.q, f.island, f.openNow]
   );
   const Icon = category?.icon;
 
@@ -113,23 +189,9 @@ const CategoryProfileView = ({ categoryId }: { categoryId: string }) => {
       </div>
 
       <div className="p-4 max-w-4xl mx-auto">
-        {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton key={i} className="h-64 rounded-lg" />
-            ))}
-          </div>
-        ) : profiles.length === 0 ? (
-          <div className="text-center py-16 text-muted-foreground">
-            <p className="text-sm">No businesses listed in this category yet.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {profiles.map(business => (
-              <BusinessProfileCard key={business.id} business={business} />
-            ))}
-          </div>
-        )}
+        <FilterBar />
+        <ResultsGrid items={profiles} loading={isLoading}
+          empty={f.active ? "No businesses match these filters yet." : "No businesses listed in this category yet."} />
       </div>
     </div>
   );
@@ -138,11 +200,17 @@ const CategoryProfileView = ({ categoryId }: { categoryId: string }) => {
 // ─── Category Directory (default view) ──────────────────────────────────────
 const VideoFeed = () => {
   const navigate = useNavigate();
-  const { data: businesses = [] } = useApprovedBusinesses();
+  const { data: businesses = [], isLoading } = useApprovedBusinesses();
+  const f = useFilters();
+  const results = useMemo(() => applyFilters(businesses, f), [businesses, f.q, f.island, f.openNow]);
   return (
     <div className="flex-1 overflow-y-auto p-4">
       <div className="max-w-4xl mx-auto">
         <h2 className="text-lg font-semibold text-foreground mb-4">Browse businesses</h2>
+        <FilterBar />
+        {f.active ? (
+          <ResultsGrid items={results} loading={isLoading} empty="No businesses match these filters yet." />
+        ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {CATEGORIES.map(({ id, label, icon: Icon }) => {
             const count = businesses.filter(b => b.category === id).length;
@@ -159,6 +227,7 @@ const VideoFeed = () => {
             );
           })}
         </div>
+        )}
       </div>
     </div>
   );

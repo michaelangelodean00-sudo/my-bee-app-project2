@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useBusinessFollow } from "@/hooks/useBusinessFollow";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
+import { getOpenStatus } from "@/lib/bahamasTime";
 
 
 export interface BusinessProfile {
@@ -26,6 +28,8 @@ export interface BusinessProfile {
   imageUrl: string;
   tags: string[];
   isNew?: boolean;
+  island?: string;
+  hours?: import("@/lib/bahamasTime").WeekHours;
 }
 
 interface BusinessProfileCardProps {
@@ -107,8 +111,13 @@ const BusinessProfileCard = ({ business, className }: BusinessProfileCardProps) 
       <div className="p-3 space-y-2">
         <div>
           <h3 className="font-semibold text-sm text-foreground leading-tight line-clamp-1">
-            {business.name}
+            <Link to={`/business/${business.id}`} className="hover:text-primary focus-visible:underline">{business.name}</Link>
           </h3>
+          {(business.island || getOpenStatus(business.hours)) && (
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {[business.island, getOpenStatus(business.hours)?.label].filter(Boolean).join(" · ")}
+            </p>
+          )}
           <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">
             {business.description}
           </p>

@@ -21,6 +21,7 @@ import Auth from "./pages/Auth";
 // Lazy load all other pages for code splitting
 const Businesses = lazy(() => import("./pages/Businesses"));
 const Events = lazy(() => import("./pages/Events"));
+const BusinessProfile = lazy(() => import("./pages/BusinessProfile"));
 const Ecommerce = lazy(() => import("./pages/Ecommerce"));
 const Admin = lazy(() => import("./pages/Admin"));
 const ProfileSettings = lazy(() => import("./pages/ProfileSettings"));
@@ -79,6 +80,7 @@ const App = () => {
                       <Route path="/" element={<Index />} />
                       <Route path="/auth" element={<Auth />} />
                       <Route path="/businesses" element={<Businesses />} />
+                      <Route path="/business/:id" element={<BusinessProfile />} />
                       <Route path="/events" element={<Events />} />
                       <Route path="/beenow" element={<BeeNow />} />
                       <Route path="/design-demo" element={<DesignDemo />} />
