@@ -21,6 +21,7 @@ import Auth from "./pages/Auth";
 // Lazy load all other pages for code splitting
 const Businesses = lazy(() => import("./pages/Businesses"));
 const Events = lazy(() => import("./pages/Events"));
+const BusinessProfile = lazy(() => import("./pages/BusinessProfile"));
 const Ecommerce = lazy(() => import("./pages/Ecommerce"));
 const Admin = lazy(() => import("./pages/Admin"));
 const ProfileSettings = lazy(() => import("./pages/ProfileSettings"));

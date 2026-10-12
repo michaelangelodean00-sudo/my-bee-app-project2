@@ -7,3 +7,7 @@
 # Preview discoverability fix
 - [x] Add shared admin-only Home and BeeNow controls with guarded same-tab URL activation.
 - [x] Verify admin on/off synchronization, guest isolation, and mobile layouts; report checks without publishing.
+# Phase 1 Stage A — business discovery & profiles
+- [x] business_details table + RLS, public_businesses view, server-side validation
+- [x] Directory search, island, Open Now (Nassau time); /business/:id profile; owner details form
+- [ ] Events/tours (Stage B — not approved)
